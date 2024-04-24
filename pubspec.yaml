@@ -1,7 +1,7 @@
 name: hz_router
 description: "A new Flutter package project."
 version: 0.0.1
-homepage:
+homepage: "https://gitlab.hzcxfw.com/terminal/structure/hz_router"
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
