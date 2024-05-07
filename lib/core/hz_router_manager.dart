@@ -22,7 +22,7 @@ class HzRouterManager {
     }
   }
 
-  Map<String, dynamic> arguments(BuildContext context) {
+  static Map<String, dynamic> arguments(BuildContext context) {
     final RouteSettings? settings = ModalRoute.of(context)?.settings;
     if (settings != null) {
       final Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
