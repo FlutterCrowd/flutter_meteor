@@ -46,6 +46,10 @@ path
 2.12
 file:///Users/itbox_djx/.pub-cache/hosted/pub.flutter-io.cn/path-1.8.3/
 file:///Users/itbox_djx/.pub-cache/hosted/pub.flutter-io.cn/path-1.8.3/lib/
+plugin_platform_interface
+3.0
+file:///Users/itbox_djx/.pub-cache/hosted/pub.flutter-io.cn/plugin_platform_interface-2.1.8/
+file:///Users/itbox_djx/.pub-cache/hosted/pub.flutter-io.cn/plugin_platform_interface-2.1.8/lib/
 source_span
 2.18
 file:///Users/itbox_djx/.pub-cache/hosted/pub.flutter-io.cn/source_span-1.10.0/
@@ -80,8 +84,8 @@ file:///Users/itbox_djx/.pub-cache/hosted/pub.flutter-io.cn/web-0.3.0/
 file:///Users/itbox_djx/.pub-cache/hosted/pub.flutter-io.cn/web-0.3.0/lib/
 hz_router
 3.2
-file:///Users/itbox_djx/Work/Project/Foundation/hz_router/
-file:///Users/itbox_djx/Work/Project/Foundation/hz_router/lib/
+file:///Users/itbox_djx/Work/Project/foundation/hz_router/
+file:///Users/itbox_djx/Work/Project/foundation/hz_router/lib/
 sky_engine
 3.2
 file:///Users/itbox_djx/fvm/versions/3.16.5/bin/cache/pkg/sky_engine/

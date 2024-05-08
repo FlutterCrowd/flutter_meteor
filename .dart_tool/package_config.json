@@ -86,6 +86,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "plugin_platform_interface",
+      "rootUri": "file:///Users/itbox_djx/.pub-cache/hosted/pub.flutter-io.cn/plugin_platform_interface-2.1.8",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///Users/itbox_djx/fvm/versions/3.16.5/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -146,7 +152,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-04-23T09:34:39.894022Z",
+  "generated": "2024-05-08T02:22:25.199443Z",
   "generator": "pub",
   "generatorVersion": "3.2.3"
 }
