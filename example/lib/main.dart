@@ -10,12 +10,12 @@ import 'mine_page.dart';
 import 'multi_engin_page.dart';
 import 'multi_engin_page2.dart';
 
-void main(List<String> arg) {
+void main() {
   runApp(const MyApp());
 }
 
 @pragma("vm:entry-point")
-void main2(List<String> arg) {
+void childEntry(List<String> arg) {
   print('这是传递过来的参数：$arg');
   // runApp(const MyApp());
   if (arg.isNotEmpty) {
