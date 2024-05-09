@@ -6,7 +6,7 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.embedding.engine.FlutterEngineGroup
 import io.flutter.embedding.engine.dart.DartExecutor
 
-class EngineBindings(context: Activity, initialRoute: String?, entrypoint: String, entryPointArgs: List<String>?, val id: Int) {
+class EngineBindings(context: Activity, initialRoute: String?, entrypoint: String, entryPointArgs: List<String?>?, val id: Int) {
 
 //    val channel: MethodChannel
     val engine: FlutterEngine
@@ -21,7 +21,7 @@ class EngineBindings(context: Activity, initialRoute: String?, entrypoint: Strin
         val options = FlutterEngineGroup.Options(context).apply {
             setInitialRoute(initialRoute)
             setDartEntrypoint(dartEntrypoint)
-            setDartEntrypointArgs(entryPointArgs)
+            dartEntrypointArgs = entryPointArgs
         }
         // Creates a FlutterEngine in this group and run its DartExecutor with the specified DartEntrypoint
         engine = engineGroup.createAndRunEngine(options) // 创建 FlutterEngine 并执行指定的 DartEntrypoint
