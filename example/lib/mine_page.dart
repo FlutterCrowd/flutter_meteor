@@ -9,8 +9,6 @@ class MinePage extends StatefulWidget {
 }
 
 class _MinePageState extends State<MinePage> {
-  final HzRouterPlugin _hzRouterPlugin = HzRouterPlugin(needNewChannel: true);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +21,9 @@ class _MinePageState extends State<MinePage> {
             child: GestureDetector(
               onTap: () {
                 /// 返回原生页面
-                // Navigator.pop(context);
+                HzNavigator.pop(context);
                 // _multiEnginPlugin.back();
-                _hzRouterPlugin.pop();
+                // _hzRouterPlugin.pop();
               },
               child: Container(
                 child: const Text(
@@ -43,7 +41,6 @@ class _MinePageState extends State<MinePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                /// 返回原生页面
                 // Navigator.pop(context);
                 // _multiEnginPlugin.back();
                 HzNavigator.pop(context);
@@ -65,7 +62,7 @@ class _MinePageState extends State<MinePage> {
             child: GestureDetector(
               onTap: () {
                 /// 返回原生页面
-                _hzRouterPlugin.popToRoot();
+                HzNavigator.popToRoot(context);
               },
               child: const Text(
                 '返回根视图',

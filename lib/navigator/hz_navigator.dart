@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hz_router/core/hz_router_manager.dart';
+import 'package:hz_router/navigator/native/hz_native_navigator.dart';
+
+import 'flutter/hz_flutter_navigater.dart';
 
 /*
 * 封装系统的路由
@@ -9,7 +12,15 @@ import 'package:hz_router/core/hz_router_manager.dart';
 class HzNavigator {
   static String root = '/';
   static Route<dynamic>? routePage;
-  static GlobalKey<NavigatorState>? naviKey;
+  static GlobalKey<NavigatorState>? _naviKey;
+  static set naviKey(GlobalKey<NavigatorState>? value) {
+    _naviKey = value;
+    _flutterNavigator.naviKey = value;
+  }
+
+  static GlobalKey<NavigatorState>? get naviKey => _naviKey;
+  static final HzNativeNavigator _nativeNavigator = HzNativeNavigator();
+  static final HzFlutterNavigator _flutterNavigator = HzFlutterNavigator(naviKey: _naviKey);
 
   /// push 到一个已经存在路由表的页面
   ///
@@ -18,13 +29,22 @@ class HzNavigator {
   static Future<T?> pushNamed<T extends Object?>(
     BuildContext? context, {
     required String routeName,
+    bool withNewEngine = false,
     Map<String, dynamic>? arguments,
   }) async {
-    context ??= naviKey?.currentContext;
-    if (context != null) {
-      return Navigator.pushNamed(context, routeName, arguments: arguments);
+    debugPrint('Will push to page $routeName');
+    if (HzRouterManager.routeInfo[routeName] == null) {
+      Map<String, dynamic> arg = {};
+      arg['withNewEngine'] = withNewEngine;
+      if (arguments?.isNotEmpty ?? false) {
+        arg.addAll(arguments!);
+      }
+      return await _nativeNavigator.pushNamed<T>(context,
+          routeName: routeName, arguments: arguments);
+    } else {
+      return await _flutterNavigator.pushNamed<T>(context,
+          routeName: routeName, arguments: arguments);
     }
-    return null;
   }
 
   /// push 到指定页面并替换当前页面
@@ -35,9 +55,12 @@ class HzNavigator {
       BuildContext? context,
       {required String routeName,
       Map<String, dynamic>? arguments}) async {
-    context ??= naviKey?.currentContext;
-    if (context != null) {
-      return Navigator.pushReplacementNamed<T, TO>(context, routeName, arguments: arguments);
+    if (HzRouterManager.routeInfo[routeName] == null) {
+      debugPrint('No invalid routeName:$routeName');
+      // return await _nativeNavigator.pushReplacementNamed<T, TO>(context, routeName: routeName, arguments: arguments);
+    } else {
+      return await _flutterNavigator.pushReplacementNamed<T, TO>(context,
+          routeName: routeName, arguments: arguments);
     }
     return null;
   }
@@ -53,57 +76,48 @@ class HzNavigator {
     String? untilRouteName,
     Map<String, dynamic>? arguments,
   }) async {
-    context ??= naviKey?.currentContext;
-    if (context != null) {
-      return Navigator.of(context).pushNamedAndRemoveUntil<T>(
-          routeName, ModalRoute.withName(untilRouteName ?? root),
-          arguments: arguments);
+    if (HzRouterManager.routeInfo[routeName] == null) {
+      debugPrint('No invalid routeName:$routeName');
+      return null;
+      // return await _nativeNavigator.pushNamedAndRemoveUntil<T>(context, routeName: routeName, arguments: arguments);
+    } else {
+      return await _flutterNavigator.pushNamedAndRemoveUntil<T>(context,
+          routeName: routeName, arguments: arguments);
     }
-    return null;
   }
 
   /// pop到上一个页面
   ///
   /// @parma result 接受回调，T是个泛型，可以指定要返回的数据类型
   static Future<void> pop<T extends Object?>(BuildContext? context, {T? result}) async {
-    context ??= naviKey?.currentContext;
+    context ??= _naviKey?.currentContext;
     if (context != null && Navigator.canPop(context)) {
-      return Navigator.pop<T>(context, result);
+      await _flutterNavigator.pop(context, result: result);
+    } else {
+      await _nativeNavigator.pop(context, result: result);
     }
+    return;
   }
 
   /// pop 到指定页面并替换当前页面
   ///
   /// @parma routeName 要pod到的页面
   static Future<void> popUntil(BuildContext? context, {required String routeName}) async {
-    context ??= naviKey?.currentContext;
-    if (context != null) {
-      return Navigator.popUntil(context, ModalRoute.withName(routeName));
+    if (HzRouterManager.routeInfo[routeName] == null) {
+      debugPrint('No invalid routeName:$routeName');
+      return;
+      // return await _nativeNavigator.popUntil(context, routeName: routeName);
+    } else {
+      _flutterNavigator.popUntil(context, routeName: routeName);
     }
+    return;
   }
 
   /// pop 到根页面
   static Future<void> popToRoot(BuildContext? context) async {
-    context ??= naviKey?.currentContext;
-    if (context != null) {
-      Navigator.popUntil(context, ModalRoute.withName(root));
-    }
+    _nativeNavigator.popToRoot(context);
+    _flutterNavigator.popToRoot(context);
   }
-
-  // /// push 到一个新的page，不需要提前设置路由的页面
-  // ///
-  // /// @parma page 要跳转的页面
-  // /// @return T  泛型，用于指定返回类型
-  // static Future<T?> push<T extends Object?>(
-  //   BuildContext context, {
-  //   required Widget page,
-  //   Map<String, dynamic>? arguments,
-  // }) async {
-  //   return Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => page),
-  //   );
-  // }
 
 // 假设你有一个根页面的RouteSettings
   static Route<dynamic> getRootRoute() {
@@ -113,11 +127,7 @@ class HzNavigator {
   }
 
   static bool isCurrentRouteRoot(BuildContext context) {
-    // final rootRoute = getRootRoute();
-    // final rootRouteSettings = rootRoute.settings;
     final RouteSettings? curRouteSetting = ModalRoute.of(context)?.settings;
-    print(root);
-    print(curRouteSetting?.name);
     // 遍历路由栈，查找与根页面相同的路由设置
     if (routePage?.settings != null && routePage?.settings == curRouteSetting) {
       // 如果找到了与根页面相同的路由设置，说明当前页面就是根页面

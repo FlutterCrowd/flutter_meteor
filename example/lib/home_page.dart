@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hz_router/plugin/hz_router_plugin.dart';
+import 'package:hz_router/hz_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,9 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final HzRouterPlugin _routerPlugin = HzRouterPlugin(needNewChannel: true);
-  // final methodChannel = const MethodChannel('cn.itbox.driver/mine');
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +22,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                _routerPlugin.push(routerName: "page_router");
+                HzNavigator.pushNamed(context, routeName: "page_router");
               },
               child: const Text(
                 '打开原生页面',
@@ -41,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                _routerPlugin.push(routerName: "multi_engin");
+                HzNavigator.pushNamed(context, routeName: "multi_engin");
               },
               child: const Text(
                 '打开新引擎',

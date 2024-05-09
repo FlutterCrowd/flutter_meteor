@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hz_router/core/hz_navigator.dart';
-import 'package:hz_router/plugin/hz_router_plugin.dart';
+import 'package:hz_router/hz_router.dart';
 
 class MultiEnginPage extends StatefulWidget {
   @override
@@ -11,7 +10,7 @@ class MultiEnginPage extends StatefulWidget {
 
 class _MultiEnginPageState extends State<MultiEnginPage> {
   // final methodChannel = const ;
-  final HzRouterPlugin _hzRouterPlugin = HzRouterPlugin(needNewChannel: true);
+  // final HzRouterPlugin _hzRouterPlugin = HzRouterPlugin(needNewChannel: true);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +22,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                _hzRouterPlugin.pop();
+                HzNavigator.pop(context);
               },
               child: Container(
                 child: const Text(
@@ -38,11 +37,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                if (HzNavigator.isCurrentRouteRoot(context)) {
-                  _hzRouterPlugin.pop();
-                } else {
-                  HzNavigator.pop(context);
-                }
+                HzNavigator.pop(context);
               },
               child: Container(
                 child: const Text(
@@ -57,7 +52,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                _hzRouterPlugin.popToRoot();
+                HzNavigator.popToRoot(context);
               },
               child: Container(
                 child: const Text(
@@ -74,12 +69,10 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
               onTap: () {
                 HzNavigator.pushNamed(context, routeName: "mine");
               },
-              child: Container(
-                child: const Text(
-                  '下一个flutter页面',
-                  style: TextStyle(
-                    backgroundColor: Colors.yellow,
-                  ),
+              child: const Text(
+                '下一个flutter页面',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
                 ),
               ),
             ),

@@ -170,9 +170,9 @@ class TestViewController: UIViewController {
                     HzRouter.pop()
 //                    flutterVc.navigationController?.popViewController(animated: true)
                 } else if (method == "popToRoot") {
-                    HzRouter.pop()
+                    HzRouter.popToRoot()
 //                    flutterVc.navigationController?.popViewController(animated: true)
-                }else if (method == "push") {
+                }else if (method == "pushNamed") {
                     self.buttonTapped2(sender)
                 }
             return arguments
@@ -200,7 +200,7 @@ class TestViewController: UIViewController {
 //                    flutterVc.navigationController?.popToRootViewController(animated: true)
                     HzRouter.popToRoot()
                     HzRouter.flutterPopToRoot()
-                }else if (method == "push") {
+                }else if (method == "pushNamed") {
                     self.buttonTapped3(sender)
                 }
 //                flutterVc.dismiss(animated: true)

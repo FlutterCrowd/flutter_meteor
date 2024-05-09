@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hz_router/core/hz_navigator.dart';
-import 'package:hz_router/core/hz_router_manager.dart';
-import 'package:hz_router/plugin/hz_router_plugin.dart';
+import 'package:hz_router/hz_router.dart';
 
 import 'home_page.dart';
 import 'mine_page.dart';
@@ -53,11 +51,7 @@ Map<String, WidgetBuilder> routes = {
           ),
           GestureDetector(
             onTap: () {
-              if (HzNavigator.isCurrentRouteRoot(context)) {
-                HzRouterPlugin().pop();
-              } else {
-                HzNavigator.pop(context);
-              }
+              HzNavigator.pop(context);
             },
             child: const Center(
               child: Text('返回上一页'),
@@ -88,7 +82,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       onGenerateRoute: HzRouterManager.generateRoute,
       navigatorKey: HzNavigator.naviKey,
-      // initialRoute: routeName,
+      initialRoute: routeName,
       onGenerateInitialRoutes: (String initialRoute) {
         // const url = "/mine?key=value";
         WidgetBuilder builder = routes[initialRoute] ?? routes['/']!;

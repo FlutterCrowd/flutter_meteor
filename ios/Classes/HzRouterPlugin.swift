@@ -21,7 +21,7 @@ public class HzRouterPlugin: NSObject, FlutterPlugin, HzRouterDelegate, HzFlutte
     switch call.method {
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
-    case "push":
+    case "pushNamed":
         var res = Dictionary<String, Any>.init()
         res["message"] = "Do not implementated"
             HzRouter.push(viewController: TestViewController.init())

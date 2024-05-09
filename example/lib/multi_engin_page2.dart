@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hz_router/core/hz_navigator.dart';
-import 'package:hz_router/plugin/hz_router_plugin.dart';
+import 'package:hz_router/hz_router.dart';
 
 class MultiEnginPage2 extends StatefulWidget {
   @override
@@ -10,10 +9,6 @@ class MultiEnginPage2 extends StatefulWidget {
 }
 
 class _MultiEnginPageState extends State<MultiEnginPage2> {
-  final HzRouterPlugin _hzRouterPlugin = HzRouterPlugin(needNewChannel: true);
-  final HzRouterPlugin _hzMainPlugin = HzRouterPlugin();
-  // final methodChannel = const MethodChannel('cn.itbox.driver/multi_engin');
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +20,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                _hzMainPlugin.push(routerName: "router");
+                HzNavigator.pushNamed(context, routeName: "routeName");
               },
               child: Container(
                 child: const Text(
@@ -40,7 +35,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                _hzRouterPlugin.pop();
+                HzNavigator.pop(context);
               },
               child: const Text(
                 '返回原生',
@@ -53,7 +48,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                _hzRouterPlugin.popToRoot();
+                HzNavigator.popToRoot(context);
               },
               child: const Text(
                 '返回根页面',
@@ -87,11 +82,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                if (HzNavigator.isCurrentRouteRoot(context)) {
-                  _hzRouterPlugin.pop();
-                } else {
-                  HzNavigator.pop(context);
-                }
+                HzNavigator.pop(context);
               },
               child: Container(
                 child: const Text(
