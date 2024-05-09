@@ -4,11 +4,12 @@ import 'hz_router_plugin_method_channel.dart';
 import 'hz_router_plugin_platform_interface.dart';
 
 class HzRouterPlugin {
-  final MethodChannel? methodChannel;
+  final bool needNewChannel;
   late HzRouterPluginPlatform _hzRouterPlugin;
-  HzRouterPlugin({this.methodChannel}) {
-    if (methodChannel != null) {
-      _hzRouterPlugin = MethodChannelHzRouterPlugin(methodChannel: methodChannel!);
+  HzRouterPlugin({this.needNewChannel = false}) {
+    if (needNewChannel) {
+      _hzRouterPlugin = MethodChannelHzRouterPlugin(
+          methodChannel: const MethodChannel('cn.itbox.router.multi_engine.methodChannel'));
     } else {
       _hzRouterPlugin = HzRouterPluginPlatform.instance;
     }

@@ -14,7 +14,7 @@ public class MultiEngineHandler: NSObject, FlutterPlugin, HzRouterDelegate, HzFl
     
   public static func register(with registrar: FlutterPluginRegistrar) {
     let instance = HzRouterPlugin()
-      instance.methodChannel = FlutterMethodChannel(name: "cn.itbox.driver/home", binaryMessenger: registrar.messenger())
+      instance.methodChannel = FlutterMethodChannel(name: HzEngineManager.HzRouterMethodChannelName, binaryMessenger: registrar.messenger())
     registrar.addMethodCallDelegate(instance, channel: instance.methodChannel!)
       HzRouter.plugin = instance
   }

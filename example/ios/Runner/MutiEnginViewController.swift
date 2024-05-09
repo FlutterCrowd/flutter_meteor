@@ -130,8 +130,11 @@ class MutiEnginViewController: UIViewController {
         print("1按钮被点击了！")
         let flutterVc: UIViewController = HzEngineManager.createFlutterVC { method, arguments, flutterVc in
             if (method == "pop") {
-                HzRouter.dismiss()
-//                flutterVc.navigationController?.popToRootViewController(animated: true)
+                HzRouter.pop()
+            }
+            if (method == "popToRoot") {
+                HzRouter.popToRoot()
+                HzRouter.flutterPopToRoot()
             }
             return arguments
         } ?? UIViewController()
@@ -143,10 +146,13 @@ class MutiEnginViewController: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped2(_ sender: UIButton) {
         let group: FlutterEngineGroup = FlutterEngineGroup.init(name: "", project: nil)
-        let flutterVc: UIViewController = HzEngineManager.createFlutterVCWithEntryPoint(entryPoint: "main2") { method, arguments, flutterVc in
-            if (method == "back") {
+        let flutterVc: UIViewController = HzEngineManager.createFlutterVC(entryPoint: "main2") { method, arguments, flutterVc in
+            if (method == "pop") {
                 HzRouter.pop()
-//                flutterVc.navigationController?.popViewController(animated: true)
+            }
+            if (method == "popToRoot") {
+                HzRouter.popToRoot()
+                HzRouter.flutterPopToRoot()
             }
             return arguments
         } ?? UIViewController()
@@ -161,13 +167,16 @@ class MutiEnginViewController: UIViewController {
         var arg = Dictionary<String, Any>.init()
         arg["1"] = 1
         arg["2"] = "2"
-        let flutterVc: UIViewController = HzEngineManager.creatCustomFlutterVC(
+        let flutterVc: UIViewController = HzEngineManager.createFlutterVC(
             entryPoint: "main",
             entrypointArgs: arg,
             initialRoute: "mine") { method, arguments, flutterVc  in
-                if (method == "back") {
+                if (method == "pop") {
                     HzRouter.pop()
-//                    flutterVc.navigationController?.popViewController(animated: true)
+                }
+                if (method == "popToRoot") {
+                    HzRouter.popToRoot()
+                    HzRouter.flutterPopToRoot()
                 }
             return arguments
         } ?? UIViewController()
@@ -181,17 +190,17 @@ class MutiEnginViewController: UIViewController {
         var arg = Dictionary<String, Any>.init()
         arg["1"] = 1
         arg["2"] = "2"
-        let flutterVc: UIViewController =  HzEngineManager.creatCustomFlutterVC(
+        let flutterVc: UIViewController =  HzEngineManager.createFlutterVC(
             entryPoint: "main2",
             entrypointArgs: arg,
             initialRoute: "multi_engin") { method, arguments, flutterVc in
-                
-                if (method == "backToRoot") {
-//                    flutterVc.navigationController?.popToRootViewController(animated: true)
+                if (method == "pop") {
+                    HzRouter.pop()
+                }
+                if (method == "popToRoot") {
                     HzRouter.popToRoot()
                     HzRouter.flutterPopToRoot()
                 }
-                flutterVc.dismiss(animated: true)
             return arguments
                 
         } ?? UIViewController()

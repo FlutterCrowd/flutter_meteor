@@ -15,6 +15,7 @@ import Flutter
       MultiEngineHandler.register(with: flutterVc.pluginRegistry().registrar(forPlugin: "MultiEngineHandler")!)
 
       let navi: UINavigationController = UINavigationController.init(rootViewController: flutterVc)
+      navi.navigationBar.isHidden = true
       self.window.rootViewController = navi
       
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)

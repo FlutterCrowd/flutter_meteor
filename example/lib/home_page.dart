@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hz_router/plugin/hz_router_plugin.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,8 +11,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final HzRouterPlugin _routerPlugin =
-      HzRouterPlugin(methodChannel: const MethodChannel('hz_router_plugin'));
+  final HzRouterPlugin _routerPlugin = HzRouterPlugin(needNewChannel: true);
   // final methodChannel = const MethodChannel('cn.itbox.driver/mine');
 
   @override

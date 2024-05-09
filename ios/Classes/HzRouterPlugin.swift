@@ -7,7 +7,7 @@ public class HzRouterPlugin: NSObject, FlutterPlugin, HzRouterDelegate, HzFlutte
 
     public static func register(with registrar: FlutterPluginRegistrar) {
       
-      let methodChannel = FlutterMethodChannel(name: "hz_router_plugin", binaryMessenger: registrar.messenger())
+        let methodChannel = FlutterMethodChannel(name: HzEngineManager.HzRouterMethodChannelName, binaryMessenger: registrar.messenger())
       let instance = HzRouterPlugin.init(methodChannel: methodChannel)
       registrar.addMethodCallDelegate(instance, channel: methodChannel)
       HzRouter.plugin = instance

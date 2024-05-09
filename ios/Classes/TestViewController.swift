@@ -130,23 +130,24 @@ class TestViewController: UIViewController {
         print("1按钮被点击了！")
         let flutterVc: UIViewController = HzEngineManager.createFlutterVC { method, arguments, flutterVc in
             if (method == "pop") {
-                HzRouter.dismiss()
-//                flutterVc.navigationController?.popToRootViewController(animated: true)
+                HzRouter.pop()
+            } else if (method == "popToRoot") {
+                HzRouter.pop()
             }
             return arguments
         } ?? UIViewController()
         HzRouter.present(viewController: flutterVc)
-//        self.navigationController?.pushViewController(flutterVc, animated: true)
           
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped2(_ sender: UIButton) {
-        let group: FlutterEngineGroup = FlutterEngineGroup.init(name: "", project: nil)
-        let flutterVc: UIViewController = HzEngineManager.createFlutterVCWithEntryPoint(entryPoint: "main2") { method, arguments, flutterVc in
-            if (method == "back") {
+
+        let flutterVc: UIViewController = HzEngineManager.createFlutterVC(entryPoint: "main2") { method, arguments, flutterVc in
+            if (method == "pop") {
                 HzRouter.pop()
-//                flutterVc.navigationController?.popViewController(animated: true)
+            } else if (method == "popToRoot") {
+                HzRouter.pop()
             }
             return arguments
         } ?? UIViewController()
@@ -161,13 +162,18 @@ class TestViewController: UIViewController {
         var arg = Dictionary<String, Any>.init()
         arg["1"] = 1
         arg["2"] = "2"
-        let flutterVc: UIViewController = HzEngineManager.creatCustomFlutterVC(
+        let flutterVc: UIViewController = HzEngineManager.createFlutterVC(
             entryPoint: "main",
             entrypointArgs: arg,
             initialRoute: "mine") { method, arguments, flutterVc  in
-                if (method == "back") {
+                if (method == "pop") {
                     HzRouter.pop()
 //                    flutterVc.navigationController?.popViewController(animated: true)
+                } else if (method == "popToRoot") {
+                    HzRouter.pop()
+//                    flutterVc.navigationController?.popViewController(animated: true)
+                }else if (method == "push") {
+                    self.buttonTapped2(sender)
                 }
             return arguments
         } ?? UIViewController()
@@ -181,7 +187,7 @@ class TestViewController: UIViewController {
         var arg = Dictionary<String, Any>.init()
         arg["1"] = 1
         arg["2"] = "2"
-        let flutterVc: UIViewController =  HzEngineManager.creatCustomFlutterVC(
+        let flutterVc: UIViewController =  HzEngineManager.createFlutterVC(
             entryPoint: "main2",
             entrypointArgs: arg,
             initialRoute: "multi_engin2") { method, arguments, flutterVc in
@@ -194,6 +200,8 @@ class TestViewController: UIViewController {
 //                    flutterVc.navigationController?.popToRootViewController(animated: true)
                     HzRouter.popToRoot()
                     HzRouter.flutterPopToRoot()
+                }else if (method == "push") {
+                    self.buttonTapped3(sender)
                 }
 //                flutterVc.dismiss(animated: true)
             return arguments

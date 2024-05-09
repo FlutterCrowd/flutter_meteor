@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hz_router/core/hz_navigator.dart';
 import 'package:hz_router/plugin/hz_router_plugin.dart';
 
@@ -12,8 +11,7 @@ class MultiEnginPage extends StatefulWidget {
 
 class _MultiEnginPageState extends State<MultiEnginPage> {
   // final methodChannel = const ;
-  HzRouterPlugin _hzRouterPlugin =
-      HzRouterPlugin(methodChannel: MethodChannel('cn.itbox.driver/multi_engin'));
+  final HzRouterPlugin _hzRouterPlugin = HzRouterPlugin(needNewChannel: true);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

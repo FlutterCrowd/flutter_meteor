@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:hz_router/core/hz_navigator.dart';
+import 'package:hz_router/hz_router.dart';
 
 class MinePage extends StatefulWidget {
   @override
@@ -10,7 +9,7 @@ class MinePage extends StatefulWidget {
 }
 
 class _MinePageState extends State<MinePage> {
-  final methodChannel = const MethodChannel('cn.itbox.driver/mine');
+  final HzRouterPlugin _hzRouterPlugin = HzRouterPlugin(needNewChannel: true);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +25,7 @@ class _MinePageState extends State<MinePage> {
                 /// 返回原生页面
                 // Navigator.pop(context);
                 // _multiEnginPlugin.back();
-                methodChannel.invokeMethod('pop');
+                _hzRouterPlugin.pop();
               },
               child: Container(
                 child: const Text(
@@ -55,6 +54,23 @@ class _MinePageState extends State<MinePage> {
                   style: TextStyle(
                     backgroundColor: Colors.green,
                   ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                /// 返回原生页面
+                _hzRouterPlugin.popToRoot();
+              },
+              child: const Text(
+                '返回根视图',
+                style: TextStyle(
+                  backgroundColor: Colors.green,
                 ),
               ),
             ),
