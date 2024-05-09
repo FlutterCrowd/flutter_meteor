@@ -7,7 +7,7 @@ import 'hz_router_plugin_platform_interface.dart';
 /// An implementation of [HzRouterPluginPlatform] that uses method channels.
 class MethodChannelHzRouterPlugin extends HzRouterPluginPlatform {
   MethodChannelHzRouterPlugin(
-      {this.methodChannel = const MethodChannel('cn.itbox.router.multi_engine.methodChannel')}) {
+      {this.methodChannel = const MethodChannel('cn.itbox.router.multiEngine.methodChannel')}) {
     methodChannel.setMethodCallHandler((call) async {
       if (call.method == 'pop') {
         flutterPop(arguments: call.arguments);

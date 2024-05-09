@@ -61,7 +61,7 @@ public class HzEngineManager {
     private static let flutterEngineGroup = FlutterEngineGroup(name: "cn.itbox.router.flutterEnginGroup", project: nil)
     private static let engineCache = WeakDictionary<NSObject, NSObject>()
 
-    public static let HzRouterMethodChannelName = "cn.itbox.router.multi_engine.methodChannel"
+    public static let HzRouterMethodChannelName = "cn.itbox.router.multiEngine.methodChannel"
 
     public static func printCache() {
         print(engineCache)
