@@ -111,7 +111,7 @@ public class HzEngineManager {
     
     public static func createFlutterVC (
         callBack: @escaping HzMethodCallBack
-    ) -> FlutterViewController? {
+    ) -> FlutterViewController {
         
         // 通过group创建新引擎
         let flutterEngine = flutterEngineGroup.makeEngine(with: nil)
@@ -141,7 +141,7 @@ public class HzEngineManager {
         entrypointArgs: Dictionary<String, Any>?,
         initialRoute: String?,
         callBack: @escaping HzMethodCallBack
-    ) -> FlutterViewController? {
+    ) -> FlutterViewController {
       
         var entrypointArgList:Array<String> = Array<String>.init()
         if (initialRoute != nil) {

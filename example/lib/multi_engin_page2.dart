@@ -66,12 +66,10 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
               onTap: () {
                 HzNavigator.pushNamed(context, routeName: "multi_engin");
               },
-              child: Container(
-                child: const Text(
-                  '下一个flutter页面',
-                  style: TextStyle(
-                    backgroundColor: Colors.yellow,
-                  ),
+              child: const Text(
+                '下一个flutter页面',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
                 ),
               ),
             ),

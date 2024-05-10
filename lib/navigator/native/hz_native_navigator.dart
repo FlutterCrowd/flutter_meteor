@@ -11,13 +11,12 @@ class HzNativeNavigator extends HzRouterInterface {
   MethodChannel get methodChannel => _pluginPlatform.methodChannel;
   @override
   Future<T?> pushNamed<T extends Object?>(BuildContext? context,
-      {required String routeName, Map<String, dynamic>? arguments}) async {
+      {required String routeName,
+      bool withNewEngine = false,
+      Map<String, dynamic>? arguments}) async {
     Map<String, dynamic> params = {};
     params["routeName"] = routeName;
-    if (arguments?['withNewEngine'] != null) {
-      params["withNewEngine"] = arguments?['withNewEngine'];
-      arguments?.remove('withNewEngine');
-    }
+    params["withNewEngine"] = withNewEngine;
     params["arguments"] = arguments;
     return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPushNamedMethod, params);
   }
@@ -55,6 +54,11 @@ class HzNativeNavigator extends HzRouterInterface {
     return null;
     return await _pluginPlatform.methodChannel
         .invokeMethod<T>(HzRouterPluginPlatform.hzPopUntilMethod);
+  }
+
+  @override
+  Future<T?> popUntilLastNative<T extends Object?>(BuildContext? context) async {
+    return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopMethod);
   }
 
   // @override

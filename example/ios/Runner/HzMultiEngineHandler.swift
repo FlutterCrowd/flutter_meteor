@@ -8,49 +8,43 @@
 import Foundation
 import hz_router
 
-public class MultiEngineHandler: NSObject, FlutterPlugin, HzRouterDelegate, HzFlutterRouterDelegate {
-
-    public var methodChannel: FlutterMethodChannel?
-    
-  public static func register(with registrar: FlutterPluginRegistrar) {
-    let instance = HzRouterPlugin()
-      instance.methodChannel = FlutterMethodChannel(name: HzEngineManager.HzRouterMethodChannelName, binaryMessenger: registrar.messenger())
-    registrar.addMethodCallDelegate(instance, channel: instance.methodChannel!)
-      HzRouter.plugin = instance
-  }
-
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    switch call.method {
-    case "getPlatformVersion":
-      result("iOS " + UIDevice.current.systemVersion)
-    case "push":
-        var res = Dictionary<String, Any>.init()
-        res["message"] = "Do not implementated"
-        result(res)
-    case "pop":
-        pop()
-        result(Dictionary<String, Any>.init())
-    case "popToRoot":
-        popToRoot()
-        flutterPopToRoot()
-        result(Dictionary<String, Any>.init())
-    default:
-      result(FlutterMethodNotImplemented)
-    }
-  }
-    
-    public func flutterPop() {
-        methodChannel?.invokeMethod("pop", arguments: nil)
+public class MultiEngineHandler: NSObject, FlutterPlugin, HzRouterDelegate {
+    public func present(toPage: String, arguments: Dictionary<String, Any?>?, callBack: hz_router.HzRouterCallBack?) {
+        
     }
     
-    public func flutterPopUntilName(routerName: String?) {
-        var arguments = Dictionary<String, Any?>.init()
-        arguments["routerName"] = routerName
-        methodChannel?.invokeMethod("pop", arguments: arguments)
+    public func push(toPage: String, arguments: Dictionary<String, Any?>?, callBack: hz_router.HzRouterCallBack?) {
+        
     }
     
-    public func flutterPopToRoot() {
-        methodChannel?.invokeMethod("popToRoot", arguments: nil)
+    public func popUntil(untilPage: String, arguments: Dictionary<String, Any?>?, callBack: hz_router.HzRouterCallBack?) {
+        
+    }
+    
+    public func pushToReplacement(toPage: String, arguments: Dictionary<String, Any?>?, callBack: hz_router.HzRouterCallBack?) {
+        
+    }
+    
+    public func pushToAndRemoveUntil(toPage: String, untilPage: String?, arguments: Dictionary<String, Any?>?, callBack: hz_router.HzRouterCallBack?) {
+        
+    }
+    
+    public static func register(with registrar: any FlutterPluginRegistrar) {
+        
+    }
+    
+    public typealias Page = String
+    
+    public func pop(arguments: Dictionary<String, Any?>?, callBack: hz_router.HzRouterCallBack?) {
+        
+    }
+    
+    public func popToRoot(arguments: Dictionary<String, Any?>?, callBack: hz_router.HzRouterCallBack?) {
+        
+    }
+    
+    public func dismiss(arguments: Dictionary<String, Any?>?, callBack: hz_router.HzRouterCallBack?) {
+        
     }
     
 }

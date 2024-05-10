@@ -12,7 +12,7 @@ import Flutter
     
       let flutterVc: FlutterViewController = self.window.rootViewController as! FlutterViewController
 //      let channel = FlutterMethodChannel(name:"cn.itbox.driver/multi_engin", binaryMessenger: flutterVc.binaryMessenger)
-      MultiEngineHandler.register(with: flutterVc.pluginRegistry().registrar(forPlugin: "MultiEngineHandler")!)
+//      MultiEngineHandler.register(with: flutterVc.pluginRegistry().registrar(forPlugin: "MultiEngineHandler")!)
 
       let navi: UINavigationController = UINavigationController.init(rootViewController: flutterVc)
       navi.navigationBar.isHidden = true

@@ -130,13 +130,19 @@ class TestViewController: UIViewController {
         print("1按钮被点击了！")
         let flutterVc: UIViewController = HzEngineManager.createFlutterVC { method, arguments, flutterVc in
             if (method == "pop") {
-                HzRouter.pop()
+                HzNavigator.pop(arguments: nil) { arguments in
+                    
+                }
             } else if (method == "popToRoot") {
-                HzRouter.pop()
+                HzNavigator.popToRoot(arguments: Dictionary<String, Any?>.init(), callBack: { arguments in
+                    
+                })
             }
             return arguments
-        } ?? UIViewController()
-        HzRouter.present(viewController: flutterVc)
+        }
+        HzNavigator.present(toPage: flutterVc, arguments: nil) { arguments in
+            
+        }
           
     }
     
@@ -145,13 +151,19 @@ class TestViewController: UIViewController {
 
         let flutterVc: UIViewController = HzEngineManager.createFlutterVC(entryPoint: "main2") { method, arguments, flutterVc in
             if (method == "pop") {
-                HzRouter.pop()
+                HzNavigator.pop(arguments: nil) { arguments in
+                    
+                }
             } else if (method == "popToRoot") {
-                HzRouter.pop()
+                HzNavigator.popToRoot(arguments: Dictionary<String, Any?>.init(), callBack: { arguments in
+                    
+                })
             }
             return arguments
         } ?? UIViewController()
-        HzRouter.push(viewController: flutterVc)
+        HzNavigator.push(toPage: flutterVc, arguments: nil) { arguments in
+            
+        }
 //        self.navigationController?.pushViewController(flutterVc, animated: true)
     }
     
@@ -167,17 +179,18 @@ class TestViewController: UIViewController {
             entrypointArgs: arg,
             initialRoute: "mine") { method, arguments, flutterVc  in
                 if (method == "pop") {
-                    HzRouter.pop()
+                    HzNavigator.pop(arguments: nil) { arguments in
+                    }
 //                    flutterVc.navigationController?.popViewController(animated: true)
                 } else if (method == "popToRoot") {
-                    HzRouter.popToRoot()
+                    HzNavigator.popToRoot(arguments: nil, callBack: nil)
 //                    flutterVc.navigationController?.popViewController(animated: true)
                 }else if (method == "pushNamed") {
                     self.buttonTapped2(sender)
                 }
             return arguments
-        } ?? UIViewController()
-        HzRouter.push(viewController: flutterVc)
+        }
+        HzNavigator.push(toPage: flutterVc, arguments: nil, callBack: nil)
 //        self.navigationController?.pushViewController(flutterVc, animated: true)
     }
     
@@ -193,13 +206,12 @@ class TestViewController: UIViewController {
             initialRoute: "multi_engin2") { method, arguments, flutterVc in
                 
                 if (method == "pop") {
-//                    flutterVc.navigationController?.popToRootViewController(animated: true)
-                    HzRouter.pop()
+                    HzNavigator.pop(arguments: nil) { arguments in
+                    }
                 }
                 if (method == "popToRoot") {
-//                    flutterVc.navigationController?.popToRootViewController(animated: true)
-                    HzRouter.popToRoot()
-                    HzRouter.flutterPopToRoot()
+                    HzNavigator.popToRoot(arguments: arguments, callBack: nil)
+
                 }else if (method == "pushNamed") {
                     self.buttonTapped3(sender)
                 }
@@ -207,7 +219,7 @@ class TestViewController: UIViewController {
             return arguments
                 
         } ?? UIViewController()
-        HzRouter.push(viewController: flutterVc)
+        HzNavigator.push(toPage: flutterVc, arguments: nil, callBack: nil)
 //        self.navigationController?.pushViewController(flutterVc, animated: true)
     }
 }
