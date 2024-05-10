@@ -7,11 +7,13 @@
 
 import Foundation
 
+public typealias HzRouterBuilder = (_ arguments: Dictionary<String, Any>?) -> UIViewController
+
+
 public class HzRouter: NSObject {
   
     
-    let router: Dictionary<String, String> = Dictionary<String, String>.init()
-    
+    public static let routerDict = Dictionary<String, HzRouterBuilder>()
     
     public static var plugin: HzRouterPlugin?
     

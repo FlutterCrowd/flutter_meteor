@@ -8,7 +8,7 @@
 import UIKit
 import Flutter
 
-class HzFlutterNavigator: NSObject, HzRouterDelegate {
+public class HzFlutterNavigator: NSObject, HzRouterDelegate {
     
     public var  methodChannel: FlutterMethodChannel?
     
@@ -16,16 +16,16 @@ class HzFlutterNavigator: NSObject, HzRouterDelegate {
         self.methodChannel = methodChannel
     }
     
-    typealias Page = String
+    public typealias Page = String
     
-    func pop(arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
+    public func pop(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         methodChannel?.invokeMethod(HzRouterPlugin.hzPopMethod, arguments: arguments, result: { response in
             callBack?(response)
         })
     }
     
-    func popUntil(untilPage: Page, arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
-        var arg = Dictionary<String, Any?>.init()
+    public func popUntil(untilPage: Page, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+        var arg = Dictionary<String, Any>.init()
         arg["routeName"] = untilPage
         arg["arguments"] = arguments
         methodChannel?.invokeMethod(HzRouterPlugin.hzPopUntilMethod, arguments: arg, result: { response in
@@ -33,20 +33,20 @@ class HzFlutterNavigator: NSObject, HzRouterDelegate {
         })
     }
     
-    func popToRoot(arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
+    public func popToRoot(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         methodChannel?.invokeMethod(HzRouterPlugin.hzPopToRootMethod, arguments: arguments, result: { response in
             callBack?(response)
         })
     }
     
-    func dismiss(arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
+    public func dismissPage(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         methodChannel?.invokeMethod(HzRouterPlugin.hzPopMethod, arguments: arguments, result: { response in
             callBack?(response)
         })
     }
     
-    func present(toPage: String, arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
-        var arg = Dictionary<String, Any?>.init()
+    public func present(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+        var arg = Dictionary<String, Any>.init()
         arg["routeName"] = toPage
         arg["arguments"] = arguments
         methodChannel?.invokeMethod(HzRouterPlugin.hzPushNamedMethod, arguments: arg, result: { response in
@@ -54,8 +54,8 @@ class HzFlutterNavigator: NSObject, HzRouterDelegate {
         })
     }
     
-    func push(toPage: String, arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
-        var arg = Dictionary<String, Any?>.init()
+    public func push(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+        var arg = Dictionary<String, Any>.init()
         arg["routeName"] = toPage
         arg["arguments"] = arguments
         methodChannel?.invokeMethod(HzRouterPlugin.hzPushNamedMethod, arguments: arg, result: { response in
@@ -63,8 +63,8 @@ class HzFlutterNavigator: NSObject, HzRouterDelegate {
         })
     }
     
-    func pushToReplacement(toPage: String, arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
-        var arg = Dictionary<String, Any?>.init()
+    public func pushToReplacement(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+        var arg = Dictionary<String, Any>.init()
         arg["routeName"] = toPage
         arg["arguments"] = arguments
         methodChannel?.invokeMethod(HzRouterPlugin.hzPushReplacementNamedMethod, arguments: arg, result: { response in
@@ -72,8 +72,8 @@ class HzFlutterNavigator: NSObject, HzRouterDelegate {
         })
     }
     
-    func pushToAndRemoveUntil(toPage: String, untilPage: String?, arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
-        var arg = Dictionary<String, Any?>.init()
+    public func pushToAndRemoveUntil(toPage: String, untilPage: String?, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+        var arg = Dictionary<String, Any>.init()
         arg["routeName"] = toPage
         arg["arguments"] = arguments
         methodChannel?.invokeMethod(HzRouterPlugin.hzPushNamedAndRemoveUntilMethod, arguments: arg, result: { response in

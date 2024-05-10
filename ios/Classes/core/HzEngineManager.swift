@@ -9,7 +9,7 @@ import UIKit
 import Foundation
 import Flutter
 
-public typealias HzMethodCallBack = (_ method:String, _ arguments:Dictionary<String, Any>, _ flutterVc:FlutterViewController) -> Any
+public typealias HzMethodCallBack = (_ method:String, _ arguments:Any?, _ flutterVc:FlutterViewController) -> Any
 
 public typealias HzFlutterEngineCallBack = (_ method:String, _ arguments:Dictionary<String, Any>, _ engineModel:HzFlutterEngineModel) -> Any
 
@@ -34,7 +34,7 @@ public class HzFlutterEngineModel: NSObject {
 }
 
   
-class WeakDictionary<Key: AnyObject, Value: AnyObject> {
+public class WeakDictionary<Key: AnyObject, Value: AnyObject> {
     private let mapTable: NSMapTable<Key, Value>
       
     init() {
@@ -50,6 +50,10 @@ class WeakDictionary<Key: AnyObject, Value: AnyObject> {
         set { mapTable.setObject(newValue, forKey: key) }
     }
     
+    public func object(forKey:Key?) {
+        mapTable.object(forKey: forKey)
+    }
+    
     public func removeObject(forKey:Key?) {
         mapTable.removeObject(forKey: forKey)
     }
@@ -58,7 +62,7 @@ class WeakDictionary<Key: AnyObject, Value: AnyObject> {
 public class HzEngineManager {
     
     
-    private static let flutterEngineGroup = FlutterEngineGroup(name: "cn.itbox.router.flutterEnginGroup", project: nil)
+    public static let flutterEngineGroup = FlutterEngineGroup(name: "cn.itbox.router.flutterEnginGroup", project: nil)
     private static let engineCache = WeakDictionary<NSObject, NSObject>()
 
     public static let HzRouterMethodChannelName = "cn.itbox.router.multiEngine.methodChannel"
@@ -77,71 +81,29 @@ public class HzEngineManager {
         return channel
     }
     
-    public static func createFlutterEngineModel(
-        flutterEngine: FlutterEngine,
-        callBack: @escaping HzMethodCallBack
-    ) -> HzFlutterEngineModel {
-            
-        flutterEngine.viewController = nil;
-        // 创建flutter Vc 绑定新引擎
-        let flutterViewController = HzFlutterViewController(engine: flutterEngine, nibName: nil, bundle: nil)
-        // 创建flutter Channel 绑定VC（新引擎）
-        let channel = createRouterMethodChannel(binaryMessenger: flutterViewController.binaryMessenger) { call, result in
-        
-            if (call.arguments is Dictionary<String, Any>) {
-                result(callBack(call.method, call.arguments as! Dictionary<String, Any>, flutterViewController))
-            } else {
-                var arguments = Dictionary<String, Any>.init()
-                arguments["arguments"] = call.arguments
-                result(callBack(call.method, arguments, flutterViewController))
-            }
-            if(call.method == "pop" || call.method == "popToRoot") {
-                flutterEngine.viewController = nil
-                let engineModel: HzFlutterEngineModel? = engineCache[flutterViewController] as? HzFlutterEngineModel
-                engineModel?.clear()
-                engineCache.removeObject(forKey: flutterViewController)
-            }
-        }
-        
-       // 缓存引擎、methodChannel、ViewController
-        let engineModel = HzFlutterEngineModel.init(viewController: flutterViewController, engine: flutterEngine, methodChannel: channel)
-        engineCache[flutterViewController] = engineModel
-        return engineModel
-    }
+
     
-    public static func createFlutterVC (
-        callBack: @escaping HzMethodCallBack
-    ) -> FlutterViewController {
-        
-        // 通过group创建新引擎
+    public static func createFlutterEngine() -> FlutterEngine  {
         let flutterEngine = flutterEngineGroup.makeEngine(with: nil)
-        flutterEngine.viewController = nil;
-
-        // 创建flutterVC 和 method Channel
-        let engineModel = createFlutterEngineModel(flutterEngine: flutterEngine, callBack: callBack)
-        return engineModel.viewController
+        return flutterEngine
     }
     
-    public static func createFlutterVC(
-        entryPoint: String?,
-        callBack: @escaping HzMethodCallBack
-    ) -> FlutterViewController? {
-        
-        // 创建新引擎
+    public static func createFlutterEngine(entryPoint: String?) -> FlutterEngine  {
         let flutterEngine = flutterEngineGroup.makeEngine(withEntrypoint: entryPoint, libraryURI: nil)
-        flutterEngine.viewController = nil;
-
-        // 创建flutterVC 和 method Channel
-        let engineModel = createFlutterEngineModel(flutterEngine: flutterEngine, callBack: callBack)
-        return engineModel.viewController
+        return flutterEngine
     }
     
-    public static func createFlutterVC(
+    public static func createFlutterEngine(entryPoint: String?, initialRoute: String?) -> FlutterEngine  {
+        let flutterEngine = flutterEngineGroup.makeEngine(withEntrypoint: entryPoint, libraryURI: nil, initialRoute: initialRoute)
+        return flutterEngine
+    }
+    
+
+    public static func createFlutterEngine(
         entryPoint: String?,
-        entrypointArgs: Dictionary<String, Any>?,
         initialRoute: String?,
-        callBack: @escaping HzMethodCallBack
-    ) -> FlutterViewController {
+        entrypointArgs: Dictionary<String, Any>?
+    ) -> FlutterEngine  {
       
         var entrypointArgList:Array<String> = Array<String>.init()
         if (initialRoute != nil) {
@@ -164,36 +126,160 @@ public class HzEngineManager {
         engineGroupOptions.initialRoute = initialRoute
         engineGroupOptions.entrypointArgs = entrypointArgList
         let flutterEngine = flutterEngineGroup.makeEngine(with: engineGroupOptions)
-        flutterEngine.viewController = nil;
-    
-        // 创建flutterVC 和 method Channel
-        let engineModel = createFlutterEngineModel(flutterEngine: flutterEngine, callBack: callBack)
-        return engineModel.viewController
+        return flutterEngine
     }
     
-    
-    public static func createDefaultFlutterVC (
-        callBack: @escaping HzMethodCallBack
-    ) -> FlutterViewController {
-        
-        let flutterViewController = HzFlutterViewController()
-        let channel = createRouterMethodChannel(binaryMessenger: flutterViewController.binaryMessenger) { call, result in
-            if (call.arguments is Dictionary<String, Any>) {
-                result(callBack(call.method, call.arguments as! Dictionary<String, Any>, flutterViewController))
-            } else {
-                var arguments = Dictionary<String, Any>.init()
-                arguments["arguments"] = call.arguments
-                result(callBack(call.method, arguments, flutterViewController))
-            }
-            let engineModel: HzFlutterEngineModel? = engineCache[flutterViewController] as? HzFlutterEngineModel
-            engineModel?.clear()
-            engineCache.removeObject(forKey: flutterViewController)
+    public static func createFlutterEngine(
+        entryPoint: String?,
+        initialRoute: String?,
+        entrypointArgs: Dictionary<String, Any>?,
+        libraryURI: String?
+    ) -> FlutterEngine  {
+      
+        var entrypointArgList:Array<String> = Array<String>.init()
+        if (initialRoute != nil) {
+            entrypointArgList.append(initialRoute ?? "/")
         }
-        let engineModel = HzFlutterEngineModel.init(viewController: flutterViewController, engine: nil, methodChannel: channel)
-        engineCache[flutterViewController] = engineModel
-        return flutterViewController
+        if (entrypointArgs != nil) {
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: entrypointArgs!, options: .prettyPrinted)
+                if let jsonString = String(data: jsonData, encoding: .utf8) {
+                    entrypointArgList.append(jsonString)
+                }
+            } catch {
+                print("Error converting dictionary to JSON")
+            }
+        }
+        
+        // 创建新引擎
+        let engineGroupOptions = FlutterEngineGroupOptions.init()
+        engineGroupOptions.entrypoint = entryPoint
+        engineGroupOptions.initialRoute = initialRoute
+        engineGroupOptions.entrypointArgs = entrypointArgList
+        engineGroupOptions.libraryURI = libraryURI
+        let flutterEngine = flutterEngineGroup.makeEngine(with: engineGroupOptions)
+        return flutterEngine
     }
-}
+    
+//    public static func createFlutterEngineModel(
+//        flutterEngine: FlutterEngine,
+//        callBack: @escaping HzMethodCallBack
+//    ) -> HzFlutterEngineModel {
+//            
+//        flutterEngine.viewController = nil;
+//        // 创建flutter Vc 绑定新引擎
+//        let flutterViewController = HzFlutterViewController(engine: flutterEngine, nibName: nil, bundle: nil)
+//        // 创建flutter Channel 绑定VC（新引擎）
+//        let channel = createRouterMethodChannel(binaryMessenger: flutterViewController.binaryMessenger) { call, result in
+//            result(callBack(call.method, call.arguments, flutterViewController))
+////            if (call.arguments is Dictionary<String, Any>) {
+////                result(callBack(call.method, call.arguments as! Dictionary<String, Any>, flutterViewController))
+////            } else {
+////                var arguments = Dictionary<String, Any>.init()
+////                arguments["arguments"] = call.arguments
+////                result(callBack(call.method, arguments, flutterViewController))
+////            }
+//            if(call.method == "pop" || call.method == "popToRoot") {
+//                flutterEngine.viewController = nil
+//                let engineModel: HzFlutterEngineModel? = engineCache[flutterViewController] as? HzFlutterEngineModel
+//                engineModel?.clear()
+//                engineCache.removeObject(forKey: flutterViewController)
+//            }
+//        }
+//        
+//       // 缓存引擎、methodChannel、ViewController
+//        let engineModel = HzFlutterEngineModel.init(viewController: flutterViewController, engine: flutterEngine, methodChannel: channel)
+//        engineCache[flutterViewController] = engineModel
+//        return engineModel
+//    }
+//    
+//    public static func createFlutterVC (
+//        callBack: @escaping HzMethodCallBack
+//    ) -> FlutterViewController {
+//        
+//        // 通过group创建新引擎
+//        let flutterEngine = flutterEngineGroup.makeEngine(with: nil)
+//        flutterEngine.viewController = nil;
+//
+//        // 创建flutterVC 和 method Channel
+//        let engineModel = createFlutterEngineModel(flutterEngine: flutterEngine, callBack: callBack)
+//        return engineModel.viewController
+//    }
+//    
+//    public static func createFlutterVC(
+//        entryPoint: String?,
+//        callBack: @escaping HzMethodCallBack
+//    ) -> FlutterViewController? {
+//        
+//        // 创建新引擎
+//        let flutterEngine = flutterEngineGroup.makeEngine(withEntrypoint: entryPoint, libraryURI: nil)
+//        flutterEngine.viewController = nil;
+//
+//        // 创建flutterVC 和 method Channel
+//        let engineModel = createFlutterEngineModel(flutterEngine: flutterEngine, callBack: callBack)
+//        return engineModel.viewController
+//    }
+//    
+//    public static func createFlutterVC(
+//        entryPoint: String?,
+//        entrypointArgs: Dictionary<String, Any>?,
+//        initialRoute: String?,
+//        callBack: @escaping HzMethodCallBack
+//    ) -> FlutterViewController {
+//      
+//        var entrypointArgList:Array<String> = Array<String>.init()
+//        if (initialRoute != nil) {
+//            entrypointArgList.append(initialRoute ?? "/")
+//        }
+//        if (entrypointArgs != nil) {
+//            do {
+//                let jsonData = try JSONSerialization.data(withJSONObject: entrypointArgs!, options: .prettyPrinted)
+//                if let jsonString = String(data: jsonData, encoding: .utf8) {
+//                    entrypointArgList.append(jsonString)
+//                }
+//            } catch {
+//                print("Error converting dictionary to JSON")
+//            }
+//        }
+//        
+//        // 创建新引擎
+//        let engineGroupOptions = FlutterEngineGroupOptions.init()
+//        engineGroupOptions.entrypoint = entryPoint
+//        engineGroupOptions.initialRoute = initialRoute
+//        engineGroupOptions.entrypointArgs = entrypointArgList
+//        let flutterEngine = flutterEngineGroup.makeEngine(with: engineGroupOptions)
+//        flutterEngine.viewController = nil;
+//    
+//        // 创建flutterVC 和 method Channel
+//        let engineModel = createFlutterEngineModel(flutterEngine: flutterEngine, callBack: callBack)
+//        return engineModel.viewController
+//    }
+//    
+//    
+//    public static func createDefaultFlutterVC (
+//        callBack: @escaping HzMethodCallBack
+//    ) -> FlutterViewController {
+//        
+//        let flutterViewController = HzFlutterViewController()
+//        let channel = createRouterMethodChannel(binaryMessenger: flutterViewController.binaryMessenger) { call, result in
+//            
+//            result(callBack(call.method, call.arguments, flutterViewController))
+////            if (call.arguments is Dictionary<String, Any>) {
+////                result(callBack(call.method, call.arguments as! Dictionary<String, Any>, flutterViewController))
+////            } else {
+////                var arguments = Dictionary<String, Any>.init()
+////                arguments["arguments"] = call.arguments
+////                result(callBack(call.method, arguments, flutterViewController))
+////            }
+//            let engineModel: HzFlutterEngineModel? = engineCache[flutterViewController] as? HzFlutterEngineModel
+//            engineModel?.clear()
+//            engineCache.removeObject(forKey: flutterViewController)
+//        }
+//        let engineModel = HzFlutterEngineModel.init(viewController: flutterViewController, engine: nil, methodChannel: channel)
+//        engineCache[flutterViewController] = engineModel
+//        return flutterViewController
+//    }
+//}
     
 //    public static func createFlutterVC (
 //        callBack: HzMethodCallBack?
@@ -326,5 +412,5 @@ public class HzEngineManager {
 //        })
 //        return flutterViewController
 //    }
-//}
+}
 

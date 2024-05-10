@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:hz_router/core/hz_router_interface.dart';
 
-import 'hz_router_plugin_method_channel.dart';
-import 'hz_router_plugin_platform_interface.dart';
+import '../../core/plugin/hz_router_plugin_method_channel.dart';
+import '../../core/plugin/hz_router_plugin_platform_interface.dart';
 
 /// 实现Native层页面路由
 class HzNativeNavigator extends HzRouterInterface {

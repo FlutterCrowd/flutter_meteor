@@ -21,7 +21,7 @@ class TestViewController: UIViewController {
     let myButton: UIButton = {
         let button = UIButton(type: .system)
         // 设置按钮的标题
-        button.setTitle("点击我1", for: .normal)
+        button.setTitle("跳原生", for: .normal)
         // 设置按钮的背景颜色（可选）
         button.backgroundColor = .blue
         // 设置按钮的标题颜色（可选）
@@ -36,7 +36,7 @@ class TestViewController: UIViewController {
     let myButton2: UIButton = {
         let button = UIButton(type: .system)
         // 设置按钮的标题
-        button.setTitle("点击我2", for: .normal)
+        button.setTitle("返回", for: .normal)
         // 设置按钮的背景颜色（可选）
         button.backgroundColor = .red
         // 设置按钮的标题颜色（可选）
@@ -52,7 +52,7 @@ class TestViewController: UIViewController {
     let myButton3: UIButton = {
         let button = UIButton(type: .system)
         // 设置按钮的标题
-        button.setTitle("点击我3", for: .normal)
+        button.setTitle("倒数第二个原生页面", for: .normal)
         // 设置按钮的背景颜色（可选）
         button.backgroundColor = .yellow
         // 设置按钮的标题颜色（可选）
@@ -67,7 +67,7 @@ class TestViewController: UIViewController {
     let myButton4: UIButton = {
         let button = UIButton(type: .system)
         // 设置按钮的标题
-        button.setTitle("点击我4", for: .normal)
+        button.setTitle("跳flutter页面", for: .normal)
         // 设置按钮的背景颜色（可选）
         button.backgroundColor = .green
         // 设置按钮的标题颜色（可选）
@@ -127,71 +127,22 @@ class TestViewController: UIViewController {
   
     // 按钮点击时调用的方法
     @objc func buttonTapped(_ sender: UIButton) {
-        print("1按钮被点击了！")
-        let flutterVc: UIViewController = HzEngineManager.createFlutterVC { method, arguments, flutterVc in
-            if (method == "pop") {
-                HzNavigator.pop(arguments: nil) { arguments in
-                    
-                }
-            } else if (method == "popToRoot") {
-                HzNavigator.popToRoot(arguments: Dictionary<String, Any?>.init(), callBack: { arguments in
-                    
-                })
-            }
-            return arguments
-        }
-        HzNavigator.present(toPage: flutterVc, arguments: nil) { arguments in
-            
-        }
-          
+        
+        let testVc = TestViewController.init()
+        HzNavigator.push(toPage: testVc, arguments: nil, callBack: nil)
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped2(_ sender: UIButton) {
-
-        let flutterVc: UIViewController = HzEngineManager.createFlutterVC(entryPoint: "main2") { method, arguments, flutterVc in
-            if (method == "pop") {
-                HzNavigator.pop(arguments: nil) { arguments in
-                    
-                }
-            } else if (method == "popToRoot") {
-                HzNavigator.popToRoot(arguments: Dictionary<String, Any?>.init(), callBack: { arguments in
-                    
-                })
-            }
-            return arguments
-        } ?? UIViewController()
-        HzNavigator.push(toPage: flutterVc, arguments: nil) { arguments in
-            
-        }
-//        self.navigationController?.pushViewController(flutterVc, animated: true)
+        HzNavigator.pop(arguments: nil, callBack: nil)
     }
     
     
     // 按钮点击时调用的方法
     @objc func buttonTapped3(_ sender: UIButton) {
         print("3按钮被点击了！")
-        var arg = Dictionary<String, Any>.init()
-        arg["1"] = 1
-        arg["2"] = "2"
-        let flutterVc: UIViewController = HzEngineManager.createFlutterVC(
-            entryPoint: "main",
-            entrypointArgs: arg,
-            initialRoute: "mine") { method, arguments, flutterVc  in
-                if (method == "pop") {
-                    HzNavigator.pop(arguments: nil) { arguments in
-                    }
-//                    flutterVc.navigationController?.popViewController(animated: true)
-                } else if (method == "popToRoot") {
-                    HzNavigator.popToRoot(arguments: nil, callBack: nil)
-//                    flutterVc.navigationController?.popViewController(animated: true)
-                }else if (method == "pushNamed") {
-                    self.buttonTapped2(sender)
-                }
-            return arguments
-        }
-        HzNavigator.push(toPage: flutterVc, arguments: nil, callBack: nil)
-//        self.navigationController?.pushViewController(flutterVc, animated: true)
+        HzNavigator.popUntil(untilPage: "home", arguments: nil, callBack: nil)
+
     }
     
     // 按钮点击时调用的方法
@@ -200,26 +151,7 @@ class TestViewController: UIViewController {
         var arg = Dictionary<String, Any>.init()
         arg["1"] = 1
         arg["2"] = "2"
-        let flutterVc: UIViewController =  HzEngineManager.createFlutterVC(
-            entryPoint: "main2",
-            entrypointArgs: arg,
-            initialRoute: "multi_engin2") { method, arguments, flutterVc in
-                
-                if (method == "pop") {
-                    HzNavigator.pop(arguments: nil) { arguments in
-                    }
-                }
-                if (method == "popToRoot") {
-                    HzNavigator.popToRoot(arguments: arguments, callBack: nil)
-
-                }else if (method == "pushNamed") {
-                    self.buttonTapped3(sender)
-                }
-//                flutterVc.dismiss(animated: true)
-            return arguments
-                
-        } ?? UIViewController()
-        HzNavigator.push(toPage: flutterVc, arguments: nil, callBack: nil)
-//        self.navigationController?.pushViewController(flutterVc, animated: true)
+        let flutterVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2", nibName: nil, bundle: nil)
+         HzNavigator.push(toPage: flutterVc, arguments: nil, callBack: nil)
     }
 }

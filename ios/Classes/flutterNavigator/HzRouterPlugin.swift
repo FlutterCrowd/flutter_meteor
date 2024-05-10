@@ -11,6 +11,10 @@ public class HzRouterPlugin: NSObject, FlutterPlugin {
     static let hzPopToRootMethod: String = "popToRoot";
 
     public var  methodChannel: FlutterMethodChannel?
+    
+    private static let nativeNavigator: any HzRouterDelegate = HzNativeNavigator.init()
+//    // 主引擎的MethodChannel
+//    private static let flutterNavigator: HzFlutterNavigator = HzFlutterNavigator.init(methodChannel: HzRouter.plugin?.methodChannel)
 
     public static func register(with registrar: FlutterPluginRegistrar) {
       
@@ -26,39 +30,44 @@ public class HzRouterPlugin: NSObject, FlutterPlugin {
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
-    switch call.method {
-    case HzRouterPlugin.hzPushNamedMethod:
         var arguments: Dictionary<String, Any> = Dictionary<String, Any>.init() //call.arguments as? Dictionary<String, Any?>
         if (call.arguments is Dictionary<String, Any>) {
             arguments = call.arguments as! Dictionary<String, Any>
         }
-        let withNewEngine: Bool = arguments["withNewEngine"] as? Bool ?? false
-        let routeName: String? = arguments["routeName"] as? String
-//            let entrypointArgs: Dictionary<String, Any?>? = arguments["arguments"]
-        if(withNewEngine) {
-            let flutterVc = HzEngineManager.createFlutterVC(entryPoint: "childEntry", entrypointArgs: arguments, initialRoute: routeName) { method, arguments, flutterVc in
-            }
-            HzRouter.topViewController()?.navigationController?.pushViewController(flutterVc, animated: true)
+        switch call.method {
+        case HzRouterPlugin.hzPushNamedMethod:
+         
+            let withNewEngine: Bool = arguments["withNewEngine"] as? Bool ?? false
+            let routeName: String? = arguments["routeName"] as? String
+    //            let entrypointArgs: Dictionary<String, Any?>? = arguments["arguments"]
+//            if(withNewEngine) {
+//                let flutterVc = HzEngineManager.createFlutterVC(entryPoint: "childEntry", entrypointArgs: arguments, initialRoute: routeName) { method, arguments, flutterVc in
+//                }
+//                HzRouterPlugin.nativeNavigator.push(toPage: flutterVc, arguments: arguments, callBack: nil)
+//                result(true)
+//            } else {
+//                HzRouterPlugin.nativeNavigator.push(toPage: TestViewController.init(), arguments: arguments, callBack: nil)
+//                result(false)
+//            }
+       
+        case HzRouterPlugin.hzPopMethod:
+            HzRouterPlugin.nativeNavigator.pop(arguments: arguments, callBack: nil)
             result(true)
-        } else {
-            result(false)
+        case HzRouterPlugin.hzPushReplacementNamedMethod:
+
+            result(true)
+        case HzRouterPlugin.hzPushNamedAndRemoveUntilMethod:
+    
+            result(true)
+        case HzRouterPlugin.hzPopUntilMethod:
+            
+            result(true)
+        case HzRouterPlugin.hzPopToRootMethod:
+            HzRouterPlugin.nativeNavigator.popToRoot(arguments: arguments, callBack: nil)
+            result(true)
+        default:
+          result(FlutterMethodNotImplemented)
         }
-   
-    case HzRouterPlugin.hzPopMethod:
-        result(Dictionary<String, Any>.init())
-    case HzRouterPlugin.hzPushReplacementNamedMethod:
-        result(Dictionary<String, Any>.init())
-    case HzRouterPlugin.hzPushNamedAndRemoveUntilMethod:
-        var res = Dictionary<String, Any>.init()
-        result(res)
-    case HzRouterPlugin.hzPopUntilMethod:
-        result(Dictionary<String, Any>.init())
-    case HzRouterPlugin.hzPopToRootMethod:
-        result(Dictionary<String, Any>.init())
-    default:
-      result(FlutterMethodNotImplemented)
-    }
     }
 
 }
