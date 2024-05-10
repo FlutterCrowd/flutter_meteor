@@ -7,20 +7,23 @@ import 'home_page.dart';
 import 'mine_page.dart';
 import 'multi_engin_page.dart';
 import 'multi_engin_page2.dart';
+import 'root_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
+// 这里的entry-point能否放到插件里面？？？
 @pragma("vm:entry-point")
-void childEntry(List<String> arg) {
+void childEntry(List<String?> arg) {
   print('这是传递过来的参数：$arg');
   // runApp(const MyApp());
   if (arg.isNotEmpty) {
-    String routerName = arg.first;
-    Map<String, dynamic> arguments = jsonDecode(arg.last);
+    String? routeName = arg.first;
+    String routeArgs = arg.last ?? '';
+    Map<String, dynamic>? arguments = routeArgs.isNotEmpty ? jsonDecode(arg.last!) : null;
     runApp(MyApp(
-      routeName: routerName,
+      routeName: routeName,
       routeArguments: arguments,
     ));
   } else {
@@ -38,28 +41,7 @@ class MyApp extends StatefulWidget {
 }
 
 Map<String, WidgetBuilder> routes = {
-  "/": (context) => Column(
-        children: [
-          Expanded(child: Container()),
-          GestureDetector(
-            onTap: () {
-              HzNavigator.pushNamed(context, routeName: "home");
-            },
-            child: const Center(
-              child: Text('首页'),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              HzNavigator.pop(context);
-            },
-            child: const Center(
-              child: Text('返回上一页'),
-            ),
-          ),
-          Expanded(child: Container()),
-        ],
-      ),
+  "/": (context) => const RootPage(),
   "home": (context) => const HomePage(),
   "mine": (context) => MinePage(),
   "multi_engin": (context) => MultiEnginPage(),

@@ -10,10 +10,10 @@ open class FlutterRouterActivity : FlutterActivity() {
 
     private val engineBindings by lazy {
         val routeName = intent.getStringExtra("routeName")
-        val arguments = intent.getStringExtra("arguments") ?: ""
+        val arguments = intent.getStringExtra("arguments")
         val isMainEntry = isMainEntry
         val entryPoint = if (isMainEntry) "main" else "childEntry"
-        val theArgs = if (isMainEntry) null else listOf(arguments)
+        val theArgs = if (isMainEntry) null else listOf(routeName, arguments)
         EngineBindings(this,  routeName, entryPoint, theArgs, 0)
     }
 

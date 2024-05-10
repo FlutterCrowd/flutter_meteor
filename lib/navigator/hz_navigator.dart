@@ -84,7 +84,7 @@ class HzNavigator {
   /// pop到上一个页面
   ///
   /// @parma result 接受回调，T是个泛型，可以指定要返回的数据类型
-  static Future<void> pop<T extends Object?>(BuildContext? context, {T? result}) async {
+  static Future<void> pop<T extends Object?>(BuildContext? context, [T? result]) async {
     context ??= _naviKey?.currentContext;
     if (context != null && Navigator.canPop(context)) {
       await _flutterNavigator.pop(context, result: result);
