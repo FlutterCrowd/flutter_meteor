@@ -13,6 +13,7 @@ abstract class HzRouterInterface {
   Future<T?> pushNamed<T extends Object?>(
     BuildContext? context, {
     required String routeName,
+    bool withNewEngine = false,
     Map<String, dynamic>? arguments,
   });
 
@@ -44,6 +45,11 @@ abstract class HzRouterInterface {
   ///
   /// @parma routeName 要pod到的页面
   Future<T?> popUntil<T extends Object?>(BuildContext? context, {required String routeName});
+
+  /// pop 到最近的一个原生页面
+  ///
+  /// @parma routeName 要pod到的页面
+  Future<T?> popUntilLastNative<T extends Object?>(BuildContext? context);
 
   /// pop 到根页面
   Future<T?> popToRoot<T extends Object?>(BuildContext? context);

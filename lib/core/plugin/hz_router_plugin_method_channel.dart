@@ -1,7 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:hz_router/navigator/hz_navigator.dart';
 
-import '../flutter/hz_flutter_navigater.dart';
+import '../../navigator/flutter/hz_flutter_navigater.dart';
 import 'hz_router_plugin_platform_interface.dart';
 
 /// An implementation of [HzRouterPluginPlatform] that uses method channels.
@@ -9,7 +9,9 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
   static final HzFlutterNavigator _flutterNavigator =
       HzFlutterNavigator(naviKey: HzNavigator.naviKey);
 
-  HzRouterPluginMethodChannel() {
+  void Function(String method, dynamic arguments)? extHandler;
+
+  HzRouterPluginMethodChannel({this.extHandler}) {
     methodChannel.setMethodCallHandler((call) async {
       if (call.method == HzRouterPluginPlatform.hzPopMethod) {
         return flutterPop(arguments: call.arguments);
@@ -20,7 +22,11 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
       } else if (call.method == HzRouterPluginPlatform.hzPushNamedMethod) {
         return flutterPushNamed(arguments: call.arguments);
       } else {
-        return Future<void>.value();
+        if (extHandler != null) {
+          return extHandler?.call(call.method, call.arguments);
+        } else {
+          return Future<void>.value();
+        }
       }
     });
   }
@@ -62,47 +68,15 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
     }
   }
 
-  /// ***********Flutter to native*************/
-  // @override
-  // Future<T?> pushNamed<T extends Object?>(
-  //     {required String routeName, Map<String, dynamic>? arguments}) async {
-  //   Map<String, dynamic> params = {};
-  //   params["routeName"] = routeName;
-  //   params["arguments"] = arguments;
-  //   return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPushNamedMethod, params);
-  // }
+  @override
+  Future<T?> invokeMethod<T extends Object?>(
+      {required String method, Map<String, dynamic>? arguments}) async {
+    return await methodChannel.invokeMethod<T>(method, arguments);
+  }
 
-  // @override
-  // Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
-  //     {required String routeName, String? untilRouteName, Map<String, dynamic>? arguments}) async {
-  //   debugPrint('No implemented method name pushNamedAndRemoveUntil in native ');
-  //   return null;
-  //   return await methodChannel
-  //       .invokeMethod<T>(HzRouterPluginPlatform.hzPushNamedAndRemoveUntilMethod);
-  // }
-
-  // @override
-  // Future<T?> pushReplacementNamed<T extends Object?>(
-  //     {required String routeName, Map<String, dynamic>? arguments}) async {
-  //   debugPrint('No implemented method name pushReplacementNamed in native ');
-  //   return null;
-  //   return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPushReplacementNamedMethod);
-  // }
-
-  // @override
-  // Future<T?> pop<T extends Object?>({T? result}) async {
-  //   return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopMethod);
-  // }
-
-  // @override
-  // Future<T?> popToRoot<T extends Object?>() async {
-  //   return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopToRootMethod);
-  // }
-  //
-  // @override
-  // Future<T?> popUntil<T extends Object?>({required String routeName}) async {
-  //   debugPrint('No implemented method name popUntil in native ');
-  //   return null;
-  //   return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopUntilMethod);
-  // }
+  @override
+  void setCustomMethodCallHandler(
+      {Function(String method, dynamic arguments)? customMethodCallHandler}) {
+    extHandler = customMethodCallHandler;
+  }
 }

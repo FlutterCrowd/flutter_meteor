@@ -3,7 +3,7 @@ import Flutter
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
-    let multiEngin = MultiEngineHandler.init()
+//    let multiEngin = /*MultiEngineHandler*/.init()
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -12,7 +12,7 @@ import Flutter
     
       let flutterVc: FlutterViewController = self.window.rootViewController as! FlutterViewController
 //      let channel = FlutterMethodChannel(name:"cn.itbox.driver/multi_engin", binaryMessenger: flutterVc.binaryMessenger)
-      MultiEngineHandler.register(with: flutterVc.pluginRegistry().registrar(forPlugin: "MultiEngineHandler")!)
+//      MultiEngineHandler.register(with: flutterVc.pluginRegistry().registrar(forPlugin: "MultiEngineHandler")!)
 
       let navi: UINavigationController = UINavigationController.init(rootViewController: flutterVc)
       navi.navigationBar.isHidden = true

@@ -33,17 +33,12 @@ class HzNavigator {
     Map<String, dynamic>? arguments,
   }) async {
     debugPrint('Will push to page $routeName');
-    if (HzRouterManager.routeInfo[routeName] == null) {
-      Map<String, dynamic> arg = {};
-      arg['withNewEngine'] = withNewEngine;
-      if (arguments?.isNotEmpty ?? false) {
-        arg.addAll(arguments!);
-      }
+    if (HzRouterManager.routeInfo[routeName] == null || withNewEngine) {
       return await _nativeNavigator.pushNamed<T>(context,
-          routeName: routeName, arguments: arguments);
+          routeName: routeName, withNewEngine: withNewEngine, arguments: arguments);
     } else {
       return await _flutterNavigator.pushNamed<T>(context,
-          routeName: routeName, arguments: arguments);
+          routeName: routeName, withNewEngine: withNewEngine, arguments: arguments);
     }
   }
 
@@ -97,6 +92,10 @@ class HzNavigator {
       await _nativeNavigator.pop(context, result: result);
     }
     return;
+  }
+
+  static Future<T?> popUntilLastNative<T extends Object?>(BuildContext? context) async {
+    return await _nativeNavigator.pop(context, result: null);
   }
 
   /// pop 到指定页面并替换当前页面

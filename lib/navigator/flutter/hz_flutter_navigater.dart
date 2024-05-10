@@ -36,7 +36,9 @@ class HzFlutterNavigator extends HzRouterInterface {
 
   @override
   Future<T?> pushNamed<T extends Object?>(BuildContext? context,
-      {required String routeName, Map<String, dynamic>? arguments}) async {
+      {required String routeName,
+      bool withNewEngine = false,
+      Map<String, dynamic>? arguments}) async {
     context ??= naviKey?.currentContext;
     if (context != null) {
       return Navigator.pushNamed<T?>(context, routeName, arguments: arguments);
@@ -63,6 +65,12 @@ class HzFlutterNavigator extends HzRouterInterface {
     if (context != null) {
       return await Navigator.pushReplacementNamed<T, TO>(context, routeName, arguments: arguments);
     }
+    return null;
+  }
+
+  @override
+  Future<T?> popUntilLastNative<T extends Object?>(BuildContext? context) async {
+    debugPrint('This method need to be implemented by native');
     return null;
   }
 }

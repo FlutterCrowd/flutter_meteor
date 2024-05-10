@@ -9,6 +9,16 @@ class MultiEnginPage2 extends StatefulWidget {
 }
 
 class _MultiEnginPageState extends State<MultiEnginPage2> {
+  final HzRouterPlugin _hzRouterPlugin = HzRouterPlugin();
+  @override
+  void initState() {
+    super.initState();
+    _hzRouterPlugin.setCustomMethodCallHandler(customMethodCallHandler: (method, arguments) {
+      print(method);
+      print(arguments);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,12 +76,10 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
               onTap: () {
                 HzNavigator.pushNamed(context, routeName: "multi_engin");
               },
-              child: Container(
-                child: const Text(
-                  '下一个flutter页面',
-                  style: TextStyle(
-                    backgroundColor: Colors.yellow,
-                  ),
+              child: const Text(
+                '下一个flutter页面',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
                 ),
               ),
             ),
@@ -90,6 +98,22 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
                   style: TextStyle(
                     backgroundColor: Colors.yellow,
                   ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                _hzRouterPlugin.invokeMethod(method: 'customMethod');
+              },
+              child: const Text(
+                '调用原生自定义接口',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
                 ),
               ),
             ),

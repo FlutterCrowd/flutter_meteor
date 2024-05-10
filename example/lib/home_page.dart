@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed(context, routeName: "multi_engin");
+                HzNavigator.pushNamed(context, routeName: "multi_engin2", withNewEngine: true);
               },
               child: const Text(
                 '打开新引擎',
