@@ -1,30 +1,41 @@
 package cn.itbox.hz_router_plugin.core
 
+import android.os.Bundle
+import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
 import org.json.JSONObject
 
 data class FlutterRouterRouteOptions(
-    val entryPoint: String?,
-    val activityClass: Class<out FlutterRouterActivity>?,
+    val backgroundMode: BackgroundMode,
+//    val activityClass: Class<out FlutterRouterActivity>?,
     val routeName: String,
     val arguments: String?,
     val requestCode: Int,
 ) {
+
+    fun toBundle(): Bundle {
+        val bundle = Bundle()
+        bundle.putString("backgroundMode", backgroundMode.name)
+        bundle.putString("routeName", routeName)
+        bundle.putString("arguments", arguments)
+        return bundle
+    }
+
     class Builder {
-        private var entryPoint: String? = null
-        private var activityClass: Class<out FlutterRouterActivity>? = null
+        private var backgroundMode: BackgroundMode = BackgroundMode.opaque
+//        private var activityClass: Class<out FlutterRouterActivity>? = null
         private var routeName: String? = null
         private var arguments: String? = null
         private var requestCode: Int = 0
 
-        fun activityClass(activityClass: Class<out FlutterRouterActivity>): Builder {
-            this.activityClass = activityClass
+        fun backgroundMode(backgroundMode: BackgroundMode): Builder {
+            this.backgroundMode = backgroundMode
             return this
         }
 
-        fun entryPoint(entryPoint: String): Builder {
-            this.entryPoint = entryPoint
-            return this
-        }
+//        fun activityClass(activityClass: Class<out FlutterRouterActivity>): Builder {
+//            this.activityClass = activityClass
+//            return this
+//        }
 
         fun routeName(routeName: String): Builder {
             this.routeName = routeName
@@ -47,7 +58,8 @@ data class FlutterRouterRouteOptions(
             if (routeName.isNullOrEmpty()) {
                 throw IllegalArgumentException("pageName can not be null.")
             }
-            return FlutterRouterRouteOptions(entryPoint, activityClass, routeName, arguments, requestCode)
+
+            return FlutterRouterRouteOptions(backgroundMode, routeName, arguments, requestCode)
         }
     }
 }

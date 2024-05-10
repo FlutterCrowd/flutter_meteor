@@ -18,6 +18,7 @@ class HzFlutterNavigator extends HzRouterInterface {
   @override
   Future<T?> popToRoot<T extends Object?>(BuildContext? context) async {
     context ??= naviKey?.currentContext;
+    print('flutter do popToRoot: $context');
     if (context != null) {
       Navigator.popUntil(context, ModalRoute.withName(root));
     }

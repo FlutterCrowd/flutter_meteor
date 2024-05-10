@@ -16,11 +16,16 @@ class NativeActivity : AppCompatActivity() {
         val button = findViewById<View>(R.id.button)
         button.setOnClickListener {
             val options = FlutterRouterRouteOptions.Builder()
-                .activityClass(NormalActivity::class.java)
                 .routeName("multi_engin")
                 .requestCode(200)
                 .build()
             FlutterRouter.open(this, options)
+        }
+
+        val root = findViewById<View>(R.id.root)
+        root.setOnClickListener {
+            FlutterRouter.popToRoot()
+//            startActivity(Intent(this, MainActivity::class.java))
         }
     }
 
