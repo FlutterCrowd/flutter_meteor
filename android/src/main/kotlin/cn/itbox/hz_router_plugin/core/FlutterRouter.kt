@@ -24,14 +24,7 @@ object FlutterRouter {
     }
 
     fun popToRoot() {
-        if (ActivityInjector.activityCount > 1) {
-            val rootActivity = ActivityInjector.rootActivity
-            rootActivity?.also {
-                val intent = Intent(it, it.javaClass)
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                it.startActivity(intent)
-            }
-        }
+        ActivityInjector.finishToRoot()
         EngineInjector.getMainChannel()?.invokeMethod("popToRoot", null)
     }
 
