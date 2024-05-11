@@ -10,6 +10,8 @@ import Flutter
 
 
 public class HzFlutterNavigator: NSObject, HzRouterDelegate {
+
+    
     public var customRouterDelegate: (any HzCustomRouterDelegate)?
     
     public var  methodChannel: FlutterMethodChannel?
@@ -42,15 +44,15 @@ public class HzFlutterNavigator: NSObject, HzRouterDelegate {
         })
     }
     
-    public func dismissPage(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    public func dismiss(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         methodChannel?.invokeMethod(HzRouterPlugin.hzPopMethod, arguments: arguments, result: { response in
             callBack?(response)
         })
     }
     
-    public func present(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    public func present(routeName: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         var arg = Dictionary<String, Any>.init()
-        arg["routeName"] = toPage
+        arg["routeName"] = routeName
         arg["arguments"] = arguments
         methodChannel?.invokeMethod(HzRouterPlugin.hzPushNamedMethod, arguments: arg, result: { response in
             callBack?(response)

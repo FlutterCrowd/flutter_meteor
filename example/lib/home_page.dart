@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("page_router", openNative: true);
+                HzNavigator.pushNamed("test", openNative: true);
               },
               child: const Text(
                 '打开原生页面',
@@ -38,23 +38,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("test");
-              },
-              child: const Text(
-                '打开原生页面',
-                style: TextStyle(
-                  backgroundColor: Colors.red,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: GestureDetector(
-              onTap: () {
-                HzNavigator.pushNamed("test1");
+                HzNavigator.pushNamed("test1", openNative: true);
               },
               child: const Text(
                 '打开原生页面1',
@@ -70,7 +54,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("test2");
+                HzNavigator.pushNamed("test2", openNative: true);
               },
               child: const Text(
                 '打开原生页面2',
@@ -86,7 +70,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("test3");
+                HzNavigator.pushNamed("test3", openNative: true);
               },
               child: const Text(
                 '打开原生页面3',
@@ -102,7 +86,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("test4");
+                HzNavigator.pushNamed("test4", openNative: true);
               },
               child: const Text(
                 '打开非Group新引擎',

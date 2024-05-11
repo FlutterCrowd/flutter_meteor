@@ -52,7 +52,6 @@ class HzNavigator {
     } else {
       return await _flutterNavigator.pushNamed<T>(
         routeName,
-        withNewEngine: withNewEngine,
         arguments: arguments,
       );
     }

@@ -8,6 +8,8 @@
 import UIKit
 
 public class HzMethodChannelHandler: NSObject, HzRouterDelegate {
+
+    
     
     public var myCustomRouterDelegate : (any HzCustomRouterDelegate)?
     
@@ -32,18 +34,27 @@ public class HzMethodChannelHandler: NSObject, HzRouterDelegate {
     }
     
 
-    public func present(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    public func present(routeName: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         HzNativeNavigator.pop(arguments: arguments, callBack: callBack)
     }
     
     public func push(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         let withNewEngine: Bool = arguments?["withNewEngine"] as? Bool ?? false
-        var entrypointArgs: Dictionary<String, Any> = (arguments?["arguments"] as? Dictionary<String, Any> ) ?? Dictionary<String, Any>.init()
+        let entrypointArgs: Dictionary<String, Any>?  = arguments?["arguments"] as? Dictionary<String, Any>
+        print(arguments?["arguments"] ?? "")
         if(withNewEngine) {
-            entrypointArgs["initialRoute"] = "multi_engin"
-            entrypointArgs["arguments"] = "1"
+            let newEngineOpaque: Bool = (arguments?["newEngineOpaque"] != nil) && arguments!["newEngineOpaque"] as! Bool == true
             let flutterVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: entrypointArgs, initialRoute: toPage, nibName: nil, bundle:nil)
-            HzNativeNavigator.push(toPage: flutterVc, arguments: entrypointArgs, callBack: callBack)
+            flutterVc.isViewOpaque = newEngineOpaque
+            if (toPage == "popWindow") {
+                flutterVc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+                flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+                flutterVc.view.backgroundColor = UIColor.clear
+                HzNativeNavigator.present(toPage: flutterVc, arguments: arguments, callBack: callBack)
+            } else {
+                HzNativeNavigator.push(toPage: flutterVc, arguments: entrypointArgs, callBack: callBack)
+            }
+
         } else {
             let vcBuilder: HzRouterBuilder? = HzRouter.routerDict[toPage]
             let vc: UIViewController? = vcBuilder?(arguments)
@@ -80,6 +91,7 @@ public class HzMethodChannelHandler: NSObject, HzRouterDelegate {
     
     public func pop(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         HzNativeNavigator.pop(arguments: arguments, callBack: callBack)
+        HzNativeNavigator.dismissPage(arguments: arguments, callBack: callBack)
     }
     
     public func popToRoot(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
@@ -87,7 +99,7 @@ public class HzMethodChannelHandler: NSObject, HzRouterDelegate {
         self.flutterNavigator.popToRoot(arguments: arguments, callBack: callBack)
     }
     
-    public func dismissPage(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    public func dismiss(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         HzNativeNavigator.dismissPage(arguments: arguments, callBack: callBack)
     }
     

@@ -20,7 +20,7 @@ void childEntry(List<String> args) {
 
   if (args.isNotEmpty) {
     final json = jsonDecode(args.first);
-    String routeName = json['routeName'];
+    String routeName = json['initialRoute'];
     Map<String, dynamic>? routeArguments = json['routeArguments'];
     runApp(MyApp(
       routeName: routeName,
@@ -33,7 +33,6 @@ void childEntry(List<String> args) {
 
 class MyApp extends StatefulWidget {
   // static GlobalKey<NavigatorState> mainKey = GlobalKey<NavigatorState>();
-
   final String? routeName;
   final Map<String, dynamic>? routeArguments;
   const MyApp({super.key, this.routeName, this.routeArguments});
@@ -48,7 +47,7 @@ Map<String, WidgetBuilder> _routes = {
   "mine": (context) => MinePage(),
   "multi_engin": (context) => MultiEnginPage(),
   "multi_engin2": (context) => MultiEnginPage2(),
-  "popWindow": (context) => PopWindowPage()
+  "popWindow": (context) => const PopWindowPage()
 };
 
 Route<dynamic>? _generateRoute(RouteSettings settings) {
@@ -91,7 +90,6 @@ class _MyAppState extends State<MyApp> {
       onGenerateInitialRoutes: (String initialRoute) {
         print('initialRoute: $initialRoute');
         HzNavigator.rootRoute = initialRoute;
-
         final route = _generateRoute(
           RouteSettings(name: initialRoute, arguments: widget.routeArguments),
         );

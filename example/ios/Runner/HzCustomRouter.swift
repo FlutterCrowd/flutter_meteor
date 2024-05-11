@@ -24,11 +24,11 @@ public class HzCustomRouter: NSObject, HzCustomRouterDelegate {
             vc.view.addSubview(button)
             HzNativeNavigator.present(toPage: vc, arguments: arguments, callBack: callBack)
         } else if (routeName == "test3") {
-            let vc:HzFlutterViewController = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: nil, initialRoute: "home")
+            let vc:HzFlutterViewController = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: nil, initialRoute: "popWindow")
             HzNativeNavigator.push(toPage: vc, arguments: arguments, callBack: callBack)
         } else {
             let vc:HzFlutterViewController = HzFlutterViewController.init(engine: HzEngineManager.createFlutterEngineNoGroup(), nibName: nil, bundle: nil)
-            vc.isViewOpaque = true
+            vc.isViewOpaque = false
             HzNativeNavigator.push(toPage: vc, arguments: arguments, callBack: callBack)
         }
         

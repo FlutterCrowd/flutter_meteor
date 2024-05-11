@@ -13,11 +13,11 @@ public class HzNavigator: NSObject {
     public static var routerDelegate:  HzMethodChannelHandler?
 
     public static func setCustomDelegate (customDelegate: any HzCustomRouterDelegate) {
-        routerDelegate?.myCustomRouterDelegate = customDelegate
+        self.routerDelegate?.myCustomRouterDelegate = customDelegate
     }
         
     public static func present(routeName: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
-        self.routerDelegate?.present(toPage: routeName, arguments: arguments, callBack: callBack)
+        self.routerDelegate?.present(routeName: routeName, arguments: arguments, callBack: callBack)
     }
     
     public static func push(routeName:  String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
@@ -37,7 +37,7 @@ public class HzNavigator: NSObject {
     }
      
     public static func dismiss(arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
-        
+        self.routerDelegate?.dismiss(arguments: arguments, callBack: callBack)
     }
     
     /// push 到指定页面并替换当前页面

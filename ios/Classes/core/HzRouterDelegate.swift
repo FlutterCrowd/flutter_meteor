@@ -10,6 +10,17 @@ import Foundation
 
 public typealias HzRouterCallBack = (_ response: Any?) -> Void
 
+public struct HzRouterOptions {
+    var withNewEngine: Bool = false
+    var newEngineOpaque: Bool = false
+    var arguments: Dictionary<String, Any>?
+    var callBack: HzRouterCallBack?
+    init(arguments: Dictionary<String, Any>? = nil, callBack: HzRouterCallBack? = nil) {
+        self.arguments = arguments
+        self.callBack = callBack
+    }
+}
+
 public protocol HzRouterDelegate {
     
     var customRouterDelegate: (any HzCustomRouterDelegate)? { get }
@@ -17,7 +28,7 @@ public protocol HzRouterDelegate {
     // 在iOS中Page是UIViewController，在跟flutter路由这个Page就是String，路由名称
 //    associatedtype Page
     
-    func present(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?);
+    func present(routeName: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?);
     
     func push(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?);
      
@@ -27,7 +38,7 @@ public protocol HzRouterDelegate {
      
     func popToRoot(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?);
      
-    func dismissPage(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?);
+    func dismiss(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?);
     
     /// push 到指定页面并替换当前页面
     ///
