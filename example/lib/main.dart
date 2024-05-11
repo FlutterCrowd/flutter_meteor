@@ -88,6 +88,7 @@ class _MyAppState extends State<MyApp> {
       onGenerateRoute: _generateRoute,
       navigatorKey: rootKey,
       initialRoute: "/",
+      theme: ThemeData.light(),
       onGenerateInitialRoutes: (String initialRoute) {
         print('initialRoute: $initialRoute');
         HzNavigator.rootRoute = initialRoute;
