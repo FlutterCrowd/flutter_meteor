@@ -14,7 +14,6 @@ void main() {
   runApp(const MyApp());
 }
 
-// 这里的entry-point能否放到插件里面？？？
 @pragma("vm:entry-point")
 void childEntry(List<String?> arg) {
   HzNavigator.naviKey = GlobalKey<NavigatorState>();
