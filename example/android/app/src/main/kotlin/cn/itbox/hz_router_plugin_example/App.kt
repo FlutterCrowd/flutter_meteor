@@ -25,7 +25,7 @@ class App : FlutterApplication() {
             }
 
             override fun onPushFlutterPage(activity: Activity, options: FlutterRouterRouteOptions) {
-                val intent = Intent(activity, NormalActivity::class.java)
+                val intent = Intent(activity, MainActivity::class.java)
                 intent.putExtras(options.toBundle())
                 activity.startActivityForResult(intent, options.requestCode)
             }

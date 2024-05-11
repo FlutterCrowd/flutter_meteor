@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed(context, routeName: "test");
+                HzNavigator.pushNamed("page_router", openNative: true);
               },
               child: const Text(
                 '打开原生页面',
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed(context, routeName: "test");
+                HzNavigator.pushNamed("test");
               },
               child: const Text(
                 '打开原生页面',
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed(context, routeName: "test1");
+                HzNavigator.pushNamed("test1");
               },
               child: const Text(
                 '打开原生页面1',
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed(context, routeName: "test2");
+                HzNavigator.pushNamed("test2");
               },
               child: const Text(
                 '打开原生页面2',
@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed(context, routeName: "test3");
+                HzNavigator.pushNamed("test3");
               },
               child: const Text(
                 '打开原生页面3',
@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed(context, routeName: "test4");
+                HzNavigator.pushNamed("test4");
               },
               child: const Text(
                 '打开非Group新引擎',
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed(context, routeName: "multi_engin2", withNewEngine: true);
+                HzNavigator.pushNamed("multi_engin2", withNewEngine: true);
               },
               child: const Text(
                 '打开新引擎',
@@ -179,6 +179,11 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(
             height: 20,
           ),
+          ElevatedButton(
+              onPressed: () {
+                HzNavigator.pushNamed('popWindow', withNewEngine: true, newEngineOpaque: false);
+              },
+              child: const Text('打开Flutter弹窗')),
         ],
         // 创建Flutter引擎实例
       ),

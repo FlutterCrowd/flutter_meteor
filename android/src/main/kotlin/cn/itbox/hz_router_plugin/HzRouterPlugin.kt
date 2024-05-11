@@ -5,6 +5,7 @@ import android.content.Intent
 import cn.itbox.hz_router_plugin.core.FlutterRouter
 import cn.itbox.hz_router_plugin.core.FlutterRouterRouteOptions
 import cn.itbox.hz_router_plugin.engine.EngineInjector
+import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -39,6 +40,8 @@ class HzRouterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 val arguments = call.arguments
                 if (arguments is Map<*, *>) {
                     val withNewEngine = arguments["withNewEngine"] == true
+                    val newEngineOpaque = arguments["newEngineOpaque"] == true
+                    val openNative = arguments["openNative"] == true
                     val routeName = arguments["routeName"]?.toString() ?: ""
                     val routeArguments = arguments["arguments"]
                     if (withNewEngine) {
@@ -50,9 +53,10 @@ class HzRouterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                             if (args != null) {
                                 builder.arguments(args)
                             }
+                            builder.backgroundMode(if (newEngineOpaque) FlutterActivityLaunchConfigs.BackgroundMode.opaque else FlutterActivityLaunchConfigs.BackgroundMode.transparent)
                             FlutterRouter.delegate?.onPushFlutterPage(theActivity, builder.build())
                         }
-                    } else {
+                    } else if (openNative) {
                         FlutterRouter.delegate?.onPushNativePage(
                             routeName,
                             routeArguments

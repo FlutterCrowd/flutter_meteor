@@ -9,14 +9,20 @@ internal object ActivityInjector {
 
     private val activityList = mutableListOf<WeakReference<Activity>>()
 
-    val activityCount get() = activityList.size
-
     val rootActivity get() = activityList.firstOrNull()?.get()
 
     val currentActivity get() = activityList.lastOrNull()?.get()
 
     fun inject(application: Application) {
         application.registerActivityLifecycleCallbacks(ActivityLifecycle())
+    }
+
+    fun finishToRoot() {
+        activityList.forEachIndexed { index, weakReference ->
+            if (index > 0) {
+                weakReference.get()?.finish()
+            }
+        }
     }
 
     private class ActivityLifecycle : Application.ActivityLifecycleCallbacks {

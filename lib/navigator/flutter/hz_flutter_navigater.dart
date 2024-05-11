@@ -13,78 +13,67 @@ class HzFlutterNavigator extends HzRouterInterface {
     return rootKey!.currentContext!;
   }
 
-  HzFlutterNavigator({GlobalKey<NavigatorState>? naviKey});
   @override
-  Future<T?> pop<T extends Object?>(BuildContext? context, {T? result}) async {
-    debugPrint('pop currentContext:$context, rootContext:$rootContext');
-
-    context ??= context;
-    if (context != null && Navigator.canPop(context)) {
-      Navigator.pop<T>(context, result);
+  Future<T?> pop<T extends Object?>([T? result]) async {
+    debugPrint('pop rootContext:$rootContext');
+    if (Navigator.canPop(rootContext)) {
+      Navigator.pop<T>(rootContext, result);
     }
     return null;
   }
 
   @override
-  Future<T?> popToRoot<T extends Object?>(BuildContext? context) async {
-    context ??= rootContext;
-    debugPrint('popToRoot currentContext:$context, rootContext:$rootContext');
-    if (context != null) {
-      Navigator.popUntil(context, ModalRoute.withName(rootRoute));
-    }
+  Future<T?> popToRoot<T extends Object?>() async {
     return null;
   }
 
   @override
-  Future<T?> popUntil<T extends Object?>(BuildContext? context, {required String routeName}) async {
-    debugPrint('popUntil currentContext:$context, rootContext:$rootContext');
-    context ??= rootContext;
-    if (context != null) {
-      Navigator.popUntil(context, ModalRoute.withName(routeName));
-    }
+  Future<T?> popUntil<T extends Object?>(String routeName) async {
+    debugPrint('popUntil rootContext:$rootContext');
+    Navigator.popUntil(rootContext, ModalRoute.withName(routeName));
     return null;
   }
 
   @override
-  Future<T?> pushNamed<T extends Object?>(BuildContext? context,
-      {required String routeName,
-      bool withNewEngine = false,
-      Map<String, dynamic>? arguments}) async {
-    debugPrint('pushNamed currentContext:$context, rootContext:$rootContext');
-    context ??= rootContext;
-    if (context != null) {
-      return Navigator.pushNamed<T?>(context, routeName, arguments: arguments);
-    }
-    return null;
+  Future<T?> pushNamed<T extends Object?>(
+    String routeName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    Map<String, dynamic>? arguments,
+  }) async {
+    debugPrint('pushNamed rootContext:$rootContext');
+    return Navigator.pushNamed<T?>(rootContext, routeName, arguments: arguments);
   }
 
   @override
-  Future<T?> pushNamedAndRemoveUntil<T extends Object?>(BuildContext? context,
-      {required String routeName, String? untilRouteName, Map<String, dynamic>? arguments}) async {
-    debugPrint('pushNamedAndRemoveUntil currentContext:$context, rootContext:$rootContext');
-    context ??= rootContext;
-    if (context != null) {
-      return await Navigator.of(context).pushNamedAndRemoveUntil<T>(
-          routeName, ModalRoute.withName(untilRouteName ?? rootRoute),
-          arguments: arguments);
-    }
-    return null;
+  Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
+    String newRouteName,
+    String untilRouteName, {
+    Map<String, dynamic>? arguments,
+  }) async {
+    debugPrint('pushNamedAndRemoveUntil rootContext:$rootContext');
+    return Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
+      newRouteName,
+      ModalRoute.withName(untilRouteName),
+      arguments: arguments,
+    );
   }
 
   @override
-  Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(BuildContext? context,
-      {required String routeName, Map<String, dynamic>? arguments}) async {
-    debugPrint('pushReplacementNamed currentContext:$context, rootContext:$rootContext');
-    context ??= rootContext;
-    if (context != null) {
-      return await Navigator.pushReplacementNamed<T, TO>(context, routeName, arguments: arguments);
-    }
-    return null;
+  Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(String routeName,
+      {Map<String, dynamic>? arguments}) async {
+    debugPrint('pushReplacementNamed rootContext:$rootContext');
+    return await Navigator.pushReplacementNamed<T, TO>(
+      rootContext,
+      routeName,
+      arguments: arguments,
+    );
   }
 
   @override
-  Future<T?> popUntilLastNative<T extends Object?>(BuildContext? context) async {
-    debugPrint('popUntilLastNative currentContext:$context, rootContext:$rootContext');
+  Future<T?> popUntilLastNative<T extends Object?>() async {
+    debugPrint('popUntilLastNative');
     debugPrint('This method need to be implemented by native');
     return null;
   }

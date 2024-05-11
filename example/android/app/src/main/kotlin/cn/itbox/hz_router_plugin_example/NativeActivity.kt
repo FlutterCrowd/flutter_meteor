@@ -31,7 +31,9 @@ class NativeActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        Toast.makeText(this, "$requestCode, ", Toast.LENGTH_SHORT).show()
+        if (requestCode == 200 && resultCode == RESULT_OK) {
+            val name1 = data?.getStringExtra("name1")
+            Toast.makeText(this, "name1=$name1, ", Toast.LENGTH_SHORT).show()
+        }
     }
 }

@@ -12,7 +12,7 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
 
   HzRouterPluginMethodChannel({this.extHandler}) {
     methodChannel.setMethodCallHandler((call) async {
-      Map<String, dynamic> arguments = Map<String, dynamic>();
+      Map<String, dynamic> arguments = <String, dynamic>{};
       if (call.arguments is Map) {
         Map res = call.arguments;
         res.forEach((key, value) {
@@ -55,7 +55,7 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
     }
     String? routeName = arg["routeName"];
     if (routeName != null) {
-      return await _flutterNavigator.popUntil(null, routeName: routeName);
+      return await _flutterNavigator.popUntil(routeName);
     } else {
       return await _flutterNavigator.pop(null);
     }
@@ -63,7 +63,7 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
 
   Future<dynamic> flutterPopRoRoot({Map<String, dynamic>? arguments}) async {
     debugPrint('Channel pop to root $arguments');
-    return _flutterNavigator.popUntil(null, routeName: HzFlutterNavigator.rootRoute);
+    return _flutterNavigator.popUntil(HzFlutterNavigator.rootRoute);
   }
 
   Future<dynamic> flutterPushNamed({Map<String, dynamic>? arguments}) async {
@@ -73,7 +73,7 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
     }
     String? routeName = arg["routeName"];
     if (routeName != null) {
-      return await _flutterNavigator.pushNamed(null, routeName: routeName);
+      return await _flutterNavigator.pushNamed(routeName);
     }
   }
 

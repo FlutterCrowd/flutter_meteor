@@ -11,7 +11,7 @@ class RootPage extends StatelessWidget {
         Expanded(child: Container()),
         GestureDetector(
           onTap: () {
-            HzNavigator.pushNamed(context, routeName: "home");
+            HzNavigator.pushNamed("home");
           },
           child: const Center(
             child: Text('首页'),

@@ -8,7 +8,7 @@ data class FlutterRouterRouteOptions(
     val backgroundMode: BackgroundMode,
 //    val activityClass: Class<out FlutterRouterActivity>?,
     val routeName: String,
-    val arguments: String?,
+    val arguments: Map<String, Any>?,
     val requestCode: Int,
 ) {
 
@@ -16,7 +16,8 @@ data class FlutterRouterRouteOptions(
         val bundle = Bundle()
         bundle.putString("backgroundMode", backgroundMode.name)
         bundle.putString("routeName", routeName)
-        bundle.putString("arguments", arguments)
+        val routeArgs = mapOf("routeName" to routeName, "routeArguments" to arguments)
+        bundle.putString("routeArgs", JSONObject(routeArgs).toString())
         return bundle
     }
 
@@ -24,7 +25,7 @@ data class FlutterRouterRouteOptions(
         private var backgroundMode: BackgroundMode = BackgroundMode.opaque
 //        private var activityClass: Class<out FlutterRouterActivity>? = null
         private var routeName: String? = null
-        private var arguments: String? = null
+        private var arguments: Map<String, Any>? = null
         private var requestCode: Int = 0
 
         fun backgroundMode(backgroundMode: BackgroundMode): Builder {
@@ -43,8 +44,7 @@ data class FlutterRouterRouteOptions(
         }
 
         fun arguments(arguments: Map<String, Any>): Builder {
-            val json = JSONObject(arguments).toString()
-            this.arguments = json
+            this.arguments = arguments
             return this
         }
 
