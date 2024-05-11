@@ -8,12 +8,15 @@ import '../../core/plugin/hz_router_plugin_platform_interface.dart';
 /// 实现Native层页面路由
 class HzNativeNavigator extends HzRouterInterface {
   final HzRouterPluginMethodChannel _pluginPlatform = HzRouterPluginMethodChannel();
+
   MethodChannel get methodChannel => _pluginPlatform.methodChannel;
+
   @override
-  Future<T?> pushNamed<T extends Object?>(BuildContext? context,
-      {required String routeName,
-      bool withNewEngine = false,
-      Map<String, dynamic>? arguments}) async {
+  Future<T?> pushNamed<T extends Object?>(
+    String routeName, {
+    bool withNewEngine = false,
+    Map<String, dynamic>? arguments,
+  }) async {
     Map<String, dynamic> params = {};
     params["routeName"] = routeName;
     params["withNewEngine"] = withNewEngine;
@@ -22,75 +25,42 @@ class HzNativeNavigator extends HzRouterInterface {
   }
 
   @override
-  Future<T?> pushNamedAndRemoveUntil<T extends Object?>(BuildContext? context,
-      {required String routeName, String? untilRouteName, Map<String, dynamic>? arguments}) async {
+  Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
+    String newRouteName,
+    String untilRouteName, {
+    Map<String, dynamic>? arguments,
+  }) async {
     debugPrint('No implemented method name pushNamedAndRemoveUntil in native ');
     return null;
-    return await methodChannel
-        .invokeMethod<T>(HzRouterPluginPlatform.hzPushNamedAndRemoveUntilMethod);
   }
 
   @override
-  Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(BuildContext? context,
-      {required String routeName, Map<String, dynamic>? arguments}) async {
+  Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
+    String routeName, {
+    Map<String, dynamic>? arguments,
+  }) async {
     debugPrint('No implemented method name pushReplacementNamed in native ');
     return null;
-    return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPushReplacementNamedMethod);
   }
 
   @override
-  Future<T?> pop<T extends Object?>(BuildContext? context, {T? result}) async {
+  Future<T?> pop<T extends Object?>([T? result]) async {
     return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopMethod);
   }
 
   @override
-  Future<T?> popToRoot<T extends Object?>(BuildContext? context) async {
+  Future<T?> popToRoot<T extends Object?>() async {
     return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopToRootMethod);
   }
 
   @override
-  Future<T?> popUntil<T extends Object?>(BuildContext? context, {required String routeName}) async {
+  Future<T?> popUntil<T extends Object?>(String routeName) async {
     debugPrint('No implemented method name popUntil in native ');
     return null;
-    return await _pluginPlatform.methodChannel
-        .invokeMethod<T>(HzRouterPluginPlatform.hzPopUntilMethod);
   }
 
   @override
-  Future<T?> popUntilLastNative<T extends Object?>(BuildContext? context) async {
+  Future<T?> popUntilLastNative<T extends Object?>() async {
     return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopMethod);
   }
-
-  // @override
-  // Future<T?> pushNamed<T extends Object?>(BuildContext? context,
-  //     {required String routeName, Map<String, dynamic>? arguments}) async {
-  //   return await _pluginPlatform.pushNamed<T>(routeName: routeName);
-  // }
-  //
-  // @override
-  // Future<T?> pushNamedAndRemoveUntil<T extends Object?>(BuildContext? context,
-  //     {required String routeName, String? untilRouteName, Map<String, dynamic>? arguments}) async {
-  //   return await _pluginPlatform.pushNamedAndRemoveUntil<T>(routeName: routeName);
-  // }
-  //
-  // @override
-  // Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(BuildContext? context,
-  //     {required String routeName, Map<String, dynamic>? arguments}) async {
-  //   return await _pluginPlatform.pushReplacementNamed<T>(routeName: routeName);
-  // }
-  //
-  // @override
-  // Future<T?> pop<T extends Object?>(BuildContext? context, {T? result}) async {
-  //   return await _pluginPlatform.pop(result: result);
-  // }
-  //
-  // @override
-  // Future<T?> popToRoot<T extends Object?>(BuildContext? context) async {
-  //   return await _pluginPlatform.popToRoot();
-  // }
-  //
-  // @override
-  // Future<T?> popUntil<T extends Object?>(BuildContext? context, {required String routeName}) async {
-  //   return await _pluginPlatform.popUntil(routeName: routeName);
-  // }
 }

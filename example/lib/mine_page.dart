@@ -62,7 +62,7 @@ class _MinePageState extends State<MinePage> {
             child: GestureDetector(
               onTap: () {
                 /// 返回原生页面
-                HzNavigator.popToRoot(context);
+                HzNavigator.popToRoot();
               },
               child: const Text(
                 '返回根视图',

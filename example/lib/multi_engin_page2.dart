@@ -30,7 +30,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed(context, routeName: "routeName");
+                HzNavigator.pushNamed("routeName");
               },
               child: Container(
                 child: const Text(
@@ -58,7 +58,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.popToRoot(context);
+                HzNavigator.popToRoot();
               },
               child: const Text(
                 '返回根页面',
@@ -74,7 +74,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed(context, routeName: "multi_engin");
+                HzNavigator.pushNamed("multi_engin");
               },
               child: const Text(
                 '下一个flutter页面',
