@@ -22,10 +22,74 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("page_router", openNative: true);
+                HzNavigator.pushNamed("test", openNative: true);
               },
               child: const Text(
                 '打开原生页面',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                HzNavigator.pushNamed("test1", openNative: true);
+              },
+              child: const Text(
+                '打开原生页面1',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                HzNavigator.pushNamed("test2", openNative: true);
+              },
+              child: const Text(
+                '打开原生页面2',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                HzNavigator.pushNamed("test3", openNative: true);
+              },
+              child: const Text(
+                '打开原生页面3',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                HzNavigator.pushNamed("test4", openNative: true);
+              },
+              child: const Text(
+                '打开非Group新引擎',
                 style: TextStyle(
                   backgroundColor: Colors.red,
                 ),

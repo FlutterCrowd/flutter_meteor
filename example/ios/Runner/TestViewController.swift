@@ -128,30 +128,25 @@ class TestViewController: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped(_ sender: UIButton) {
         
-        let testVc = TestViewController.init()
-        HzNavigator.push(toPage: testVc, arguments: nil, callBack: nil)
+        HzNavigator.push(routeName: "test", arguments: Dictionary<String, Any>.init(), callBack: nil)
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped2(_ sender: UIButton) {
-        HzNavigator.pop(arguments: nil, callBack: nil)
+        HzNativeNavigator.pop(arguments: nil, callBack: nil)
     }
     
     
     // 按钮点击时调用的方法
     @objc func buttonTapped3(_ sender: UIButton) {
         print("3按钮被点击了！")
-        HzNavigator.popUntil(untilPage: "home", arguments: nil, callBack: nil)
+        HzNavigator.popUntil(untilRouteName: "home", arguments: nil, callBack: nil)
 
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped4(_ sender: UIButton) {
         print("4按钮被点击了！")
-        var arg = Dictionary<String, Any>.init()
-        arg["1"] = 1
-        arg["2"] = "2"
-        let flutterVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2", nibName: nil, bundle: nil)
-         HzNavigator.push(toPage: flutterVc, arguments: nil, callBack: nil)
+        HzNavigator.push(routeName: "multi_engin_native", arguments: Dictionary<String, Any>.init(), callBack: nil)
     }
 }

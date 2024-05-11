@@ -7,41 +7,59 @@
 
 import UIKit
 
-class HzMethodChannelHandler: NSObject, HzRouterDelegate {
+public class HzMethodChannelHandler: NSObject, HzRouterDelegate {
+
     
-//    typealias Page = String
     
-    var customRouterDelegate : (any HzCustomRouterDelegate)?
-    // Native 导航器
-    private var nativeNavigator: HzNativeNavigator
-//    lazy var flutterNavigator: HzFlutterNavigator = {
-//        let instance = HzFlutterNavigator.init(methodChannel: HzRouterPlugin.mainEngineMethodChannel)
-//           // ... 可能的额外设置 ...
-//           return instance
-//       }()
-    private var flutterNavigator: HzFlutterNavigator
-    init(customRouterDelegate: (any HzCustomRouterDelegate)? = nil, nativeNavigator: HzNativeNavigator, flutterNavigator: HzFlutterNavigator) {
-        self.customRouterDelegate = customRouterDelegate
-        self.nativeNavigator = nativeNavigator
-        self.flutterNavigator = flutterNavigator
-    }
-    func present(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    public var myCustomRouterDelegate : (any HzCustomRouterDelegate)?
+    
+    public var customRouterDelegate: (any HzCustomRouterDelegate)? {
+        get {
+            return myCustomRouterDelegate
+        }
+        set {
+            myCustomRouterDelegate = newValue
+        }
     }
     
-    func push(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    private var _flutterNavigator: HzFlutterNavigator?
+         
+    public var flutterNavigator: HzFlutterNavigator {
+        get {
+            return _flutterNavigator ?? HzFlutterNavigator.init(methodChannel: HzRouterPlugin.mainEngineMethodChannel)
+        }
+        set {
+            _flutterNavigator = newValue
+        }
+    }
+    
+
+    public func present(routeName: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+        HzNativeNavigator.pop(arguments: arguments, callBack: callBack)
+    }
+    
+    public func push(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         let withNewEngine: Bool = arguments?["withNewEngine"] as? Bool ?? false
-        var entrypointArgs: Dictionary<String, Any> = (arguments?["arguments"] as? Dictionary<String, Any> ) ?? Dictionary<String, Any>.init()
-        
+        let entrypointArgs: Dictionary<String, Any>?  = arguments?["arguments"] as? Dictionary<String, Any>
+        print(arguments?["arguments"] ?? "")
         if(withNewEngine) {
-            entrypointArgs["initialRoute"] = "multi_engin"
-            entrypointArgs["arguments"] = "1"
+            let newEngineOpaque: Bool = (arguments?["newEngineOpaque"] != nil) && arguments!["newEngineOpaque"] as! Bool == true
             let flutterVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: entrypointArgs, initialRoute: toPage, nibName: nil, bundle:nil)
-            nativeNavigator.push(toPage: flutterVc, arguments: entrypointArgs, callBack: callBack)
+            flutterVc.isViewOpaque = newEngineOpaque
+            if (toPage == "popWindow") {
+                flutterVc.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
+                flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+                flutterVc.view.backgroundColor = UIColor.clear
+                HzNativeNavigator.present(toPage: flutterVc, arguments: arguments, callBack: callBack)
+            } else {
+                HzNativeNavigator.push(toPage: flutterVc, arguments: entrypointArgs, callBack: callBack)
+            }
+
         } else {
             let vcBuilder: HzRouterBuilder? = HzRouter.routerDict[toPage]
             let vc: UIViewController? = vcBuilder?(arguments)
             if (vc != nil) {
-                nativeNavigator.push(toPage: vc!, arguments: entrypointArgs, callBack: callBack)
+                HzNativeNavigator.push(toPage: vc!, arguments: entrypointArgs, callBack: callBack)
             }else if (self.customRouterDelegate != nil ){
                 self.customRouterDelegate?.pushToNative(routeName: toPage, arguments: arguments, callBack: callBack)
             } else {
@@ -51,44 +69,47 @@ class HzMethodChannelHandler: NSObject, HzRouterDelegate {
         }
     }
     
-    func popUntil(untilPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    public func popUntil(untilPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         let vcBuilder: HzRouterBuilder? = HzRouter.routerDict[untilPage]
-        if (vcBuilder != nil && self.customRouterDelegate != nil) {
+        if (vcBuilder != nil || self.customRouterDelegate != nil) {
             self.customRouterDelegate?.popNativeUntil(untilRouteName: untilPage, arguments: arguments, callBack: callBack)
         } else {
             self.flutterNavigator.popUntil(untilPage: untilPage, arguments: arguments, callBack: callBack)
         }
     }
     
-    func pushToReplacement(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    public func pushToReplacement(toPage: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         
         let vcBuilder: HzRouterBuilder? = HzRouter.routerDict[toPage]
         let vc: UIViewController? = vcBuilder?(arguments)
         if (vc != nil) {
-            self.nativeNavigator.pushToReplacement(toPage: vc!, arguments: arguments, callBack: callBack)
+            HzNativeNavigator.pushToReplacement(toPage: vc!, arguments: arguments, callBack: callBack)
         } else {
             self.flutterNavigator.pushToReplacement(toPage: toPage, arguments: arguments, callBack: callBack)
         }
     }
     
-    func pop(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
-        HzRouter.topViewController()?.navigationController?.popViewController(animated: true)
+    public func pop(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+        HzNativeNavigator.pop(arguments: arguments, callBack: callBack)
+        HzNativeNavigator.dismissPage(arguments: arguments, callBack: callBack)
     }
     
-    func popToRoot(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
-        self.nativeNavigator.popToRoot(arguments: arguments, callBack: nil)
+    public func popToRoot(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+        HzNativeNavigator.popToRoot(arguments: arguments, callBack: nil)
         self.flutterNavigator.popToRoot(arguments: arguments, callBack: callBack)
     }
     
-    public func dismissPage(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
-        nativeNavigator.dismissPage(arguments: arguments, callBack: callBack)
+    public func dismiss(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+        HzNativeNavigator.dismissPage(arguments: arguments, callBack: callBack)
     }
     
     public func pushToAndRemoveUntil(toPage: String, untilPage: String?, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         let vcBuilder: HzRouterBuilder? = HzRouter.routerDict[toPage]
+        let untileVcBuilder: HzRouterBuilder? = HzRouter.routerDict[toPage]
         let vc: UIViewController? = vcBuilder?(arguments)
+        let untilVc: UIViewController? = untileVcBuilder?(arguments)
         if (vc != nil) {
-            self.nativeNavigator.pushToAndRemoveUntil(toPage: vc!, untilPage: nil, arguments: arguments, callBack: callBack)
+            HzNativeNavigator.pushToAndRemoveUntil(toPage: vc!, untilPage: untilVc, arguments: arguments, callBack: callBack)
         } else {
             self.flutterNavigator.pushToAndRemoveUntil(toPage: toPage, untilPage: untilPage, arguments: arguments, callBack: callBack)
         }
