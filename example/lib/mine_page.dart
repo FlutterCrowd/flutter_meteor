@@ -45,7 +45,7 @@ class _MinePageState extends State<MinePage> {
               onTap: () {
                 // Navigator.pop(context);
                 // _multiEnginPlugin.back();
-                HzNavigator.pop(context);
+                HzNavigator.pop();
               },
               child: Container(
                 child: const Text(
