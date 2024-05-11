@@ -15,16 +15,17 @@ void main() {
 }
 
 @pragma("vm:entry-point")
-void childEntry(List<String?> arg) {
-  print('这是传递过来的参数：$arg');
+void childEntry(List<String> args) {
+  print('这是传递过来的参数：$args');
+
   // runApp(const MyApp());
-  if (arg.isNotEmpty) {
-    String? routeName = arg.first;
-    String routeArgs = arg.last ?? '';
-    Map<String, dynamic>? arguments = routeArgs.isNotEmpty ? jsonDecode(arg.last!) : null;
+  if (args.isNotEmpty) {
+    final json = jsonDecode(args.first);
+    String routeName = json['routeName'];
+    Map<String, dynamic>? routeArguments = json['routeArguments'];
     runApp(MyApp(
       routeName: routeName,
-      routeArguments: arguments,
+      routeArguments: routeArguments,
     ));
   } else {
     runApp(const MyApp());

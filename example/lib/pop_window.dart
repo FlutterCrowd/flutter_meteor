@@ -7,10 +7,14 @@ class PopWindowPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       child: Container(
-        width: 300,
-        height: 200,
-        color: Colors.yellow,
-        child: const Text('我是透明弹窗'),
+        color: Colors.black.withOpacity(0.6),
+        alignment: Alignment.center,
+        child: Container(
+          width: 200,
+          height: 200,
+          color: Colors.yellow,
+          child: const Text('我是透明弹窗'),
+        ),
       ),
     );
   }
