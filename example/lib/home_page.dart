@@ -99,6 +99,11 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(
             height: 20,
           ),
+          ElevatedButton(
+              onPressed: () {
+                HzNavigator.pushNamed('popWindow', withNewEngine: true, newEngineOpaque: false);
+              },
+              child: const Text('打开Flutter弹窗')),
         ],
         // 创建Flutter引擎实例
       ),

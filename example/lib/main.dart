@@ -7,6 +7,7 @@ import 'home_page.dart';
 import 'mine_page.dart';
 import 'multi_engin_page.dart';
 import 'multi_engin_page2.dart';
+import 'pop_window.dart';
 import 'root_page.dart';
 
 void main() {
@@ -46,13 +47,21 @@ Map<String, WidgetBuilder> _routes = {
   "home": (context) => const HomePage(),
   "mine": (context) => MinePage(),
   "multi_engin": (context) => MultiEnginPage(),
-  "multi_engin2": (context) => MultiEnginPage2()
+  "multi_engin2": (context) => MultiEnginPage2(),
+  "popWindow": (context) => PopWindowPage()
 };
 
 Route<dynamic>? _generateRoute(RouteSettings settings) {
   final String? name = settings.name;
   final Widget Function(BuildContext)? pageRouteBuilder = _routes[name];
   if (pageRouteBuilder != null) {
+    if (name == 'popWindow') {
+      return PageRouteBuilder(
+        opaque: false,
+        pageBuilder: (context, _, __) => pageRouteBuilder(context),
+        settings: settings,
+      );
+    }
     final Route<dynamic> route = MaterialPageRoute(
       builder: pageRouteBuilder,
       settings: settings,
