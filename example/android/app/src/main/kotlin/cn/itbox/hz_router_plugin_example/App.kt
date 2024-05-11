@@ -29,6 +29,9 @@ class App : FlutterApplication() {
                 val intent = Intent(activity, activityClass)
                 intent.putExtras(options.toBundle())
                 activity.startActivityForResult(intent, options.requestCode)
+                if (options.isTransparent) {
+                    activity.overridePendingTransition(0, 0)
+                }
             }
         })
     }

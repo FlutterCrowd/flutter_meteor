@@ -1,25 +1,28 @@
 package cn.itbox.hz_router_plugin.core
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import cn.itbox.hz_router_plugin.engine.EngineBindings
 import cn.itbox.hz_router_plugin.engine.EngineInjector
 import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.engine.FlutterEngine
 
 open class FlutterRouterActivity : FlutterActivity() {
 
     private val engineBindings by lazy {
-        val routeName = intent.getStringExtra("routeName")
+        val initialRoute = intent.getStringExtra("initialRoute")
         val routeArgs = intent.getStringExtra("routeArgs")
         val isMainEntry = isMainEntry
         val entryPoint = if (isMainEntry) "main" else "childEntry"
         val theArgs = if (isMainEntry) null else listOf(routeArgs)
-        EngineBindings(this,  routeName, entryPoint, theArgs, 0)
+        EngineBindings(this,  initialRoute, entryPoint, theArgs, 0)
     }
 
     val isMainEntry: Boolean get() {
-        val routeName = intent.getStringExtra("routeArgs")
-        return routeName.isNullOrEmpty()
+        val routeArgs = intent.getStringExtra("routeArgs")
+        return routeArgs.isNullOrEmpty()
     }
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
@@ -30,10 +33,10 @@ open class FlutterRouterActivity : FlutterActivity() {
         }
 
 //        val backgroundMode = intent.getStringExtra("backgroundMode")
-//        println("backgroundMode: $backgroundMode")
-//        if (backgroundMode == FlutterActivityLaunchConfigs.BackgroundMode.transparent.name) {
-//            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        }
+        println("backgroundMode: $backgroundMode")
+        if (backgroundMode == FlutterActivityLaunchConfigs.BackgroundMode.transparent) {
+            window.statusBarColor = Color.TRANSPARENT
+        }
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {

@@ -6,10 +6,7 @@
         android:extractNativeLibs="true"
         android:icon="@mipmap/ic_launcher"
         android:label="hz_router_plugin_example">
-        <activity
-            android:name=".NativeActivity"
-            android:theme="@style/AppCompatTransparentTheme"
-            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -35,6 +32,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".NativeActivity"
+            android:theme="@style/AppCompatTheme"
+            android:exported="false" />
+
         <activity
             android:name=".TransparentActivity"
             android:theme="@style/TransparentTheme" >
