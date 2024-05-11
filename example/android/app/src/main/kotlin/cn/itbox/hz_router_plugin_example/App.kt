@@ -25,7 +25,8 @@ class App : FlutterApplication() {
             }
 
             override fun onPushFlutterPage(activity: Activity, options: FlutterRouterRouteOptions) {
-                val intent = Intent(activity, MainActivity::class.java)
+                val activityClass = if (options.isTransparent) TransparentActivity::class.java else MainActivity::class.java
+                val intent = Intent(activity, activityClass)
                 intent.putExtras(options.toBundle())
                 activity.startActivityForResult(intent, options.requestCode)
             }

@@ -36,8 +36,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NormalActivity"
-            android:theme="@style/NormalTheme" />
+            android:name=".TransparentActivity"
+            android:theme="@style/TransparentTheme" />
         <!--
  Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java

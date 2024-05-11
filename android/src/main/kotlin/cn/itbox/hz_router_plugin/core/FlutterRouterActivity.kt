@@ -28,6 +28,12 @@ open class FlutterRouterActivity : FlutterActivity() {
         if (isMainEntry) {
             EngineInjector.setMainEngine(engineBindings.engine)
         }
+
+//        val backgroundMode = intent.getStringExtra("backgroundMode")
+//        println("backgroundMode: $backgroundMode")
+//        if (backgroundMode == FlutterActivityLaunchConfigs.BackgroundMode.transparent.name) {
+//            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+//        }
     }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {

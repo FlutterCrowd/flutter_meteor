@@ -12,6 +12,8 @@ data class FlutterRouterRouteOptions(
     val requestCode: Int,
 ) {
 
+    val isTransparent get() = backgroundMode == BackgroundMode.transparent
+
     fun toBundle(): Bundle {
         val bundle = Bundle()
         bundle.putString("backgroundMode", backgroundMode.name)
