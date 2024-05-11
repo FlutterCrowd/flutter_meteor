@@ -6,8 +6,10 @@ class PopWindowPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: Container(
-        color: Colors.black.withOpacity(0.6),
+        // color: Colors.black.withOpacity(0.6),
+        color: Colors.transparent,
         alignment: Alignment.center,
         child: Container(
           width: 200,
