@@ -18,7 +18,6 @@ void main() {
 void childEntry(List<String> args) {
   print('这是传递过来的参数：$args');
 
-  // runApp(const MyApp());
   if (args.isNotEmpty) {
     final json = jsonDecode(args.first);
     String routeName = json['routeName'];

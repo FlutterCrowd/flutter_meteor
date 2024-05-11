@@ -3,6 +3,7 @@
 
     <application
         android:name=".App"
+        android:extractNativeLibs="true"
         android:icon="@mipmap/ic_launcher"
         android:label="hz_router_plugin_example">
         <activity
