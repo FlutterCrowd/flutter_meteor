@@ -14,7 +14,7 @@ class PopWindowPage extends StatelessWidget {
         alignment: Alignment.center,
         child: GestureDetector(
           onTap: () {
-            HzNavigator.pop();
+            HzNavigator.dismiss();
           },
           child: Container(
             width: 200,

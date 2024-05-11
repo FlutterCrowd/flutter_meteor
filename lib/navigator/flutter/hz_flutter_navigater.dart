@@ -77,4 +77,9 @@ class HzFlutterNavigator extends HzRouterInterface {
     debugPrint('This method need to be implemented by native');
     return null;
   }
+
+  @override
+  Future<T?> dismiss<T extends Object?>([T? result]) async {
+    return null;
+  }
 }

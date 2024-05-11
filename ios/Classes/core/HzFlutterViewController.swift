@@ -90,6 +90,11 @@ public class HzFlutterViewController: FlutterViewController {
                     result(response)
                 }
                 break
+            case HzRouterPlugin.hzDismissMethod:
+                HzNavigator.dismiss(arguments: arguments) { response in
+                    result(response)
+                }
+                break
             default:
               result(FlutterMethodNotImplemented)
             }

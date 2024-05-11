@@ -96,6 +96,13 @@ class HzNavigator {
     }
   }
 
+  /// dismiss当前页面，针对原生模态出来的页面
+  ///
+  /// @parma result 接受回调，T是个泛型，可以指定要返回的数据类型
+  static void dismiss<T extends Object?>([T? result]) async {
+    await _nativeNavigator.dismiss(result);
+  }
+
   static Future<T?> popUntilLastNative<T extends Object?>() async {
     return await _nativeNavigator.pop(null);
   }

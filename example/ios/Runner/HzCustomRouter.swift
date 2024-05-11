@@ -11,7 +11,24 @@ import hz_router
 public class HzCustomRouter: NSObject, HzCustomRouterDelegate {
         
     public func pushToNative(routeName: String, arguments: Dictionary<String, Any>?, callBack: hz_router.HzRouterCallBack?) {
-        
+        let withNewEngine: Bool = arguments?["withNewEngine"] as? Bool ?? false
+        let entrypointArgs: Dictionary<String, Any>?  = arguments?["arguments"] as? Dictionary<String, Any>
+        print(arguments?["arguments"] ?? "")
+        if(withNewEngine) {
+            let newEngineOpaque: Bool = (arguments?["newEngineOpaque"] != nil) && arguments!["newEngineOpaque"] as! Bool == true
+            let flutterVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: entrypointArgs, initialRoute: routeName, nibName: nil, bundle:nil)
+            flutterVc.isViewOpaque = newEngineOpaque
+            flutterVc.modalTransitionStyle = UIModalTransitionStyle.coverVertical
+            flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+            flutterVc.view.backgroundColor = UIColor.clear
+
+            if (routeName == "popWindow") {
+                HzNativeNavigator.present(toPage: flutterVc, arguments: arguments, callBack: callBack)
+            } else {
+                HzNativeNavigator.push(toPage: flutterVc, arguments: entrypointArgs, callBack: callBack)
+            }
+
+        }
         if (routeName == "test1") {
             let vc:TestViewController  = TestViewController.init()
             HzNativeNavigator.present(toPage: vc, arguments: arguments, callBack: callBack);

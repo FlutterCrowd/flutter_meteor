@@ -53,4 +53,7 @@ abstract class HzRouterInterface {
 
   /// pop 到根页面
   Future<T?> popToRoot<T extends Object?>();
+
+  /// 返回原生模态出的视图
+  Future<T?> dismiss<T extends Object?>([T? result]);
 }

@@ -29,6 +29,7 @@ abstract class HzRouterPluginPlatform extends PlatformInterface {
   static const String hzPopMethod = 'pop';
   static const String hzPopUntilMethod = 'popUntil';
   static const String hzPopToRootMethod = 'popToRoot';
+  static const String hzDismissMethod = 'dismiss';
 
   void setCustomMethodCallHandler(
       {Function(String method, dynamic arguments)? customMethodCallHandler});

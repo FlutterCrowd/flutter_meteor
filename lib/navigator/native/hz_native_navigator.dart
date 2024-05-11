@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:hz_router/core/hz_router_interface.dart';
@@ -67,5 +69,14 @@ class HzNativeNavigator extends HzRouterInterface {
   @override
   Future<T?> popUntilLastNative<T extends Object?>() async {
     return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopMethod);
+  }
+
+  @override
+  Future<T?> dismiss<T extends Object?>([T? result]) async {
+    if (Platform.isAndroid) {
+      return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopMethod);
+    } else {
+      return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzDismissMethod);
+    }
   }
 }
