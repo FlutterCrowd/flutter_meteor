@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:hz_router/core/hz_router_interface.dart';
+import 'package:hz_router/hz_router.dart';
 
 /// 实现flutter层页面路由
 class HzFlutterNavigator extends HzRouterInterface {
   String root = '/';
-  GlobalKey<NavigatorState>? naviKey;
+  GlobalKey<NavigatorState>? get naviKey {
+    return HzNavigator.naviKey;
+  }
+
   HzFlutterNavigator({GlobalKey<NavigatorState>? naviKey});
   @override
   Future<T?> pop<T extends Object?>(BuildContext? context, {T? result}) async {
@@ -18,15 +22,18 @@ class HzFlutterNavigator extends HzRouterInterface {
   @override
   Future<T?> popToRoot<T extends Object?>(BuildContext? context) async {
     context ??= naviKey?.currentContext;
-    if (context != null) {
-      Navigator.popUntil(context, ModalRoute.withName(root));
-    }
+    debugPrint(
+        'Flutter popUntil routeName $root, naviKey$naviKey, mainKey:${HzNavigator.naviKey}, $context');
+    // if (context != null) {
+    //   Navigator.popUntil(context, ModalRoute.withName(root));
+    // }
     return null;
   }
 
   @override
   Future<T?> popUntil<T extends Object?>(BuildContext? context, {required String routeName}) async {
     context ??= naviKey?.currentContext;
+    debugPrint('Flutter popUntil routeName $routeName, $naviKey, $context');
     if (context != null) {
       Navigator.popUntil(context, ModalRoute.withName(routeName));
     }

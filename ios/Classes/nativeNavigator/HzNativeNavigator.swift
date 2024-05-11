@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class HzNativeNavigator: NSObject, HzRouterDelegate {
+public class HzNativeNavigator: NSObject {
     
     public typealias Page = UIViewController
 

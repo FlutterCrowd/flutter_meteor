@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:hz_router/navigator/hz_navigator.dart';
 
@@ -13,17 +14,26 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
 
   HzRouterPluginMethodChannel({this.extHandler}) {
     methodChannel.setMethodCallHandler((call) async {
+      Map<String, dynamic> arguments = Map<String, dynamic>();
+      if (call.arguments is Map) {
+        Map res = call.arguments;
+        res.forEach((key, value) {
+          arguments[key.toString()] = value;
+        });
+      } else {
+        arguments["arguments"] = call.arguments;
+      }
       if (call.method == HzRouterPluginPlatform.hzPopMethod) {
-        return flutterPop(arguments: call.arguments);
+        return flutterPop(arguments: arguments);
       } else if (call.method == HzRouterPluginPlatform.hzPopUntilMethod) {
-        return flutterPopUntil(arguments: call.arguments);
+        return flutterPopUntil(arguments: arguments);
       } else if (call.method == HzRouterPluginPlatform.hzPopToRootMethod) {
-        return flutterPopRoRoot(arguments: call.arguments);
+        return flutterPopRoRoot(arguments: arguments);
       } else if (call.method == HzRouterPluginPlatform.hzPushNamedMethod) {
-        return flutterPushNamed(arguments: call.arguments);
+        return flutterPushNamed(arguments: arguments);
       } else {
         if (extHandler != null) {
-          return extHandler?.call(call.method, call.arguments);
+          return extHandler?.call(call.method, arguments);
         } else {
           return Future<void>.value();
         }
@@ -54,7 +64,8 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
   }
 
   Future<dynamic> flutterPopRoRoot({Map<String, dynamic>? arguments}) async {
-    return _flutterNavigator.popToRoot(null);
+    debugPrint('Channel pop to root $arguments, naviKey:${HzNavigator.naviKey}');
+    return _flutterNavigator.popUntil(null, routeName: _flutterNavigator.root);
   }
 
   Future<dynamic> flutterPushNamed({Map<String, dynamic>? arguments}) async {

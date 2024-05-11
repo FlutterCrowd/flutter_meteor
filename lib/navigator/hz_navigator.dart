@@ -11,11 +11,12 @@ import 'flutter/hz_flutter_navigater.dart';
 /// 路由封装
 class HzNavigator {
   static String root = '/';
-  static Route<dynamic>? routePage;
+  static Route<dynamic>? rootPage;
   static GlobalKey<NavigatorState>? _naviKey;
   static set naviKey(GlobalKey<NavigatorState>? value) {
     _naviKey = value;
-    _flutterNavigator.naviKey = value;
+    // _flutterNavigator.naviKey = value;
+    debugPrint('Current naviKey $naviKey');
   }
 
   static GlobalKey<NavigatorState>? get naviKey => _naviKey;
@@ -115,7 +116,7 @@ class HzNavigator {
   /// pop 到根页面
   static Future<void> popToRoot(BuildContext? context) async {
     _nativeNavigator.popToRoot(context);
-    _flutterNavigator.popToRoot(context);
+    // _flutterNavigator.popToRoot(context);
   }
 
 // 假设你有一个根页面的RouteSettings
@@ -128,7 +129,7 @@ class HzNavigator {
   static bool isCurrentRouteRoot(BuildContext context) {
     final RouteSettings? curRouteSetting = ModalRoute.of(context)?.settings;
     // 遍历路由栈，查找与根页面相同的路由设置
-    if (routePage?.settings != null && routePage?.settings == curRouteSetting) {
+    if (rootPage?.settings != null && rootPage?.settings == curRouteSetting) {
       // 如果找到了与根页面相同的路由设置，说明当前页面就是根页面
       return true;
     }

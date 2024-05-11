@@ -1,5 +1,6 @@
 import UIKit
 import Flutter
+import hz_router
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {

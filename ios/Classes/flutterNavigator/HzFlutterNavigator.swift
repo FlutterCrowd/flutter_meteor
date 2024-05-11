@@ -8,11 +8,16 @@
 import UIKit
 import Flutter
 
+public protocol HzCustomRouterDelegate {
+    func pushToNative(routeName: String, arguments :Dictionary<String, Any>?, callBack: HzRouterCallBack?)
+    func popNativeUntil(untilRouteName: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?)
+}
+
 public class HzFlutterNavigator: NSObject, HzRouterDelegate {
     
     public var  methodChannel: FlutterMethodChannel?
     
-    init(methodChannel: FlutterMethodChannel? = HzRouter.plugin?.methodChannel) {
+    public init(methodChannel: FlutterMethodChannel?) {
         self.methodChannel = methodChannel
     }
     
@@ -34,6 +39,7 @@ public class HzFlutterNavigator: NSObject, HzRouterDelegate {
     }
     
     public func popToRoot(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+        print("Pop to root")
         methodChannel?.invokeMethod(HzRouterPlugin.hzPopToRootMethod, arguments: arguments, result: { response in
             callBack?(response)
         })

@@ -12,8 +12,8 @@ public class HzNavigator: NSObject {
   
     private static let nativeNavigator: HzNativeNavigator = HzNativeNavigator.init()
     // 主引擎的MethodChannel
-    private static let flutterNavigator: HzFlutterNavigator = HzFlutterNavigator.init(methodChannel: HzRouter.plugin?.methodChannel)
-    public static func present(toPage: Any, arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
+    private static let flutterNavigator: HzFlutterNavigator = HzFlutterNavigator.init(methodChannel: HzRouterPlugin.mainEngineMethodChannel)
+    public static func present(toPage: Any, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         if (toPage is UIViewController) {
             nativeNavigator.present(toPage: toPage as! UIViewController, arguments: arguments, callBack: callBack)
         } else {
@@ -21,7 +21,7 @@ public class HzNavigator: NSObject {
         }
     }
     
-    public static func push(toPage:  Any, arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
+    public static func push(toPage:  Any, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         if (toPage is UIViewController) {
             nativeNavigator.push(toPage: toPage as! UIViewController, arguments: arguments, callBack: callBack)
         } else {
@@ -29,11 +29,11 @@ public class HzNavigator: NSObject {
         }
     }
      
-    public static func pop(arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
+    public static func pop(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         nativeNavigator.pop(arguments: arguments, callBack: callBack)
     }
     
-    public static func popUntil(untilPage:  Any, arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
+    public static func popUntil(untilPage:  Any, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         if (untilPage is UIViewController) {
             nativeNavigator.popUntil(untilPage: untilPage as! UIViewController, arguments: arguments, callBack: callBack)
         } else {
@@ -41,7 +41,7 @@ public class HzNavigator: NSObject {
         }
     }
      
-    public static func popToRoot(arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
+    public static func popToRoot(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         nativeNavigator.popToRoot(arguments: arguments, callBack: callBack)
         flutterNavigator.popToRoot(arguments: arguments, callBack: callBack)
     }
@@ -53,7 +53,7 @@ public class HzNavigator: NSObject {
     /// push 到指定页面并替换当前页面
     ///
     /// @parma toPage 要跳转的页面，
-    public static func pushToReplacement(toPage:  Any, arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
+    public static func pushToReplacement(toPage:  Any, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         if (toPage is UIViewController) {
             nativeNavigator.pushToReplacement(toPage: toPage as! UIViewController, arguments: arguments, callBack: callBack)
         } else {
@@ -65,7 +65,7 @@ public class HzNavigator: NSObject {
     ///
     /// @parma toPage 要跳转的页面，
     /// @parma untilPage 移除截止页面，默认根页面，
-    public static func pushToAndRemoveUntil(toPage:  Any, untilPage: Any?, arguments: Dictionary<String, Any?>?, callBack: HzRouterCallBack?) {
+    public static func pushToAndRemoveUntil(toPage:  Any, untilPage: Any?, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
         if (toPage is UIViewController ) {
             nativeNavigator.pushToAndRemoveUntil(toPage: toPage as! UIViewController, untilPage: untilPage as? UIViewController, arguments: arguments, callBack: callBack)
         } else {
