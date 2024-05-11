@@ -38,6 +38,8 @@ class HzFlutterNavigator extends HzRouterInterface {
   Future<T?> pushNamed<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
     Map<String, dynamic>? arguments,
   }) async {
     debugPrint('pushNamed rootContext:$rootContext');
@@ -62,8 +64,11 @@ class HzFlutterNavigator extends HzRouterInterface {
   Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(String routeName,
       {Map<String, dynamic>? arguments}) async {
     debugPrint('pushReplacementNamed rootContext:$rootContext');
-    return await Navigator.pushReplacementNamed<T, TO>(rootContext, routeName,
-        arguments: arguments);
+    return await Navigator.pushReplacementNamed<T, TO>(
+      rootContext,
+      routeName,
+      arguments: arguments,
+    );
   }
 
   @override

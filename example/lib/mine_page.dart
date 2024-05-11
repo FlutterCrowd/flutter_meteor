@@ -21,7 +21,9 @@ class _MinePageState extends State<MinePage> {
             child: GestureDetector(
               onTap: () {
                 /// 返回原生页面
-                HzNavigator.pop(context);
+                HzNavigator.pop(
+                  context,
+                );
                 // _multiEnginPlugin.back();
                 // _hzRouterPlugin.pop();
               },

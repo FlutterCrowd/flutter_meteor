@@ -30,7 +30,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("routeName");
+                HzNavigator.pushNamed("routeName", openNative: true);
               },
               child: Container(
                 child: const Text(

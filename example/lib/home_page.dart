@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("page_router");
+                HzNavigator.pushNamed("page_router", openNative: true);
               },
               child: const Text(
                 '打开原生页面',

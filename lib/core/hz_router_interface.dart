@@ -11,6 +11,8 @@ abstract class HzRouterInterface {
   Future<T?> pushNamed<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
     Map<String, dynamic>? arguments,
   });
 

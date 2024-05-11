@@ -41,13 +41,27 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-Map<String, WidgetBuilder> routes = {
+Map<String, WidgetBuilder> _routes = {
   "/": (context) => const RootPage(),
   "home": (context) => const HomePage(),
   "mine": (context) => MinePage(),
   "multi_engin": (context) => MultiEnginPage(),
   "multi_engin2": (context) => MultiEnginPage2()
 };
+
+Route<dynamic>? _generateRoute(RouteSettings settings) {
+  final String? name = settings.name;
+  final Widget Function(BuildContext)? pageRouteBuilder = _routes[name];
+  if (pageRouteBuilder != null) {
+    final Route<dynamic> route = MaterialPageRoute(
+      builder: pageRouteBuilder,
+      settings: settings,
+    );
+    return route;
+  } else {
+    return null;
+  }
+}
 
 class _MyAppState extends State<MyApp> {
   late String routeName;
@@ -57,28 +71,22 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     routeName = widget.routeName ?? '/';
     HzNavigator.init(rootKey: rootKey);
-    HzRouterManager.insertRouters(routes);
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      onGenerateRoute: HzRouterManager.generateRoute,
+      onGenerateRoute: _generateRoute,
       navigatorKey: rootKey,
       initialRoute: "/",
       onGenerateInitialRoutes: (String initialRoute) {
-        // const url = "/mine?key=value";
-        WidgetBuilder builder = routes[initialRoute] ?? routes['/']!;
-        // builder?.call(context);
-        RouteSettings settings =
-            RouteSettings(name: initialRoute, arguments: widget.routeArguments);
-        final Route<dynamic> route = MaterialPageRoute(
-          builder: builder,
-          settings: settings,
-        );
+        print('initialRoute: $initialRoute');
         HzNavigator.rootRoute = initialRoute;
-        // HzRouterManager.routeInfo[HzNavigator.root] = builder;
-        return [route];
+
+        final route = _generateRoute(
+          RouteSettings(name: initialRoute, arguments: widget.routeArguments),
+        );
+        return [route!];
       },
     );
   }
