@@ -10,18 +10,25 @@ import 'flutter/hz_flutter_navigater.dart';
 
 /// 路由封装
 class HzNavigator {
-  static String root = '/';
-  static Route<dynamic>? rootPage;
-  static GlobalKey<NavigatorState>? _naviKey;
-  static set naviKey(GlobalKey<NavigatorState>? value) {
-    _naviKey = value;
-    // _flutterNavigator.naviKey = value;
-    debugPrint('Current naviKey $naviKey');
+  static Route<dynamic>? _rootRoute;
+  static set rootRoute(String value) {
+    _rootRoute = _rootRoute;
+    HzFlutterNavigator.rootRoute = value;
   }
 
-  static GlobalKey<NavigatorState>? get naviKey => _naviKey;
+  static Route<dynamic>? _rootPage;
+  static set rootPage(Route<dynamic> value) {
+    _rootPage = value;
+  }
+
   static final HzNativeNavigator _nativeNavigator = HzNativeNavigator();
-  static final HzFlutterNavigator _flutterNavigator = HzFlutterNavigator(naviKey: _naviKey);
+  static final HzFlutterNavigator _flutterNavigator = HzFlutterNavigator();
+
+  static void init({
+    required GlobalKey<NavigatorState> rootKey,
+  }) {
+    HzFlutterNavigator.rootKey = rootKey;
+  }
 
   /// push 到一个已经存在路由表的页面
   ///
@@ -34,7 +41,7 @@ class HzNavigator {
     Map<String, dynamic>? arguments,
   }) async {
     debugPrint('Will push to page $routeName');
-    if (HzRouterManager.routeInfo[routeName] == null || withNewEngine) {
+    if (withNewEngine || HzRouterManager.routeInfo[routeName] == null) {
       return await _nativeNavigator.pushNamed<T>(context,
           routeName: routeName, withNewEngine: withNewEngine, arguments: arguments);
     } else {
@@ -86,7 +93,7 @@ class HzNavigator {
   ///
   /// @parma result 接受回调，T是个泛型，可以指定要返回的数据类型
   static Future<void> pop<T extends Object?>(BuildContext? context, [T? result]) async {
-    context ??= _naviKey?.currentContext;
+    context ??= HzFlutterNavigator.rootContext;
     if (context != null && Navigator.canPop(context)) {
       await _flutterNavigator.pop(context, result: result);
     } else {
@@ -123,13 +130,13 @@ class HzNavigator {
   static Route<dynamic> getRootRoute() {
     // 这里应该返回你的根页面的Route对象
     // 例如，如果你使用NamedRoutes，那么你可以这样返回：
-    return MaterialPageRoute(builder: HzRouterManager.routeInfo[root]!);
+    return MaterialPageRoute(builder: HzRouterManager.routeInfo[_rootRoute]!);
   }
 
   static bool isCurrentRouteRoot(BuildContext context) {
     final RouteSettings? curRouteSetting = ModalRoute.of(context)?.settings;
     // 遍历路由栈，查找与根页面相同的路由设置
-    if (rootPage?.settings != null && rootPage?.settings == curRouteSetting) {
+    if (_rootPage?.settings != null && _rootPage?.settings == curRouteSetting) {
       // 如果找到了与根页面相同的路由设置，说明当前页面就是根页面
       return true;
     }

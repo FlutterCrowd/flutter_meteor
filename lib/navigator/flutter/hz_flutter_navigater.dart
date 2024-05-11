@@ -3,12 +3,22 @@ import 'package:hz_router/core/hz_router_interface.dart';
 
 /// 实现flutter层页面路由
 class HzFlutterNavigator extends HzRouterInterface {
-  String root = '/';
-  GlobalKey<NavigatorState>? naviKey;
+  static String rootRoute = '/';
+  static GlobalKey<NavigatorState>? rootKey;
+
+  static BuildContext get rootContext {
+    if (rootKey?.currentContext == null) {
+      throw Exception("Context is null, you need to sure HzNavigator did init");
+    }
+    return rootKey!.currentContext!;
+  }
+
   HzFlutterNavigator({GlobalKey<NavigatorState>? naviKey});
   @override
   Future<T?> pop<T extends Object?>(BuildContext? context, {T? result}) async {
-    context ??= naviKey?.currentContext;
+    debugPrint('pop currentContext:$context, rootContext:$rootContext');
+
+    context ??= context;
     if (context != null && Navigator.canPop(context)) {
       Navigator.pop<T>(context, result);
     }
@@ -17,17 +27,18 @@ class HzFlutterNavigator extends HzRouterInterface {
 
   @override
   Future<T?> popToRoot<T extends Object?>(BuildContext? context) async {
-    context ??= naviKey?.currentContext;
-    print('flutter do popToRoot: $context');
+    context ??= rootContext;
+    debugPrint('popToRoot currentContext:$context, rootContext:$rootContext');
     if (context != null) {
-      Navigator.popUntil(context, ModalRoute.withName(root));
+      Navigator.popUntil(context, ModalRoute.withName(rootRoute));
     }
     return null;
   }
 
   @override
   Future<T?> popUntil<T extends Object?>(BuildContext? context, {required String routeName}) async {
-    context ??= naviKey?.currentContext;
+    debugPrint('popUntil currentContext:$context, rootContext:$rootContext');
+    context ??= rootContext;
     if (context != null) {
       Navigator.popUntil(context, ModalRoute.withName(routeName));
     }
@@ -39,7 +50,8 @@ class HzFlutterNavigator extends HzRouterInterface {
       {required String routeName,
       bool withNewEngine = false,
       Map<String, dynamic>? arguments}) async {
-    context ??= naviKey?.currentContext;
+    debugPrint('pushNamed currentContext:$context, rootContext:$rootContext');
+    context ??= rootContext;
     if (context != null) {
       return Navigator.pushNamed<T?>(context, routeName, arguments: arguments);
     }
@@ -49,10 +61,11 @@ class HzFlutterNavigator extends HzRouterInterface {
   @override
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(BuildContext? context,
       {required String routeName, String? untilRouteName, Map<String, dynamic>? arguments}) async {
-    context ??= naviKey?.currentContext;
+    debugPrint('pushNamedAndRemoveUntil currentContext:$context, rootContext:$rootContext');
+    context ??= rootContext;
     if (context != null) {
       return await Navigator.of(context).pushNamedAndRemoveUntil<T>(
-          routeName, ModalRoute.withName(untilRouteName ?? root),
+          routeName, ModalRoute.withName(untilRouteName ?? rootRoute),
           arguments: arguments);
     }
     return null;
@@ -61,7 +74,8 @@ class HzFlutterNavigator extends HzRouterInterface {
   @override
   Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(BuildContext? context,
       {required String routeName, Map<String, dynamic>? arguments}) async {
-    context ??= naviKey?.currentContext;
+    debugPrint('pushReplacementNamed currentContext:$context, rootContext:$rootContext');
+    context ??= rootContext;
     if (context != null) {
       return await Navigator.pushReplacementNamed<T, TO>(context, routeName, arguments: arguments);
     }
@@ -70,6 +84,7 @@ class HzFlutterNavigator extends HzRouterInterface {
 
   @override
   Future<T?> popUntilLastNative<T extends Object?>(BuildContext? context) async {
+    debugPrint('popUntilLastNative currentContext:$context, rootContext:$rootContext');
     debugPrint('This method need to be implemented by native');
     return null;
   }

@@ -38,6 +38,7 @@ public protocol HzRouterDelegate {
     /// @parma toPage 要跳转的页面，
     /// @parma untilPage 移除截止页面，默认根页面，
     func pushToAndRemoveUntil(toPage: String, untilPage: String?, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?);
+    
 }
 
 

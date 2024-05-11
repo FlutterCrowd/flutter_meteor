@@ -15,7 +15,7 @@ public class HzRouter: NSObject {
     
     public static let routerDict = Dictionary<String, HzRouterBuilder>()
     
-    public static var plugin: HzRouterPlugin?
+    
     
     /// 获取顶部控制器 无要求
     public static func topViewController() -> UIViewController? {

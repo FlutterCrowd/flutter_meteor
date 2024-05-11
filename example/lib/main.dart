@@ -10,13 +10,11 @@ import 'multi_engin_page2.dart';
 import 'root_page.dart';
 
 void main() {
-  HzNavigator.naviKey = GlobalKey<NavigatorState>();
   runApp(const MyApp());
 }
 
 @pragma("vm:entry-point")
 void childEntry(List<String?> arg) {
-  HzNavigator.naviKey = GlobalKey<NavigatorState>();
   print('这是传递过来的参数：$arg');
   // runApp(const MyApp());
   if (arg.isNotEmpty) {
@@ -53,12 +51,12 @@ Map<String, WidgetBuilder> routes = {
 
 class _MyAppState extends State<MyApp> {
   late String routeName;
-
+  final GlobalKey<NavigatorState> rootKey = GlobalKey<NavigatorState>();
   @override
   void initState() {
     super.initState();
     routeName = widget.routeName ?? '/';
-    print('Current naviKey is ${HzNavigator.naviKey}');
+    HzNavigator.init(rootKey: rootKey);
     HzRouterManager.insertRouters(routes);
   }
 
@@ -66,7 +64,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       onGenerateRoute: HzRouterManager.generateRoute,
-      navigatorKey: HzNavigator.naviKey,
+      navigatorKey: rootKey,
       initialRoute: "/",
       onGenerateInitialRoutes: (String initialRoute) {
         // const url = "/mine?key=value";
@@ -78,10 +76,7 @@ class _MyAppState extends State<MyApp> {
           builder: builder,
           settings: settings,
         );
-        HzNavigator.root = initialRoute;
-
-        /// 记录根路由，用于pop判断
-        HzNavigator.rootPage = route;
+        HzNavigator.rootRoute = initialRoute;
         // HzRouterManager.routeInfo[HzNavigator.root] = builder;
         return [route];
       },

@@ -24,7 +24,6 @@ public class HzRouterPlugin: NSObject, FlutterPlugin {
     mainMethodCallHandeler = HzMethodChannelHandler.init(nativeNavigator: HzNativeNavigator.init(), flutterNavigator: HzFlutterNavigator(methodChannel: methodChannel))
     let instance = HzRouterPlugin()
       registrar.addMethodCallDelegate(instance, channel: methodChannel)
-      HzRouter.plugin = instance
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {

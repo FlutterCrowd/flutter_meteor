@@ -30,19 +30,30 @@ public class HzFlutterViewController: FlutterViewController {
     
    public init (entryPoint: String?,
          entrypointArgs: Dictionary<String, Any>?,
-         initialRoute: String?,
-          nibName: String?,
-          bundle: Bundle?
-    ) {
+         initialRoute: String?) {
         // 创建新的引擎
         let flutterEngine = HzEngineManager.createFlutterEngine(entryPoint: entryPoint, initialRoute: initialRoute, entrypointArgs: entrypointArgs)
         // 初始化VC
-        super.init(engine: flutterEngine, nibName: nibName, bundle: bundle)
+        super.init(engine: flutterEngine, nibName: nil, bundle: nil)
        routerDelegate = HzMethodChannelHandler.init(nativeNavigator: HzNativeNavigator.init(), flutterNavigator: HzFlutterNavigator(methodChannel: HzRouterPlugin.mainEngineMethodChannel))
         // 创建Method Channel
         methodChannel = createMethodChannel(channelName: HzEngineManager.HzRouterMethodChannelName)
     }
     
+    public init (entryPoint: String?,
+          entrypointArgs: Dictionary<String, Any>?,
+          initialRoute: String?,
+           nibName: String?,
+           bundle: Bundle?
+     ) {
+         // 创建新的引擎
+         let flutterEngine = HzEngineManager.createFlutterEngine(entryPoint: entryPoint, initialRoute: initialRoute, entrypointArgs: entrypointArgs)
+         // 初始化VC
+         super.init(engine: flutterEngine, nibName: nibName, bundle: bundle)
+        routerDelegate = HzMethodChannelHandler.init(nativeNavigator: HzNativeNavigator.init(), flutterNavigator: HzFlutterNavigator(methodChannel: HzRouterPlugin.mainEngineMethodChannel))
+         // 创建Method Channel
+         methodChannel = createMethodChannel(channelName: HzEngineManager.HzRouterMethodChannelName)
+     }
     
     
     func createMethodChannel(channelName:String) -> FlutterMethodChannel {

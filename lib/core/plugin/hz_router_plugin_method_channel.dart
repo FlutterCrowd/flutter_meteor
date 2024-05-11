@@ -1,14 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:hz_router/navigator/hz_navigator.dart';
 
 import '../../navigator/flutter/hz_flutter_navigater.dart';
 import 'hz_router_plugin_platform_interface.dart';
 
 /// An implementation of [HzRouterPluginPlatform] that uses method channels.
 class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
-  static final HzFlutterNavigator _flutterNavigator =
-      HzFlutterNavigator(naviKey: HzNavigator.naviKey);
+  static final HzFlutterNavigator _flutterNavigator = HzFlutterNavigator();
 
   void Function(String method, dynamic arguments)? extHandler;
 
@@ -64,8 +62,8 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
   }
 
   Future<dynamic> flutterPopRoRoot({Map<String, dynamic>? arguments}) async {
-    debugPrint('Channel pop to root $arguments, naviKey:${HzNavigator.naviKey}');
-    return _flutterNavigator.popUntil(null, routeName: _flutterNavigator.root);
+    debugPrint('Channel pop to root $arguments');
+    return _flutterNavigator.popUntil(null, routeName: HzFlutterNavigator.rootRoute);
   }
 
   Future<dynamic> flutterPushNamed({Map<String, dynamic>? arguments}) async {
