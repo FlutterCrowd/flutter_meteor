@@ -8,12 +8,9 @@
 import UIKit
 import Flutter
 
-public protocol HzCustomRouterDelegate {
-    func pushToNative(routeName: String, arguments :Dictionary<String, Any>?, callBack: HzRouterCallBack?)
-    func popNativeUntil(untilRouteName: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?)
-}
 
 public class HzFlutterNavigator: NSObject, HzRouterDelegate {
+    public var customRouterDelegate: (any HzCustomRouterDelegate)?
     
     public var  methodChannel: FlutterMethodChannel?
     

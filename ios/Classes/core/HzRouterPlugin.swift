@@ -12,7 +12,7 @@ public class HzRouterPlugin: NSObject, FlutterPlugin {
     
     public static var  mainEngineMethodChannel: FlutterMethodChannel?
    
-    public static var mainMethodCallHandeler: (any HzRouterDelegate)?
+    public static var mainMethodCallHandeler: HzMethodChannelHandler?
     
     public var customNavigator: (any HzCustomRouterDelegate)?
     
@@ -21,7 +21,8 @@ public class HzRouterPlugin: NSObject, FlutterPlugin {
         // 主引擎的MethodChannel
     let methodChannel = FlutterMethodChannel(name: HzEngineManager.HzRouterMethodChannelName, binaryMessenger: registrar.messenger())
     mainEngineMethodChannel = methodChannel
-    mainMethodCallHandeler = HzMethodChannelHandler.init(nativeNavigator: HzNativeNavigator.init(), flutterNavigator: HzFlutterNavigator(methodChannel: methodChannel))
+    mainMethodCallHandeler = HzMethodChannelHandler.init()
+    HzNavigator.routerDelegate = mainMethodCallHandeler
     let instance = HzRouterPlugin()
       registrar.addMethodCallDelegate(instance, channel: methodChannel)
     }

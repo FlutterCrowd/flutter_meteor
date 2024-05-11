@@ -13,9 +13,12 @@ public typealias HzRouterBuilder = (_ arguments: Dictionary<String, Any>?) -> UI
 public class HzRouter: NSObject {
   
     
-    public static let routerDict = Dictionary<String, HzRouterBuilder>()
+    public static var routerDict = Dictionary<String, HzRouterBuilder>()
     
     
+    public static func insertRouter(routeName:String, routerBuilder: @escaping HzRouterBuilder) {
+        routerDict[routeName] = routerBuilder
+    }
     
     /// 获取顶部控制器 无要求
     public static func topViewController() -> UIViewController? {

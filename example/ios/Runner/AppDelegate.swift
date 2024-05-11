@@ -19,6 +19,23 @@ import hz_router
       navi.navigationBar.isHidden = true
       self.window.rootViewController = navi
       
+      
+      HzNavigator.setCustomDelegate(customDelegate: HzCustomRouter.init())
+      
+      let  routerBuilder: HzRouterBuilder =  { arguments in
+          let testVc = TestViewController.init()
+          return testVc
+      }
+      HzRouter.insertRouter(routeName: "test", routerBuilder: routerBuilder)
+      
+      HzRouter.insertRouter(routeName: "multi_engin_native") { arguments in
+          var arg = Dictionary<String, Any>.init()
+          arg["1"] = 1
+          arg["2"] = "2"
+          let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
+          return testVc
+      }
+      
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

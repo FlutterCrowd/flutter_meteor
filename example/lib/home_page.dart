@@ -22,10 +22,90 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed(context, routeName: "page_router");
+                HzNavigator.pushNamed(context, routeName: "test");
               },
               child: const Text(
                 '打开原生页面',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                HzNavigator.pushNamed(context, routeName: "test");
+              },
+              child: const Text(
+                '打开原生页面',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                HzNavigator.pushNamed(context, routeName: "test1");
+              },
+              child: const Text(
+                '打开原生页面1',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                HzNavigator.pushNamed(context, routeName: "test2");
+              },
+              child: const Text(
+                '打开原生页面2',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                HzNavigator.pushNamed(context, routeName: "test3");
+              },
+              child: const Text(
+                '打开原生页面3',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                HzNavigator.pushNamed(context, routeName: "test4");
+              },
+              child: const Text(
+                '打开非Group新引擎',
                 style: TextStyle(
                   backgroundColor: Colors.red,
                 ),

@@ -12,6 +12,7 @@ public typealias HzRouterCallBack = (_ response: Any?) -> Void
 
 public protocol HzRouterDelegate {
     
+    var customRouterDelegate: (any HzCustomRouterDelegate)? { get }
     // 声明一个关联类型 Page
     // 在iOS中Page是UIViewController，在跟flutter路由这个Page就是String，路由名称
 //    associatedtype Page
@@ -41,4 +42,8 @@ public protocol HzRouterDelegate {
     
 }
 
-
+// 自定义路由方法，客户端通过实现HzCustomRouterDelegate自定义跳转
+public protocol HzCustomRouterDelegate {
+    func pushToNative(routeName: String, arguments :Dictionary<String, Any>?, callBack: HzRouterCallBack?)
+    func popNativeUntil(untilRouteName: String, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?)
+}
