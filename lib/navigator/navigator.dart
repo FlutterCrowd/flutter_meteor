@@ -1,32 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:hz_router/navigator/native/hz_native_navigator.dart';
 
-import 'flutter/hz_flutter_navigater.dart';
+import 'impl/flutter.dart';
+import 'impl/native.dart';
 
-/*
-* 封装系统的路由
-* */
+/// MeteorNavigator
+class MeteorNavigator {
+  // static Route<dynamic>? _rootRoute;
+  // static set rootRoute(String value) {
+  //   _rootRoute = _rootRoute;
+  //   MeteorFlutterNavigator.rootRoute = value;
+  // }
 
-/// 路由封装
-class HzNavigator {
-  static Route<dynamic>? _rootRoute;
-  static set rootRoute(String value) {
-    _rootRoute = _rootRoute;
-    HzFlutterNavigator.rootRoute = value;
-  }
+  // static Route<dynamic>? _rootPage;
+  // static set rootPage(Route<dynamic> value) {
+  //   _rootPage = value;
+  // }
 
-  static Route<dynamic>? _rootPage;
-  static set rootPage(Route<dynamic> value) {
-    _rootPage = value;
-  }
-
-  static final HzNativeNavigator _nativeNavigator = HzNativeNavigator();
-  static final HzFlutterNavigator _flutterNavigator = HzFlutterNavigator();
+  static final MeteorNativeNavigator _nativeNavigator = MeteorNativeNavigator();
+  static final MeteorFlutterNavigator _flutterNavigator = MeteorFlutterNavigator();
 
   static void init({
     required GlobalKey<NavigatorState> rootKey,
   }) {
-    HzFlutterNavigator.rootKey = rootKey;
+    MeteorFlutterNavigator.rootKey = rootKey;
   }
 
   /// push 到一个已经存在路由表的页面
@@ -89,7 +85,7 @@ class HzNavigator {
   ///
   /// @parma result 接受回调，T是个泛型，可以指定要返回的数据类型
   static void pop<T extends Object?>([T? result]) async {
-    if (Navigator.canPop(HzFlutterNavigator.rootContext)) {
+    if (Navigator.canPop(MeteorFlutterNavigator.rootContext)) {
       _flutterNavigator.pop(result);
     } else {
       await _nativeNavigator.pop(result);
@@ -120,6 +116,6 @@ class HzNavigator {
   }
 
   static bool isCurrentRouteRoot() {
-    return !Navigator.canPop(HzFlutterNavigator.rootContext);
+    return !Navigator.canPop(MeteorFlutterNavigator.rootContext);
   }
 }

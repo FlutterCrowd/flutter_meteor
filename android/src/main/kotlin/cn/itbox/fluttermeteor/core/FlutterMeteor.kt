@@ -1,22 +1,21 @@
-package cn.itbox.hz_router_plugin.core
+package cn.itbox.fluttermeteor.core
 
 import android.app.Activity
 import android.app.Application
-import android.content.Intent
-import cn.itbox.hz_router_plugin.engine.EngineInjector
+import cn.itbox.fluttermeteor.engine.EngineInjector
 
-object FlutterRouter {
+object FlutterMeteor {
 
-    private var _delegate: FlutterRouterDelegate? = null
+    private var _delegate: FlutterMeteorDelegate? = null
 
     internal val delegate get() = _delegate
 
-    fun init(application: Application, delegate: FlutterRouterDelegate) {
-        this._delegate = delegate
+    fun init(application: Application, delegate: FlutterMeteorDelegate) {
+        _delegate = delegate
         ActivityInjector.inject(application)
     }
 
-    fun open(activity: Activity, options: FlutterRouterRouteOptions) {
+    fun open(activity: Activity, options: FlutterMeteorRouteOptions) {
         if (_delegate == null) {
             throw IllegalStateException("delegate is null")
         }

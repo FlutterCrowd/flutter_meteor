@@ -1,15 +1,14 @@
-package cn.itbox.hz_router_plugin.core
+package cn.itbox.fluttermeteor.core
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import cn.itbox.hz_router_plugin.engine.EngineBindings
-import cn.itbox.hz_router_plugin.engine.EngineInjector
+import cn.itbox.fluttermeteor.engine.EngineBindings
+import cn.itbox.fluttermeteor.engine.EngineInjector
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.engine.FlutterEngine
 
-open class FlutterRouterActivity : FlutterActivity() {
+open class FlutterMeteorActivity : FlutterActivity() {
 
     private val engineBindings by lazy {
         val initialRoute = intent.getStringExtra("initialRoute")

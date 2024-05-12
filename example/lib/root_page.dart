@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hz_router/hz_router.dart';
+import 'package:flutter_meteor/flutter_meteor.dart';
 
 class RootPage extends StatelessWidget {
   const RootPage({super.key});
@@ -11,7 +11,7 @@ class RootPage extends StatelessWidget {
         Expanded(child: Container()),
         GestureDetector(
           onTap: () {
-            HzNavigator.pushNamed("home");
+            MeteorNavigator.pushNamed("home");
           },
           child: const Center(
             child: Text('首页'),
@@ -19,7 +19,7 @@ class RootPage extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            HzNavigator.pop();
+            MeteorNavigator.pop();
           },
           child: const Center(
             child: Text('返回上一页'),

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hz_router/hz_router.dart';
+import 'package:flutter_meteor/flutter_meteor.dart';
 
 class MultiEnginPage2 extends StatefulWidget {
   @override
@@ -30,7 +30,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("routeName", openNative: true);
+                MeteorNavigator.pushNamed("routeName", openNative: true);
               },
               child: Container(
                 child: const Text(
@@ -45,7 +45,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pop();
+                MeteorNavigator.pop();
               },
               child: const Text(
                 '返回原生',
@@ -58,7 +58,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.popToRoot();
+                MeteorNavigator.popToRoot();
               },
               child: const Text(
                 '返回根页面',
@@ -74,7 +74,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("multi_engin");
+                MeteorNavigator.pushNamed("multi_engin");
               },
               child: const Text(
                 '下一个flutter页面',
@@ -90,7 +90,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pop();
+                MeteorNavigator.pop();
               },
               child: Container(
                 child: const Text(

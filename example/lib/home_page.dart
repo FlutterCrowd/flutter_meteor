@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hz_router/hz_router.dart';
+import 'package:flutter_meteor/flutter_meteor.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("test", openNative: true);
+                MeteorNavigator.pushNamed("test", openNative: true);
               },
               child: const Text(
                 '打开原生页面',
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("test1", openNative: true);
+                MeteorNavigator.pushNamed("test1", openNative: true);
               },
               child: const Text(
                 '打开原生页面1',
@@ -54,7 +54,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("test2", openNative: true);
+                MeteorNavigator.pushNamed("test2", openNative: true);
               },
               child: const Text(
                 '打开原生页面2',
@@ -70,7 +70,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("test3", openNative: true);
+                MeteorNavigator.pushNamed("test3", openNative: true);
               },
               child: const Text(
                 '打开原生页面3',
@@ -86,7 +86,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("test4", openNative: true);
+                MeteorNavigator.pushNamed("test4", openNative: true);
               },
               child: const Text(
                 '打开非Group新引擎',
@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("multi_engin2", withNewEngine: true);
+                MeteorNavigator.pushNamed("multi_engin2", withNewEngine: true);
               },
               child: const Text(
                 '打开新引擎',
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pop();
+                MeteorNavigator.pop();
               },
               child: const Text(
                 '返回flutter页面',
@@ -165,7 +165,7 @@ class _HomePageState extends State<HomePage> {
           ),
           ElevatedButton(
               onPressed: () {
-                HzNavigator.pushNamed('popWindow', withNewEngine: true, newEngineOpaque: false);
+                MeteorNavigator.pushNamed('popWindow', withNewEngine: true, newEngineOpaque: false);
               },
               child: const Text('打开Flutter弹窗')),
         ],

@@ -1,10 +1,10 @@
-package cn.itbox.hz_router_plugin
+package cn.itbox.fluttermeteor
 
 import android.app.Activity
 import android.content.Intent
-import cn.itbox.hz_router_plugin.core.FlutterRouter
-import cn.itbox.hz_router_plugin.core.FlutterRouterRouteOptions
-import cn.itbox.hz_router_plugin.engine.EngineInjector
+import cn.itbox.fluttermeteor.core.FlutterMeteor
+import cn.itbox.fluttermeteor.core.FlutterMeteorRouteOptions
+import cn.itbox.fluttermeteor.engine.EngineInjector
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -15,7 +15,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
 /** HzRouterPlugin */
-class HzRouterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
+class FlutterMeteorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     /// The MethodChannel that will the communication between Flutter and native Android
     ///
     /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -27,7 +27,7 @@ class HzRouterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
     override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(
             flutterPluginBinding.binaryMessenger,
-            "cn.itbox.router.multiEngine.methodChannel"
+            "itbox.meteor.channel"
         )
         channel.setMethodCallHandler(this)
         EngineInjector.put(flutterPluginBinding.flutterEngine, channel)
@@ -49,15 +49,15 @@ class HzRouterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         activity?.also { theActivity ->
                             val args = argumentsMap?.filter { it. value != null }
                                 ?.map { it.key.toString() to it.value!! }?.toMap()
-                            val builder = FlutterRouterRouteOptions.Builder().initialRoute(routeName)
+                            val builder = FlutterMeteorRouteOptions.Builder().initialRoute(routeName)
                             if (args != null) {
                                 builder.arguments(args)
                             }
                             builder.backgroundMode(if (newEngineOpaque) FlutterActivityLaunchConfigs.BackgroundMode.opaque else FlutterActivityLaunchConfigs.BackgroundMode.transparent)
-                            FlutterRouter.delegate?.onPushFlutterPage(theActivity, builder.build())
+                            FlutterMeteor.delegate?.onPushFlutterPage(theActivity, builder.build())
                         }
                     } else if (openNative) {
-                        FlutterRouter.delegate?.onPushNativePage(
+                        FlutterMeteor.delegate?.onPushNativePage(
                             routeName,
                             routeArguments
                         )
@@ -86,7 +86,7 @@ class HzRouterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                 activity?.finish()
             }
             "popToRoot" -> {
-                result.success(true).also { FlutterRouter.popToRoot() }
+                result.success(true).also { FlutterMeteor.popToRoot() }
             }
             else -> {
                 result.notImplemented()

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hz_router/hz_router.dart';
+import 'package:flutter_meteor/flutter_meteor.dart';
 
 class MultiEnginPage extends StatefulWidget {
   @override
@@ -22,7 +22,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pop({'name1': 'I' 'm bob, I from Flutter, 哈哈'});
+                MeteorNavigator.pop({'name1': 'I' 'm bob, I from Flutter, 哈哈'});
               },
               child: Container(
                 child: const Text(
@@ -37,7 +37,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pop();
+                MeteorNavigator.pop();
               },
               child: Container(
                 child: const Text(
@@ -52,7 +52,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.popToRoot();
+                MeteorNavigator.popToRoot();
               },
               child: Container(
                 child: const Text(
@@ -67,7 +67,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pushNamed("mine");
+                MeteorNavigator.pushNamed("mine");
               },
               child: const Text(
                 '下一个flutter页面',

@@ -1,4 +1,4 @@
-package cn.itbox.hz_router_plugin.engine
+package cn.itbox.fluttermeteor.engine
 
 import android.app.Activity
 import io.flutter.FlutterInjector

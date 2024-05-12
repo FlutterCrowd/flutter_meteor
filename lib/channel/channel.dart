@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
-import '../../navigator/flutter/hz_flutter_navigater.dart';
-import 'hz_router_plugin_platform_interface.dart';
+import '../navigator/impl/flutter.dart';
+import 'channel_method.dart';
 
-class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
-  static final HzFlutterNavigator _flutterNavigator = HzFlutterNavigator();
+class MeteorMethodChannel {
+  static final MeteorFlutterNavigator _flutterNavigator = MeteorFlutterNavigator();
 
-  HzRouterPluginMethodChannel() {
+  MeteorMethodChannel() {
     methodChannel.setMethodCallHandler((call) async {
       Map<String, dynamic> arguments = <String, dynamic>{};
       if (call.arguments is Map) {
@@ -18,13 +18,13 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
       } else {
         arguments["arguments"] = call.arguments;
       }
-      if (call.method == HzRouterPluginPlatform.hzPopMethod) {
+      if (call.method == MeteorChannelMethod.popMethod) {
         return flutterPop(arguments: arguments);
-      } else if (call.method == HzRouterPluginPlatform.hzPopUntilMethod) {
+      } else if (call.method == MeteorChannelMethod.popUntilMethod) {
         return flutterPopUntil(arguments: arguments);
-      } else if (call.method == HzRouterPluginPlatform.hzPopToRootMethod) {
+      } else if (call.method == MeteorChannelMethod.popToRootMethod) {
         return flutterPopRoRoot(arguments: arguments);
-      } else if (call.method == HzRouterPluginPlatform.hzPushNamedMethod) {
+      } else if (call.method == MeteorChannelMethod.pushNamedMethod) {
         return flutterPushNamed(arguments: arguments);
       } else {
         return null;
@@ -33,8 +33,7 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
   }
 
   /// The method channel used to interact with the native platform.
-  final MethodChannel methodChannel =
-      const MethodChannel('cn.itbox.router.multiEngine.methodChannel');
+  final MethodChannel methodChannel = const MethodChannel('itbox.meteor.channel');
 
   /// ***********Native to flutter*************/
   Future<dynamic> flutterPop({Map<String, dynamic>? arguments}) async {
@@ -56,7 +55,7 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
 
   Future<dynamic> flutterPopRoRoot({Map<String, dynamic>? arguments}) async {
     debugPrint('Channel pop to root $arguments');
-    return _flutterNavigator.popUntil(HzFlutterNavigator.rootRoute);
+    return _flutterNavigator.popToFirstRoute();
   }
 
   Future<dynamic> flutterPushNamed({Map<String, dynamic>? arguments}) async {
