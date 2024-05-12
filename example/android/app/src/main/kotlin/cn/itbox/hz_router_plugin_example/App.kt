@@ -2,9 +2,9 @@ package cn.itbox.hz_router_plugin_example
 
 import android.app.Activity
 import android.content.Intent
-import cn.itbox.hz_router_plugin.core.FlutterRouter
-import cn.itbox.hz_router_plugin.core.FlutterRouterDelegate
-import cn.itbox.hz_router_plugin.core.FlutterRouterRouteOptions
+import cn.itbox.fluttermeteor.core.FlutterMeteor
+import cn.itbox.fluttermeteor.core.FlutterMeteorDelegate
+import cn.itbox.fluttermeteor.core.FlutterMeteorRouteOptions
 import io.flutter.app.FlutterApplication
 
 /**
@@ -16,7 +16,7 @@ class App : FlutterApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        FlutterRouter.init(this, object : FlutterRouterDelegate {
+        FlutterMeteor.init(this, object : FlutterMeteorDelegate {
             override fun onPushNativePage(routeName: String, arguments: Any?) {
                 println("routeName: $routeName, arguments: $arguments")
                 val intent = Intent(applicationContext, NativeActivity::class.java)
@@ -24,7 +24,7 @@ class App : FlutterApplication() {
                 startActivity(intent)
             }
 
-            override fun onPushFlutterPage(activity: Activity, options: FlutterRouterRouteOptions) {
+            override fun onPushFlutterPage(activity: Activity, options: FlutterMeteorRouteOptions) {
                 val activityClass = if (options.isTransparent) TransparentActivity::class.java else MainActivity::class.java
                 val intent = Intent(activity, activityClass)
                 intent.putExtras(options.toBundle())

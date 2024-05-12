@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hz_router/hz_router.dart';
+import 'package:flutter_meteor/flutter_meteor.dart';
 
 class PopWindowPage extends StatelessWidget {
   const PopWindowPage({super.key});
@@ -14,7 +14,7 @@ class PopWindowPage extends StatelessWidget {
         alignment: Alignment.center,
         child: GestureDetector(
           onTap: () {
-            HzNavigator.dismiss();
+            MeteorNavigator.dismiss();
           },
           child: Container(
             width: 200,

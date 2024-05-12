@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:hz_router/core/hz_router_interface.dart';
+
+import '../interface.dart';
+
 
 /// 实现flutter层页面路由
-class HzFlutterNavigator extends HzRouterInterface {
-  static String rootRoute = '/';
+class MeteorFlutterNavigator extends MeteorNavigatorInterface {
+  // static String rootRoute = '/';
   static GlobalKey<NavigatorState>? rootKey;
 
   static BuildContext get rootContext {
     if (rootKey?.currentContext == null) {
-      throw Exception("Context is null, you need to sure HzNavigator did init");
+      throw Exception("Context is null, you need to sure MeteorNavigator did init");
     }
     return rootKey!.currentContext!;
   }
@@ -32,6 +34,11 @@ class HzFlutterNavigator extends HzRouterInterface {
     debugPrint('popUntil rootContext:$rootContext');
     Navigator.popUntil(rootContext, ModalRoute.withName(routeName));
     return null;
+  }
+
+  void popToFirstRoute() {
+    debugPrint('popToFirstRoute rootContext:$rootContext');
+    Navigator.popUntil(rootContext, (route) => route.isFirst);
   }
 
   @override

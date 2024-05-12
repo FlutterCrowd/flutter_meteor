@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:hz_router/core/hz_router_interface.dart';
 
-import '../../core/plugin/hz_router_plugin_method_channel.dart';
-import '../../core/plugin/hz_router_plugin_platform_interface.dart';
+import '../../channel/channel.dart';
+import '../../channel/channel_method.dart';
+import '../interface.dart';
 
 /// 实现Native层页面路由
-class HzNativeNavigator extends HzRouterInterface {
-  final HzRouterPluginMethodChannel _pluginPlatform = HzRouterPluginMethodChannel();
+class MeteorNativeNavigator extends MeteorNavigatorInterface {
+  final MeteorMethodChannel _pluginPlatform = MeteorMethodChannel();
 
   MethodChannel get methodChannel => _pluginPlatform.methodChannel;
 
@@ -27,7 +27,7 @@ class HzNativeNavigator extends HzRouterInterface {
     params["newEngineOpaque"] = newEngineOpaque;
     params["openNative"] = openNative;
     params["arguments"] = arguments;
-    return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPushNamedMethod, params);
+    return await methodChannel.invokeMethod<T>(MeteorChannelMethod.pushNamedMethod, params);
   }
 
   @override
@@ -51,13 +51,13 @@ class HzNativeNavigator extends HzRouterInterface {
 
   @override
   Future<T?> pop<T extends Object?>([T? result]) async {
-    await methodChannel.invokeMethod(HzRouterPluginPlatform.hzPopMethod, result);
+    await methodChannel.invokeMethod(MeteorChannelMethod.popMethod, result);
     return null;
   }
 
   @override
   Future<T?> popToRoot<T extends Object?>() async {
-    return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopToRootMethod);
+    return await methodChannel.invokeMethod<T>(MeteorChannelMethod.popToRootMethod);
   }
 
   @override
@@ -68,15 +68,15 @@ class HzNativeNavigator extends HzRouterInterface {
 
   @override
   Future<T?> popUntilLastNative<T extends Object?>() async {
-    return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopMethod);
+    return await methodChannel.invokeMethod<T>(MeteorChannelMethod.popMethod);
   }
 
   @override
   Future<T?> dismiss<T extends Object?>([T? result]) async {
     if (Platform.isIOS) {
-      return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzDismissMethod);
+      return await methodChannel.invokeMethod<T>(MeteorChannelMethod.dismissMethod);
     } else {
-      return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopMethod);
+      return await methodChannel.invokeMethod<T>(MeteorChannelMethod.popMethod);
     }
   }
 }

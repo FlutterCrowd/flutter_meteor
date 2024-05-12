@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hz_router/hz_router.dart';
+import 'package:flutter_meteor/flutter_meteor.dart';
 
 import 'home_page.dart';
 import 'mine_page.dart';
@@ -78,7 +78,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     routeName = widget.routeName ?? '/';
-    HzNavigator.init(rootKey: rootKey);
+    MeteorNavigator.init(rootKey: rootKey);
   }
 
   @override
@@ -90,7 +90,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData.light(),
       onGenerateInitialRoutes: (String initialRoute) {
         print('initialRoute: $initialRoute');
-        HzNavigator.rootRoute = initialRoute;
+        // MeteorNavigator.rootRoute = initialRoute;
         final route = _generateRoute(
           RouteSettings(name: initialRoute, arguments: widget.routeArguments),
         );

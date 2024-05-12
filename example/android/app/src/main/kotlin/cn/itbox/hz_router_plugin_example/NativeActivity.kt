@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import cn.itbox.hz_router_plugin.core.FlutterRouter
-import cn.itbox.hz_router_plugin.core.FlutterRouterRouteOptions
+import cn.itbox.fluttermeteor.core.FlutterMeteor
+import cn.itbox.fluttermeteor.core.FlutterMeteorRouteOptions
 
 class NativeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,16 +15,16 @@ class NativeActivity : AppCompatActivity() {
 
         val button = findViewById<View>(R.id.button)
         button.setOnClickListener {
-            val options = FlutterRouterRouteOptions.Builder()
+            val options = FlutterMeteorRouteOptions.Builder()
                 .initialRoute("multi_engin")
                 .requestCode(200)
                 .build()
-            FlutterRouter.open(this, options)
+            FlutterMeteor.open(this, options)
         }
 
         val root = findViewById<View>(R.id.root)
         root.setOnClickListener {
-            FlutterRouter.popToRoot()
+            FlutterMeteor.popToRoot()
 //            startActivity(Intent(this, MainActivity::class.java))
         }
     }

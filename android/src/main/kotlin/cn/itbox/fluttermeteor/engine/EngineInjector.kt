@@ -1,4 +1,4 @@
-package cn.itbox.hz_router_plugin.engine
+package cn.itbox.fluttermeteor.engine
 
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel

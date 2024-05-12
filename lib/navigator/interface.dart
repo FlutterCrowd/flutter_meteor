@@ -3,7 +3,7 @@
 * */
 
 /// 路由接口
-abstract class HzRouterInterface {
+abstract class MeteorNavigatorInterface {
   /// push 到一个已经存在路由表的页面
   ///
   /// @parma routeName 要跳转的页面，

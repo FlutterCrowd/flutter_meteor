@@ -1,10 +1,10 @@
-package cn.itbox.hz_router_plugin.core
+package cn.itbox.fluttermeteor.core
 
 import android.os.Bundle
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs.BackgroundMode
 import org.json.JSONObject
 
-data class FlutterRouterRouteOptions(
+data class FlutterMeteorRouteOptions(
     val backgroundMode: BackgroundMode,
     val initialRoute: String,
     val arguments: Map<String, Any>?,
@@ -48,13 +48,13 @@ data class FlutterRouterRouteOptions(
             return this
         }
 
-        fun build(): FlutterRouterRouteOptions {
+        fun build(): FlutterMeteorRouteOptions {
             val initialRoute = initialRoute
             if (initialRoute.isNullOrEmpty()) {
                 throw IllegalArgumentException("pageName can not be null.")
             }
 
-            return FlutterRouterRouteOptions(backgroundMode, initialRoute, arguments, requestCode)
+            return FlutterMeteorRouteOptions(backgroundMode, initialRoute, arguments, requestCode)
         }
     }
 }

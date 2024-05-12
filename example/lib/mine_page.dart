@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hz_router/hz_router.dart';
+import 'package:flutter_meteor/flutter_meteor.dart';
 
 class MinePage extends StatefulWidget {
   @override
@@ -21,7 +21,7 @@ class _MinePageState extends State<MinePage> {
             child: GestureDetector(
               onTap: () {
                 /// 返回原生页面
-                HzNavigator.pop();
+                MeteorNavigator.pop();
               },
               child: Container(
                 child: const Text(
@@ -39,7 +39,7 @@ class _MinePageState extends State<MinePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pop();
+                MeteorNavigator.pop();
               },
               child: Container(
                 child: const Text(
@@ -58,7 +58,7 @@ class _MinePageState extends State<MinePage> {
             child: GestureDetector(
               onTap: () {
                 /// 返回原生页面
-                HzNavigator.popToRoot();
+                MeteorNavigator.popToRoot();
               },
               child: const Text(
                 '返回根视图',

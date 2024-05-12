@@ -1,4 +1,4 @@
-package cn.itbox.hz_router_plugin.core
+package cn.itbox.fluttermeteor.core
 
 import android.app.Activity
 import android.app.Application
