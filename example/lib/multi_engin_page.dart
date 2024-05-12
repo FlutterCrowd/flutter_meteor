@@ -37,7 +37,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pop(context);
+                HzNavigator.pop();
               },
               child: Container(
                 child: const Text(

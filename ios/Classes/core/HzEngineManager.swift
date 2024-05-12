@@ -57,18 +57,26 @@ public class WeakDictionary<Key: AnyObject, Value: AnyObject> {
     public func removeObject(forKey:Key?) {
         mapTable.removeObject(forKey: forKey)
     }
+    
+    public func count() -> Int{
+        return mapTable.count
+    }
 }
   
+
 public class HzEngineManager {
     
-    
     public static let flutterEngineGroup = FlutterEngineGroup(name: "cn.itbox.router.flutterEnginGroup", project: nil)
-    private static let engineCache = WeakDictionary<NSObject, NSObject>()
+    public static let engineCache = WeakDictionary<NSObject, NSObject>()
 
     public static let HzRouterMethodChannelName = "cn.itbox.router.multiEngine.methodChannel"
 
-    public static func printCache() {
-        print(engineCache)
+    public static func saveEngine(engine: FlutterEngine, flutterVc: FlutterViewController) {
+        engineCache[flutterVc] = engine
+    }
+    
+    public static func getEngine(flutterVc: FlutterViewController) -> FlutterEngine? {
+        return engineCache[flutterVc] as? FlutterEngine   
     }
     
     public static func getFlutterEngineModel(flutterVc: FlutterViewController) -> HzFlutterEngineModel? {

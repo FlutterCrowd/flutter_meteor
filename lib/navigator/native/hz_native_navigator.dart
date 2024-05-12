@@ -73,10 +73,10 @@ class HzNativeNavigator extends HzRouterInterface {
 
   @override
   Future<T?> dismiss<T extends Object?>([T? result]) async {
-    if (Platform.isAndroid) {
-      return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopMethod);
-    } else {
+    if (Platform.isIOS) {
       return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzDismissMethod);
+    } else {
+      return await methodChannel.invokeMethod<T>(HzRouterPluginPlatform.hzPopMethod);
     }
   }
 }

@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                HzNavigator.pop();
               },
               child: const Text(
                 '返回flutter页面',

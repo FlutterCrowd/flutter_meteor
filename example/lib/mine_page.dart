@@ -21,11 +21,7 @@ class _MinePageState extends State<MinePage> {
             child: GestureDetector(
               onTap: () {
                 /// 返回原生页面
-                HzNavigator.pop(
-                  context,
-                );
-                // _multiEnginPlugin.back();
-                // _hzRouterPlugin.pop();
+                HzNavigator.pop();
               },
               child: Container(
                 child: const Text(
@@ -43,9 +39,7 @@ class _MinePageState extends State<MinePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                // Navigator.pop(context);
-                // _multiEnginPlugin.back();
-                HzNavigator.pop(context);
+                HzNavigator.pop();
               },
               child: Container(
                 child: const Text(

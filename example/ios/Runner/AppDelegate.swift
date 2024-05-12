@@ -20,13 +20,46 @@ import hz_router
       self.window.rootViewController = navi
       
       
-      HzNavigator.setCustomDelegate(customDelegate: HzCustomRouter.init())
-      
-      let  routerBuilder: HzRouterBuilder =  { arguments in
+      HzRouter.customRouterDelegate = HzCustomRouter.init()
+
+      HzRouter.insertRouter(routeName: "test") { arguments in
           let testVc = TestViewController.init()
           return testVc
       }
-      HzRouter.insertRouter(routeName: "test", routerBuilder: routerBuilder)
+      
+      HzRouter.insertRouter(routeName: "test1") { arguments in
+          let testVc = TestViewController.init()
+          return testVc
+      }
+      
+      HzRouter.insertRouter(routeName: "routeName") { arguments in
+          let testVc = TestViewController.init()
+          return testVc
+      }
+      
+      HzRouter.insertRouter(routeName: "test2") { arguments in
+          var arg = Dictionary<String, Any>.init()
+          arg["1"] = 1
+          arg["2"] = "2"
+          let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
+          return testVc
+      }
+      
+      HzRouter.insertRouter(routeName: "multi_engin2") { arguments in
+          var arg = Dictionary<String, Any>.init()
+          arg["1"] = 1
+          arg["2"] = "2"
+          let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
+          return testVc
+      }
+      
+      HzRouter.insertRouter(routeName: "multi_engin") { arguments in
+          var arg = Dictionary<String, Any>.init()
+          arg["1"] = 1
+          arg["2"] = "2"
+          let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin")
+          return testVc
+      }
       
       HzRouter.insertRouter(routeName: "multi_engin_native") { arguments in
           var arg = Dictionary<String, Any>.init()

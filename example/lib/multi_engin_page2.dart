@@ -45,7 +45,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pop(context);
+                HzNavigator.pop();
               },
               child: const Text(
                 '返回原生',
@@ -90,7 +90,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                HzNavigator.pop(context);
+                HzNavigator.pop();
               },
               child: Container(
                 child: const Text(

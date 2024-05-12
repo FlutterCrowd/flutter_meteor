@@ -9,31 +9,31 @@ import UIKit
 
 public class HzNativeNavigator: NSObject {
     
-    static public func present(toPage: UIViewController, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    static public func present(toPage: UIViewController) {
         topViewController()?.present(toPage, animated: true)
     }
     
-    static public func push(toPage: UIViewController, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    static public func push(toPage: UIViewController) {
         topViewController()?.navigationController?.pushViewController(toPage, animated: true)
     }
     
-    static public func pop(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    static public func pop() {
         topViewController()?.navigationController?.popViewController(animated: true)
     }
     
-    static public func popUntil(untilPage: UIViewController, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    static public func popUntil(untilPage: UIViewController) {
         topViewController()?.navigationController?.popToViewController(untilPage, animated: true)
     }
     
-    static public func popToRoot(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    static public func popToRoot() {
         topViewController()?.navigationController?.popToRootViewController(animated: true)
     }
     
-    static public func dismissPage(arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    static public func dismiss() {
         topViewController()?.dismiss(animated: true)
     }
     
-    static public func pushToReplacement(toPage: UIViewController, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    static public func pushToReplacement(toPage: UIViewController) {
                 
         let naviVc: UINavigationController? =  topViewController()?.navigationController
         naviVc?.pushViewController(toPage, animated: true)
@@ -43,7 +43,7 @@ public class HzNativeNavigator: NSObject {
         }
     }
     
-    static public func pushToAndRemoveUntil(toPage: UIViewController, untilPage: UIViewController?, arguments: Dictionary<String, Any>?, callBack: HzRouterCallBack?) {
+    static public func pushToAndRemoveUntil(toPage: UIViewController, untilPage: UIViewController?) {
         let naviVc: UINavigationController? =  topViewController()?.navigationController
         naviVc?.pushViewController(toPage, animated: true)
         let count: Int = naviVc?.viewControllers.count ?? 0

@@ -19,7 +19,7 @@ class RootPage extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            HzNavigator.pop(context);
+            HzNavigator.pop();
           },
           child: const Center(
             child: Text('返回上一页'),
