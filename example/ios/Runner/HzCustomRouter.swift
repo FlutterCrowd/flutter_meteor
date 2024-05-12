@@ -8,14 +8,14 @@
 import Foundation
 import hz_router
 
-public class HzCustomRouter: NSObject, HzCustomRouterDelegate {
+ class HzCustomRouter: NSObject, HzRouterDelegate {
     
-    public func pushToNative(routeName: String, options: HzRouterOptions?) {
+    public func push(routeName: String, options: HzRouterOptions?) {
         if (routeName == "test1") {
             let vc:TestViewController  = TestViewController.init()
             HzNativeNavigator.present(toPage: vc);
             options?.callBack?(true)
-        } else if (routeName == "test1") {
+        } else if (routeName == "test2") {
             let vc:TestViewController  = TestViewController.init()
             HzNativeNavigator.present(toPage: vc);
             options?.callBack?(true)
@@ -49,10 +49,20 @@ public class HzCustomRouter: NSObject, HzCustomRouterDelegate {
             HzNativeNavigator.present(toPage: flutterVc)
             options?.callBack?(true)
         } else  if (routeName == "test4"){
-            let vc:HzFlutterViewController = HzFlutterViewController.init(engine: HzEngineManager.createFlutterEngineNoGroup(), nibName: nil, bundle: nil)
-            HzNativeNavigator.push(toPage: vc)
+          let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
+            let flutterVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: "multi_engin2", nibName: nil, bundle:nil)
+            flutterVc.isViewOpaque = newEngineOpaque
+            flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+            flutterVc.view.backgroundColor = UIColor.clear
+            HzNativeNavigator.push(toPage: flutterVc)
             options?.callBack?(true)
         } else {
+            let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
+            let flutterVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: "multi_engin2", nibName: nil, bundle:nil)
+            flutterVc.isViewOpaque = newEngineOpaque
+            flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+            flutterVc.view.backgroundColor = UIColor.clear
+            HzNativeNavigator.push(toPage: flutterVc)
             options?.callBack?(false)
         }
         

@@ -10,7 +10,7 @@ import UIKit
 import Flutter
 import hz_router
 
-class TestViewController: UIViewController, HzRouterDelegate {
+class TestViewController: UIViewController {
 
     // 初始化第二个 Flutter 引擎
     let flutterEngine2 = FlutterEngine(name: "engine2", project: nil)
@@ -128,25 +128,25 @@ class TestViewController: UIViewController, HzRouterDelegate {
     // 按钮点击时调用的方法
     @objc func buttonTapped(_ sender: UIButton) {
         
-        self.push(routeName: "test", options: nil)
+        HzNavigator.push(routeName: "test", options: nil)
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped2(_ sender: UIButton) {
-        HzNativeNavigator.pop()
+        HzNavigator.pop(options: nil)
     }
     
     
     // 按钮点击时调用的方法
     @objc func buttonTapped3(_ sender: UIButton) {
         print("3按钮被点击了！")
-        self.popUntil(untilRouteName: "", options: nil)
+        HzNavigator.popUntil(untilRouteName: "", options: nil)
 
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped4(_ sender: UIButton) {
         print("4按钮被点击了！")
-        self.push(routeName: "multi_engin_native", options: nil)
+        HzNavigator.push(routeName: "multi_engin_native", options: nil)
     }
 }

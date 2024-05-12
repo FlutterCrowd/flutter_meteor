@@ -11,10 +11,6 @@ public typealias HzRouterBuilder = (_ arguments: Dictionary<String, Any>?) -> UI
 
 
 public class HzRouter: NSObject {
-  
-    
-    public static var customRouterDelegate: (any HzCustomRouterDelegate)?
-    public static var mainFlutterEngineNavigator: HzFlutterNavigator?
 
     public static var routerDict = Dictionary<String, HzRouterBuilder>()
     

@@ -19,56 +19,12 @@ import hz_router
       navi.navigationBar.isHidden = true
       self.window.rootViewController = navi
       
+      // 指定自定义路由
+      HzNavigator.customRouterDelegate = HzCustomRouter.init()
       
-      HzRouter.customRouterDelegate = HzCustomRouter.init()
+      // 初始化路由表
+//      HzRouterMapExemple.setUp()
 
-      HzRouter.insertRouter(routeName: "test") { arguments in
-          let testVc = TestViewController.init()
-          return testVc
-      }
-      
-      HzRouter.insertRouter(routeName: "test1") { arguments in
-          let testVc = TestViewController.init()
-          return testVc
-      }
-      
-      HzRouter.insertRouter(routeName: "routeName") { arguments in
-          let testVc = TestViewController.init()
-          return testVc
-      }
-      
-      HzRouter.insertRouter(routeName: "test2") { arguments in
-          var arg = Dictionary<String, Any>.init()
-          arg["1"] = 1
-          arg["2"] = "2"
-          let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
-          return testVc
-      }
-      
-      HzRouter.insertRouter(routeName: "multi_engin2") { arguments in
-          var arg = Dictionary<String, Any>.init()
-          arg["1"] = 1
-          arg["2"] = "2"
-          let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
-          return testVc
-      }
-      
-      HzRouter.insertRouter(routeName: "multi_engin") { arguments in
-          var arg = Dictionary<String, Any>.init()
-          arg["1"] = 1
-          arg["2"] = "2"
-          let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin")
-          return testVc
-      }
-      
-      HzRouter.insertRouter(routeName: "multi_engin_native") { arguments in
-          var arg = Dictionary<String, Any>.init()
-          arg["1"] = 1
-          arg["2"] = "2"
-          let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
-          return testVc
-      }
-      
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }

@@ -18,6 +18,7 @@
 		B9EDC2872BEB4159001B5592 /* HzCustomRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDC2862BEB4159001B5592 /* HzCustomRouter.swift */; };
 		B9EDC28B2BEB5621001B5592 /* MutiEnginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDC28A2BEB5621001B5592 /* MutiEnginViewController.swift */; };
 		B9EDC2A52BEF3C95001B5592 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDC2A42BEF3C95001B5592 /* TestViewController.swift */; };
+		B9EDC2AC2BF11D4F001B5592 /* HzRouterMapExemple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDC2AB2BF11D4F001B5592 /* HzRouterMapExemple.swift */; };
 		C66EAFD652790A08B70AF2C4 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41910CD72157F528CB5FBB9E /* Pods_Runner.framework */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +70,7 @@
 		B9EDC2862BEB4159001B5592 /* HzCustomRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HzCustomRouter.swift; sourceTree = "<group>"; };
 		B9EDC28A2BEB5621001B5592 /* MutiEnginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutiEnginViewController.swift; sourceTree = "<group>"; };
 		B9EDC2A42BEF3C95001B5592 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		B9EDC2AB2BF11D4F001B5592 /* HzRouterMapExemple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HzRouterMapExemple.swift; sourceTree = "<group>"; };
 		D843B2CBBC7DF8889D37E14B /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
 		D9FD79A4D7D7A181D0D74C6B /* Pods-RunnerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunnerTests.debug.xcconfig"; path = "Target Support Files/Pods-RunnerTests/Pods-RunnerTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -169,6 +171,7 @@
 				B9EDC2862BEB4159001B5592 /* HzCustomRouter.swift */,
 				B9EDC2A42BEF3C95001B5592 /* TestViewController.swift */,
 				B9EDC28A2BEB5621001B5592 /* MutiEnginViewController.swift */,
+				B9EDC2AB2BF11D4F001B5592 /* HzRouterMapExemple.swift */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -385,6 +388,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9EDC2AC2BF11D4F001B5592 /* HzRouterMapExemple.swift in Sources */,
 				B9EDC2A52BEF3C95001B5592 /* TestViewController.swift in Sources */,
 				B9EDC2872BEB4159001B5592 /* HzCustomRouter.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,

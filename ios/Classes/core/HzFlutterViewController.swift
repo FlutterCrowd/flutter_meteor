@@ -7,7 +7,7 @@
 
 import Flutter
 
-public class HzFlutterViewController: FlutterViewController, HzRouterDelegate {
+public class HzFlutterViewController: FlutterViewController, HzRouterDelegate  {
     
     var methodChannel: FlutterMethodChannel?
 
@@ -50,51 +50,7 @@ public class HzFlutterViewController: FlutterViewController, HzRouterDelegate {
         
         let channel = FlutterMethodChannel(name: channelName, binaryMessenger: self.binaryMessenger)
         channel.setMethodCallHandler {[weak self] call, result in
-           self?.handleFlutterMethodCall(call, result: result)
-//            var options = HzRouterOptions.init()
-//            var routeName: String = ""
-//            var untilRouteName: String?
-//            if (call.arguments is Dictionary<String, Any>) {
-//                let arguments: Dictionary<String, Any> = call.arguments as! Dictionary<String, Any>
-//                options.newEngineOpaque = (arguments["newEngineOpaque"] != nil) && arguments["newEngineOpaque"] as! Bool == true
-//                options.withNewEngine = arguments["withNewEngine"] as? Bool ?? false
-//                routeName = arguments["routeName"] as? String ?? ""
-//                untilRouteName = arguments["routeName"] as? String
-//                if (arguments ["arguments"] != nil && arguments ["arguments"] is Dictionary<String, Any>) {
-//                    options.arguments = arguments["arguments"] as? Dictionary<String, Any>
-//                }
-//            }
-//            
-//            options.callBack = {response in
-//                result(response)
-//            }
-//
-//            switch call.method {
-//            case HzRouterPlugin.hzPushNamedMethod:
-//                self?.push(routeName: routeName, options: options)
-//                break
-//           
-//            case HzRouterPlugin.hzPopMethod:
-//                self?.pop(options: options)
-//                break
-//            case HzRouterPlugin.hzPushReplacementNamedMethod:
-//                self?.pushToReplacement(routeName: routeName, options: options)
-//                break
-//            case HzRouterPlugin.hzPushNamedAndRemoveUntilMethod:
-//                self?.pushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
-//                break
-//            case HzRouterPlugin.hzPopUntilMethod:
-//                self?.popUntil(untilRouteName: routeName, options: options)
-//                break
-//            case HzRouterPlugin.hzPopToRootMethod:
-//                self?.popToRoot(options: options)
-//                break
-//            case HzRouterPlugin.hzDismissMethod:
-//                self?.dismiss(options: options)
-//                break
-//            default:
-//              result(FlutterMethodNotImplemented)
-//            }
+            self?.handleFlutterMethodCall(call, result: result)
         }
         return channel
     }

@@ -11,8 +11,6 @@ import Flutter
 
 public class HzFlutterNavigator: NSObject, HzRouterDelegate {
 
-
-    public var customRouterDelegate: (any HzCustomRouterDelegate)?
     
     public var  methodChannel: FlutterMethodChannel?
     
