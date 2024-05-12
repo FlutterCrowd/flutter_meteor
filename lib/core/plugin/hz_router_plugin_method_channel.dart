@@ -4,13 +4,10 @@ import 'package:flutter/services.dart';
 import '../../navigator/flutter/hz_flutter_navigater.dart';
 import 'hz_router_plugin_platform_interface.dart';
 
-/// An implementation of [HzRouterPluginPlatform] that uses method channels.
 class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
   static final HzFlutterNavigator _flutterNavigator = HzFlutterNavigator();
 
-  void Function(String method, dynamic arguments)? extHandler;
-
-  HzRouterPluginMethodChannel({this.extHandler}) {
+  HzRouterPluginMethodChannel() {
     methodChannel.setMethodCallHandler((call) async {
       Map<String, dynamic> arguments = <String, dynamic>{};
       if (call.arguments is Map) {
@@ -30,11 +27,7 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
       } else if (call.method == HzRouterPluginPlatform.hzPushNamedMethod) {
         return flutterPushNamed(arguments: arguments);
       } else {
-        if (extHandler != null) {
-          return extHandler?.call(call.method, arguments);
-        } else {
-          return Future<void>.value();
-        }
+        return null;
       }
     });
   }
@@ -77,15 +70,4 @@ class HzRouterPluginMethodChannel extends HzRouterPluginPlatform {
     }
   }
 
-  @override
-  Future<T?> invokeMethod<T extends Object?>(
-      {required String method, Map<String, dynamic>? arguments}) async {
-    return await methodChannel.invokeMethod<T>(method, arguments);
-  }
-
-  @override
-  void setCustomMethodCallHandler(
-      {Function(String method, dynamic arguments)? customMethodCallHandler}) {
-    extHandler = customMethodCallHandler;
-  }
 }

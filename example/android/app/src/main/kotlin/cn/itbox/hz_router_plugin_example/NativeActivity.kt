@@ -16,7 +16,7 @@ class NativeActivity : AppCompatActivity() {
         val button = findViewById<View>(R.id.button)
         button.setOnClickListener {
             val options = FlutterRouterRouteOptions.Builder()
-                .routeName("multi_engin")
+                .initialRoute("multi_engin")
                 .requestCode(200)
                 .build()
             FlutterRouter.open(this, options)

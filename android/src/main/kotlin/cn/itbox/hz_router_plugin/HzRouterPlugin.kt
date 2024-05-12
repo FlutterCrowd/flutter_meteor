@@ -49,7 +49,7 @@ class HzRouterPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         activity?.also { theActivity ->
                             val args = argumentsMap?.filter { it. value != null }
                                 ?.map { it.key.toString() to it.value!! }?.toMap()
-                            val builder = FlutterRouterRouteOptions.Builder().routeName(routeName)
+                            val builder = FlutterRouterRouteOptions.Builder().initialRoute(routeName)
                             if (args != null) {
                                 builder.arguments(args)
                             }
