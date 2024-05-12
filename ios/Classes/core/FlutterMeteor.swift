@@ -1,40 +1,16 @@
 //
-//  MultiEngineManager.swift
+//  HzRouter.swift
 //  multi_engin
 //
 //  Created by itbox_djx on 2024/5/7.
 //
 
-import UIKit
 import Foundation
 import Flutter
 
-public typealias HzMethodCallBack = (_ method:String, _ arguments:Any?, _ flutterVc:FlutterViewController) -> Any
+public typealias FMRouterBuilder = (_ arguments: Dictionary<String, Any>?) -> UIViewController
 
-public typealias HzFlutterEngineCallBack = (_ method:String, _ arguments:Dictionary<String, Any>, _ engineModel:HzFlutterEngineModel) -> Any
-
-
-public class HzFlutterEngineModel: NSObject {
-    
-    var viewController: HzFlutterViewController
-    var engine: FlutterEngine?
-    var methodChannel: FlutterMethodChannel?
-    
-    public func clear() {
-        engine?.viewController = nil
-        engine = nil
-        methodChannel = nil
-    }
-    init(viewController: HzFlutterViewController, engine: FlutterEngine?, methodChannel: FlutterMethodChannel?) {
-        self.viewController = viewController
-        self.engine = engine
-        self.methodChannel = methodChannel
-    }
-
-}
-
-  
-public class WeakDictionary<Key: AnyObject, Value: AnyObject> {
+public class FMWeakDictionary<Key: AnyObject, Value: AnyObject> {
     private let mapTable: NSMapTable<Key, Value>
       
     init() {
@@ -64,23 +40,25 @@ public class WeakDictionary<Key: AnyObject, Value: AnyObject> {
 }
   
 
-public class HzEngineManager {
-    
-    public static let flutterEngineGroup = FlutterEngineGroup(name: "cn.itbox.router.flutterEnginGroup", project: nil)
-    public static let engineCache = WeakDictionary<NSObject, NSObject>()
+public class FlutterMeteor  {
 
-    public static let HzRouterMethodChannelName = "cn.itbox.router.multiEngine.methodChannel"
+    public static var routerDict = Dictionary<String, FMRouterBuilder>()
+    
+    public static func insertRouter(routeName:String, routerBuilder: @escaping FMRouterBuilder) {
+        routerDict[routeName] = routerBuilder
+    }
+    
+    public static let flutterEngineGroup = FlutterEngineGroup(name: "itbox.meteor.flutterEnginGroup", project: nil)
+    public static let engineCache = FMWeakDictionary<NSObject, NSObject>()
+
+    public static let HzRouterMethodChannelName = "itbox.meteor.channel"
 
     public static func saveEngine(engine: FlutterEngine, flutterVc: FlutterViewController) {
         engineCache[flutterVc] = engine
     }
     
     public static func getEngine(flutterVc: FlutterViewController) -> FlutterEngine? {
-        return engineCache[flutterVc] as? FlutterEngine   
-    }
-    
-    public static func getFlutterEngineModel(flutterVc: FlutterViewController) -> HzFlutterEngineModel? {
-        return engineCache[flutterVc] as? HzFlutterEngineModel;
+        return engineCache[flutterVc] as? FlutterEngine
     }
     
     public static func createRouterMethodChannel (binaryMessenger: any FlutterBinaryMessenger, result: @escaping FlutterMethodCallHandler) -> FlutterMethodChannel {
@@ -158,4 +136,3 @@ public class HzEngineManager {
     }
     
 }
-

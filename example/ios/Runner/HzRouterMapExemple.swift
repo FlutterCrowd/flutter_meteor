@@ -6,55 +6,55 @@
 //
 
 import UIKit
-import hz_router
+import flutter_meteor
 
 class HzRouterMapExemple  {
     
     static func setUp() -> Void {
-        HzRouter.insertRouter(routeName: "test") { arguments in
+        FlutterMeteor.insertRouter(routeName: "test") { arguments in
             let testVc = TestViewController.init()
             return testVc
         }
         
-        HzRouter.insertRouter(routeName: "test1") { arguments in
+        FlutterMeteor.insertRouter(routeName: "test1") { arguments in
             let testVc = TestViewController.init()
             return testVc
         }
         
-        HzRouter.insertRouter(routeName: "routeName") { arguments in
+        FlutterMeteor.insertRouter(routeName: "routeName") { arguments in
             let testVc = TestViewController.init()
             return testVc
         }
         
-        HzRouter.insertRouter(routeName: "test2") { arguments in
+        FlutterMeteor.insertRouter(routeName: "test2") { arguments in
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
-            let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
+            let testVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
             return testVc
         }
         
-        HzRouter.insertRouter(routeName: "multi_engin2") { arguments in
+        FlutterMeteor.insertRouter(routeName: "multi_engin2") { arguments in
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
-            let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
+            let testVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
             return testVc
         }
         
-        HzRouter.insertRouter(routeName: "multi_engin") { arguments in
+        FlutterMeteor.insertRouter(routeName: "multi_engin") { arguments in
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
-            let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin")
+            let testVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin")
             return testVc
         }
         
-        HzRouter.insertRouter(routeName: "multi_engin_native") { arguments in
+        FlutterMeteor.insertRouter(routeName: "multi_engin_native") { arguments in
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
-            let testVc = HzFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
+            let testVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2")
             return testVc
         }
     }

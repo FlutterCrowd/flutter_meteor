@@ -28,7 +28,7 @@ flutter:
         package: cn.itbox.fluttermeteor
         pluginClass: FlutterMeteorPlugin
       ios:
-        pluginClass: HzRouterPlugin
+        pluginClass: FlutterMeteorPlugin
   # To add assets to your package, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

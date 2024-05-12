@@ -1,6 +1,6 @@
 import UIKit
 import Flutter
-import hz_router
+import flutter_meteor
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -20,7 +20,7 @@ import hz_router
       self.window.rootViewController = navi
       
       // 指定自定义路由
-      HzNavigator.customRouterDelegate = HzCustomRouter.init()
+      FMNavigator.customRouterDelegate = HzCustomRouter.init()
       
       // 初始化路由表
 //      HzRouterMapExemple.setUp()

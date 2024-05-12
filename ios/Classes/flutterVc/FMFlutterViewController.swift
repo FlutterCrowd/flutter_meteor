@@ -7,7 +7,7 @@
 
 import Flutter
 
-public class HzFlutterViewController: FlutterViewController, HzRouterDelegate  {
+public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelegate  {
     
     var methodChannel: FlutterMethodChannel?
 
@@ -19,8 +19,8 @@ public class HzFlutterViewController: FlutterViewController, HzRouterDelegate  {
         
         super.init(engine: engine, nibName: nibName, bundle: nibBundle)
         // 创建Method Channel
-        methodChannel = createMethodChannel(channelName: HzEngineManager.HzRouterMethodChannelName)
-        HzEngineManager.saveEngine(engine: engine, flutterVc: self)
+        methodChannel = createMethodChannel(channelName: FlutterMeteor.HzRouterMethodChannelName)
+        FlutterMeteor.saveEngine(engine: engine, flutterVc: self)
     }
     
     public convenience init (entryPoint: String?,
@@ -28,7 +28,7 @@ public class HzFlutterViewController: FlutterViewController, HzRouterDelegate  {
          initialRoute: String?) {
        
         // 创建新的引擎
-        let flutterEngine = HzEngineManager.createFlutterEngine(entryPoint: entryPoint, initialRoute: initialRoute, entrypointArgs: entrypointArgs)
+        let flutterEngine = FlutterMeteor.createFlutterEngine(entryPoint: entryPoint, initialRoute: initialRoute, entrypointArgs: entrypointArgs)
         // 初始化VC
         self.init(engine: flutterEngine, nibName: nil, bundle: nil)
        
@@ -40,7 +40,7 @@ public class HzFlutterViewController: FlutterViewController, HzRouterDelegate  {
            nibName: String?,
            bundle: Bundle?) {
          // 创建新的引擎
-         let flutterEngine = HzEngineManager.createFlutterEngine(entryPoint: entryPoint, initialRoute: initialRoute, entrypointArgs: entrypointArgs)
+         let flutterEngine = FlutterMeteor.createFlutterEngine(entryPoint: entryPoint, initialRoute: initialRoute, entrypointArgs: entrypointArgs)
          // 初始化VC
          self.init(engine: flutterEngine, nibName: nibName, bundle: bundle)
      }
@@ -63,7 +63,7 @@ public class HzFlutterViewController: FlutterViewController, HzRouterDelegate  {
 
     deinit {
         print("HzFlutterViewController did deinit")
-        print("current engins \(HzEngineManager.engineCache.count())")
+        print("current engins \(FlutterMeteor.engineCache.count())")
 //        HzEngineManager.printCache()
     }
    

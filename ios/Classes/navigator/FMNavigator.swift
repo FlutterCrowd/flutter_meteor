@@ -8,21 +8,30 @@
 import Foundation
 import Flutter
 
-public class HzNavigator {
+public class FMNavigator {
 
     // 自定义路由代理
-    public static var customRouterDelegate: (any HzRouterDelegate)?
+    public static var customRouterDelegate: (any FlutterMeteorDelegate)?
     // 主引擎flutter导航器
-    public static var mainEngineFlutterNaviagtor: HzFlutterNavigator?
+    public static var mainEngineFlutterNaviagtor: FMFlutterNavigator?
 
     //
-    public static var flutterNavigator: HzFlutterNavigator {
-        return mainEngineFlutterNaviagtor! 
+    private static var flutterNavigator: FMFlutterNavigator {
+        return mainEngineFlutterNaviagtor!
     }
+    
+    static let hzPushNamedMethod: String = "pushNamed";
+    static let hzPushReplacementNamedMethod: String = "pushReplacementNamed";
+    static let hzPushNamedAndRemoveUntilMethod: String = "pushNamedAndRemoveUntil";
+    static let hzPopMethod: String = "pop";
+    static let hzPopUntilMethod: String = "popUntil";
+    static let hzPopToRootMethod: String = "popToRoot";
+    static let hzDismissMethod: String = "dismiss";
+
 
     public static func  handleFlutterMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         
-        var options = HzRouterOptions.init()
+        var options = FMMeteorOptions.init()
         var routeName: String = ""
         var untilRouteName: String?
         if (call.arguments is Dictionary<String, Any>) {
@@ -35,31 +44,30 @@ public class HzNavigator {
                 options.arguments = arguments["arguments"] as? Dictionary<String, Any>
             }
         }
-        
         options.callBack = {response in
             result(response)
         }
 
         switch call.method {
-        case HzRouterPlugin.hzPushNamedMethod:
+        case hzPushNamedMethod:
             self.push(routeName: routeName, options: options)
             break
-        case HzRouterPlugin.hzPopMethod:
+        case hzPopMethod:
             self.pop(options: options)
             break
-        case HzRouterPlugin.hzPushReplacementNamedMethod:
+        case hzPushReplacementNamedMethod:
             self.pushToReplacement(routeName: routeName, options: options)
             break
-        case HzRouterPlugin.hzPushNamedAndRemoveUntilMethod:
+        case hzPushNamedAndRemoveUntilMethod:
             self.pushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
             break
-        case HzRouterPlugin.hzPopUntilMethod:
+        case hzPopUntilMethod:
             self.popUntil(untilRouteName: untilRouteName ?? routeName, options: options)
             break
-        case HzRouterPlugin.hzPopToRootMethod:
+        case hzPopToRootMethod:
             self.popToRoot(options: options)
             break
-        case HzRouterPlugin.hzDismissMethod:
+        case hzDismissMethod:
             self.dismiss(options: options)
             break
         default:
@@ -67,12 +75,12 @@ public class HzNavigator {
         }
     }
     
-    public static func present(routeName: String, options: HzRouterOptions?) {
+    public static func present(routeName: String, options: FMMeteorOptions?) {
        
-       let vcBuilder: HzRouterBuilder? = HzRouter.routerDict[routeName]
+       let vcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[routeName]
        let vc: UIViewController? = vcBuilder?(options?.arguments)
        if (vc != nil) {
-           HzNativeNavigator.present(toPage: vc!)
+           FMNativeNavigator.present(toPage: vc!)
            options?.callBack?(true)
        }else if (self.customRouterDelegate != nil ){
            self.customRouterDelegate?.push(routeName: routeName, options: options)
@@ -81,12 +89,12 @@ public class HzNavigator {
        }
    }
    
-    public static func push(routeName: String, options: HzRouterOptions?) {
+    public static func push(routeName: String, options: FMMeteorOptions?) {
 
-       let vcBuilder: HzRouterBuilder? = HzRouter.routerDict[routeName]
+       let vcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[routeName]
        let vc: UIViewController? = vcBuilder?(options?.arguments)
        if (vc != nil) {
-           HzNativeNavigator.push(toPage: vc!)
+           FMNativeNavigator.push(toPage: vc!)
            options?.callBack?(true)
        }else if (self.customRouterDelegate != nil ){
            self.customRouterDelegate?.push(routeName: routeName, options: options)
@@ -95,11 +103,11 @@ public class HzNavigator {
        }
    }
    
-    public static func popUntil(untilRouteName: String, options: HzRouterOptions?) {
-       let vcBuilder: HzRouterBuilder? = HzRouter.routerDict[untilRouteName]
+    public static func popUntil(untilRouteName: String, options: FMMeteorOptions?) {
+       let vcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[untilRouteName]
        let vc: UIViewController? = vcBuilder?(options?.arguments)
        if (vc != nil) {
-           HzNativeNavigator.popUntil(untilPage: vc!)
+           FMNativeNavigator.popUntil(untilPage: vc!)
            options?.callBack?(true)
        } else if (self.customRouterDelegate != nil) {
            self.customRouterDelegate?.popUntil(untilRouteName: untilRouteName, options: options)
@@ -108,38 +116,38 @@ public class HzNavigator {
        }
    }
    
-    public static func pushToReplacement(routeName: String, options: HzRouterOptions?) {
+    public static func pushToReplacement(routeName: String, options: FMMeteorOptions?) {
        
-       let vcBuilder: HzRouterBuilder? = HzRouter.routerDict[routeName]
+       let vcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[routeName]
        let vc: UIViewController? = vcBuilder?(options?.arguments)
        if (vc != nil) {
-           HzNativeNavigator.pushToReplacement(toPage: vc!)
+           FMNativeNavigator.pushToReplacement(toPage: vc!)
            options?.callBack?(true)
        } else {
            self.flutterNavigator.popUntil(untilRouteName: routeName, options: options)
        }
    }
    
-    public static func pop(options: HzRouterOptions?) {
-       HzNativeNavigator.pop()
+    public static func pop(options: FMMeteorOptions?) {
+       FMNativeNavigator.pop()
    }
    
-    public static func popToRoot(options: HzRouterOptions?) {
-       HzNativeNavigator.popToRoot()
+    public static func popToRoot(options: FMMeteorOptions?) {
+       FMNativeNavigator.popToRoot()
         self.flutterNavigator.popToRoot(options: options)
    }
    
-    public static func dismiss(options: HzRouterOptions?) {
-       HzNativeNavigator.dismiss()
+    public static func dismiss(options: FMMeteorOptions?) {
+       FMNativeNavigator.dismiss()
    }
    
-    public static func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: HzRouterOptions?) {
-       let vcBuilder: HzRouterBuilder? = HzRouter.routerDict[routeName]
-       let untileVcBuilder: HzRouterBuilder? = HzRouter.routerDict[untilRouteName ?? ""]
+    public static func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: FMMeteorOptions?) {
+       let vcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[routeName]
+       let untileVcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[untilRouteName ?? ""]
        let vc: UIViewController? = vcBuilder?(options?.arguments)
        let untilVc: UIViewController? = untileVcBuilder?(options?.arguments)
        if (vc != nil) {
-           HzNativeNavigator.pushToAndRemoveUntil(toPage: vc!, untilPage: untilVc)
+           FMNativeNavigator.pushToAndRemoveUntil(toPage: vc!, untilPage: untilVc)
        } else {
            self.flutterNavigator.pushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
        }
