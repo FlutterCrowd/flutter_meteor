@@ -129,10 +129,4 @@ public class FlutterMeteor  {
         return flutterEngine
     }
     
-    public static func createFlutterEngineNoGroup() -> FlutterEngine  {
-        let flutterEngine = FlutterEngine(name: "cn.itbox.flutter.engine.name", project: nil)
-        flutterEngine.run(withEntrypoint: "childEntry", initialRoute: "mine")
-        return flutterEngine
-    }
-    
 }
