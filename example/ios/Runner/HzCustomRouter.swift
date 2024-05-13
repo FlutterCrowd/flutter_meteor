@@ -46,7 +46,7 @@ import flutter_meteor
             flutterVc.isViewOpaque = newEngineOpaque
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
-            FMNativeNavigator.push(toPage: flutterVc)
+            FMNativeNavigator.present(toPage: flutterVc)
             options?.callBack?(true)
         } else  if (routeName == "test4"){
           let newEngineOpaque: Bool = options?.newEngineOpaque ?? true

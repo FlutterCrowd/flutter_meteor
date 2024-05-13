@@ -12,66 +12,18 @@ public class FMNavigator {
 
     // 自定义路由代理
     public static var customRouterDelegate: (any FlutterMeteorDelegate)?
-    // 主引擎flutter导航器
-    public static var mainEngineFlutterNaviagtor: FMFlutterNavigator?
 
-    //
-    private static var flutterNavigator: FMFlutterNavigator {
-        return mainEngineFlutterNaviagtor!
-    }
-    
-    static let hzPushNamedMethod: String = "pushNamed";
-    static let hzPushReplacementNamedMethod: String = "pushReplacementNamed";
-    static let hzPushNamedAndRemoveUntilMethod: String = "pushNamedAndRemoveUntil";
-    static let hzPopMethod: String = "pop";
-    static let hzPopUntilMethod: String = "popUntil";
-    static let hzPopToRootMethod: String = "popToRoot";
-    static let hzDismissMethod: String = "dismiss";
-
-
-    public static func  handleFlutterMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        
-        var options = FMMeteorOptions.init()
-        var routeName: String = ""
-        var untilRouteName: String?
-        if (call.arguments is Dictionary<String, Any>) {
-            let arguments: Dictionary<String, Any> = call.arguments as! Dictionary<String, Any>
-            options.newEngineOpaque = (arguments["newEngineOpaque"] != nil) && arguments["newEngineOpaque"] as! Bool == true
-            options.withNewEngine = arguments["withNewEngine"] as? Bool ?? false
-            routeName = arguments["routeName"] as? String ?? ""
-            untilRouteName = arguments["routeName"] as? String
-            if (arguments ["arguments"] != nil && arguments ["arguments"] is Dictionary<String, Any>) {
-                options.arguments = arguments["arguments"] as? Dictionary<String, Any>
+    private static var mainEngineFlutterNaviagtor: FMFlutterNavigator?
+    // 主引擎MethodChannel
+    public static var flutterNavigator: FMFlutterNavigator {
+        get {
+            if (mainEngineFlutterNaviagtor == nil) {
+                mainEngineFlutterNaviagtor = FMFlutterNavigator.init(methodChannel: FMMethodChannel.flutterRootEngineMethodChannel)
             }
+            return mainEngineFlutterNaviagtor!
         }
-        options.callBack = {response in
-            result(response)
-        }
-
-        switch call.method {
-        case hzPushNamedMethod:
-            self.push(routeName: routeName, options: options)
-            break
-        case hzPopMethod:
-            self.pop(options: options)
-            break
-        case hzPushReplacementNamedMethod:
-            self.pushToReplacement(routeName: routeName, options: options)
-            break
-        case hzPushNamedAndRemoveUntilMethod:
-            self.pushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
-            break
-        case hzPopUntilMethod:
-            self.popUntil(untilRouteName: untilRouteName ?? routeName, options: options)
-            break
-        case hzPopToRootMethod:
-            self.popToRoot(options: options)
-            break
-        case hzDismissMethod:
-            self.dismiss(options: options)
-            break
-        default:
-          result(FlutterMethodNotImplemented)
+        set {
+            mainEngineFlutterNaviagtor = newValue
         }
     }
     
