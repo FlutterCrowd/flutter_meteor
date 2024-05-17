@@ -69,7 +69,7 @@ public class FMNavigator {
    }
    
     public static func pushToReplacement(routeName: String, options: FMMeteorOptions?) {
-       
+
        let vcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[routeName]
        let vc: UIViewController? = vcBuilder?(options?.arguments)
        if (vc != nil) {
@@ -86,7 +86,7 @@ public class FMNavigator {
    
     public static func popToRoot(options: FMMeteorOptions?) {
        FMNativeNavigator.popToRoot()
-        self.flutterNavigator.popToRoot(options: options)
+       self.flutterNavigator.popToRoot(options: options)
    }
    
     public static func dismiss(options: FMMeteorOptions?) {

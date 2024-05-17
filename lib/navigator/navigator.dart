@@ -100,7 +100,7 @@ class MeteorNavigator {
   }
 
   static Future<T?> popUntilLastNative<T extends Object?>() async {
-    return await _nativeNavigator.pop(null);
+    return await _nativeNavigator.pop();
   }
 
   /// pop 到指定页面并替换当前页面

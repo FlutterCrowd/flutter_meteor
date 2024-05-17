@@ -49,10 +49,13 @@ struct FMMethodChannel {
             options.withNewEngine = arguments["withNewEngine"] as? Bool ?? false
             routeName = arguments["routeName"] as? String ?? ""
             untilRouteName = arguments["routeName"] as? String
-            if (arguments ["arguments"] != nil && arguments ["arguments"] is Dictionary<String, Any>) {
-                options.arguments = arguments["arguments"] as? Dictionary<String, Any>
-            }
         }
+        if (call.arguments != nil) {
+            var arguments = Dictionary<String, Any>.init();
+            arguments["result"] = call.arguments
+            options.arguments = arguments
+        }
+
         options.callBack = {response in
             result(response)
         }

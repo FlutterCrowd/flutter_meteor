@@ -19,7 +19,7 @@ class RootPage extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            MeteorNavigator.pop();
+            MeteorNavigator.pop({'params': '回传'});
           },
           child: const Center(
             child: Text('返回上一页'),

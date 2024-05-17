@@ -21,7 +21,7 @@ class _MinePageState extends State<MinePage> {
             child: GestureDetector(
               onTap: () {
                 /// 返回原生页面
-                MeteorNavigator.pop();
+                MeteorNavigator.pop({'params': '回传'});
               },
               child: Container(
                 child: const Text(
@@ -39,7 +39,7 @@ class _MinePageState extends State<MinePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pop();
+                MeteorNavigator.pop({'params': '回传'});
               },
               child: Container(
                 child: const Text(

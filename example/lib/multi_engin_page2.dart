@@ -9,7 +9,6 @@ class MultiEnginPage2 extends StatefulWidget {
 }
 
 class _MultiEnginPageState extends State<MultiEnginPage2> {
-
   @override
   void initState() {
     super.initState();
@@ -30,14 +29,12 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushNamed("routeName", openNative: true);
+                MeteorNavigator.pushNamed("test2", openNative: true);
               },
-              child: Container(
-                child: const Text(
-                  '打开原生页面',
-                  style: TextStyle(
-                    backgroundColor: Colors.red,
-                  ),
+              child: const Text(
+                'present原生页面',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
                 ),
               ),
             ),
@@ -45,7 +42,20 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pop();
+                MeteorNavigator.pushNamed("multi_engin2", openNative: true);
+              },
+              child: const Text(
+                'push原生页面',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.pop({'params': '回传'});
               },
               child: const Text(
                 '返回原生',
@@ -90,7 +100,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pop();
+                MeteorNavigator.pop({'params': '回传'});
               },
               child: Container(
                 child: const Text(

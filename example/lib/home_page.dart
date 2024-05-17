@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pop();
+                MeteorNavigator.pop({'params': '回传'});
               },
               child: const Text(
                 '返回flutter页面',
