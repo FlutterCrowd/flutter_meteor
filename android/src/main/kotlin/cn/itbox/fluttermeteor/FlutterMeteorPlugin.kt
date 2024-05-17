@@ -57,10 +57,7 @@ class FlutterMeteorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                             FlutterMeteor.delegate?.onPushFlutterPage(theActivity, builder.build())
                         }
                     } else if (openNative) {
-                        FlutterMeteor.delegate?.onPushNativePage(
-                            routeName,
-                            routeArguments
-                        )
+                        FlutterMeteor.delegate?.onPushNativePage(routeName, routeArguments)
                     }
                 }
                 result.success(true)
@@ -82,7 +79,7 @@ class FlutterMeteorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                         }
                     }
                 }
-                activity?.setResult(Activity.RESULT_OK, data)
+                activity?.setResult(if (arguments == null) Activity.RESULT_CANCELED else Activity.RESULT_OK, data)
                 activity?.finish()
             }
             "popToRoot" -> {
