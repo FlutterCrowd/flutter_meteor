@@ -39,8 +39,15 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         // 创建Method Channel
         methodChannel = createMethodChannel(channelName: FlutterMeteor.HzRouterMethodChannelName)
         FlutterMeteor.saveEngine(engine: engine, flutterVc: self)
+        FlutterMeteor.pluginRegistDelegate.register(pluginRegistry: self.pluginRegistry())
     }
     
+    /***
+     * @ param entryPoint flutter 端入口函数
+     * @ param initialRoute flutter端页面路由
+     * @ param entrypointArgs 参数
+     * @ param popCallBack 退出页面的回调
+     */
     public convenience init (entryPoint: String?,
          entrypointArgs: Dictionary<String, Any>?,
          initialRoute: String?,
@@ -54,6 +61,12 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
        
     }
     
+    /***
+     * @ param entryPoint flutter 端入口函数
+     * @ param initialRoute flutter端页面路由
+     * @ param entrypointArgs 参数
+     * @ param popCallBack 退出页面的回调
+     */
     public convenience init (entryPoint: String?,
           entrypointArgs: Dictionary<String, Any>?,
           initialRoute: String?,
