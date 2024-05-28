@@ -42,7 +42,7 @@ class MyApp extends StatefulWidget {
 }
 
 Map<String, WidgetBuilder> _routes = {
-  "/": (context) => const RootPage(),
+  "rootPage": (context) => const RootPage(),
   "home": (context) => const HomePage(),
   "mine": (context) => MinePage(),
   "multi_engin": (context) => MultiEnginPage(),
@@ -86,16 +86,21 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       onGenerateRoute: _generateRoute,
       navigatorKey: rootKey,
-      initialRoute: "/",
+      // initialRoute: "home",
       theme: ThemeData.light(),
-      onGenerateInitialRoutes: (String initialRoute) {
-        print('initialRoute: $initialRoute');
-        // MeteorNavigator.rootRoute = initialRoute;
-        final route = _generateRoute(
-          RouteSettings(name: initialRoute, arguments: widget.routeArguments),
-        );
-        return [route!];
-      },
+      // home: HomePage(),
+      home: const RootPage(
+        key: Key('RootPage'),
+      ),
+      debugShowCheckedModeBanner: false,
+      // onGenerateInitialRoutes: (String initialRoute) {
+      //   print('initialRoute: $initialRoute');
+      //   // MeteorNavigator.rootRoute = initialRoute;
+      //   final route = _generateRoute(
+      //     RouteSettings(name: initialRoute, arguments: widget.routeArguments),
+      //   );
+      //   return [route!];
+      // }
     );
   }
 }

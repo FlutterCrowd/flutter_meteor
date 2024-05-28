@@ -66,9 +66,6 @@ import flutter_meteor
             let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: "multi_engin2", nibName: nil, bundle:nil, popCallBack: {result in
                 print(result ?? "")
             })
-            flutterVc.isViewOpaque = newEngineOpaque
-            flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-            flutterVc.view.backgroundColor = UIColor.clear
             FMNativeNavigator.push(toPage: flutterVc)
             options?.callBack?(true)
         } else {

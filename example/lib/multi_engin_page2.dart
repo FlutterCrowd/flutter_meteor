@@ -58,7 +58,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
                 MeteorNavigator.pop({'params': '回传'});
               },
               child: const Text(
-                '返回原生',
+                '返回',
                 style: TextStyle(
                   backgroundColor: Colors.green,
                 ),
@@ -100,14 +100,13 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pop({'params': '回传'});
+                MeteorNavigator.pushNamedAndRemoveUntil('multi_engin', '/');
+                // MeteorNavigator.pushNamedAndRemoveUntil('multi_engin', '/');
               },
-              child: Container(
-                child: const Text(
-                  '返回flutter页面',
-                  style: TextStyle(
-                    backgroundColor: Colors.yellow,
-                  ),
+              child: const Text(
+                'pushNamedAndRemoveUntil',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
                 ),
               ),
             ),

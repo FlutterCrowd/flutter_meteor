@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                 MeteorNavigator.pop({'params': '回传'});
               },
               child: const Text(
-                '返回flutter页面',
+                '返回',
                 style: TextStyle(
                   backgroundColor: Colors.grey,
                 ),
