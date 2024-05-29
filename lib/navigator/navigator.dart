@@ -64,10 +64,10 @@ class MeteorNavigator {
     return await _flutterNavigator.pushReplacementNamed<T, TO>(routeName, arguments: arguments);
   }
 
-  /// push 到指定页面，同时会清除从页面untilRouteName页面到指定routeName链路上的所有页面
+  /// push 到指定页面，同时会清除从页面pushNamedAndRemoveUntil页面到指定routeName链路上的所有页面
   ///
   /// @parma newRouteName 要跳转的页面，
-  /// @parma untilRouteName 移除截止页面，默认跟试图'/'，
+  /// @parma untilRouteName 移除截止页面
   /// @return T  泛型，用于指定返回类型
   static Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
     String newRouteName,
@@ -77,6 +77,21 @@ class MeteorNavigator {
     return await _flutterNavigator.pushNamedAndRemoveUntil<T>(
       newRouteName,
       untilRouteName,
+      arguments: arguments,
+    );
+  }
+
+  /// push 到指定页面，同时会清除从页面跟页面到指定routeName链路上的所有页面
+  ///
+  /// @parma newRouteName 要跳转的页面，
+  /// @return T  泛型，用于指定返回类型
+  static Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
+    String newRouteName, {
+    Map<String, dynamic>? arguments,
+  }) async {
+    return await _flutterNavigator.pushNamedAndRemoveUntil<T>(
+      newRouteName,
+      '',
       arguments: arguments,
     );
   }
@@ -100,7 +115,7 @@ class MeteorNavigator {
   }
 
   static Future<T?> popUntilLastNative<T extends Object?>() async {
-    return await _nativeNavigator.pop(null);
+    return await _nativeNavigator.pop();
   }
 
   /// pop 到指定页面并替换当前页面

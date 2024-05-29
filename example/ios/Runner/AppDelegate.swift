@@ -19,6 +19,8 @@ import flutter_meteor
       navi.navigationBar.isHidden = true
       self.window.rootViewController = navi
       
+      
+      
       // 指定自定义路由
       FMNavigator.customRouterDelegate = HzCustomRouter.init()
       

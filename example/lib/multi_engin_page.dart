@@ -37,7 +37,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pop();
+                MeteorNavigator.pop({'params': '回传'});
               },
               child: Container(
                 child: const Text(

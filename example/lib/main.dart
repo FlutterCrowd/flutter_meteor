@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 
@@ -42,7 +43,7 @@ class MyApp extends StatefulWidget {
 }
 
 Map<String, WidgetBuilder> _routes = {
-  "/": (context) => const RootPage(),
+  "rootPage": (context) => const RootPage(),
   "home": (context) => const HomePage(),
   "mine": (context) => MinePage(),
   "multi_engin": (context) => MultiEnginPage(),
@@ -84,18 +85,24 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      onGenerateRoute: _generateRoute,
-      navigatorKey: rootKey,
-      initialRoute: "/",
-      theme: ThemeData.light(),
-      onGenerateInitialRoutes: (String initialRoute) {
-        print('initialRoute: $initialRoute');
-        // MeteorNavigator.rootRoute = initialRoute;
-        final route = _generateRoute(
-          RouteSettings(name: initialRoute, arguments: widget.routeArguments),
-        );
-        return [route!];
-      },
-    );
+        onGenerateRoute: _generateRoute,
+        navigatorKey: rootKey,
+        // initialRoute: "home",
+        theme: ThemeData.light(),
+        // home: HomePage(),
+        home: const RootPage(
+          key: Key('RootPage'),
+        ),
+        debugShowCheckedModeBanner: false,
+        onGenerateInitialRoutes: (String initialRoute) {
+          if (kDebugMode) {
+            print('initialRoute: $initialRoute');
+          }
+          // MeteorNavigator.rootRoute = initialRoute;
+          final route = _generateRoute(
+            RouteSettings(name: initialRoute, arguments: widget.routeArguments),
+          );
+          return [route!];
+        });
   }
 }

@@ -18,7 +18,11 @@ public class FMNativeNavigator: NSObject {
     }
     
     static public func pop() {
-        topViewController()?.navigationController?.popViewController(animated: true)
+        if topViewController()?.presentedViewController == nil {
+            topViewController()?.navigationController?.popViewController(animated: true)
+        } else {
+            topViewController()?.dismiss(animated: false, completion: nil)
+        }
     }
     
     static public func popUntil(untilPage: UIViewController) {
@@ -26,7 +30,14 @@ public class FMNativeNavigator: NSObject {
     }
     
     static public func popToRoot() {
-        topViewController()?.navigationController?.popToRootViewController(animated: true)
+        
+        if rootViewController()?.presentedViewController == nil {
+            topViewController()?.navigationController?.popToRootViewController(animated: true)
+        } else {
+            topViewController()?.dismiss(animated: false, completion: {
+                popToRoot()
+            })
+        }
     }
     
     static public func dismiss() {
@@ -51,9 +62,9 @@ public class FMNativeNavigator: NSObject {
             naviVc?.viewControllers.removeSubrange(Range<Int>(NSRange.init(location: 0, length: count - 1))!)
         }
     }
-
+    
     /// 获取顶部控制器 无要求
-    public static func topViewController() -> UIViewController? {
+    public static func rootViewController() -> UIViewController? {
         var window = UIApplication.shared.keyWindow
         // 是否为当前显示的window
         if ((window?.windowLevel.rawValue) != 0) {
@@ -67,6 +78,13 @@ public class FMNativeNavigator: NSObject {
         }
 
         let vc = window?.rootViewController
+        return vc
+    }
+    
+
+    /// 获取顶部控制器 无要求
+    public static func topViewController() -> UIViewController? {
+        let vc = rootViewController()
         return getTopVC(withCurrentVC: vc)
     }
     

@@ -40,8 +40,15 @@ public class FMWeakDictionary<Key: AnyObject, Value: AnyObject> {
 }
   
 
-public class FlutterMeteor  {
+public protocol FMNewEnginePluginRegistryDelegate {
+    func register(pluginRegistry: any FlutterPluginRegistry)
+    func unRegister(pluginRegistry: any FlutterPluginRegistry)
+}
 
+public class FlutterMeteor  {
+ 
+    public static var  pluginRegistryDelegate: FMNewEnginePluginRegistryDelegate!
+ 
     public static var routerDict = Dictionary<String, FMRouterBuilder>()
     
     public static func insertRouter(routeName:String, routerBuilder: @escaping FMRouterBuilder) {
@@ -106,7 +113,7 @@ public class FlutterMeteor  {
             arguments["initialRoute"] = initialRoute
         }
         if(initialRoute != nil) {
-            arguments["entrypointArgs"] = entrypointArgs
+            arguments["routeArguments"] = entrypointArgs
         }
         
         var entrypointArgList:Array<String> = Array<String>.init()
