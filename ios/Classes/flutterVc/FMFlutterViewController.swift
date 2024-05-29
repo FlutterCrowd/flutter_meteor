@@ -39,7 +39,7 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         // 创建Method Channel
         methodChannel = createMethodChannel(channelName: FlutterMeteor.HzRouterMethodChannelName)
         FlutterMeteor.saveEngine(engine: engine, flutterVc: self)
-        FlutterMeteor.pluginRegistDelegate.register(pluginRegistry: self.pluginRegistry())
+        FlutterMeteor.pluginRegistryDelegate.register(pluginRegistry: self.pluginRegistry())
     }
     
     /***
@@ -98,8 +98,9 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
     }
 
     deinit {
+        FlutterMeteor.pluginRegistryDelegate.unRegister(pluginRegistry: self.pluginRegistry())
         print("HzFlutterViewController did deinit")
-        print("current engins \(FlutterMeteor.engineCache.count())")
+//        print("current engins \(FlutterMeteor.engineCache.count())")
 //        HzEngineManager.printCache()
     }
     

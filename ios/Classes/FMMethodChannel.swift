@@ -102,7 +102,7 @@ struct FMMethodChannel {
             var arguments = Dictionary<String, Any>.init();
             
             if (call.arguments is Dictionary<String, Any>) {
-                var methodArguments :Dictionary<String, Any>  = call.arguments as! Dictionary<String, Any>;
+                let methodArguments :Dictionary<String, Any>  = call.arguments as! Dictionary<String, Any>;
                 if (methodArguments["arguments"] != nil) {
                     arguments = methodArguments
                 } else {
