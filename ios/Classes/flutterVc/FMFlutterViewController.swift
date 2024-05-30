@@ -12,22 +12,10 @@ public typealias FlutterMeteorPopCallBack = (_ response: Dictionary<String, Any>
 
 public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelegate  {
     
+    
     var methodChannel: FlutterMethodChannel?
     var popCallBack: FlutterMeteorPopCallBack?
     
-//    private var  _meteorDelegate:FlutterMeteorDelegate?
-//
-//    public var meteorDelegate: FlutterMeteorDelegate {
-//       get {
-//           if _meteorDelegate == nil {
-//               _meteorDelegate = self
-//           }
-//           return _meteorDelegate!
-//       }
-//       set {
-//           _meteorDelegate = newValue
-//       }
-//    }
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -37,9 +25,9 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         
         super.init(engine: engine, nibName: nibName, bundle: nibBundle)
         // 创建Method Channel
-        methodChannel = createMethodChannel(channelName: FlutterMeteor.HzRouterMethodChannelName)
         FlutterMeteor.saveEngine(engine: engine, flutterVc: self)
         FlutterMeteor.pluginRegistryDelegate.register(pluginRegistry: self.pluginRegistry())
+        methodChannel = createMethodChannel(channelName: FlutterMeteor.HzRouterMethodChannelName)
     }
     
     /***
@@ -108,4 +96,5 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         FMNativeNavigator.pop()
         popCallBack?(options?.arguments)
     }
+    
 }

@@ -90,9 +90,10 @@ class _MyAppState extends State<MyApp> {
         // initialRoute: "home",
         theme: ThemeData.light(),
         // home: HomePage(),
-        home: const RootPage(
-          key: Key('RootPage'),
-        ),
+        // home: const RootPage(
+        //   key: Key('RootPage'),
+        // ),
+        initialRoute: "rootPage",
         debugShowCheckedModeBanner: false,
         onGenerateInitialRoutes: (String initialRoute) {
           if (kDebugMode) {

@@ -18,7 +18,7 @@ public class FMNavigator {
     public static var flutterNavigator: FMFlutterNavigator {
         get {
             if (mainEngineFlutterNaviagtor == nil) {
-                mainEngineFlutterNaviagtor = FMFlutterNavigator.init(methodChannel: FMMethodChannel.flutterRootEngineMethodChannel)
+                mainEngineFlutterNaviagtor = FMFlutterNavigator.init(methodChannel: flutterRootEngineMethodChannel)
             }
             return mainEngineFlutterNaviagtor!
         }
