@@ -3,7 +3,15 @@ import Flutter
 import flutter_meteor
 
 @UIApplicationMain
-@objc class AppDelegate: FlutterAppDelegate {
+@objc class AppDelegate: FlutterAppDelegate, FMNewEnginePluginRegistryDelegate {
+    func register(pluginRegistry: any FlutterPluginRegistry) {
+        GeneratedPluginRegistrant.register(with: pluginRegistry)
+    }
+    
+    func unRegister(pluginRegistry: any FlutterPluginRegistry) {
+        
+    }
+    
 //    let multiEngin = /*MultiEngineHandler*/.init()
   override func application(
     _ application: UIApplication,
@@ -19,6 +27,7 @@ import flutter_meteor
       navi.navigationBar.isHidden = true
       self.window.rootViewController = navi
       
+      FlutterMeteor.pluginRegistryDelegate = self
       
       
       // 指定自定义路由

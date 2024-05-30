@@ -62,7 +62,7 @@ import flutter_meteor
             options?.callBack?(true)
             
         } else  if (routeName == "test4"){
-          let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
+            let _: Bool = options?.newEngineOpaque ?? true
             let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: "multi_engin2", nibName: nil, bundle:nil, popCallBack: {result in
                 print(result ?? "")
             })

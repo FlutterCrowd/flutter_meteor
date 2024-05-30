@@ -9,6 +9,18 @@ import Foundation
 import Flutter
 
 
+public let FmRouterMethodChannelName = "itbox.meteor.channel"
+public let fmPushNamedMethod: String = "pushNamed";
+public let fmPushReplacementNamedMethod: String = "pushReplacementNamed";
+public let fmPushNamedAndRemoveUntilMethod: String = "pushNamedAndRemoveUntil";
+public let fmPopMethod: String = "pop";
+public let fmPopUntilMethod: String = "popUntil";
+public let fmPopToRootMethod: String = "popToRoot";
+public let fmDismissMethod: String = "dismiss";
+public var flutterRootEngineMethodChannel: FlutterMethodChannel!
+
+
+
 public typealias FlutterMeteorRouterCallBack = (_ response: Any?) -> Void
 
 public struct FMMeteorOptions {
@@ -24,6 +36,7 @@ public struct FMMeteorOptions {
 
 public protocol FlutterMeteorDelegate {
         
+    
     func present(routeName: String, options: FMMeteorOptions?)
     
     func push(routeName: String, options: FMMeteorOptions?)
@@ -51,10 +64,10 @@ public protocol FlutterMeteorDelegate {
 
  public extension FlutterMeteorDelegate {
 
-     func handleFlutterMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-         FMMethodChannel.handleFlutterMethodCall(call, result: result)
-     }
-    
+//     func handleFlutterMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+//         FMMethodChannel.handleFlutterMethodCall(call, result: result)
+//     }
+//    
      var customRouterDelegate: (any FlutterMeteorDelegate)? {
          return FMNavigator.customRouterDelegate
        }
@@ -64,6 +77,58 @@ public protocol FlutterMeteorDelegate {
             return FMNavigator.flutterNavigator
         }
     }
+     
+     func  handleFlutterMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+         
+         var options = FMMeteorOptions.init()
+         var routeName: String = ""
+         var untilRouteName: String?
+         if (call.arguments is Dictionary<String, Any>) {
+             let arguments: Dictionary<String, Any> = call.arguments as! Dictionary<String, Any>
+             options.newEngineOpaque = (arguments["newEngineOpaque"] != nil) && arguments["newEngineOpaque"] as! Bool == true
+             options.withNewEngine = arguments["withNewEngine"] as? Bool ?? false
+             routeName = arguments["routeName"] as? String ?? ""
+             untilRouteName = arguments["routeName"] as? String
+         }
+
+         options.callBack = {response in
+             result(response)
+         }
+
+         switch call.method {
+         case fmPushNamedMethod:
+             options.arguments = getPushAguments(call)
+             self.push(routeName: routeName, options: options)
+             break
+         case fmPopMethod:
+             options.arguments = getPopResult(call)
+             self.pop(options: options)
+             break
+         case fmPushReplacementNamedMethod:
+             options.arguments = getPushAguments(call)
+             self.pushToReplacement(routeName: routeName, options: options)
+             break
+         case fmPushNamedAndRemoveUntilMethod:
+             options.arguments = getPushAguments(call)
+             self.pushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
+             break
+         case fmPopUntilMethod:
+             options.arguments = getPopResult(call)
+             self.popUntil(untilRouteName: untilRouteName ?? routeName, options: options)
+             break
+         case fmPopToRootMethod:
+             options.arguments = getPopResult(call)
+             self.popToRoot(options: options)
+             break
+         case fmDismissMethod:
+             options.arguments = getPopResult(call)
+             self.dismiss(options: options)
+             break
+         default:
+           result(FlutterMethodNotImplemented)
+         }
+     }
+     
      
      func present(routeName: String, options: FMMeteorOptions?) {
          FMNavigator.present(routeName: routeName, options: options)
@@ -96,4 +161,35 @@ public protocol FlutterMeteorDelegate {
      func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: FMMeteorOptions?) {
          FMNavigator.pushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
     }
+     
+     private func  getPopResult(_ call: FlutterMethodCall) -> Dictionary<String, Any>? {
+     
+         if (call.arguments != nil) {
+             var arguments = Dictionary<String, Any>.init();
+             arguments["result"] = call.arguments
+             return arguments
+         } else {
+             return nil
+         }
+     }
+     
+     private func  getPushAguments(_ call: FlutterMethodCall) -> Dictionary<String, Any>? {
+         if (call.arguments != nil) {
+             var arguments = Dictionary<String, Any>.init();
+             
+             if (call.arguments is Dictionary<String, Any>) {
+                 let methodArguments :Dictionary<String, Any>  = call.arguments as! Dictionary<String, Any>;
+                 if (methodArguments["arguments"] != nil) {
+                     arguments = methodArguments
+                 } else {
+                     arguments["arguments"] = methodArguments
+                 }
+             } else {
+                 arguments["arguments"] = call.arguments
+             }
+             return arguments
+         } else {
+             return nil
+         }
+     }
 }
