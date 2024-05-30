@@ -17,8 +17,6 @@ public let fmPopMethod: String = "pop";
 public let fmPopUntilMethod: String = "popUntil";
 public let fmPopToRootMethod: String = "popToRoot";
 public let fmDismissMethod: String = "dismiss";
-public var flutterRootEngineMethodChannel: FlutterMethodChannel!
-
 
 
 public typealias FlutterMeteorRouterCallBack = (_ response: Any?) -> Void

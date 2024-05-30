@@ -14,6 +14,10 @@ public class FMNavigator {
     public static var customRouterDelegate: (any FlutterMeteorDelegate)?
 
     private static var mainEngineFlutterNaviagtor: FMFlutterNavigator?
+    
+    public static var flutterRootEngineMethodChannel: FlutterMethodChannel!
+
+    
     // 主引擎MethodChannel
     public static var flutterNavigator: FMFlutterNavigator {
         get {

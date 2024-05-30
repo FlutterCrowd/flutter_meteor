@@ -14,20 +14,13 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin, FlutterMeteorDelegat
         }
     }
     
-    public static let FmRouterMethodChannelName = "itbox.meteor.channel"
-    public static let fmPushNamedMethod: String = "pushNamed";
-    public static let fmPushReplacementNamedMethod: String = "pushReplacementNamed";
-    public static let fmPushNamedAndRemoveUntilMethod: String = "pushNamedAndRemoveUntil";
-    public static let fmPopMethod: String = "pop";
-    public static let fmPopUntilMethod: String = "popUntil";
-    public static let fmPopToRootMethod: String = "popToRoot";
-    public static let fmDismissMethod: String = "dismiss";
+    
     public static var flutterRootEngineMethodChannel: FlutterMethodChannel!
     
     
     public static func register(with registrar: FlutterPluginRegistrar) {
 
-        if (FlutterMeteorPlugin.flutterRootEngineMethodChannel == nil) {
+        if (FMNavigator.flutterRootEngineMethodChannel == nil) {
             let instance = FlutterMeteorPlugin.init(registrar: registrar)
             instance._routerDelegate = instance
         }
@@ -36,9 +29,9 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin, FlutterMeteorDelegat
     
     public init(registrar: FlutterPluginRegistrar) {
         super.init()
-        let flutterMethodChannel = FlutterMethodChannel.init(name: FlutterMeteorPlugin.FmRouterMethodChannelName, binaryMessenger: registrar.messenger())
-        if (FlutterMeteorPlugin.flutterRootEngineMethodChannel == nil) {
-            FlutterMeteorPlugin.flutterRootEngineMethodChannel = flutterMethodChannel
+        let flutterMethodChannel = FlutterMethodChannel.init(name: FmRouterMethodChannelName, binaryMessenger: registrar.messenger())
+        if (FMNavigator.flutterRootEngineMethodChannel == nil) {
+            FMNavigator.flutterRootEngineMethodChannel = flutterMethodChannel
         }
         registrar.addMethodCallDelegate(self, channel: flutterMethodChannel)
     }
