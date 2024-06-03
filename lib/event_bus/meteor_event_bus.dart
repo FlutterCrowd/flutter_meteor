@@ -15,13 +15,17 @@ class MeteorEventBus {
 
   /// 添加订阅者-接收事件
   static void addListener({required String eventName, required MeteorEventBusListener listener}) {
-    _listenerMap[eventName] ??= <MeteorEventBusListener>[];
-    _listenerMap[eventName]?.add(listener);
+    debugPrint('MeteorEventBus addListener eventName:$eventName, listener:$listener');
+    var list = _listenerMap[eventName];
+    list ??= <MeteorEventBusListener>[];
+    list.add(listener);
+    _listenerMap[eventName] = list;
   }
 
   /// 移除订阅者-结束事件
   /// 当listener 为空时会移除eventName的所有listener，因此慎用
   static void removeListener({required String eventName, MeteorEventBusListener? listener}) {
+    debugPrint('MeteorEventBus removeListener eventName:$eventName, listener:$listener');
     var list = _listenerMap[eventName];
     if (eventName.isEmpty || list == null) return;
     if (listener == null) {

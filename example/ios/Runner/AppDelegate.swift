@@ -19,10 +19,7 @@ import flutter_meteor
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
     
-      let vc: UIViewController =  TestViewController.init()//self.window.rootViewController as! FlutterViewController
-//      let channel = FlutterMethodChannel(name:"cn.itbox.driver/multi_engin", binaryMessenger: flutterVc.binaryMessenger)
-//      MultiEngineHandler.register(with: flutterVc.pluginRegistry().registrar(forPlugin: "MultiEngineHandler")!)
-
+      let vc: UIViewController =  self.window.rootViewController!//TestViewController.init()//
       let navi: UINavigationController = UINavigationController.init(rootViewController: vc)
       navi.navigationBar.isHidden = true
       self.window.rootViewController = navi
