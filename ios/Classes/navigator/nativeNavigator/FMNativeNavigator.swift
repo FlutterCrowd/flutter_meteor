@@ -18,11 +18,17 @@ public class FMNativeNavigator: NSObject {
     }
     
     static public func pop() {
-        if topViewController()?.presentedViewController == nil {
-            topViewController()?.navigationController?.popViewController(animated: true)
-        } else {
-            topViewController()?.dismiss(animated: false, completion: nil)
-        }
+        dismissOrPop(animated: true)
+//        if rootViewController()?.presentedViewController == nil {
+//            topViewController()?.navigationController?.popViewController(animated: true)
+//        } else {
+//            topViewController()?.dismiss(animated: false, completion: nil)
+//        }
+    }
+    
+    static public func dismiss() {
+        dismissOrPop(animated: true)
+//        topViewController()?.dismiss(animated: true)
     }
     
     static public func popUntil(untilPage: UIViewController) {
@@ -38,10 +44,6 @@ public class FMNativeNavigator: NSObject {
                 popToRoot()
             })
         }
-    }
-    
-    static public func dismiss() {
-        topViewController()?.dismiss(animated: true)
     }
     
     static public func pushToReplacement(toPage: UIViewController) {
@@ -79,6 +81,25 @@ public class FMNativeNavigator: NSObject {
 
         let vc = window?.rootViewController
         return vc
+    }
+    
+    static func dismissOrPop(animated: Bool) {
+        let viewController = topViewController()
+        if let navigationController = viewController?.navigationController {
+            if navigationController.viewControllers.first != viewController {
+                // 如果视图控制器不是导航堆栈中的根视图控制器，则执行 pop 操作
+                navigationController.popViewController(animated: animated)
+            } else {
+                // 如果是根视图控制器，则执行 dismiss 操作
+                viewController?.dismiss(animated: animated, completion: nil)
+            }
+        } else if viewController?.presentingViewController != nil {
+            // 如果视图控制器是通过 present 呈现的，则执行 dismiss 操作
+            viewController?.dismiss(animated: animated, completion: nil)
+        } else {
+            // 没有导航控制器或呈现控制器，可能是根视图控制器
+            print("This view controller cannot be dismissed or popped")
+        }
     }
     
 

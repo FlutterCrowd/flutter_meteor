@@ -9,7 +9,7 @@ import UIKit
 import Flutter
 
 
-public class FMFlutterNavigator: NSObject, FlutterMeteorDelegate {
+public class FMFlutterNavigator: NSObject, FlutterMeteorDelegate {    
 
     
     public var  methodChannel: FlutterMethodChannel?
@@ -20,7 +20,7 @@ public class FMFlutterNavigator: NSObject, FlutterMeteorDelegate {
     
     
     public func pop(options: FMMeteorOptions?) {
-        methodChannel?.invokeMethod(fmPopMethod, arguments: options?.arguments, result: { response in
+        methodChannel?.invokeMethod(FMPopMethod, arguments: options?.arguments, result: { response in
             options?.callBack?(response)
         })
     }
@@ -29,20 +29,20 @@ public class FMFlutterNavigator: NSObject, FlutterMeteorDelegate {
         var arg = Dictionary<String, Any>.init()
         arg["untilRouteName"] = untilRouteName
         arg["arguments"] = options?.arguments
-        methodChannel?.invokeMethod(fmPopUntilMethod, arguments: arg, result: { response in
+        methodChannel?.invokeMethod(FMPopUntilMethod, arguments: arg, result: { response in
             options?.callBack?(response)
         })
     }
     
     public func popToRoot(options: FMMeteorOptions?) {
         print("Pop to root")
-        methodChannel?.invokeMethod(fmPopToRootMethod, arguments: options?.arguments, result: { response in
+        methodChannel?.invokeMethod(FMPopToRootMethod, arguments: options?.arguments, result: { response in
             options?.callBack?(response)
         })
     }
     
     public func dismiss(options: FMMeteorOptions?) {
-        methodChannel?.invokeMethod(fmPopMethod, arguments: options?.arguments, result: { response in
+        methodChannel?.invokeMethod(FMPopMethod, arguments: options?.arguments, result: { response in
             options?.callBack?(response)
         })
     }
@@ -51,7 +51,7 @@ public class FMFlutterNavigator: NSObject, FlutterMeteorDelegate {
         var arg = Dictionary<String, Any>.init()
         arg["routeName"] = routeName
         arg["arguments"] = options?.arguments
-        methodChannel?.invokeMethod(fmPushNamedMethod, arguments: arg, result: { response in
+        methodChannel?.invokeMethod(FMPushNamedMethod, arguments: arg, result: { response in
             options?.callBack?(response)
         })
     }
@@ -60,7 +60,7 @@ public class FMFlutterNavigator: NSObject, FlutterMeteorDelegate {
         var arg = Dictionary<String, Any>.init()
         arg["routeName"] = routeName
         arg["arguments"] = options?.arguments
-        methodChannel?.invokeMethod(fmPushNamedMethod, arguments: arg, result: { response in
+        methodChannel?.invokeMethod(FMPushNamedMethod, arguments: arg, result: { response in
             options?.callBack?(response)
         })
     }
@@ -69,7 +69,7 @@ public class FMFlutterNavigator: NSObject, FlutterMeteorDelegate {
         var arg = Dictionary<String, Any>.init()
         arg["routeName"] = routeName
         arg["arguments"] = options?.arguments
-        methodChannel?.invokeMethod(fmPushReplacementNamedMethod, arguments: arg, result: { response in
+        methodChannel?.invokeMethod(FMPushReplacementNamedMethod, arguments: arg, result: { response in
             options?.callBack?(response)
         })
     }
@@ -78,7 +78,7 @@ public class FMFlutterNavigator: NSObject, FlutterMeteorDelegate {
         var arg = Dictionary<String, Any>.init()
         arg["routeName"] = routeName
         arg["arguments"] = options?.arguments
-        methodChannel?.invokeMethod(fmPushNamedAndRemoveUntilMethod, arguments: arg, result: { response in
+        methodChannel?.invokeMethod(FMPushNamedAndRemoveUntilMethod, arguments: arg, result: { response in
             options?.callBack?(response)
         })
     }

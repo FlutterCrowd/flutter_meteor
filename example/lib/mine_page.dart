@@ -23,17 +23,15 @@ class _MinePageState extends State<MinePage> {
                 /// 返回原生页面
                 MeteorNavigator.pop({'params': '回传'});
               },
-              child: Container(
-                child: const Text(
-                  '返回原生页面',
-                  style: TextStyle(
-                    backgroundColor: Colors.red,
-                  ),
+              child: const Text(
+                '返回原生页面',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
                 ),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Center(
@@ -41,17 +39,15 @@ class _MinePageState extends State<MinePage> {
               onTap: () {
                 MeteorNavigator.pop({'params': '回传'});
               },
-              child: Container(
-                child: const Text(
-                  '返回flutter页面',
-                  style: TextStyle(
-                    backgroundColor: Colors.green,
-                  ),
+              child: const Text(
+                '返回flutter页面',
+                style: TextStyle(
+                  backgroundColor: Colors.green,
                 ),
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Center(

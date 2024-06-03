@@ -3,41 +3,44 @@ import UIKit
 
 public class FlutterMeteorPlugin : NSObject, FlutterPlugin, FlutterMeteorDelegate {
     
-    private var _routerDelegate: (any FlutterMeteorDelegate)?
+    private var _flutterNavigator: (any FlutterMeteorDelegate)?
     
-    public var routerDelegate: any FlutterMeteorDelegate {
+    public var flutterNavigator: any FlutterMeteorDelegate {
         get {
-            return _routerDelegate ?? self
+            return _flutterNavigator ?? FMFlutterNavigator(methodChannel: FlutterMeteor.flutterRootEngineMethodChannel)
         }
+        
         set {
-            _routerDelegate = newValue
+            _flutterNavigator = newValue
         }
     }
     
+
     
     public static var flutterRootEngineMethodChannel: FlutterMethodChannel!
     
     
     public static func register(with registrar: FlutterPluginRegistrar) {
 
-        if (FMNavigator.flutterRootEngineMethodChannel == nil) {
-            let instance = FlutterMeteorPlugin.init(registrar: registrar)
-            instance._routerDelegate = instance
+        if (FlutterMeteor.flutterRootEngineMethodChannel == nil) {
+            let flutterMethodChannel = FlutterMethodChannel.init(name: FMRouterMethodChannelName, binaryMessenger: registrar.messenger())
+            if (FlutterMeteor.flutterRootEngineMethodChannel == nil) {
+                FlutterMeteor.flutterRootEngineMethodChannel = flutterMethodChannel
+            }
+            
+            let instance = FlutterMeteorPlugin()
+            instance.flutterNavigator = FlutterMeteor.flutterNavigator
+            if (FlutterMeteor.mainEnginRouterDelegate == nil) {
+                FlutterMeteor.mainEnginRouterDelegate = instance
+            }
+            registrar.addMethodCallDelegate(instance, channel: flutterMethodChannel)
         }
     }
     
     
-    public init(registrar: FlutterPluginRegistrar) {
-        super.init()
-        let flutterMethodChannel = FlutterMethodChannel.init(name: FmRouterMethodChannelName, binaryMessenger: registrar.messenger())
-        if (FMNavigator.flutterRootEngineMethodChannel == nil) {
-            FMNavigator.flutterRootEngineMethodChannel = flutterMethodChannel
-        }
-        registrar.addMethodCallDelegate(self, channel: flutterMethodChannel)
-    }
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        routerDelegate.handleFlutterMethodCall(call, result: result)
+        handleFlutterMethodCall(call, result: result)
     }
     
     public func detachFromEngine(for registrar: any FlutterPluginRegistrar) {

@@ -21,11 +21,11 @@ class TestViewController: UIViewController {
     let myButton: UIButton = {
         let button = UIButton(type: .system)
         // 设置按钮的标题
-        button.setTitle("跳原生", for: .normal)
+        button.setTitle("跳原生页面", for: .normal)
         // 设置按钮的背景颜色（可选）
         button.backgroundColor = .blue
         // 设置按钮的标题颜色（可选）
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         // 添加按钮的点击动作
         button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         // 设置按钮的自动布局约束（这通常在 viewDidLoad 中完成）
@@ -36,11 +36,11 @@ class TestViewController: UIViewController {
     let myButton2: UIButton = {
         let button = UIButton(type: .system)
         // 设置按钮的标题
-        button.setTitle("返回", for: .normal)
+        button.setTitle("打开新引擎", for: .normal)
         // 设置按钮的背景颜色（可选）
         button.backgroundColor = .red
         // 设置按钮的标题颜色（可选）
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         // 添加按钮的点击动作
         button.addTarget(self, action: #selector(buttonTapped2(_:)), for: .touchUpInside)
         // 设置按钮的自动布局约束（这通常在 viewDidLoad 中完成）
@@ -52,11 +52,11 @@ class TestViewController: UIViewController {
     let myButton3: UIButton = {
         let button = UIButton(type: .system)
         // 设置按钮的标题
-        button.setTitle("倒数第二个原生页面", for: .normal)
+        button.setTitle("返回上个页面", for: .normal)
         // 设置按钮的背景颜色（可选）
         button.backgroundColor = .yellow
         // 设置按钮的标题颜色（可选）
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         // 添加按钮的点击动作
         button.addTarget(self, action: #selector(buttonTapped3(_:)), for: .touchUpInside)
         // 设置按钮的自动布局约束（这通常在 viewDidLoad 中完成）
@@ -67,13 +67,28 @@ class TestViewController: UIViewController {
     let myButton4: UIButton = {
         let button = UIButton(type: .system)
         // 设置按钮的标题
-        button.setTitle("跳flutter页面", for: .normal)
+        button.setTitle("发送多引擎消息", for: .normal)
         // 设置按钮的背景颜色（可选）
         button.backgroundColor = .green
         // 设置按钮的标题颜色（可选）
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.black, for: .normal)
         // 添加按钮的点击动作
         button.addTarget(self, action: #selector(buttonTapped4(_:)), for: .touchUpInside)
+        // 设置按钮的自动布局约束（这通常在 viewDidLoad 中完成）
+        return button
+    }()
+    
+    // 创建一个按钮属性，以便在视图控制器的其他部分访问它
+    let myButton5: UIButton = {
+        let button = UIButton(type: .system)
+        // 设置按钮的标题
+        button.setTitle("发送多引擎消息", for: .normal)
+        // 设置按钮的背景颜色（可选）
+        button.backgroundColor = .cyan
+        // 设置按钮的标题颜色（可选）
+        button.setTitleColor(.black, for: .normal)
+        // 添加按钮的点击动作
+        button.addTarget(self, action: #selector(buttonTapped5(_:)), for: .touchUpInside)
         // 设置按钮的自动布局约束（这通常在 viewDidLoad 中完成）
         return button
     }()
@@ -123,30 +138,46 @@ class TestViewController: UIViewController {
             myButton4.widthAnchor.constraint(equalToConstant: 100),
             myButton4.heightAnchor.constraint(equalToConstant: 50)
         ])
+        
+        view.addSubview(myButton5)
+        myButton5.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            myButton5.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            myButton5.topAnchor.constraint(equalTo: myButton4.bottomAnchor),
+            myButton5.widthAnchor.constraint(equalToConstant: 100),
+            myButton5.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
   
     // 按钮点击时调用的方法
     @objc func buttonTapped(_ sender: UIButton) {
-        
-        FMNavigator.push(routeName: "test", options: nil)
+        FMNativeNavigator.push(toPage: TestViewController.init())
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped2(_ sender: UIButton) {
-        FMNavigator.pop(options: nil)
+        FMNavigator.push(routeName: "test", options: nil)
     }
-    
     
     // 按钮点击时调用的方法
     @objc func buttonTapped3(_ sender: UIButton) {
         print("3按钮被点击了！")
-        FMNavigator.popUntil(untilRouteName: "", options: nil)
-
+        FMNavigator.pop(options: nil)
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped4(_ sender: UIButton) {
         print("4按钮被点击了！")
-        FMNavigator.push(routeName: "multi_engin_native", options: nil)
+        FlutterMeteor.sendEvent(eventName: "native_event", arguments: Dictionary<String, Any>.init()) { result in
+            
+        }
+    }
+    
+    // 按钮点击时调用的方法
+    @objc func buttonTapped5(_ sender: UIButton) {
+        print("4按钮被点击了！")
+        FlutterMeteor.sendEvent(eventName: "native_event1", arguments: Dictionary<String, Any>.init()) { result in
+            
+        }
     }
 }

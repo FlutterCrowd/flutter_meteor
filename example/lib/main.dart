@@ -18,7 +18,6 @@ void main() {
 @pragma("vm:entry-point")
 void childEntry(List<String> args) {
   print('这是传递过来的参数：$args');
-
   if (args.isNotEmpty) {
     final json = jsonDecode(args.first);
     String routeName = json['initialRoute'];
@@ -47,7 +46,7 @@ Map<String, WidgetBuilder> _routes = {
   "home": (context) => const HomePage(),
   "mine": (context) => MinePage(),
   "multi_engin": (context) => MultiEnginPage(),
-  "multi_engin2": (context) => MultiEnginPage2(),
+  "multi_engin2": (context) => const MultiEnginPage2(),
   "popWindow": (context) => const PopWindowPage()
 };
 

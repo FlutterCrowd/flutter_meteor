@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
+import '../event_bus/meteor_event_bus.dart';
 import '../navigator/impl/flutter.dart';
 import 'channel_method.dart';
 
@@ -26,6 +27,14 @@ class MeteorMethodChannel {
         return flutterPopRoRoot(arguments: arguments);
       } else if (call.method == MeteorChannelMethod.pushNamedMethod) {
         return flutterPushNamed(arguments: arguments);
+      } else if (call.method == MeteorChannelMethod.multiEngineEventCallMethod) {
+        String eventName = arguments['eventName'];
+        List<MeteorEventBusListener> list = MeteorEventBus.listenersForEvent(eventName) ?? [];
+        for (var listener in list) {
+          listener.call(arguments['arguments']);
+        }
+        debugPrint(
+            'MeteorMethodChannel method:${call.method}, eventName:$eventName, arguments:${arguments['arguments']}');
       } else {
         return null;
       }
@@ -68,5 +77,4 @@ class MeteorMethodChannel {
       return await _flutterNavigator.pushNamed(routeName);
     }
   }
-
 }

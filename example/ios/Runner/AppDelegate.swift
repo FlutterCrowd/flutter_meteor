@@ -19,19 +19,18 @@ import flutter_meteor
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
     
-      let flutterVc: FlutterViewController = self.window.rootViewController as! FlutterViewController
+      let vc: UIViewController =  TestViewController.init()//self.window.rootViewController as! FlutterViewController
 //      let channel = FlutterMethodChannel(name:"cn.itbox.driver/multi_engin", binaryMessenger: flutterVc.binaryMessenger)
 //      MultiEngineHandler.register(with: flutterVc.pluginRegistry().registrar(forPlugin: "MultiEngineHandler")!)
 
-      let navi: UINavigationController = UINavigationController.init(rootViewController: flutterVc)
+      let navi: UINavigationController = UINavigationController.init(rootViewController: vc)
       navi.navigationBar.isHidden = true
       self.window.rootViewController = navi
       
       FlutterMeteor.pluginRegistryDelegate = self
       
-      
       // 指定自定义路由
-      FMNavigator.customRouterDelegate = HzCustomRouter.init()
+      FlutterMeteor.customRouterDelegate = HzCustomRouter.init()
       
       // 初始化路由表
 //      HzRouterMapExemple.setUp()

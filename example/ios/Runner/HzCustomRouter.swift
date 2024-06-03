@@ -8,16 +8,16 @@
 import Foundation
 import flutter_meteor
 
- class HzCustomRouter: NSObject, FlutterMeteorDelegate {
+ class HzCustomRouter: NSObject, FlutterMeteorCustomDelegate {
     
     public func push(routeName: String, options: FMMeteorOptions?) {
-        if (routeName == "test1") {
+        if (routeName == "push_native") {
             let vc:TestViewController  = TestViewController.init()
             FMNativeNavigator.push(toPage: vc);
             options?.callBack?(true)
-        } else if (routeName == "test2") {
+        } else if (routeName == "present_native") {
             let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
-            let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: "popWindow", nibName: nil, bundle:nil, popCallBack: {result in
+            let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: "multi_engin2", nibName: nil, bundle:nil, popCallBack: {result in
                 print(result ?? "")
             })
             flutterVc.isViewOpaque = newEngineOpaque
@@ -50,7 +50,7 @@ import flutter_meteor
                 FMNativeNavigator.present(toPage: vc)
                 options?.callBack?(true)
             }
-        } else if (routeName == "test3") {
+        } else if (routeName == "multi_engin2") {
             let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
             let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: "popWindow", nibName: nil, bundle:nil, popCallBack: {result in
                 print(result ?? "")
@@ -58,7 +58,7 @@ import flutter_meteor
             flutterVc.isViewOpaque = newEngineOpaque
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
-            FMNativeNavigator.present(toPage: flutterVc)
+            FMNativeNavigator.push(toPage: flutterVc)
             options?.callBack?(true)
             
         } else  if (routeName == "test4"){
@@ -81,10 +81,5 @@ import flutter_meteor
         }
         
     }
-    
-    public func popNativeUntil(untilRouteName: String, options: FMMeteorOptions?) {
-    }
-    
-
    
 }

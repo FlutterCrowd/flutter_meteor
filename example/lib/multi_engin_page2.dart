@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 
 class MultiEnginPage2 extends StatefulWidget {
+  const MultiEnginPage2({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _MultiEnginPageState();
@@ -9,13 +11,27 @@ class MultiEnginPage2 extends StatefulWidget {
 }
 
 class _MultiEnginPageState extends State<MultiEnginPage2> {
+  late MeteorEventBusListener listener;
+  MeteorEventBusListener listener2 = (arguments) {
+    print('native_event2, arguments:$arguments');
+    MeteorNavigator.pushNamed('multi_engin');
+  };
   @override
   void initState() {
     super.initState();
-    // _hzRouterPlugin.setCustomMethodCallHandler(customMethodCallHandler: (method, arguments) {
-    //   print(method);
-    //   print(arguments);
-    // });
+    listener = (arguments) {
+      print('native_event, arguments:$arguments');
+      MeteorNavigator.pushNamed('multi_engin');
+    };
+    MeteorEventBus.addListener(eventName: 'native_event', listener: listener);
+    MeteorEventBus.addListener(eventName: 'native_event1', listener: listener2);
+  }
+
+  @override
+  void dispose() {
+    MeteorEventBus.removeListener(eventName: 'native_event', listener: listener);
+    MeteorEventBus.removeListener(eventName: 'native_event1', listener: listener2);
+    super.dispose();
   }
 
   @override
@@ -29,7 +45,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushNamed("test2", openNative: true);
+                MeteorNavigator.pushNamed("present_native", openNative: true);
               },
               child: const Text(
                 'present原生页面',
@@ -42,7 +58,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushNamed("multi_engin2", openNative: true);
+                MeteorNavigator.pushNamed("push_native", openNative: true);
               },
               child: const Text(
                 'push原生页面',
@@ -55,10 +71,23 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
+                MeteorNavigator.pushNamed("multi_engin2", openNative: true, withNewEngine: true);
+              },
+              child: const Text(
+                '打开新引擎',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
                 MeteorNavigator.pop({'params': '回传'});
               },
               child: const Text(
-                '返回',
+                '返回上一个页面',
                 style: TextStyle(
                   backgroundColor: Colors.green,
                 ),
@@ -105,6 +134,22 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
               },
               child: const Text(
                 'pushNamedAndRemoveUntil',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorEventBus.commit(eventName: 'native_event', data: '这是数据');
+              },
+              child: const Text(
+                '发送个事件',
                 style: TextStyle(
                   backgroundColor: Colors.yellow,
                 ),
