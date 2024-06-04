@@ -10,6 +10,7 @@ class MeteorMethodChannel {
 
   MeteorMethodChannel() {
     methodChannel.setMethodCallHandler((call) async {
+      debugPrint('MeteorMethodChannel method:${call.method}, methodArguments:${call.arguments}');
       Map<String, dynamic> arguments = <String, dynamic>{};
       if (call.arguments is Map) {
         Map res = call.arguments;

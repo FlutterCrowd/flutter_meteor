@@ -7,29 +7,50 @@ import '../channel/channel_method.dart';
 typedef MeteorEventBusListener = void Function(dynamic arguments);
 
 class MeteorEventBus {
-  static final MeteorMethodChannel _pluginPlatform = MeteorMethodChannel();
+  // 工厂方法构造函数 - 通过UserModel()获取对象
+  factory MeteorEventBus() => _getInstance();
 
-  static MethodChannel get methodChannel => _pluginPlatform.methodChannel;
+  // instance的getter方法 - 通过UserModel.instance获取对象2
+  static MeteorEventBus get instance => _getInstance();
 
-  static final Map<String, List<MeteorEventBusListener>> _listenerMap = {};
+  // 静态变量_instance，存储唯一对象
+  static MeteorEventBus? _instance;
+
+  // 获取唯一对象
+  static MeteorEventBus _getInstance() {
+    _instance ??= MeteorEventBus._internal();
+    return _instance!;
+  }
+
+  //初始化...
+  MeteorEventBus._internal() {
+    //初始化其他操作...
+    _pluginPlatform = MeteorMethodChannel();
+  }
+
+  late MeteorMethodChannel _pluginPlatform;
+
+  MethodChannel get methodChannel => _pluginPlatform.methodChannel;
+
+  final Map<String, List<MeteorEventBusListener>> _listenerMap = {};
 
   /// 添加订阅者-接收事件
   static void addListener({required String eventName, required MeteorEventBusListener listener}) {
     debugPrint('MeteorEventBus addListener eventName:$eventName, listener:$listener');
-    var list = _listenerMap[eventName];
+    var list = instance._listenerMap[eventName];
     list ??= <MeteorEventBusListener>[];
     list.add(listener);
-    _listenerMap[eventName] = list;
+    instance._listenerMap[eventName] = list;
   }
 
   /// 移除订阅者-结束事件
   /// 当listener 为空时会移除eventName的所有listener，因此慎用
   static void removeListener({required String eventName, MeteorEventBusListener? listener}) {
     debugPrint('MeteorEventBus removeListener eventName:$eventName, listener:$listener');
-    var list = _listenerMap[eventName];
+    var list = instance._listenerMap[eventName];
     if (eventName.isEmpty || list == null) return;
     if (listener == null) {
-      _listenerMap.remove(eventName);
+      instance._listenerMap.remove(eventName);
     } else {
       list.remove(listener);
     }
@@ -52,7 +73,7 @@ class MeteorEventBus {
   }
 
   static void commitToCurrentEngine({required String eventName, dynamic data}) {
-    var list = _listenerMap[eventName];
+    var list = instance._listenerMap[eventName];
     debugPrint(
         'MeteorEventBus commitToCurrentEngine eventName:$eventName, data:$data, listeners:$list');
     if (list == null) return;
@@ -73,15 +94,15 @@ class MeteorEventBus {
     Map<String, dynamic> methodArguments = {};
     methodArguments['eventName'] = eventName;
     methodArguments['arguments'] = data;
-    final result = await methodChannel.invokeMethod(
-        MeteorChannelMethod.multiEngineEventCallMethod, methodArguments);
+    final result = await instance.methodChannel
+        .invokeMethod(MeteorChannelMethod.multiEngineEventCallMethod, methodArguments);
     debugPrint(result);
     return result;
   }
 
   static List<MeteorEventBusListener>? listenersForEvent(String eventName) {
-    debugPrint('MeteorEventBus all listeners $_listenerMap');
-    var list = _listenerMap[eventName];
+    debugPrint('MeteorEventBus all listeners ${instance._listenerMap}');
+    var list = instance._listenerMap[eventName];
     debugPrint('MeteorEventBus eventName:$eventName, listeners $list');
     return list;
   }

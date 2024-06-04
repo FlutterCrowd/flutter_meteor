@@ -11,16 +11,20 @@ class MultiEnginPage2 extends StatefulWidget {
 }
 
 class _MultiEnginPageState extends State<MultiEnginPage2> {
-  late MeteorEventBusListener listener;
-  MeteorEventBusListener listener2 = (arguments) {
-    print('native_event2, arguments:$arguments');
-    MeteorNavigator.pushNamed('multi_engin');
-  };
+  // late MeteorEventBusListener listener;
+  // MeteorEventBusListener listener2 = (arguments) {
+  //   print('native_event2, arguments:$arguments');
+  //   MeteorNavigator.pushNamed('multi_engin');
+  // };
   @override
   void initState() {
     super.initState();
-    listener = (arguments) {
+    MeteorEventBusListener listener = (arguments) {
       print('native_event, arguments:$arguments');
+      MeteorNavigator.pushNamed('multi_engin');
+    };
+    MeteorEventBusListener listener2 = (arguments) {
+      print('native_event2, arguments:$arguments');
       MeteorNavigator.pushNamed('multi_engin');
     };
     MeteorEventBus.addListener(eventName: 'native_event', listener: listener);
@@ -29,8 +33,8 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
 
   @override
   void dispose() {
-    MeteorEventBus.removeListener(eventName: 'native_event', listener: listener);
-    MeteorEventBus.removeListener(eventName: 'native_event1', listener: listener2);
+    // MeteorEventBus.removeListener(eventName: 'native_event', listener: listener);
+    // MeteorEventBus.removeListener(eventName: 'native_event1', listener: listener2);
     super.dispose();
   }
 
