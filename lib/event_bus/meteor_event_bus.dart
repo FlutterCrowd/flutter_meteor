@@ -54,7 +54,7 @@ class MeteorEventBus {
   static void commitToCurrentEngine({required String eventName, dynamic data}) {
     var list = _listenerMap[eventName];
     debugPrint(
-        'MeteorEventBus commitToMultiEngine eventName:$eventName, data:$data, listeners:$list');
+        'MeteorEventBus commitToCurrentEngine eventName:$eventName, data:$data, listeners:$list');
     if (list == null) return;
     int len = list.length - 1;
     //反向遍历，防止在订阅者在回调中移除自身带来的下标错位
@@ -80,7 +80,9 @@ class MeteorEventBus {
   }
 
   static List<MeteorEventBusListener>? listenersForEvent(String eventName) {
+    debugPrint('MeteorEventBus all listeners $_listenerMap');
     var list = _listenerMap[eventName];
+    debugPrint('MeteorEventBus eventName:$eventName, listeners $list');
     return list;
   }
 }
