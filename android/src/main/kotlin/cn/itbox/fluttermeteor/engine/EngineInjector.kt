@@ -32,4 +32,6 @@ object EngineInjector {
         map.remove(engine)
     }
 
+    fun allChannels() = map.values.toList()
+
 }

@@ -85,6 +85,12 @@ class FlutterMeteorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "popToRoot" -> {
                 result.success(true).also { FlutterMeteor.popToRoot() }
             }
+            "cn.itbox.multiEnginEvent" -> { // MeteorEventBus
+                EngineInjector.allChannels().forEach {
+                    it.invokeMethod(call.method, call.arguments)
+                }
+                result.success(true)
+            }
             else -> {
                 result.notImplemented()
             }
