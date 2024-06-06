@@ -105,12 +105,12 @@ public class FlutterMeteor  {
         return engineCache[engine]
     }
     
-    public static func sendEvent(eventName: String, arguments: Any?, result: FlutterResult?) {
+    public static func sendEvent(eventName: String, arguments: Any?) {
         print("FlutterMeteor start invoke channel:\(flutterRootEngineMethodChannel.description), method: \(FMMultiEngineEventCallMethod), eventName:\(eventName), arguments:\(String(describing: arguments))")
-        var methodAguments: Dictionary<String, Any?> = Dictionary<String, Any?> .init()
+        var methodAguments: Dictionary<String, Any> = Dictionary<String, Any> .init()
         methodAguments["eventName"] = eventName
-        methodAguments["arguments"] = arguments
-        flutterRootEngineMethodChannel.invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments, result: result)
+        methodAguments["arguments"] = arguments ?? Dictionary<String, Any> .init()
+        flutterRootEngineMethodChannel.invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments)
         for key in engineCache.mapTable.keyEnumerator() {
             if let key = key as? FlutterEngine,
                let channel: FlutterMethodChannel = engineCache.mapTable.object(forKey: key) {

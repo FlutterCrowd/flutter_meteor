@@ -126,7 +126,7 @@ public protocol FlutterMeteorDelegate {
                  let methodArguments: Dictionary<String, Any> = call.arguments as! Dictionary<String, Any>
                  let eventName = methodArguments["eventName"] as? String ?? ""
                  let arguments = methodArguments["arguments"]
-                 FlutterMeteor.sendEvent(eventName: eventName, arguments: arguments, result: result)
+                 FlutterMeteor.sendEvent(eventName: eventName, arguments: arguments)
              }
              
              break

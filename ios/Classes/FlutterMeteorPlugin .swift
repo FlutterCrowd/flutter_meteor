@@ -15,7 +15,6 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin, FlutterMeteorDelegat
         }
     }
     
-
     
     public static var flutterRootEngineMethodChannel: FlutterMethodChannel!
     
