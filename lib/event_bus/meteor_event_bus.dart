@@ -96,7 +96,7 @@ class MeteorEventBus {
     methodArguments['arguments'] = data;
     final result = await instance.methodChannel
         .invokeMethod(MeteorChannelMethod.multiEngineEventCallMethod, methodArguments);
-    debugPrint(result);
+    debugPrint('MeteorEventBus commitToMultiEngine $result');
     return result;
   }
 
