@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_meteor/engine/engine.dart';
+import 'package:hz_tools/hz_tools.dart';
 
 import '../event_bus/meteor_event_bus.dart';
 import '../navigator/impl/flutter.dart';
@@ -10,7 +11,8 @@ class MeteorMethodChannel {
 
   MeteorMethodChannel() {
     methodChannel.setMethodCallHandler((call) async {
-      debugPrint('MeteorMethodChannel method:${call.method}, methodArguments:${call.arguments}');
+      HzLog.t(
+          'MeteorMethodChannel isMain:${MeteorEngine.isMain}  method:${call.method}, methodArguments:${call.arguments}');
       Map<String, dynamic> arguments = <String, dynamic>{};
       if (call.arguments is Map) {
         Map res = call.arguments;
@@ -34,8 +36,8 @@ class MeteorMethodChannel {
         for (var listener in list) {
           listener.call(arguments['arguments']);
         }
-        debugPrint(
-            'MeteorMethodChannel method:${call.method}, eventName:$eventName, arguments:${arguments['arguments']}');
+        HzLog.i(
+            'MeteorMethodChannel isMain:${MeteorEngine.isMain} method:${call.method}, eventName:$eventName, arguments:${arguments['arguments']}');
       } else {
         return null;
       }
@@ -64,7 +66,7 @@ class MeteorMethodChannel {
   }
 
   Future<dynamic> flutterPopRoRoot({Map<String, dynamic>? arguments}) async {
-    debugPrint('Channel pop to root $arguments');
+    HzLog.i('Channel flutterPopRoRoot arguments: $arguments');
     return _flutterNavigator.popToFirstRoute();
   }
 
@@ -74,6 +76,7 @@ class MeteorMethodChannel {
       arg.addAll(arguments);
     }
     String? routeName = arg["routeName"];
+    HzLog.t('Channel flutterPushNamed arguments: $arguments');
     if (routeName != null) {
       return await _flutterNavigator.pushNamed(routeName);
     }

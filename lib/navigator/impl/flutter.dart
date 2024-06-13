@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hz_tools/hz_tools.dart';
 
 import '../interface.dart';
-
 
 /// 实现flutter层页面路由
 class MeteorFlutterNavigator extends MeteorNavigatorInterface {
@@ -17,7 +17,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
 
   @override
   Future<T?> pop<T extends Object?>([T? result]) async {
-    debugPrint('pop rootContext:$rootContext');
+    HzLog.t('MeteorFlutterNavigator pop rootContext:$rootContext');
     if (Navigator.canPop(rootContext)) {
       Navigator.pop<T>(rootContext, result);
     }
@@ -26,18 +26,19 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
 
   @override
   Future<T?> popToRoot<T extends Object?>() async {
+    HzLog.w('This method:popToRoot need to be implemented by native');
     return null;
   }
 
   @override
   Future<T?> popUntil<T extends Object?>(String routeName) async {
-    debugPrint('popUntil rootContext:$rootContext');
+    HzLog.t('MeteorFlutterNavigator popUntil routeName:$routeName');
     Navigator.popUntil(rootContext, ModalRoute.withName(routeName));
     return null;
   }
 
   void popToFirstRoute() {
-    debugPrint('popToFirstRoute rootContext:$rootContext');
+    HzLog.t('MeteorFlutterNavigator popToFirstRoute');
     Navigator.popUntil(rootContext, (route) => route.isFirst);
   }
 
@@ -49,7 +50,8 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
     bool openNative = false,
     Map<String, dynamic>? arguments,
   }) async {
-    debugPrint('pushNamed rootContext:$rootContext');
+    HzLog.t(
+        'MeteorFlutterNavigator pushNamed:$routeName, arguments:$arguments, withNewEngine:$withNewEngine, openNative:$openNative');
     return Navigator.pushNamed<T?>(rootContext, routeName, arguments: arguments);
   }
 
@@ -59,7 +61,8 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
     String untilRouteName, {
     Map<String, dynamic>? arguments,
   }) async {
-    debugPrint('pushNamedAndRemoveUntil rootContext:$rootContext');
+    HzLog.t(
+        'MeteorFlutterNavigator pushReplacementNamed newRouteName:$newRouteName, untilRouteName:$untilRouteName, arguments:$arguments');
     return Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
       newRouteName,
       ModalRoute.withName(untilRouteName),
@@ -68,9 +71,12 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   }
 
   @override
-  Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(String routeName,
-      {Map<String, dynamic>? arguments}) async {
-    debugPrint('pushReplacementNamed rootContext:$rootContext');
+  Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
+    String routeName, {
+    Map<String, dynamic>? arguments,
+  }) async {
+    HzLog.t(
+        'MeteorFlutterNavigator pushReplacementNamed routeName:$routeName, arguments:$arguments');
     return await Navigator.pushReplacementNamed<T, TO>(
       rootContext,
       routeName,
@@ -80,13 +86,13 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
 
   @override
   Future<T?> popUntilLastNative<T extends Object?>() async {
-    debugPrint('popUntilLastNative');
-    debugPrint('This method need to be implemented by native');
+    HzLog.w('This method:popUntilLastNative need to be implemented by native');
     return null;
   }
 
   @override
   Future<T?> dismiss<T extends Object?>([T? result]) async {
+    HzLog.w('This method:dismiss need to be implemented by native');
     return null;
   }
 }

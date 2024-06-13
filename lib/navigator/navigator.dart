@@ -1,27 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hz_tools/hz_tools.dart';
 
 import 'impl/flutter.dart';
 import 'impl/native.dart';
 
 /// MeteorNavigator
 class MeteorNavigator {
-  // static Route<dynamic>? _rootRoute;
-  // static set rootRoute(String value) {
-  //   _rootRoute = _rootRoute;
-  //   MeteorFlutterNavigator.rootRoute = value;
-  // }
-
-  // static Route<dynamic>? _rootPage;
-  // static set rootPage(Route<dynamic> value) {
-  //   _rootPage = value;
-  // }
-
   static final MeteorNativeNavigator _nativeNavigator = MeteorNativeNavigator();
   static final MeteorFlutterNavigator _flutterNavigator = MeteorFlutterNavigator();
 
   static void init({
     required GlobalKey<NavigatorState> rootKey,
   }) {
+    HzLog.i('MeteorNavigator init with rootKey:$rootKey');
     MeteorFlutterNavigator.rootKey = rootKey;
   }
 
@@ -36,7 +27,6 @@ class MeteorNavigator {
     bool openNative = false,
     Map<String, dynamic>? arguments,
   }) async {
-    debugPrint('Will push to page $routeName');
     if (withNewEngine || openNative) {
       return await _nativeNavigator.pushNamed<T>(
         routeName,

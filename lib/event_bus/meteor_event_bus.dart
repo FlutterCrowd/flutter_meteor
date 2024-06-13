@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_meteor/channel/channel.dart';
+import 'package:flutter_meteor/engine/engine.dart';
+import 'package:hz_tools/hz_tools.dart';
 
 import '../channel/channel_method.dart';
 
@@ -36,7 +37,8 @@ class MeteorEventBus {
 
   /// 添加订阅者-接收事件
   static void addListener({required String eventName, required MeteorEventBusListener listener}) {
-    debugPrint('MeteorEventBus addListener eventName:$eventName, listener:$listener');
+    HzLog.t(
+        'MeteorEventBus addListener isMain:${MeteorEngine.isMain} eventName:$eventName, listener:$listener');
     var list = instance._listenerMap[eventName];
     list ??= <MeteorEventBusListener>[];
     list.add(listener);
@@ -46,7 +48,8 @@ class MeteorEventBus {
   /// 移除订阅者-结束事件
   /// 当listener 为空时会移除eventName的所有listener，因此慎用
   static void removeListener({required String eventName, MeteorEventBusListener? listener}) {
-    debugPrint('MeteorEventBus removeListener eventName:$eventName, listener:$listener');
+    HzLog.t(
+        'MeteorEventBus removeListener isMain:${MeteorEngine.isMain} eventName:$eventName, listener:$listener');
     var list = instance._listenerMap[eventName];
     if (eventName.isEmpty || list == null) return;
     if (listener == null) {
@@ -61,8 +64,8 @@ class MeteorEventBus {
   /// withMultiEngine 是否发送多引擎，默认true表示支持多引擎
   /// data 传送的数据
   static void commit({required String eventName, bool? withMultiEngine = true, dynamic data}) {
-    debugPrint(
-        'MeteorEventBus commit eventName:$eventName, data:$data, withMultiEngine:$withMultiEngine');
+    HzLog.t(
+        'MeteorEventBus commit isMain:${MeteorEngine.isMain} eventName:$eventName, data:$data, withMultiEngine:$withMultiEngine');
     if (withMultiEngine == true) {
       /// 多引擎则交给原生处理
       commitToMultiEngine(eventName: eventName, data: data);
@@ -74,8 +77,8 @@ class MeteorEventBus {
 
   static void commitToCurrentEngine({required String eventName, dynamic data}) {
     var list = instance._listenerMap[eventName];
-    debugPrint(
-        'MeteorEventBus commitToCurrentEngine eventName:$eventName, data:$data, listeners:$list');
+    HzLog.t(
+        'MeteorEventBus commitToCurrentEngine isMain:${MeteorEngine.isMain} eventName:$eventName, data:$data, listeners:$list');
     if (list == null) return;
     int len = list.length - 1;
     //反向遍历，防止在订阅者在回调中移除自身带来的下标错位
@@ -88,7 +91,8 @@ class MeteorEventBus {
   }
 
   static Future<dynamic> commitToMultiEngine({required String eventName, dynamic data}) async {
-    debugPrint('MeteorEventBus commitToMultiEngine eventName:$eventName, data:$data');
+    HzLog.d(
+        'MeteorEventBus commitToMultiEngine isMain:${MeteorEngine.isMain} eventName:$eventName, data:$data');
 
     /// 如果支持多引擎则交给原生处理
     Map<String, dynamic> methodArguments = {};
@@ -96,14 +100,14 @@ class MeteorEventBus {
     methodArguments['arguments'] = data;
     final result = await instance.methodChannel
         .invokeMethod(MeteorChannelMethod.multiEngineEventCallMethod, methodArguments);
-    debugPrint('MeteorEventBus commitToMultiEngine $result');
+    HzLog.t('MeteorEventBus commitToMultiEngine isMain:${MeteorEngine.isMain} result:$result');
     return result;
   }
 
   static List<MeteorEventBusListener>? listenersForEvent(String eventName) {
-    debugPrint('MeteorEventBus all listeners ${instance._listenerMap}');
+    HzLog.t('MeteorEventBus isMain:${MeteorEngine.isMain} allListeners:${instance._listenerMap}');
     var list = instance._listenerMap[eventName];
-    debugPrint('MeteorEventBus eventName:$eventName, listeners $list');
+    HzLog.d('MeteorEventBus isMain:${MeteorEngine.isMain} eventName:$eventName, listeners $list');
     return list;
   }
 }
