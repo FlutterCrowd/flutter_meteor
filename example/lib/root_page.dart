@@ -11,6 +11,7 @@ class RootPage extends StatelessWidget {
         Expanded(child: Container()),
         GestureDetector(
           onTap: () {
+            debugPrint('MeteorNavigator isCurrentRoot: ${MeteorNavigator.isCurrentRoot()}');
             MeteorNavigator.pushNamed("home");
           },
           child: const Center(

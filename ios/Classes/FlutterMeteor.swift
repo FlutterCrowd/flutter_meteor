@@ -121,7 +121,7 @@ public class FlutterMeteor  {
         }
     }
     
-    public static func sendEvent(engine: FlutterEngine, eventName: String, arguments: Dictionary<String, Any>?, result: FlutterResult?) {
+    public static func sendEventWithEngin(engine: FlutterEngine, eventName: String, arguments: Dictionary<String, Any>?, result: FlutterResult?) {
         let  channel: FlutterMethodChannel? =  channel(engine: engine)
         var methodAguments: Dictionary<String, Any?> = Dictionary<String, Any?> .init()
         methodAguments["eventName"] = eventName

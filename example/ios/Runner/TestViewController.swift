@@ -168,16 +168,16 @@ class TestViewController: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped4(_ sender: UIButton) {
         print("4按钮被点击了！")
-        FlutterMeteor.sendEvent(eventName: "native_event", arguments: Dictionary<String, Any>.init()) { result in
+//        FlutterMeteor.sendEvent(eventName: "native_event", arguments: Dictionary<String, Any>.init()) { result in
             
-        }
+//        }
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped5(_ sender: UIButton) {
         print("4按钮被点击了！")
-        FlutterMeteor.sendEvent(eventName: "native_event1", arguments: Dictionary<String, Any>.init()) { result in
+//        FlutterMeteor.sendEvent(eventName: "native_event1", arguments: Dictionary<String, Any>.init()) { result in
             
-        }
+//        }
     }
 }

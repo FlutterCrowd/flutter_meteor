@@ -85,4 +85,12 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
       return await methodChannel.invokeMethod<T>(MeteorChannelMethod.popMethod);
     }
   }
+
+  @override
+  Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(String newRouteName,
+      {Map<String, dynamic>? arguments}) async {
+    HzLog.w(
+        'MeteorNativeNavigator No implemented method name pushNamedAndRemoveUntilRoot in native ');
+    return null;
+  }
 }

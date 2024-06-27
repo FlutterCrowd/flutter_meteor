@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 
+import 'back_widget.dart';
 import 'home_page.dart';
 import 'mine_page.dart';
 import 'multi_engin_page.dart';
@@ -47,7 +48,8 @@ Map<String, WidgetBuilder> _routes = {
   "mine": (context) => MinePage(),
   "multi_engin": (context) => MultiEnginPage(),
   "multi_engin2": (context) => const MultiEnginPage2(),
-  "popWindow": (context) => const PopWindowPage()
+  "popWindow": (context) => const PopWindowPage(),
+  "back_test": (context) => BackPage(),
 };
 
 Route<dynamic>? _generateRoute(RouteSettings settings) {
@@ -86,6 +88,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         onGenerateRoute: _generateRoute,
         navigatorKey: rootKey,
+        navigatorObservers: [MeteorNavigator.navigatorObserver],
         // initialRoute: "home",
         theme: ThemeData.light(),
         // home: HomePage(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meteor/navigator/observer.dart';
 import 'package:hz_tools/hz_tools.dart';
 
 import 'impl/flutter.dart';
@@ -79,9 +80,8 @@ class MeteorNavigator {
     String newRouteName, {
     Map<String, dynamic>? arguments,
   }) async {
-    return await _flutterNavigator.pushNamedAndRemoveUntil<T>(
+    return await _flutterNavigator.pushNamedAndRemoveUntilRoot<T>(
       newRouteName,
-      '',
       arguments: arguments,
     );
   }
@@ -120,7 +120,39 @@ class MeteorNavigator {
     _nativeNavigator.popToRoot();
   }
 
-  static bool isCurrentRouteRoot() {
-    return !Navigator.canPop(MeteorFlutterNavigator.rootContext);
+  /// flutter路由观察者，用于记录当前路由变化
+  static final NavigatorObserver navigatorObserver = _flutterNavigator.routeObserver;
+
+  /// 当前路由栈
+  static List<Route<dynamic>> get routeStack => MeteorRouteObserver.routeStack;
+
+  /// 当前路由名栈
+  static List<String> get routeNameStack => MeteorRouteObserver.routeNameStack;
+
+  /// 最上层路由
+  static Route<dynamic>? get topRoute => MeteorRouteObserver.topRoute;
+
+  /// 根路由
+  static Route<dynamic>? get rootRoute => MeteorRouteObserver.rootRoute;
+
+  /// 最上层路由名称
+  static String? get topRouteName => MeteorRouteObserver.topRouteName;
+
+  /// 根路由名称
+  static String? get rootRouteName => MeteorRouteObserver.rootRouteName;
+
+  /// 判断路由routeName是否存在
+  static bool routeExists(String routeName) {
+    return MeteorRouteObserver.routeExists(routeName);
+  }
+
+  /// 判断路由routeName是否为根路由
+  static bool isRoot(String routeName) {
+    return MeteorRouteObserver.isRootRoute(routeName);
+  }
+
+  /// 判断当前路由根路由
+  static bool isCurrentRoot() {
+    return topRouteName != null && rootRouteName != null && rootRouteName == topRouteName;
   }
 }

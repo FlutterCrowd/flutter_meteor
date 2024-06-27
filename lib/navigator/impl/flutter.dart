@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meteor/navigator/observer.dart';
 import 'package:hz_tools/hz_tools.dart';
 
 import '../interface.dart';
@@ -7,12 +8,16 @@ import '../interface.dart';
 class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   // static String rootRoute = '/';
   static GlobalKey<NavigatorState>? rootKey;
-
+  final MeteorRouteObserver routeObserver = MeteorRouteObserver();
   static BuildContext get rootContext {
     if (rootKey?.currentContext == null) {
       throw Exception("Context is null, you need to sure MeteorNavigator did init");
     }
     return rootKey!.currentContext!;
+  }
+
+  bool routeExists(String routeName) {
+    return MeteorRouteObserver.routeExists(routeName);
   }
 
   @override
@@ -27,19 +32,36 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   @override
   Future<T?> popToRoot<T extends Object?>() async {
     HzLog.w('This method:popToRoot need to be implemented by native');
+    Navigator.popUntil(
+      rootContext,
+      (route) => route.isFirst,
+    );
     return null;
   }
 
   @override
   Future<T?> popUntil<T extends Object?>(String routeName) async {
     HzLog.t('MeteorFlutterNavigator popUntil routeName:$routeName');
-    Navigator.popUntil(rootContext, ModalRoute.withName(routeName));
+    if (routeExists(routeName)) {
+      Navigator.popUntil(
+        rootContext,
+        ModalRoute.withName(
+          routeName,
+        ),
+      );
+    } else {
+      HzLog.w('MeteorFlutterNavigator routeName:$routeName is not exist in navigator routeStack');
+      pop();
+    }
     return null;
   }
 
   void popToFirstRoute() {
     HzLog.t('MeteorFlutterNavigator popToFirstRoute');
-    Navigator.popUntil(rootContext, (route) => route.isFirst);
+    Navigator.popUntil(
+      rootContext,
+      (route) => route.isFirst,
+    );
   }
 
   @override
@@ -52,7 +74,11 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   }) async {
     HzLog.t(
         'MeteorFlutterNavigator pushNamed:$routeName, arguments:$arguments, withNewEngine:$withNewEngine, openNative:$openNative');
-    return Navigator.pushNamed<T?>(rootContext, routeName, arguments: arguments);
+    return await Navigator.pushNamed<T?>(
+      rootContext,
+      routeName,
+      arguments: arguments,
+    );
   }
 
   @override
@@ -63,9 +89,32 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   }) async {
     HzLog.t(
         'MeteorFlutterNavigator pushReplacementNamed newRouteName:$newRouteName, untilRouteName:$untilRouteName, arguments:$arguments');
-    return Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
+    if (routeExists(untilRouteName)) {
+      return await Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
+        newRouteName,
+        ModalRoute.withName(untilRouteName),
+        arguments: arguments,
+      );
+    } else {
+      HzLog.w(
+          'MeteorFlutterNavigator untilRouteName:$untilRouteName is not exist in navigator routeStack');
+      return await Navigator.of(rootContext).pushNamed<T>(
+        newRouteName,
+        arguments: arguments,
+      );
+    }
+  }
+
+  @override
+  Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
+    String newRouteName, {
+    Map<String, dynamic>? arguments,
+  }) async {
+    HzLog.t(
+        'MeteorFlutterNavigator pushNamedAndRemoveUntilRoot newRouteName:$newRouteName, arguments:$arguments');
+    return await Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
       newRouteName,
-      ModalRoute.withName(untilRouteName),
+      (Route<dynamic> route) => route.isFirst,
       arguments: arguments,
     );
   }

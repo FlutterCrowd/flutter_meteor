@@ -67,7 +67,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushNamed("mine");
+                MeteorNavigator.pushNamed("back_test");
               },
               child: const Text(
                 '下一个flutter页面',
@@ -77,7 +77,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
         ],
