@@ -28,6 +28,7 @@ open class FlutterMeteorActivity : FlutterActivity() {
         super.onCreate(savedInstanceState)
         engineBindings.attach()
         if (isMainEntry) {
+            println("是主引擎")
             EngineInjector.setMainEngine(engineBindings.engine)
         }
 

@@ -15,6 +15,7 @@ object EngineInjector {
     }
 
     fun put(engine: FlutterEngine, channel: MethodChannel) {
+        println("FlutterEngine:$engine put Channel:$channel")
         map[engine] = channel
     }
 

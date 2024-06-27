@@ -30,6 +30,7 @@ class FlutterMeteorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "itbox.meteor.channel"
         )
         channel.setMethodCallHandler(this)
+        println("开始注册插件")
         EngineInjector.put(flutterPluginBinding.flutterEngine, channel)
     }
 
