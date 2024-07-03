@@ -18,7 +18,7 @@ public class FMNativeNavigator: NSObject {
     }
     
     static public func pop() {
-        dismissOrPop(animated: true)
+        dismissOrPop(animated: false)
 //        if rootViewController()?.presentedViewController == nil {
 //            topViewController()?.navigationController?.popViewController(animated: true)
 //        } else {
