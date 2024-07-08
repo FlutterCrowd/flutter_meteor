@@ -17,6 +17,18 @@ public class FMNavigator {
        if (vc != nil) {
            FMNativeNavigator.push(toPage: vc!)
            options?.callBack?(true)
+       } else if(options?.withNewEngine != nil && options!.withNewEngine) {
+           let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
+           let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: routeName, nibName: nil, bundle:nil, popCallBack: {result in
+               print(result ?? "")
+               options?.callBack?(true)
+           })
+           flutterVc.isViewOpaque = newEngineOpaque
+           flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+           if(!newEngineOpaque) {
+               flutterVc.view.backgroundColor = UIColor.clear
+           }
+           FMNativeNavigator.push(toPage: flutterVc)
        } else if(FlutterMeteor.customRouterDelegate != nil) {
            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
        } else {
@@ -31,6 +43,21 @@ public class FMNavigator {
        if (vc != nil) {
            FMNativeNavigator.present(toPage: vc!)
            options?.callBack?(true)
+       } else if(options?.withNewEngine != nil && options!.withNewEngine) {
+           let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
+           let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: routeName, nibName: nil, bundle:nil, popCallBack: {result in
+               print(result ?? "")
+               options?.callBack?(true)
+           })
+           flutterVc.isViewOpaque = newEngineOpaque
+           flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+           if(!newEngineOpaque) {
+               flutterVc.view.backgroundColor = UIColor.clear
+           }
+           FMNativeNavigator.present(toPage: flutterVc)
+
+       } else if(FlutterMeteor.customRouterDelegate != nil) {
+           FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
        } else {
            options?.callBack?(false)
        }

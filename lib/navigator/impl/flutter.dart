@@ -70,6 +70,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
     bool withNewEngine = false,
     bool newEngineOpaque = true,
     bool openNative = false,
+    bool present = false,
     Map<String, dynamic>? arguments,
   }) async {
     HzLog.t(

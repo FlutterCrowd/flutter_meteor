@@ -20,12 +20,18 @@ class MeteorNavigator {
   /// push 到一个已经存在路由表的页面
   ///
   /// @parma routeName 要跳转的页面，
+  /// @parma withNewEngine 是否开启新引擎，当 withNewEngine = true时，通过原生通道开启新引擎打开flutter页面
+  /// 默认withNewEngine = false，直接走flutter端内部路由push新页面
+  /// @parma newEngineOpaque 是否透明 默认-true 不透明
+  /// @parma openNative 是否打开原生
+  /// @parma present iOS特有参数，默认false，当present = true时通过iOS的present方法打开新页面
   /// @return T  泛型，用于指定返回类型
   static Future<T?> pushNamed<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
     bool newEngineOpaque = true,
     bool openNative = false,
+    bool present = false,
     Map<String, dynamic>? arguments,
   }) async {
     if (withNewEngine || openNative) {
@@ -35,6 +41,7 @@ class MeteorNavigator {
         newEngineOpaque: newEngineOpaque,
         openNative: openNative,
         arguments: arguments,
+        present: present,
       );
     } else {
       return await _flutterNavigator.pushNamed<T>(

@@ -43,14 +43,6 @@ public class FMWeakDictionary<Key: AnyObject, Value: AnyObject> {
     }
 }
 
-//class FlutterMeteorEngine: NSObject {
-//    let flutterEngine: FlutterEngine
-//    var channels: Dictionary<String, FlutterMethodChannel> = Dictionary<String, FlutterMethodChannel>.init()
-//    init(flutterEngine: FlutterEngine) {
-//        self.flutterEngine = flutterEngine
-//    }
-//    var isCurrent: Bool = false
-//}
 //  
 public protocol FMNewEnginePluginRegistryDelegate {
     func register(pluginRegistry: any FlutterPluginRegistry)

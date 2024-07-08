@@ -26,6 +26,7 @@ public typealias FlutterMeteorRouterCallBack = (_ response: Any?) -> Void
 public struct FMMeteorOptions {
     public var withNewEngine: Bool = false
     public var newEngineOpaque: Bool = false
+    public var present: Bool = false
     public var arguments: Dictionary<String, Any>?
     public var callBack: FlutterMeteorRouterCallBack?
     public init(arguments: Dictionary<String, Any>? = nil, callBack: FlutterMeteorRouterCallBack? = nil) {
@@ -84,8 +85,9 @@ public protocol FlutterMeteorDelegate {
              let arguments: Dictionary<String, Any> = call.arguments as! Dictionary<String, Any>
              options.newEngineOpaque = (arguments["newEngineOpaque"] != nil) && arguments["newEngineOpaque"] as! Bool == true
              options.withNewEngine = arguments["withNewEngine"] as? Bool ?? false
+             options.present = arguments["present"] as? Bool ?? false
              routeName = arguments["routeName"] as? String ?? ""
-             untilRouteName = arguments["routeName"] as? String
+             untilRouteName = arguments["untilRouteName"] as? String
          }
 
          options.callBack = {response in
@@ -95,7 +97,11 @@ public protocol FlutterMeteorDelegate {
          switch call.method {
          case FMPushNamedMethod:
              options.arguments = getPushAguments(call)
-             self.push(routeName: routeName, options: options)
+             if(options.present) {
+                 self.present(routeName: routeName, options: options)
+             } else {
+                 self.push(routeName: routeName, options: options)
+             }
              break
          case FMPopMethod:
              options.arguments = getPopResult(call)

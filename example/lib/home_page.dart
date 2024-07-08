@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, "multi_engin");
+                MeteorNavigator.pushNamed("multi_engin");
               },
               child: const Text(
                 '打开flutter页面1',
@@ -134,10 +134,46 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, "multi_engin2");
+                MeteorNavigator.pushNamed("multi_engin2");
               },
               child: const Text(
                 '打开flutter页面2',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.pushNamed("multi_engin2", withNewEngine: true);
+              },
+              child: const Text(
+                'push新引擎',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.pushNamed(
+                  "multi_engin2",
+                  withNewEngine: true,
+                  present: true,
+                );
+              },
+              child: const Text(
+                'present新引擎',
                 style: TextStyle(
                   backgroundColor: Colors.red,
                 ),

@@ -19,6 +19,7 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
     bool withNewEngine = false,
     bool newEngineOpaque = true,
     bool openNative = false,
+    bool present = false,
     Map<String, dynamic>? arguments,
   }) async {
     Map<String, dynamic> params = {};
@@ -26,6 +27,7 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
     params["withNewEngine"] = withNewEngine;
     params["newEngineOpaque"] = newEngineOpaque;
     params["openNative"] = openNative;
+    params["present"] = present;
     params["arguments"] = arguments;
     HzLog.t('MeteorNativeNavigator pushNamed:$routeName, arguments:$params');
     return await methodChannel.invokeMethod<T>(MeteorChannelMethod.pushNamedMethod, params);
