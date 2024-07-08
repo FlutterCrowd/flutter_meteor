@@ -193,13 +193,13 @@ public protocol FlutterMeteorDelegate {
              
              if (call.arguments is Dictionary<String, Any>) {
                  let methodArguments :Dictionary<String, Any>  = call.arguments as! Dictionary<String, Any>;
-                 if (methodArguments["arguments"] != nil) {
-                     arguments = methodArguments
+                 if (methodArguments["arguments"] != nil && methodArguments["arguments"] is Dictionary<String, Any>) {
+                     arguments = methodArguments["arguments"] as! [String : Any]
                  } else {
-                     arguments["arguments"] = methodArguments
+                     print("Invalid arguments type")
                  }
              } else {
-                 arguments["arguments"] = call.arguments
+                 print("Invalid arguments type")
              }
              return arguments
          } else {

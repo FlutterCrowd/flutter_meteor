@@ -176,6 +176,9 @@ class _HomePageState extends State<HomePage> {
                   "multi_engin2",
                   withNewEngine: true,
                   present: true,
+                  arguments: {
+                    '业务参数': '业务参数',
+                  },
                 );
               },
               child: const Text(
