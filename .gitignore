@@ -42,5 +42,6 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 *.lock
-example/ios/*.lock
+example/ios/Podfile.lock
+
 
