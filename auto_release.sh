@@ -32,7 +32,7 @@ sed -i '' "s/version: $current_version/version: $new_version/" $file
 # 升级版本号
 git add .
 git commit -m "feat: 升级版本号"
-git push origin develop
+git push
 
 # 打tag
 git tag $new_version
