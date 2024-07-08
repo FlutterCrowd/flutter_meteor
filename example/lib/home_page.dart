@@ -150,7 +150,13 @@ class _HomePageState extends State<HomePage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushNamed("multi_engin2", withNewEngine: true);
+                MeteorNavigator.pushNamed(
+                  "multi_engin2",
+                  withNewEngine: true,
+                  arguments: {
+                    '业务参数': '业务参数',
+                  },
+                );
               },
               child: const Text(
                 'push新引擎',
