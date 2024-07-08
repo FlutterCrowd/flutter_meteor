@@ -34,7 +34,14 @@ git commit -m "feat: 升级版本号"
 echo "开始push新的提交"
 git push
 
-# 打tag
-echo "开始打tag"
-git tag $new_version
-git push origin $new_version
+# 检查退出状态码
+# shellcheck disable=SC2181
+if [ $? -eq 0 ]; then
+  echo "Git push 成功"
+  # 打tag
+  echo "开始打tag"
+  git tag $new_version
+  git push origin $new_version
+else
+  echo "Git push 失败"
+fi
