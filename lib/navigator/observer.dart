@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MeteorRouteObserver extends NavigatorObserver {
-  static final List<Route<dynamic>> _routeStack = [];
+  final List<Route<dynamic>> _routeStack = [];
 
-  static List<Route<dynamic>> get routeStack => List.unmodifiable(_routeStack);
-  static List<String> get routeNameStack {
+  List<Route<dynamic>> get routeStack => List.unmodifiable(_routeStack);
+  List<String> get routeNameStack {
     List<String> names = <String>[];
     for (var element in routeStack) {
       names.add(element.settings.name ?? '');
@@ -12,21 +12,25 @@ class MeteorRouteObserver extends NavigatorObserver {
     return names;
   }
 
-  static Route<dynamic>? get topRoute => _routeStack.isNotEmpty ? _routeStack.last : null;
-  static Route<dynamic>? get rootRoute => _routeStack.isNotEmpty ? _routeStack.first : null;
-  static String? get topRouteName => topRoute?.settings.name;
-  static String? get rootRouteName => rootRoute?.settings.name;
+  Route<dynamic>? get topRoute => _routeStack.isNotEmpty ? _routeStack.last : null;
+  Route<dynamic>? get rootRoute => _routeStack.isNotEmpty ? _routeStack.first : null;
+  String? get topRouteName => topRoute?.settings.name;
+  String? get rootRouteName => rootRoute?.settings.name;
 
   // static bool? get isRootRoute => _routeStack.isNotEmpty ? _routeStack.first : null;
 
-  static bool isRootRoute(String routeName) {
+  bool isRootRoute(String routeName) {
     return routeName == rootRouteName;
   }
 
-  static bool routeExists(String routeName) {
+  bool routeExists(String routeName) {
     return _routeStack.any(
       (route) => route.settings.name == routeName,
     );
+  }
+
+  bool isCurrentRoot() {
+    return topRouteName != null && rootRouteName != null && rootRouteName == topRouteName;
   }
 
   @override

@@ -95,4 +95,50 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
         'MeteorNativeNavigator No implemented method name pushNamedAndRemoveUntilRoot in native ');
     return null;
   }
+
+  @override
+  Future<bool> isRoot(String routeName) async {
+    final ret = await methodChannel.invokeMethod<bool>(
+      MeteorChannelMethod.isRoot,
+      {
+        'routeName': routeName,
+      },
+    );
+    return ret ?? false;
+  }
+
+  @override
+  Future<String?> rootRouteName() async {
+    final ret = await methodChannel.invokeMethod<String>(MeteorChannelMethod.rootRouteName);
+    return ret;
+  }
+
+  @override
+  Future<bool> routeExists(String routeName) async {
+    final ret = await methodChannel.invokeMethod<bool>(
+      MeteorChannelMethod.routeExists,
+      {
+        'routeName': routeName,
+      },
+    );
+    return ret ?? false;
+  }
+
+  @override
+  Future<List<String>> routeNameStack() async {
+    List<String> list = [];
+    final ret = await methodChannel.invokeMethod(MeteorChannelMethod.routeNameStack);
+    if (ret is List) {
+      for (var element in ret) {
+        list.add(element.toString());
+      }
+    }
+    return list;
+  }
+
+  @override
+  Future<String?> topRouteName() async {
+    final ret = await methodChannel.invokeMethod<String>(MeteorChannelMethod.topRouteName);
+    return ret;
+  }
 }

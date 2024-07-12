@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_meteor/navigator/observer.dart';
+import 'package:flutter_meteor/flutter_meteor.dart';
 import 'package:hz_tools/hz_tools.dart';
 
 import 'impl/flutter.dart';
 import 'impl/native.dart';
+import 'observer.dart';
 
 /// MeteorNavigator
 class MeteorNavigator {
@@ -127,39 +128,46 @@ class MeteorNavigator {
     _nativeNavigator.popToRoot();
   }
 
-  /// flutter路由观察者，用于记录当前路由变化
-  static final NavigatorObserver navigatorObserver = _flutterNavigator.routeObserver;
-
-  /// 当前路由栈
-  static List<Route<dynamic>> get routeStack => MeteorRouteObserver.routeStack;
+  // /// flutter路由观察者，用于记录当前路由变化
+  static final MeteorRouteObserver navigatorObserver = MeteorFlutterNavigator.routeObserver;
 
   /// 当前路由名栈
-  static List<String> get routeNameStack => MeteorRouteObserver.routeNameStack;
-
-  /// 最上层路由
-  static Route<dynamic>? get topRoute => MeteorRouteObserver.topRoute;
-
-  /// 根路由
-  static Route<dynamic>? get rootRoute => MeteorRouteObserver.rootRoute;
+  static Future<List<String>> routeNameStack() async {
+    return await _nativeNavigator.routeNameStack();
+  }
 
   /// 最上层路由名称
-  static String? get topRouteName => MeteorRouteObserver.topRouteName;
+  static Future<String?> topRouteName() async {
+    return await _nativeNavigator.topRouteName();
+  }
 
   /// 根路由名称
-  static String? get rootRouteName => MeteorRouteObserver.rootRouteName;
+  static Future<String?> rootRouteName() async {
+    if (MeteorEngine.isMain) {
+      return navigatorObserver.rootRouteName;
+    }
+    return await _nativeNavigator.rootRouteName();
+  }
 
   /// 判断路由routeName是否存在
-  static bool routeExists(String routeName) {
-    return MeteorRouteObserver.routeExists(routeName);
+  static Future<bool> routeExists(String routeName) async {
+    return await _nativeNavigator.routeExists(routeName);
   }
 
   /// 判断路由routeName是否为根路由
-  static bool isRoot(String routeName) {
-    return MeteorRouteObserver.isRootRoute(routeName);
+  static Future<bool> isRoot(String routeName) async {
+    return await _nativeNavigator.isRoot(routeName);
   }
 
   /// 判断当前路由根路由
-  static bool isCurrentRoot() {
-    return topRouteName != null && rootRouteName != null && rootRouteName == topRouteName;
+  static Future<bool> isCurrentRoot() async {
+    if (!MeteorEngine.isMain) {
+      return false;
+    }
+    String? top = await topRouteName();
+    if (top == null) {
+      return false;
+    }
+    return await _nativeNavigator.isRoot(top);
   }
 }

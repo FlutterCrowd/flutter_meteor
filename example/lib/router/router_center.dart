@@ -20,6 +20,8 @@ Widget _customTransitionsBuilder(BuildContext context, Animation<double> animati
 }
 
 class RouterCenter {
+  static final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
   get mixinRoutes => null;
 
   static setup() {

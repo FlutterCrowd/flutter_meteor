@@ -144,17 +144,30 @@ class _MultiEnginPageState extends State<BackPage> {
           ),
           Center(
             child: GestureDetector(
-              onTap: () {
-                debugPrint('MeteorNavigator routeStack: ${MeteorNavigator.routeStack}');
-                debugPrint('MeteorNavigator routeNameStack: ${MeteorNavigator.routeNameStack}');
-                debugPrint('MeteorNavigator topRoute: ${MeteorNavigator.topRoute}');
-                debugPrint('MeteorNavigator topRouteName: ${MeteorNavigator.topRouteName}');
-                debugPrint('MeteorNavigator rootRoute: ${MeteorNavigator.rootRoute}');
-                debugPrint('MeteorNavigator rootRouteName: ${MeteorNavigator.rootRouteName}');
-                debugPrint('MeteorNavigator isRoot: ${MeteorNavigator.isRoot('rootPage')}');
-                debugPrint('MeteorNavigator isCurrentRoot: ${MeteorNavigator.isCurrentRoot()}');
+              onTap: () async {
                 debugPrint(
-                    'MeteorNavigator routeExists:${MeteorNavigator.routeExists('multi_engin2')}');
+                    'MeteorNavigator routeNameStack: ${await MeteorNavigator.routeNameStack()}');
+                debugPrint('MeteorNavigator topRouteName: ${await MeteorNavigator.topRouteName()}');
+                debugPrint(
+                    'MeteorNavigator rootRouteName: ${await MeteorNavigator.rootRouteName()}');
+                debugPrint('MeteorNavigator isRoot: ${await MeteorNavigator.isRoot('rootPage')}');
+                debugPrint(
+                    'MeteorNavigator isCurrentRoot: ${await MeteorNavigator.isCurrentRoot()}');
+                debugPrint(
+                    'MeteorNavigator routeExists:${await MeteorNavigator.routeExists('multi_engin2')}');
+
+                debugPrint(
+                    'MeteorNavigator routeNameStack1: ${MeteorNavigator.navigatorObserver.routeNameStack}');
+                debugPrint(
+                    'MeteorNavigator topRouteName1: ${MeteorNavigator.navigatorObserver.topRouteName}');
+                debugPrint(
+                    'MeteorNavigator rootRouteName1: ${MeteorNavigator.navigatorObserver.rootRouteName}');
+                debugPrint(
+                    'MeteorNavigator isRoot1: ${MeteorNavigator.navigatorObserver.isRootRoute('multi_engin2')}');
+                debugPrint(
+                    'MeteorNavigator isCurrentRoot1: ${MeteorNavigator.navigatorObserver.isCurrentRoot()}');
+                debugPrint(
+                    'MeteorNavigator routeExists1:${MeteorNavigator.navigatorObserver.routeExists('multi_engin2')}');
               },
               child: const Text(
                 '打印当前路由',

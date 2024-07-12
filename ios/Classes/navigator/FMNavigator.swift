@@ -12,7 +12,7 @@ public class FMNavigator {
        
     public static func push(routeName: String, options: FMMeteorOptions?) {
         print("Call push untilRouteName:\(routeName)")
-       let vcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[routeName]
+       let vcBuilder: FMRouterBuilder? = FlutterMeteorRouter.routerDict[routeName]
        let vc: UIViewController? = vcBuilder?(options?.arguments)
        if (vc != nil) {
            FMNativeNavigator.push(toPage: vc!)
@@ -38,7 +38,7 @@ public class FMNavigator {
     
     public static func present(routeName: String, options: FMMeteorOptions?) {
        
-       let vcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[routeName]
+       let vcBuilder: FMRouterBuilder? = FlutterMeteorRouter.routerDict[routeName]
        let vc: UIViewController? = vcBuilder?(options?.arguments)
        if (vc != nil) {
            FMNativeNavigator.present(toPage: vc!)
@@ -65,7 +65,7 @@ public class FMNavigator {
    
     public static func popUntil(untilRouteName: String, options: FMMeteorOptions?) {
         print("Call popUntil untilRouteName:\(untilRouteName)")
-       let vcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[untilRouteName]
+       let vcBuilder: FMRouterBuilder? = FlutterMeteorRouter.routerDict[untilRouteName]
        let vc: UIViewController? = vcBuilder?(options?.arguments)
        if (vc != nil) {
            FMNativeNavigator.popUntil(untilPage: vc!)
@@ -77,7 +77,7 @@ public class FMNavigator {
    
     public static func pushToReplacement(routeName: String, options: FMMeteorOptions?) {
 
-       let vcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[routeName]
+       let vcBuilder: FMRouterBuilder? = FlutterMeteorRouter.routerDict[routeName]
        let vc: UIViewController? = vcBuilder?(options?.arguments)
        if (vc != nil) {
            FMNativeNavigator.pushToReplacement(toPage: vc!)
@@ -103,8 +103,8 @@ public class FMNavigator {
    }
     
     public static func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: FMMeteorOptions?) {
-       let vcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[routeName]
-       let untileVcBuilder: FMRouterBuilder? = FlutterMeteor.routerDict[untilRouteName ?? ""]
+       let vcBuilder: FMRouterBuilder? = FlutterMeteorRouter.routerDict[routeName]
+       let untileVcBuilder: FMRouterBuilder? = FlutterMeteorRouter.routerDict[untilRouteName ?? ""]
        let vc: UIViewController? = vcBuilder?(options?.arguments)
        let untilVc: UIViewController? = untileVcBuilder?(options?.arguments)
        if (vc != nil) {

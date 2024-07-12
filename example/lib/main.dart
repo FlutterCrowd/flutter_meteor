@@ -1,8 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
+import 'package:hz_router_plugin_example/router/router_center.dart';
 
 import 'back_widget.dart';
 import 'home_page.dart';
@@ -20,11 +19,11 @@ void main() {
 void childEntry(List<String> args) {
   print('这是传递过来的参数：$args');
   if (args.isNotEmpty) {
-    final json = jsonDecode(args.first);
-    String routeName = json['initialRoute'];
-    Map<String, dynamic>? routeArguments = json['routeArguments'];
+    EntryArguments arguments = MeteorEngine.parseEntryArgs(args);
+    String? initialRoute = arguments.initialRoute;
+    Map<String, dynamic>? routeArguments = arguments.routeArguments;
     runApp(MyApp(
-      routeName: routeName,
+      initRoute: initialRoute,
       routeArguments: routeArguments,
     ));
   } else {
@@ -34,9 +33,9 @@ void childEntry(List<String> args) {
 
 class MyApp extends StatefulWidget {
   // static GlobalKey<NavigatorState> mainKey = GlobalKey<NavigatorState>();
-  final String? routeName;
+  final String? initRoute;
   final Map<String, dynamic>? routeArguments;
-  const MyApp({super.key, this.routeName, this.routeArguments});
+  const MyApp({super.key, this.initRoute, this.routeArguments});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -74,38 +73,42 @@ Route<dynamic>? _generateRoute(RouteSettings settings) {
 }
 
 class _MyAppState extends State<MyApp> {
-  late String routeName;
+  late String initRoute;
   final GlobalKey<NavigatorState> rootKey = GlobalKey<NavigatorState>();
   @override
   void initState() {
     super.initState();
-    routeName = widget.routeName ?? '/';
+    initRoute = widget.initRoute ?? 'rootPage';
     MeteorNavigator.init(rootKey: rootKey);
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        onGenerateRoute: _generateRoute,
-        navigatorKey: rootKey,
-        navigatorObservers: [MeteorNavigator.navigatorObserver],
-        // initialRoute: "home",
-        theme: ThemeData.light(),
-        // home: HomePage(),
-        // home: const RootPage(
-        //   key: Key('RootPage'),
-        // ),
-        initialRoute: "rootPage",
-        debugShowCheckedModeBanner: false,
-        onGenerateInitialRoutes: (String initialRoute) {
-          if (kDebugMode) {
-            print('initialRoute: $initialRoute');
-          }
-          // MeteorNavigator.rootRoute = initialRoute;
-          final route = _generateRoute(
-            RouteSettings(name: initialRoute, arguments: widget.routeArguments),
-          );
-          return [route!];
-        });
+      onGenerateRoute: _generateRoute,
+      navigatorKey: rootKey,
+      navigatorObservers: [
+        MeteorNavigator.navigatorObserver,
+        RouterCenter.routeObserver,
+      ],
+      // initialRoute: "home",
+      theme: ThemeData.light(),
+      // home: HomePage(),
+      // home: const RootPage(
+      //   key: Key('RootPage'),
+      // ),
+      initialRoute: initRoute,
+      debugShowCheckedModeBanner: false,
+      onGenerateInitialRoutes: (String initialRoute) {
+        if (kDebugMode) {
+          print('initialRoute: $initialRoute');
+        }
+        // MeteorNavigator.rootRoute = initialRoute;
+        final route = _generateRoute(
+          RouteSettings(name: initialRoute, arguments: widget.routeArguments),
+        );
+        return [route!];
+      },
+    );
   }
 }

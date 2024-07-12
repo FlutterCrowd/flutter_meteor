@@ -8,41 +8,6 @@
 import Foundation
 import Flutter
 
-public typealias FMRouterBuilder = (_ arguments: Dictionary<String, Any>?) -> UIViewController
-
-public class FMWeakDictionary<Key: AnyObject, Value: AnyObject> {
-    public let mapTable: NSMapTable<Key, Value>
-      
-    init() {
-        mapTable = NSMapTable<Key, Value>(
-            keyOptions: .weakMemory,
-            valueOptions: .weakMemory,
-            capacity: 0
-        )
-    }
-      
-    subscript(key: Key) -> Value? {
-        get { return mapTable.object(forKey: key) }
-        set { mapTable.setObject(newValue, forKey: key) }
-    }
-    
-    public func object(forKey:Key?) {
-        mapTable.object(forKey: forKey)
-    }
-    
-    public func removeObject(forKey:Key?) {
-        mapTable.removeObject(forKey: forKey)
-    }
-    
-    public func count() -> Int{
-        return mapTable.count
-    }
-    
-    public func allObjects() -> [AnyObject]?{
-        return mapTable.objectEnumerator()?.allObjects as? [AnyObject]
-    }
-}
-
 //  
 public protocol FMNewEnginePluginRegistryDelegate {
     func register(pluginRegistry: any FlutterPluginRegistry)
@@ -78,19 +43,25 @@ public class FlutterMeteor  {
     
     public static var  pluginRegistryDelegate: FMNewEnginePluginRegistryDelegate!
  
-    public static var routerDict = Dictionary<String, FMRouterBuilder>()
-    
-    public static func insertRouter(routeName:String, routerBuilder: @escaping FMRouterBuilder) {
-        routerDict[routeName] = routerBuilder
-    }
+ 
     
     public static let flutterEngineGroup = FlutterEngineGroup(name: "itbox.meteor.flutterEnginGroup", project: nil)
     public static let engineCache = FMWeakDictionary<FlutterEngine, FlutterMethodChannel>()
-    
+    static let _channelList = FMWeakArray<FlutterMethodChannel>()
     public static let HzRouterMethodChannelName = "itbox.meteor.channel"
 
+    static var channelList: FMWeakArray<FlutterMethodChannel> {
+        get {
+            if(!_channelList.contains(flutterRootEngineMethodChannel)) {
+                _channelList.add(flutterRootEngineMethodChannel)
+            }
+            return _channelList
+        }
+    }
+    
     public static func saveEngine(engine: FlutterEngine, chennel: FlutterMethodChannel) {
         engineCache[engine] = chennel
+        channelList.add(chennel)
     }
     
     public static func channel(engine: FlutterEngine) -> FlutterMethodChannel? {
@@ -113,7 +84,7 @@ public class FlutterMeteor  {
         }
     }
     
-    public static func sendEventWithEngin(engine: FlutterEngine, eventName: String, arguments: Dictionary<String, Any>?, result: FlutterResult?) {
+    public static func sendEventWithEngine(engine: FlutterEngine, eventName: String, arguments: Dictionary<String, Any>?, result: FlutterResult?) {
         let  channel: FlutterMethodChannel? =  channel(engine: engine)
         var methodAguments: Dictionary<String, Any?> = Dictionary<String, Any?> .init()
         methodAguments["eventName"] = eventName

@@ -11,22 +11,22 @@ import flutter_meteor
 class HzRouterMapExemple  {
     
     static func setUp() -> Void {
-        FlutterMeteor.insertRouter(routeName: "test") { arguments in
+        FlutterMeteorRouter.insertRouter(routeName: "test") { arguments in
             let testVc = TestViewController.init()
             return testVc
         }
         
-        FlutterMeteor.insertRouter(routeName: "test1") { arguments in
+        FlutterMeteorRouter.insertRouter(routeName: "test1") { arguments in
             let testVc = TestViewController.init()
             return testVc
         }
         
-        FlutterMeteor.insertRouter(routeName: "routeName") { arguments in
+        FlutterMeteorRouter.insertRouter(routeName: "routeName") { arguments in
             let testVc = TestViewController.init()
             return testVc
         }
         
-        FlutterMeteor.insertRouter(routeName: "test2") { arguments in
+        FlutterMeteorRouter.insertRouter(routeName: "test2") { arguments in
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
@@ -34,7 +34,7 @@ class HzRouterMapExemple  {
             return testVc
         }
         
-        FlutterMeteor.insertRouter(routeName: "multi_engin2") { arguments in
+        FlutterMeteorRouter.insertRouter(routeName: "multi_engin2") { arguments in
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
@@ -42,7 +42,7 @@ class HzRouterMapExemple  {
             return testVc
         }
         
-        FlutterMeteor.insertRouter(routeName: "multi_engin") { arguments in
+        FlutterMeteorRouter.insertRouter(routeName: "multi_engin") { arguments in
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
@@ -50,7 +50,7 @@ class HzRouterMapExemple  {
             return testVc
         }
         
-        FlutterMeteor.insertRouter(routeName: "multi_engin_native") { arguments in
+        FlutterMeteorRouter.insertRouter(routeName: "multi_engin_native") { arguments in
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"

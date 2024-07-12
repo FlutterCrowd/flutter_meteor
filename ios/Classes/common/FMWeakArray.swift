@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Weak<T: AnyObject> {
+class FMWeak<T: AnyObject> {
     weak var value: T?
 
     init(value: T?) {
@@ -15,11 +15,16 @@ class Weak<T: AnyObject> {
     }
 }
 
-class WeakArray<T: AnyObject> {
-    private var elements: [Weak<T>] = []
+class FMWeakArray<T: AnyObject> {
+    private var elements: [FMWeak<T>] = []
 
     func add(_ element: T) {
-        elements.append(Weak(value: element))
+        elements.append(FMWeak(value: element))
+    }
+    
+    // 添加多个对象
+    func add(contentsOf newElements: [T]) {
+        newElements.forEach { add($0) }
     }
 
     func remove(_ element: T) {
@@ -29,5 +34,9 @@ class WeakArray<T: AnyObject> {
     var allObjects: [T] {
         elements = elements.filter { $0.value != nil }
         return elements.compactMap { $0.value }
+    }
+    
+    func contains(_ element: T) -> Bool {
+        return elements.contains { $0.value === element }
     }
 }

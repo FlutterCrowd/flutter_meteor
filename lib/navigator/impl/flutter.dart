@@ -8,16 +8,12 @@ import '../interface.dart';
 class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   // static String rootRoute = '/';
   static GlobalKey<NavigatorState>? rootKey;
-  final MeteorRouteObserver routeObserver = MeteorRouteObserver();
+  static MeteorRouteObserver routeObserver = MeteorRouteObserver();
   static BuildContext get rootContext {
     if (rootKey?.currentContext == null) {
       throw Exception("Context is null, you need to sure MeteorNavigator did init");
     }
     return rootKey!.currentContext!;
-  }
-
-  bool routeExists(String routeName) {
-    return MeteorRouteObserver.routeExists(routeName);
   }
 
   @override
@@ -42,7 +38,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   @override
   Future<T?> popUntil<T extends Object?>(String routeName) async {
     HzLog.t('MeteorFlutterNavigator popUntil routeName:$routeName');
-    if (routeExists(routeName)) {
+    if (routeObserver.routeExists(routeName)) {
       Navigator.popUntil(
         rootContext,
         ModalRoute.withName(
@@ -90,7 +86,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   }) async {
     HzLog.t(
         'MeteorFlutterNavigator pushReplacementNamed newRouteName:$newRouteName, untilRouteName:$untilRouteName, arguments:$arguments');
-    if (routeExists(untilRouteName)) {
+    if (routeObserver.routeExists(untilRouteName)) {
       return await Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
         newRouteName,
         ModalRoute.withName(untilRouteName),
@@ -144,5 +140,30 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   Future<T?> dismiss<T extends Object?>([T? result]) async {
     HzLog.w('This method:dismiss need to be implemented by native');
     return null;
+  }
+
+  @override
+  Future<bool> isRoot(String routeName) async {
+    return routeObserver.isRootRoute(routeName);
+  }
+
+  @override
+  Future<String?> rootRouteName() async {
+    return routeObserver.rootRouteName;
+  }
+
+  @override
+  Future<bool> routeExists(String routeName) async {
+    return routeObserver.routeExists(routeName);
+  }
+
+  @override
+  Future<List<String>> routeNameStack() async {
+    return routeObserver.routeNameStack;
+  }
+
+  @override
+  Future<String?> topRouteName() async {
+    return routeObserver.topRouteName;
   }
 }

@@ -175,6 +175,7 @@ class _HomePageState extends State<HomePage> {
                 MeteorNavigator.pushNamed(
                   "multi_engin2",
                   withNewEngine: true,
+                  newEngineOpaque: false,
                   present: true,
                   arguments: {
                     '业务参数': '业务参数',

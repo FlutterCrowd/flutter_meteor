@@ -71,4 +71,19 @@ abstract class MeteorNavigatorInterface {
 
   /// 返回原生模态出的视图
   Future<T?> dismiss<T extends Object?>([T? result]);
+  //
+  /// 当前路由名栈
+  Future<List<String>> routeNameStack();
+
+  /// 最上层路由名称
+  Future<String?> topRouteName();
+
+  /// 根路由名称
+  Future<String?> rootRouteName();
+
+  /// 判断路由routeName是否存在
+  Future<bool> routeExists(String routeName);
+
+  /// 判断路由routeName是否为根路由
+  Future<bool> isRoot(String routeName);
 }

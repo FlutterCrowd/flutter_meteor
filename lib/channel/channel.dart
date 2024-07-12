@@ -10,38 +10,56 @@ class MeteorMethodChannel {
   static final MeteorFlutterNavigator _flutterNavigator = MeteorFlutterNavigator();
 
   MeteorMethodChannel() {
-    methodChannel.setMethodCallHandler((call) async {
-      HzLog.t(
-          'MeteorMethodChannel isMain:${MeteorEngine.isMain}  method:${call.method}, methodArguments:${call.arguments}');
-      Map<String, dynamic> arguments = <String, dynamic>{};
-      if (call.arguments is Map) {
-        Map res = call.arguments;
-        res.forEach((key, value) {
-          arguments[key.toString()] = value;
-        });
-      } else {
-        arguments["arguments"] = call.arguments;
-      }
-      if (call.method == MeteorChannelMethod.popMethod) {
-        return flutterPop(arguments: arguments);
-      } else if (call.method == MeteorChannelMethod.popUntilMethod) {
-        return flutterPopUntil(arguments: arguments);
-      } else if (call.method == MeteorChannelMethod.popToRootMethod) {
-        return flutterPopRoRoot(arguments: arguments);
-      } else if (call.method == MeteorChannelMethod.pushNamedMethod) {
-        return flutterPushNamed(arguments: arguments);
-      } else if (call.method == MeteorChannelMethod.multiEngineEventCallMethod) {
-        String eventName = arguments['eventName'];
-        List<MeteorEventBusListener> list = MeteorEventBus.listenersForEvent(eventName) ?? [];
-        for (var listener in list) {
-          listener.call(arguments['arguments']);
+    methodChannel.setMethodCallHandler(
+      (call) async {
+        HzLog.t(
+            'Meteor 原生调用flutter isMain:${MeteorEngine.isMain}  method:${call.method}, methodArguments:${call.arguments}');
+        Map<String, dynamic> arguments = <String, dynamic>{};
+        if (call.arguments is Map) {
+          Map res = call.arguments;
+          res.forEach((key, value) {
+            arguments[key.toString()] = value;
+          });
+        } else {
+          arguments["arguments"] = call.arguments;
         }
-        HzLog.i(
-            'MeteorMethodChannel isMain:${MeteorEngine.isMain} method:${call.method}, eventName:$eventName, arguments:${arguments['arguments']}');
-      } else {
-        return null;
-      }
-    });
+        if (call.method == MeteorChannelMethod.popMethod) {
+          return await flutterPop(arguments: arguments);
+        } else if (call.method == MeteorChannelMethod.popUntilMethod) {
+          return await flutterPopUntil(arguments: arguments);
+        } else if (call.method == MeteorChannelMethod.popToRootMethod) {
+          return await flutterPopRoRoot(arguments: arguments);
+        } else if (call.method == MeteorChannelMethod.pushNamedMethod) {
+          return await flutterPushNamed(arguments: arguments);
+        } else if (call.method == MeteorChannelMethod.multiEngineEventCallMethod) {
+          String eventName = arguments['eventName'];
+          List<MeteorEventBusListener> list = MeteorEventBus.listenersForEvent(eventName) ?? [];
+          for (var listener in list) {
+            listener.call(arguments['arguments']);
+          }
+        } else if (call.method == MeteorChannelMethod.routeExists) {
+          String routeName = arguments['routeName'] ?? '';
+          bool ret = await _flutterNavigator.routeExists(routeName);
+          return ret;
+        } else if (call.method == MeteorChannelMethod.isRoot) {
+          String routeName = arguments['routeName'] ?? '';
+          bool ret = await _flutterNavigator.isRoot(routeName);
+          return ret;
+        } else if (call.method == MeteorChannelMethod.rootRouteName) {
+          String? ret = await _flutterNavigator.rootRouteName();
+          return ret;
+        } else if (call.method == MeteorChannelMethod.topRouteName) {
+          String? ret = await _flutterNavigator.topRouteName();
+          return ret;
+        } else if (call.method == MeteorChannelMethod.routeNameStack) {
+          List<String> routeNameStack = await _flutterNavigator.routeNameStack();
+          // List<String> routeNameStack = MeteorFlutterNavigator.routeObserver.routeNameStack;
+          return routeNameStack;
+        } else {
+          return null;
+        }
+      },
+    );
   }
 
   /// The method channel used to interact with the native platform.

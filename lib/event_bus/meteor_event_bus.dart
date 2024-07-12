@@ -59,6 +59,37 @@ class MeteorEventBus {
     }
   }
 
+  /// 添加订阅者-接收事件
+  static void addListenerItem(
+      {required String eventName, required MeteorEventBusListener listener, String? listenerId}) {
+    HzLog.t(
+        'MeteorEventBus addListener isMain:${MeteorEngine.isMain} eventName:$eventName, listener:$listener, listenerId:$listenerId');
+    var list = instance._listenerMap[_eventKey(eventName: eventName, listenerId: listenerId)];
+    list ??= <MeteorEventBusListener>[];
+    list.add(listener);
+    instance._listenerMap[eventName] = list;
+  }
+
+  static String _eventKey({required String eventName, String? listenerId}) {
+    final String key = listenerId == null ? eventName : '$eventName-$listenerId';
+    return key;
+  }
+
+  /// 移除订阅者-结束事件
+  /// 当listener 为空时会移除eventName的所有listener，因此慎用
+  static void removeListenerItem(
+      {required String eventName, MeteorEventBusListener? listener, String? listenerId}) {
+    HzLog.t(
+        'MeteorEventBus removeListener isMain:${MeteorEngine.isMain} eventName:$eventName, listener:$listener');
+    var list = instance._listenerMap[_eventKey(eventName: eventName, listenerId: listenerId)];
+    if (eventName.isEmpty || list == null) return;
+    if (listener != null) {
+      list.remove(listener);
+    } else {
+      instance._listenerMap.remove(_eventKey(eventName: eventName, listenerId: listenerId));
+    }
+  }
+
   /// 已加订阅者-发送事件
   /// eventName 事件名称
   /// withMultiEngine 是否发送多引擎，默认true表示支持多引擎
