@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hz_tools/hz_tools.dart';
 
 class MeteorRouteObserver extends NavigatorObserver {
   final List<Route<dynamic>> _routeStack = [];
@@ -58,5 +59,15 @@ class MeteorRouteObserver extends NavigatorObserver {
       _routeStack[index] = newRoute!;
     }
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+  }
+
+  @override
+  void didStartUserGesture(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    HzLog.d('MeteorRouteObserver didStartUserGesture');
+  }
+
+  @override
+  void didStopUserGesture() {
+    HzLog.d('MeteorRouteObserver didStopUserGesture');
   }
 }

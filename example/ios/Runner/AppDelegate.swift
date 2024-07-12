@@ -19,11 +19,17 @@ import flutter_meteor
   ) -> Bool {
     GeneratedPluginRegistrant.register(with: self)
     
+      UIViewController.swizzlePresentation
+      
       let vc: UIViewController =  self.window.rootViewController!//TestViewController.init()//
+      vc.title = "首页"
       let navi: UINavigationController = UINavigationController.init(rootViewController: vc)
       navi.navigationBar.isHidden = true
+      navi.title = "首页导航"
       self.window.rootViewController = navi
       
+      GlobalRouterManager.shared.startMonitoring()
+
       FlutterMeteor.pluginRegistryDelegate = self
       
       // 指定自定义路由

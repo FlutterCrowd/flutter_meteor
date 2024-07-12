@@ -19,16 +19,10 @@ public class FMNativeNavigator: NSObject {
     
     static public func pop() {
         dismissOrPop(animated: false)
-//        if rootViewController()?.presentedViewController == nil {
-//            topViewController()?.navigationController?.popViewController(animated: true)
-//        } else {
-//            topViewController()?.dismiss(animated: false, completion: nil)
-//        }
     }
     
     static public func dismiss() {
         dismissOrPop(animated: true)
-//        topViewController()?.dismiss(animated: true)
     }
     
     static public func popUntil(untilPage: UIViewController) {
@@ -65,7 +59,7 @@ public class FMNativeNavigator: NSObject {
         }
     }
     
-    /// 获取顶部控制器 无要求
+    /// 获取顶部控制器
     public static func rootViewController() -> UIViewController? {
         var window = UIApplication.shared.keyWindow
         // 是否为当前显示的window
@@ -109,27 +103,27 @@ public class FMNativeNavigator: NSObject {
         return getTopVC(withCurrentVC: vc)
     }
     
-    public static func getTopVC(withCurrentVC VC:UIViewController?) -> UIViewController? {
-        if VC == nil {
+    public static func getTopVC(withCurrentVC VC: UIViewController?) -> UIViewController? {
+        guard let currentVC = VC else {
             return nil
         }
-        if let presentVC = VC?.presentedViewController {
-            //modal出来的 控制器
-            return getTopVC(withCurrentVC: presentVC)
-        }else if let tabVC = VC as? UITabBarController {
-            // tabBar 的跟控制器
-            if let selectVC = tabVC.selectedViewController {
-                return getTopVC(withCurrentVC: selectVC)
+        
+        if let presentedVC = currentVC.presentedViewController {
+            // Modal出来的控制器
+            return getTopVC(withCurrentVC: presentedVC)
+        } else if let tabVC = currentVC as? UITabBarController {
+            // tabBar 的根控制器
+            if let selectedVC = tabVC.selectedViewController {
+                return getTopVC(withCurrentVC: selectedVC)
             }
-            return nil
-        } else if let naiVC = VC as? UINavigationController {
-            // 控制器是 nav
-            return getTopVC(withCurrentVC:naiVC.visibleViewController)
+            return tabVC
+        } else if let navVC = currentVC as? UINavigationController {
+            // 控制器是导航控制器
+            return getTopVC(withCurrentVC: navVC.visibleViewController)
         } else {
-            // 返回顶控制器
-            return VC
+            // 返回顶层控制器
+            return currentVC
         }
     }
-    
-    
+
 }
