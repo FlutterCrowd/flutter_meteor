@@ -2,6 +2,7 @@ package cn.itbox.fluttermeteor
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import cn.itbox.fluttermeteor.core.FlutterMeteor
 import cn.itbox.fluttermeteor.core.FlutterMeteorRouteOptions
 import cn.itbox.fluttermeteor.engine.EngineInjector
@@ -91,6 +92,44 @@ class FlutterMeteorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     it.invokeMethod(call.method, call.arguments)
                 }
                 result.success(true)
+            }
+            "routeExists" -> {
+
+            }
+            "isRoot" -> {
+
+            }
+            "rootRouteName" -> {
+
+            }
+            "topRouteName" -> {
+               val allChannels = EngineInjector.allChannels()
+                if(allChannels.isNotEmpty()){
+                    allChannels.last().invokeMethod("routeNameStack",null,object :MethodChannel.Result{
+                        override fun success(p0: Any?) {
+                            val routeStack: List<String> = p0 as List<String>
+                            if(routeStack.isNotEmpty()){
+                                result.success(routeStack.last())
+                            }else{
+                                result.success("")
+                            }
+                        }
+
+                        override fun error(p0: String, p1: String?, p2: Any?) {
+                            result.success("")
+                        }
+
+                        override fun notImplemented() {
+                            result.success("")
+                        }
+
+                    })
+                }else{
+                    result.success("")
+                }
+            }
+            "routeNameStack" -> {
+
             }
             else -> {
                 result.notImplemented()
