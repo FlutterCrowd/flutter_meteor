@@ -9,6 +9,7 @@ data class FlutterMeteorRouteOptions(
     val initialRoute: String,
     val arguments: Map<String, Any>?,
     val requestCode: Int,
+    val routeName: String?,
 ) {
 
     val isTransparent get() = backgroundMode == BackgroundMode.transparent
@@ -19,6 +20,7 @@ data class FlutterMeteorRouteOptions(
         bundle.putString("initialRoute", initialRoute)
         val routeArgs = mapOf("initialRoute" to initialRoute, "routeArguments" to arguments)
         bundle.putString("routeArgs", JSONObject(routeArgs).toString())
+        bundle.putString("routeName", routeName)
         return bundle
     }
 
@@ -27,6 +29,12 @@ data class FlutterMeteorRouteOptions(
         private var initialRoute: String? = null
         private var arguments: Map<String, Any>? = null
         private var requestCode: Int = 0
+        private var routeName: String? = null
+
+        fun routeName(routeName: String): Builder{
+            this.routeName = routeName
+            return this
+        }
 
         fun backgroundMode(backgroundMode: BackgroundMode): Builder {
             this.backgroundMode = backgroundMode
@@ -54,7 +62,7 @@ data class FlutterMeteorRouteOptions(
                 throw IllegalArgumentException("pageName can not be null.")
             }
 
-            return FlutterMeteorRouteOptions(backgroundMode, initialRoute, arguments, requestCode)
+            return FlutterMeteorRouteOptions(backgroundMode, initialRoute, arguments, requestCode,routeName)
         }
     }
 }

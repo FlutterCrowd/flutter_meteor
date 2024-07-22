@@ -1,5 +1,6 @@
 package cn.itbox.fluttermeteor.engine
 
+import android.util.Log
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.lang.ref.WeakReference
@@ -15,7 +16,6 @@ object EngineInjector {
     }
 
     fun put(engine: FlutterEngine, channel: MethodChannel) {
-        println("FlutterEngine:$engine put Channel:$channel")
         map[engine] = channel
     }
 
@@ -33,6 +33,19 @@ object EngineInjector {
         map.remove(engine)
     }
 
+    fun getMapEntries() = map.entries
+
     fun allChannels() = map.values.toList()
 
+    fun lastChannel() = map.values.toList().last()
+
+    fun firstChannel() = map.values.toList().first()
+
+    fun removeLast(){
+        if (map.isEmpty()) {
+            return
+        }
+        val engine = map.entries.last().key
+        map.remove(engine)
+    }
 }

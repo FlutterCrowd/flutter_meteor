@@ -119,8 +119,8 @@ class MeteorNavigator {
   /// pop 到指定页面并替换当前页面
   ///
   /// @parma routeName 要pod到的页面
-  static void popUntil(String routeName) {
-    _flutterNavigator.popUntil(routeName);
+  static Future<void> popUntil(String routeName) async{
+    _nativeNavigator.popUntil(routeName);
   }
 
   /// pop 到根页面
@@ -152,6 +152,11 @@ class MeteorNavigator {
   /// 判断路由routeName是否存在
   static Future<bool> routeExists(String routeName) async {
     return await _nativeNavigator.routeExists(routeName);
+  }
+
+  /// 判断路由顶层是否为原生
+  static Future<bool> topRouteIsNative() async {
+    return await _nativeNavigator.topRouteIsNative();
   }
 
   /// 判断路由routeName是否为根路由

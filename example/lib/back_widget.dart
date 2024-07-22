@@ -155,7 +155,8 @@ class _MultiEnginPageState extends State<BackPage> {
                     'MeteorNavigator isCurrentRoot: ${await MeteorNavigator.isCurrentRoot()}');
                 debugPrint(
                     'MeteorNavigator routeExists:${await MeteorNavigator.routeExists('multi_engin2')}');
-
+                debugPrint(
+                    'MeteorNavigator topRouteIsNative:${await MeteorNavigator.topRouteIsNative()}');
                 debugPrint(
                     'MeteorNavigator routeNameStack1: ${MeteorNavigator.navigatorObserver.routeNameStack}');
                 debugPrint(

@@ -78,6 +78,9 @@ abstract class MeteorNavigatorInterface {
   /// 最上层路由名称
   Future<String?> topRouteName();
 
+  /// 最上层路由是否为原生
+  Future<bool>? topRouteIsNative();
+
   /// 根路由名称
   Future<String?> rootRouteName();
 

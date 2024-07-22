@@ -166,4 +166,10 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   Future<String?> topRouteName() async {
     return routeObserver.topRouteName;
   }
+
+  @override
+  Future<bool>? topRouteIsNative() {
+    HzLog.w('This method:topRouteIsNative need to be implemented by native');
+    return null;
+  }
 }
