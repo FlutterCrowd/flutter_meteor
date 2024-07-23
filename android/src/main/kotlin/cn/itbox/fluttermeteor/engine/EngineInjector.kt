@@ -1,6 +1,7 @@
 package cn.itbox.fluttermeteor.engine
 
 import android.util.Log
+import cn.itbox.fluttermeteor.core.ActivityInjector
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import java.lang.ref.WeakReference
@@ -17,6 +18,7 @@ object EngineInjector {
 
     fun put(engine: FlutterEngine, channel: MethodChannel) {
         map[engine] = channel
+        ActivityInjector.attachChannel(channel)
     }
 
     fun getChannel(engine: FlutterEngine) = map[engine]
