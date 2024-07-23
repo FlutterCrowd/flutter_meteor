@@ -14,4 +14,5 @@ mixin MeteorChannelMethod {
   static const String rootRouteName = 'rootRouteName';
   static const String topRouteName = 'topRouteName';
   static const String routeNameStack = 'routeNameStack';
+  static const String topRouteIsNative = 'topRouteIsNative';
 }

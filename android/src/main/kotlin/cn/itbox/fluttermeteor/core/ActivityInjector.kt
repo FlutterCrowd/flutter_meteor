@@ -3,15 +3,25 @@ package cn.itbox.fluttermeteor.core
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
+import cn.itbox.fluttermeteor.engine.EngineInjector
 import java.lang.ref.WeakReference
+
+data class ActivityInfo(
+    var avtivity:WeakReference<Activity>,
+    var isRoot:Boolean,
+    var routeName: String,
+)
 
 internal object ActivityInjector {
 
-    private val activityList = mutableListOf<WeakReference<Activity>>()
+    private val activityList = mutableListOf<ActivityInfo>()
 
-    val rootActivity get() = activityList.firstOrNull()?.get()
+    val rootActivity get() = activityList.firstOrNull()?.avtivity?.get()
 
-    val currentActivity get() = activityList.lastOrNull()?.get()
+    val currentActivity get() = activityList.lastOrNull()?.avtivity?.get()
+
+    val lastActivityRouteName get() = activityList.lastOrNull()?.routeName
 
     fun inject(application: Application) {
         application.registerActivityLifecycleCallbacks(ActivityLifecycle())
@@ -20,7 +30,31 @@ internal object ActivityInjector {
     fun finishToRoot() {
         activityList.forEachIndexed { index, weakReference ->
             if (index > 0) {
-                weakReference.get()?.finish()
+                weakReference.avtivity.get()?.finish()
+            }
+        }
+    }
+
+    fun popActivity(name:String){
+        if(activityList.isNotEmpty()){
+            for(activity in activityList.reversed()){
+                if(activity.isRoot){
+                    if(name != activity.routeName){
+                        activity.avtivity.get()?.finish()
+                        EngineInjector.removeLast()
+                    }else{
+                        break
+                    }
+                }else{
+                    if(activity.routeName == ""){//mainactivity
+                        break
+                    }
+                    if(name != activity.routeName){
+                        activity.avtivity.get()?.finish()
+                    }else{
+                        break
+                    }
+                }
             }
         }
     }
@@ -28,7 +62,12 @@ internal object ActivityInjector {
     private class ActivityLifecycle : Application.ActivityLifecycleCallbacks {
 
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-            activityList.add(WeakReference(activity))
+            val intent = activity.intent
+            val name = intent.getStringExtra("routeName")
+            val initialRoute = intent.getStringExtra("initialRoute")
+            val isRoot = initialRoute != null
+            val rootName = name ?: (initialRoute ?: "")
+            activityList.add(ActivityInfo(WeakReference(activity),isRoot,rootName))
         }
 
         override fun onActivityStarted(activity: Activity) {
@@ -48,7 +87,7 @@ internal object ActivityInjector {
 
         override fun onActivityDestroyed(activity: Activity) {
             activityList.removeAll {
-                val activityObject = it.get()
+                val activityObject = it.avtivity.get()
                 activityObject == null || activityObject == activity
             }
         }

@@ -151,6 +151,9 @@ public protocol FlutterMeteorDelegate {
              case FMRouteNameStack:
                  FlutterMeteorRouter.routeNameStack(result: result)
                  break
+             case FMTopRouteIsNative:
+                 FlutterMeteorRouter.topRouteIsNative(result: result)
+                 break
              default:
                result(FlutterMethodNotImplemented)
              }

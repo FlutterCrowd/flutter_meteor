@@ -170,14 +170,14 @@ public class FlutterMeteorRouter: NSObject {
     
     
     public static func topRouteIsNative(result: @escaping FlutterResult) {
-        
-        print("routeStack.last:\(String(describing: FMRouterManager.shared.routeStack.last))")
-        print("routeStack.last:\(FMRouterManager.topViewController()!)")
-        if (FMRouterManager.topViewController() == FMRouterManager.shared.routeStack.last) {
-            print("是同一个ViewController")
-        } else {
-            print("不是同一个ViewController")
-        }
+//        
+//        print("routeStack.last:\(String(describing: FMRouterManager.shared.routeStack.last))")
+////        print("routeStack.last:\(FMRouterManager.topViewController()!)")
+//        if (FMRouterManager.topViewController() == FMRouterManager.shared.routeStack.last) {
+//            print("是同一个ViewController")
+//        } else {
+//            print("不是同一个ViewController")
+//        }
         let vc = FMRouterManager.shared.routeStack.last
         let topVc = FMRouterManager.getTopVC(withCurrentVC: vc)
         if topVc is FlutterViewController {

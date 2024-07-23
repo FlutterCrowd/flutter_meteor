@@ -18,9 +18,9 @@ class App : FlutterApplication() {
         super.onCreate()
         FlutterMeteor.init(this, object : FlutterMeteorDelegate {
             override fun onPushNativePage(routeName: String, arguments: Any?) {
-                println("routeName: $routeName, arguments: $arguments")
                 val intent = Intent(applicationContext, NativeActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("routeName",routeName)
                 startActivity(intent)
             }
 

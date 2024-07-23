@@ -68,7 +68,7 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
 
   @override
   Future<T?> popUntil<T extends Object?>(String routeName) async {
-    HzLog.w('MeteorNativeNavigator No implemented method name popUntil in native ');
+    await methodChannel.invokeMethod<T>(MeteorChannelMethod.popUntilMethod,{'routeName':routeName});
     return null;
   }
 
@@ -140,5 +140,11 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
   Future<String?> topRouteName() async {
     final ret = await methodChannel.invokeMethod<String>(MeteorChannelMethod.topRouteName);
     return ret;
+  }
+
+  @override
+  Future<bool> topRouteIsNative() async {
+    final ret = await methodChannel.invokeMethod<bool>(MeteorChannelMethod.topRouteIsNative);
+    return ret ?? false;
   }
 }
