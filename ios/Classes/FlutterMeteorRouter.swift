@@ -17,6 +17,7 @@ public let FMTopRouteIsNative: String  = "topRouteIsNative";
 
 public typealias FMRouterBuilder = (_ arguments: Dictionary<String, Any>?) -> UIViewController
 
+public typealias FMRouterSearchBlock = (_ viewController: UIViewController?) -> Void
 
 public class FlutterMeteorRouter: NSObject {
     
@@ -42,6 +43,61 @@ public class FlutterMeteorRouter: NSObject {
         let vc: UIViewController? = vcBuilder?(arguments)
         vc?.routeName = routeName
         return vc
+    }
+    
+    public static func searchRoute(routeName: String, result: @escaping FMRouterSearchBlock) {
+    
+        let outSemaphore = DispatchSemaphore(value: 0)
+        var routeViewController: UIViewController? = nil
+        let vcStack = FMRouterManager.shared.routeStack
+        DispatchQueue.global().async { /// 开启异步队列避免阻塞
+            let dispatchGroup = DispatchGroup() /// DispatchGroup 用于管理并发任务
+            let semaphore = DispatchSemaphore(value: 1) /// 信号量用于同步遍历执行，保证路由栈的顺序
+            var shouldBreak = false
+            for (_, vc) in vcStack.enumerated().reversed(){
+                if(shouldBreak) {
+                    outSemaphore.signal()
+                    break
+                }
+                semaphore.wait()
+                dispatchGroup.enter()
+                if let flutterVc = vc as? FlutterViewController {
+                    if (flutterVc.engine != nil) {
+                        let channel = FlutterMeteor.methodChannel(engine: flutterVc.engine!)
+                        if(channel != nil) {
+                            let arguments = ["routeName": routeName]
+                            channel!.invokeMethod(FMRouteExists, arguments: arguments) { ret in
+                                if let exit = ret as? Bool {
+                                    if (exit) {
+                                        routeViewController = vc
+                                        shouldBreak = true
+                                    }
+                                }
+                                dispatchGroup.leave()
+                                semaphore.signal() // 释放信号量
+                            }
+                        } else {
+                            dispatchGroup.leave()
+                            semaphore.signal() // 释放信号量
+                        }
+                    } else {
+                        dispatchGroup.leave()
+                        semaphore.signal() // 释放信号量
+                    }
+                } else {
+                    if(routeName == vc.routeName) {
+                        routeViewController = vc
+                        shouldBreak = true
+                    }
+                    dispatchGroup.leave()
+                    semaphore.signal() // 释放信号量
+                }
+            }
+            
+            dispatchGroup.notify(queue: .main) {
+                result(routeViewController)
+            }
+        }
     }
     
     
@@ -161,7 +217,6 @@ public class FlutterMeteorRouter: NSObject {
                 }
             }
             dispatchGroup.notify(queue: .main) {
-//                print("DispatchGroup notify \(routeStack)")
                 result(routeStack)
             }
         }

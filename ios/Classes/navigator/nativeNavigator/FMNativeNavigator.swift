@@ -18,7 +18,7 @@ public class FMNativeNavigator: NSObject {
     }
     
     static public func pop() {
-        dismissOrPop(animated: false)
+        dismissOrPop(animated: true)
     }
     
     static public func dismiss() {
@@ -26,7 +26,16 @@ public class FMNativeNavigator: NSObject {
     }
     
     static public func popUntil(untilPage: UIViewController) {
-        topViewController()?.navigationController?.popToViewController(untilPage, animated: true)
+        if let navigationController = topViewController()?.navigationController {
+            if (navigationController.viewControllers.contains(untilPage)) {
+                navigationController.popToViewController(untilPage, animated: true)
+
+            } else {
+                navigationController.dismiss(animated: false) {
+                    popUntil(untilPage: untilPage)
+                }
+            }
+        }
     }
     
     static public func popToRoot() {
@@ -41,21 +50,31 @@ public class FMNativeNavigator: NSObject {
     }
     
     static public func pushToReplacement(toPage: UIViewController) {
-                
-        let naviVc: UINavigationController? =  topViewController()?.navigationController
-        naviVc?.pushViewController(toPage, animated: true)
-        let count: Int = naviVc?.viewControllers.count ?? 0
-        if (count >= 2) {
-            naviVc?.viewControllers.remove(at: count - 2)
+        if let navigationController = topViewController()?.navigationController {
+            if (navigationController.viewControllers.count > 0) {
+                navigationController.popViewController(animated: false)
+                navigationController.pushViewController(toPage, animated: true)
+            } else {
+                navigationController.pushViewController(toPage, animated: true)
+            }
         }
     }
     
     static public func pushToAndRemoveUntil(toPage: UIViewController, untilPage: UIViewController?) {
-        let naviVc: UINavigationController? =  topViewController()?.navigationController
-        naviVc?.pushViewController(toPage, animated: true)
-        let count: Int = naviVc?.viewControllers.count ?? 0
-        if (count >= 2) {
-            naviVc?.viewControllers.removeSubrange(Range<Int>(NSRange.init(location: 0, length: count - 1))!)
+        
+        if let navigationController = topViewController()?.navigationController {
+            if (untilPage == nil) {
+                navigationController.pushViewController(toPage, animated: true)
+                return
+            }
+            if (navigationController.viewControllers.contains(untilPage!)) {
+                navigationController.popToViewController(untilPage!, animated: false)
+                navigationController.pushViewController(toPage, animated: true)
+            } else {
+                navigationController.dismiss(animated: false) {
+                    pushToAndRemoveUntil(toPage: toPage, untilPage: untilPage)
+                }
+            }
         }
     }
     
