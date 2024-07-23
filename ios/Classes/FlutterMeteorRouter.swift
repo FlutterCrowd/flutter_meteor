@@ -13,7 +13,7 @@ public let FMIsRoot: String  = "isRoot";
 public let FMRootRouteName: String  = "rootRouteName";
 public let FMTopRouteName: String  = "topRouteName";
 public let FMRouteNameStack: String  = "routeNameStack";
-
+public let FMTopRouteIsNative: String  = "topRouteIsNative";
 
 public typealias FMRouterBuilder = (_ arguments: Dictionary<String, Any>?) -> UIViewController
 
@@ -21,6 +21,10 @@ public typealias FMRouterBuilder = (_ arguments: Dictionary<String, Any>?) -> UI
 public class FlutterMeteorRouter: NSObject {
     
     private static var routerDict = Dictionary<String, FMRouterBuilder>()
+    
+    public static func startMonitoring() {
+        FMRouterManager.shared.startMonitoring()
+    }
     
     public static func insertRouter(routeName:String, routerBuilder: @escaping FMRouterBuilder) {
         routerDict[routeName] = routerBuilder
@@ -40,136 +44,151 @@ public class FlutterMeteorRouter: NSObject {
         return vc
     }
     
+    
+    /*------------------------router method start--------------------------*/
     public static func routeExists(routeName:String, result: @escaping FlutterResult) {
-        
-        var ret = false
-        for channel in FlutterMeteor.channelList.allObjects {
-            if ret {
-                break
-            }
-            channel.invokeMethod(FMRouteExists, arguments: [
-                "routeName": routeName,
-            ]) { data in
-                if (data is Bool && !ret) {
-                    ret = data as! Bool
-                    result(ret)
-                    return
+        routeNameStack { routeStack in
+            if(routeStack is Array<String>) {
+                let stack = routeStack as! Array<String>
+                let ret = stack.contains { e in
+                    return e == routeName
                 }
+                result(ret)
+            } else {
+                result(false)
             }
         }
     }
     
     
     public static func isRoot(routeName:String, result: @escaping FlutterResult) {
-//        FlutterMeteor.flutterRootEngineMethodChannel?.invokeMethod(FMIsRoot, arguments: ["routeName": routeName], result: result)
 
-        FlutterMeteor.flutterRootEngineMethodChannel?.invokeMethod(FMIsRoot, arguments: [
-            "routeName": routeName,
-        ]) { ret in
-            result(ret)
+        rootRouteName { rootName in
+            if(rootName is String) {
+                if(routeName == rootName as! String) {
+                    result(true)
+                } else {
+                    result(false)
+                }
+            } else {
+                result(false)
+            }
+
         }
     }
     
     public static func rootRouteName(result: @escaping FlutterResult) {
-//        FlutterMeteor.flutterRootEngineMethodChannel?.invokeMethod(FMRootRouteName, arguments: nil, result: result)
-        FlutterMeteor.flutterRootEngineMethodChannel?.invokeMethod(FMRootRouteName, arguments: nil) { ret in
-            result(ret)
+        
+        let rootVc = FMRouterManager.shared.routeStack.first
+        if(rootVc is FlutterViewController) {
+            let flutterVc = rootVc as! FlutterViewController
+            if (flutterVc.engine != nil) {
+                let channel = FlutterMeteor.methodChannel(engine: flutterVc.engine!)//FlutterMeteor.channelList.allObjects.last
+                channel?.invokeMethod(FMRootRouteName, arguments: nil) { ret in
+                    result(ret)
+                }
+            } else {
+                result(rootVc?.routeName)
+            }
+        } else {
+            result(rootVc?.routeName)
         }
+        
+//        FlutterMeteor.flutterRootEngineMethodChannel?.invokeMethod(FMRootRouteName, arguments: nil) { ret in
+//            result(ret)
+//        }
     }
     
     public static func topRouteName(result: @escaping FlutterResult) {
-        let channel = FlutterMeteor.channelList.allObjects.last
-        channel?.invokeMethod(FMTopRouteName, arguments: nil) { ret in
-            result(ret)
-        }
-    }
-    
-    public static func routeNameStack(result: @escaping FlutterResult) {
         
-        let dispatchGroup = DispatchGroup()
-        
-        var routeStack = Array<String>()
-        for channel in FlutterMeteor.channelList.allObjects {
-            dispatchGroup.enter()
-            channel.invokeMethod(FMRouteNameStack, arguments: nil) { ret in
-                if ret is Array<String> {
-                    routeStack.append(contentsOf: ret as! Array<String>)
+        let vc = FMRouterManager.shared.routeStack.last
+        let topVc = FMRouterManager.getTopVC(withCurrentVC: vc)
+        if topVc is FlutterViewController {
+            let flutterVc = vc as! FlutterViewController
+            if (flutterVc.engine != nil) {
+                let channel = FlutterMeteor.methodChannel(engine: flutterVc.engine!)//FlutterMeteor.channelList.allObjects.last
+                channel?.invokeMethod(FMTopRouteName, arguments: nil) { ret in
+                    result(ret)
                 }
-                dispatchGroup.leave()
+            } else {
+                result(topVc?.routeName)
             }
-        }
-        dispatchGroup.notify(queue: .main) {
-            result(routeStack)
-        }
-    }
-
-}
-
-
-public class GlobalRouterManager: NSObject, UINavigationControllerDelegate {
-    public static let shared = GlobalRouterManager()
-    private override init() { super.init() }
     
-    private var viewControllerStack: [UIViewController] = []
-    
-    public func startMonitoring() {
-        if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
-            setupViewController(rootViewController)
-        }
-    }
-    
-    private func setupViewController(_ viewController: UIViewController) {
-        if let navigationController = viewController as? UINavigationController {
-            navigationController.delegate = self
-            viewControllerStack.append(contentsOf: navigationController.viewControllers)
         } else {
-            viewControllerStack.append(viewController)
+            result(topVc?.routeName)
         }
         
-        viewController.children.forEach { setupViewController($0) }
-        if let presentedViewController = viewController.presentedViewController {
-            setupViewController(presentedViewController)
-        }
     }
     
-    public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
-        updateViewControllerStack()
-    }
-    
-    public func updateViewControllerStack() {
-        viewControllerStack.removeAll()
-        if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
-            collectViewControllers(from: rootViewController)
-        }
-        printCurrentViewControllerStack()
-    }
-    
-    private func collectViewControllers(from viewController: UIViewController) {
-        if !viewControllerStack.contains(viewController) {
-            viewControllerStack.append(viewController)
-        }
-//        viewControllerStack.append(viewController)
-//        if let navigationController = viewController as? UINavigationController {
-//            viewControllerStack.append(contentsOf: navigationController.viewControllers)
-//        }
-        if let navigationController = viewController as? UINavigationController {
-            for vc in navigationController.viewControllers {
-                if !viewControllerStack.contains(vc) {
-                    viewControllerStack.append(vc)
+
+    public static func routeNameStack(result: @escaping FlutterResult) {
+        let vcStack = FMRouterManager.shared.routeStack
+        DispatchQueue.global().async { /// 开启异步队列避免阻塞
+            let dispatchGroup = DispatchGroup() /// DispatchGroup 用于管理并发任务
+            let semaphore = DispatchSemaphore(value: 1) /// 信号量用于同步遍历执行，保证路由栈的顺序
+            var routeStack = Array<String>()
+            vcStack.forEach { vc in
+//                print("DispatchGroup enter")
+                semaphore.wait()
+                dispatchGroup.enter()
+                if vc is FlutterViewController {
+                    let flutterVc = vc as! FlutterViewController
+                    if (flutterVc.engine != nil) {
+                        let channel = FlutterMeteor.methodChannel(engine: flutterVc.engine!)
+                        if(channel != nil) {
+//                            routeStack.append(contentsOf: getFlutterRouteStack(channel: channel!))
+                            channel!.invokeMethod(FMRouteNameStack, arguments: nil) { ret in
+                                if ret is Array<String> {
+                                    routeStack.append(contentsOf: ret as! Array<String>)
+                                }
+                                dispatchGroup.leave()
+                                semaphore.signal() // 释放信号量
+                            }
+                        } else {
+                            routeStack.append(vc.routeName ?? "\(type(of: vc))")
+                            dispatchGroup.leave()
+                            semaphore.signal() // 释放信号量
+                        }
+                    } else {
+                        routeStack.append(vc.routeName ?? "\(type(of: vc))")
+                        dispatchGroup.leave()
+                        semaphore.signal() // 释放信号量
+                    }
+                } else {
+                    routeStack.append(vc.routeName ?? "\(type(of: vc))")
+                    dispatchGroup.leave()
+                    semaphore.signal() // 释放信号量
                 }
             }
-        }
-        viewController.children.forEach { collectViewControllers(from: $0) }
-        if let presentedViewController = viewController.presentedViewController {
-            collectViewControllers(from: presentedViewController)
+            dispatchGroup.notify(queue: .main) {
+//                print("DispatchGroup notify \(routeStack)")
+                result(routeStack)
+            }
         }
     }
     
-    func printCurrentViewControllerStack() {
-        let titles = viewControllerStack.map { $0.routeName ?? "No Title" }
-        print("Current View Controllers Stack: \(titles)")
-        print("Current View Controllers Stack: \(viewControllerStack)")
+    
+    
+    public static func topRouteIsNative(result: @escaping FlutterResult) {
+        
+        print("routeStack.last:\(String(describing: FMRouterManager.shared.routeStack.last))")
+        print("routeStack.last:\(FMRouterManager.topViewController()!)")
+        if (FMRouterManager.topViewController() == FMRouterManager.shared.routeStack.last) {
+            print("是同一个ViewController")
+        } else {
+            print("不是同一个ViewController")
+        }
+        let vc = FMRouterManager.shared.routeStack.last
+        let topVc = FMRouterManager.getTopVC(withCurrentVC: vc)
+        if topVc is FlutterViewController {
+            result(false)
+        } else {
+            result(true)
+        }
+        
     }
+    
+    /*------------------------router method end--------------------------*/
+
+
 }
-
-

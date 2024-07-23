@@ -36,7 +36,7 @@ class _MultiEnginPageState extends State<BackPage> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 20,
           ),
           Center(
             child: GestureDetector(
@@ -52,7 +52,7 @@ class _MultiEnginPageState extends State<BackPage> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 20,
           ),
           Center(
             child: GestureDetector(
@@ -68,7 +68,7 @@ class _MultiEnginPageState extends State<BackPage> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 20,
           ),
           Center(
             child: GestureDetector(
@@ -87,7 +87,7 @@ class _MultiEnginPageState extends State<BackPage> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 20,
           ),
           Center(
             child: GestureDetector(
@@ -106,7 +106,7 @@ class _MultiEnginPageState extends State<BackPage> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 20,
           ),
           Center(
             child: GestureDetector(
@@ -124,7 +124,7 @@ class _MultiEnginPageState extends State<BackPage> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 20,
           ),
           Center(
             child: GestureDetector(
@@ -140,7 +140,31 @@ class _MultiEnginPageState extends State<BackPage> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorEventBus.addListener(
+                    eventName: 'eventName',
+                    listener: (data) {
+                      debugPrint('来了，他来了');
+                    });
+                MeteorEventBus.commit(
+                  eventName: 'eventName',
+                  data: {'kev': 'value'},
+                );
+              },
+              child: const Text(
+                '发送EventBus',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
           ),
           Center(
             child: GestureDetector(
@@ -154,20 +178,20 @@ class _MultiEnginPageState extends State<BackPage> {
                 debugPrint(
                     'MeteorNavigator isCurrentRoot: ${await MeteorNavigator.isCurrentRoot()}');
                 debugPrint(
-                    'MeteorNavigator routeExists:${await MeteorNavigator.routeExists('multi_engin2')}');
+                    'MeteorNavigator routeExists multi_engin2:${await MeteorNavigator.routeExists('multi_engin2')}');
 
-                debugPrint(
-                    'MeteorNavigator routeNameStack1: ${MeteorNavigator.navigatorObserver.routeNameStack}');
-                debugPrint(
-                    'MeteorNavigator topRouteName1: ${MeteorNavigator.navigatorObserver.topRouteName}');
-                debugPrint(
-                    'MeteorNavigator rootRouteName1: ${MeteorNavigator.navigatorObserver.rootRouteName}');
-                debugPrint(
-                    'MeteorNavigator isRoot1: ${MeteorNavigator.navigatorObserver.isRootRoute('multi_engin2')}');
-                debugPrint(
-                    'MeteorNavigator isCurrentRoot1: ${MeteorNavigator.navigatorObserver.isCurrentRoot()}');
-                debugPrint(
-                    'MeteorNavigator routeExists1:${MeteorNavigator.navigatorObserver.routeExists('multi_engin2')}');
+                // debugPrint(
+                //     'MeteorNavigator routeNameStack1: ${MeteorNavigator.navigatorObserver.routeNameStack}');
+                // debugPrint(
+                //     'MeteorNavigator topRouteName1: ${MeteorNavigator.navigatorObserver.topRouteName}');
+                // debugPrint(
+                //     'MeteorNavigator rootRouteName1: ${MeteorNavigator.navigatorObserver.rootRouteName}');
+                // debugPrint(
+                //     'MeteorNavigator isRoot1: ${MeteorNavigator.navigatorObserver.isRootRoute('multi_engin2')}');
+                // debugPrint(
+                //     'MeteorNavigator isCurrentRoot1: ${MeteorNavigator.navigatorObserver.isCurrentRoot()}');
+                // debugPrint(
+                //     'MeteorNavigator routeExists1:${MeteorNavigator.navigatorObserver.routeExists('multi_engin2')}');
               },
               child: const Text(
                 '打印当前路由',

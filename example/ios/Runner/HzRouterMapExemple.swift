@@ -16,7 +16,7 @@ class HzRouterMapExemple  {
             return testVc
         }
         
-        FlutterMeteorRouter.insertRouter(routeName: "test1") { arguments in
+        FlutterMeteorRouter.insertRouter(routeName: "push_native") { arguments in
             let testVc = TestViewController.init()
             return testVc
         }

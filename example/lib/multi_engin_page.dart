@@ -19,6 +19,9 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
       ),
       body: Column(
         children: [
+          const SizedBox(
+            height: 50,
+          ),
           Center(
             child: GestureDetector(
               onTap: () {
@@ -33,6 +36,9 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
                 ),
               ),
             ),
+          ),
+          const SizedBox(
+            height: 20,
           ),
           Center(
             child: GestureDetector(
@@ -49,6 +55,9 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
               ),
             ),
           ),
+          const SizedBox(
+            height: 20,
+          ),
           Center(
             child: GestureDetector(
               onTap: () {
@@ -63,6 +72,9 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
                 ),
               ),
             ),
+          ),
+          const SizedBox(
+            height: 20,
           ),
           Center(
             child: GestureDetector(

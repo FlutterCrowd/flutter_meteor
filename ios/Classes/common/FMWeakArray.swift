@@ -19,7 +19,11 @@ class FMWeakArray<T: AnyObject> {
     private var elements: [FMWeak<T>] = []
 
     func add(_ element: T) {
-        elements.append(FMWeak(value: element))
+        if(!elements.contains { $0.value === element }) {
+            elements.append(FMWeak(value: element))
+        }
+//        elements.append(FMWeak(value: element))
+
     }
     
     // 添加多个对象

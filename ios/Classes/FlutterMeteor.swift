@@ -27,8 +27,7 @@ public class FlutterMeteor  {
     
     public static var flutterRootEngineMethodChannel: FlutterMethodChannel!
 
-    
-    // 主引擎MethodChannel
+    // 主引擎flutter导航
     public static var flutterNavigator: FMFlutterNavigator {
         get {
             if (mainEngineFlutterNaviagtor == nil) {
@@ -52,19 +51,17 @@ public class FlutterMeteor  {
 
     static var channelList: FMWeakArray<FlutterMethodChannel> {
         get {
-            if(!_channelList.contains(flutterRootEngineMethodChannel)) {
-                _channelList.add(flutterRootEngineMethodChannel)
-            }
             return _channelList
         }
     }
     
-    public static func saveEngine(engine: FlutterEngine, chennel: FlutterMethodChannel) {
+    public static func saveMehtodChannel(engine: FlutterEngine, chennel: FlutterMethodChannel) {
         engineCache[engine] = chennel
-        channelList.add(chennel)
+        _channelList.add(chennel)
+        print("channelList: \(channelList.allObjects), chennel: \(chennel)")
     }
     
-    public static func channel(engine: FlutterEngine) -> FlutterMethodChannel? {
+    public static func methodChannel(engine: FlutterEngine) -> FlutterMethodChannel? {
         return engineCache[engine]
     }
     
@@ -73,24 +70,35 @@ public class FlutterMeteor  {
         var methodAguments: Dictionary<String, Any> = Dictionary<String, Any> .init()
         methodAguments["eventName"] = eventName
         methodAguments["arguments"] = arguments ?? Dictionary<String, Any> .init()
-        flutterRootEngineMethodChannel.invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments)
-        for key in engineCache.mapTable.keyEnumerator() {
-            if let key = key as? FlutterEngine,
-               let channel: FlutterMethodChannel = engineCache.mapTable.object(forKey: key) {
-                print("FlutterMeteor start channel:\(channel.description) invoke method: \(FMMultiEngineEventCallMethod), eventName:\(eventName)")
-                channel.invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments)
-                
-            }
+        channelList.allObjects.forEach { channel in
+            print("FlutterMeteor start channel:\(channel.description) invoke method: \(FMMultiEngineEventCallMethod), eventName:\(eventName)")
+            channel.invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments)
         }
     }
     
-    public static func sendEventWithEngine(engine: FlutterEngine, eventName: String, arguments: Dictionary<String, Any>?, result: FlutterResult?) {
-        let  channel: FlutterMethodChannel? =  channel(engine: engine)
-        var methodAguments: Dictionary<String, Any?> = Dictionary<String, Any?> .init()
-        methodAguments["eventName"] = eventName
-        methodAguments["arguments"] = arguments
-        channel?.invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments)
-    }
+//    public static func sendEvent(eventName: String, arguments: Any?) {
+//        print("FlutterMeteor start invoke channel:\(flutterRootEngineMethodChannel.description), method: \(FMMultiEngineEventCallMethod), eventName:\(eventName), arguments:\(String(describing: arguments))")
+//        var methodAguments: Dictionary<String, Any> = Dictionary<String, Any> .init()
+//        methodAguments["eventName"] = eventName
+//        methodAguments["arguments"] = arguments ?? Dictionary<String, Any> .init()
+//        flutterRootEngineMethodChannel.invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments)
+//        for key in engineCache.mapTable.keyEnumerator() {
+//            if let key = key as? FlutterEngine,
+//               let channel: FlutterMethodChannel = engineCache.mapTable.object(forKey: key) {
+//                print("FlutterMeteor start channel:\(channel.description) invoke method: \(FMMultiEngineEventCallMethod), eventName:\(eventName)")
+//                channel.invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments)
+//                
+//            }
+//        }
+//    }
+    
+//    public static func sendEventWithEngine(engine: FlutterEngine, eventName: String, arguments: Dictionary<String, Any>?, result: FlutterResult?) {
+//        let  channel: FlutterMethodChannel? =  channel(engine: engine)
+//        var methodAguments: Dictionary<String, Any?> = Dictionary<String, Any?> .init()
+//        methodAguments["eventName"] = eventName
+//        methodAguments["arguments"] = arguments
+//        channel?.invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments)
+//    }
     
     public static func createRouterMethodChannel (binaryMessenger: any FlutterBinaryMessenger, result: @escaping FlutterMethodCallHandler) -> FlutterMethodChannel {
         let channel = FlutterMethodChannel(name: HzRouterMethodChannelName, binaryMessenger: binaryMessenger)
@@ -103,11 +111,11 @@ public class FlutterMeteor  {
         let flutterEngine = flutterEngineGroup.makeEngine(with: nil)
         return flutterEngine
     }
-    
-    public static func createFlutterEngine(entryPoint: String?) -> FlutterEngine  {
-        let flutterEngine = flutterEngineGroup.makeEngine(withEntrypoint: entryPoint, libraryURI: nil)
-        return flutterEngine
-    }
+//    
+//    public static func createFlutterEngine(entryPoint: String?) -> FlutterEngine  {
+//        let flutterEngine = flutterEngineGroup.makeEngine(withEntrypoint: entryPoint, libraryURI: nil)
+//        return flutterEngine
+//    }
     
     public static func createFlutterEngine(entryPoint: String?, initialRoute: String?) -> FlutterEngine  {
         return createFlutterEngine(entryPoint: nil, initialRoute: initialRoute, entrypointArgs: nil, libraryURI: nil)

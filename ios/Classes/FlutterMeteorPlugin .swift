@@ -21,19 +21,25 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin, FlutterMeteorDelegat
     
     public static func register(with registrar: FlutterPluginRegistrar) {
 
-        if (FlutterMeteor.flutterRootEngineMethodChannel == nil) {
-            let flutterMethodChannel = FlutterMethodChannel.init(name: FMRouterMethodChannelName, binaryMessenger: registrar.messenger())
-            if (FlutterMeteor.flutterRootEngineMethodChannel == nil) {
-                FlutterMeteor.flutterRootEngineMethodChannel = flutterMethodChannel
-            }
-            
-            let instance = FlutterMeteorPlugin()
-            instance.flutterNavigator = FlutterMeteor.flutterNavigator
-            if (FlutterMeteor.mainEnginRouterDelegate == nil) {
-                FlutterMeteor.mainEnginRouterDelegate = instance
-            }
-            registrar.addMethodCallDelegate(instance, channel: flutterMethodChannel)
-        }
+//        if (FlutterMeteor.flutterRootEngineMethodChannel == nil) {
+//            let flutterMethodChannel = FlutterMethodChannel.init(name: FMRouterMethodChannelName, binaryMessenger: registrar.messenger())
+//            if (FlutterMeteor.flutterRootEngineMethodChannel == nil) {
+//                FlutterMeteor.flutterRootEngineMethodChannel = flutterMethodChannel
+//            }
+//            
+//            let instance = FlutterMeteorPlugin()
+//            instance.flutterNavigator = FlutterMeteor.flutterNavigator
+//            if (FlutterMeteor.mainEnginRouterDelegate == nil) {
+//                FlutterMeteor.mainEnginRouterDelegate = instance
+//                
+//            }
+//            registrar.addMethodCallDelegate(instance, channel: flutterMethodChannel)
+//        } else {
+//            let flutterMethodChannel = FlutterMethodChannel.init(name: FMRouterMethodChannelName, binaryMessenger: registrar.messenger())
+//            let instance = FlutterMeteorPlugin()
+//            instance.flutterNavigator = FlutterMeteor.flutterNavigator
+//            registrar.addMethodCallDelegate(instance, channel: flutterMethodChannel)
+//        }
     }
     
     

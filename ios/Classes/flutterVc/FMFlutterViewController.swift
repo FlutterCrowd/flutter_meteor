@@ -25,7 +25,6 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         }
     }
     
-    
     var methodChannel: FlutterMethodChannel?
     var popCallBack: FlutterMeteorPopCallBack?
     
@@ -35,13 +34,31 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
     }
     
     public override init(engine: FlutterEngine, nibName: String?, bundle nibBundle: Bundle?) {
-        
+    
         super.init(engine: engine, nibName: nibName, bundle: nibBundle)
         // 创建Method Channel
         FlutterMeteor.pluginRegistryDelegate.register(pluginRegistry: self.pluginRegistry())
+        let _methodChannel: FlutterMethodChannel = createMethodChannel()
+        methodChannel = _methodChannel
+
+        if (FlutterMeteor.flutterRootEngineMethodChannel == nil) {
+            FlutterMeteor.flutterRootEngineMethodChannel = _methodChannel
+        }
+        FlutterMeteor.saveMehtodChannel(engine: engine, chennel: _methodChannel)
+        if (FlutterMeteor.mainEnginRouterDelegate == nil) {
+            FlutterMeteor.mainEnginRouterDelegate = self
+        }
         
-        methodChannel = createMethodChannel(channelName: FlutterMeteor.HzRouterMethodChannelName)
-        FlutterMeteor.saveEngine(engine: engine, chennel: methodChannel!)
+    }
+    
+    /***
+     * @ param popCallBack 退出页面的回调
+     */
+    public convenience init () {
+        // 创建新的引擎
+        let flutterEngine = FlutterMeteor.createFlutterEngine(entryPoint: "main", initialRoute: nil)
+        // 初始化VC
+        self.init(engine: flutterEngine, nibName: nil, bundle: nil)
     }
     
     /***
@@ -80,13 +97,12 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
          let flutterEngine = FlutterMeteor.createFlutterEngine(entryPoint: entryPoint, initialRoute: initialRoute, entrypointArgs: entrypointArgs)
          // 初始化VC
          self.init(engine: flutterEngine, nibName: nibName, bundle: bundle)
-        self.popCallBack = popCallBack
+         self.popCallBack = popCallBack
      }
     
     
-    func createMethodChannel(channelName:String) -> FlutterMethodChannel {
-        
-        let channel = FlutterMethodChannel(name: channelName, binaryMessenger: self.binaryMessenger)
+    func createMethodChannel() -> FlutterMethodChannel {
+        let channel = FlutterMethodChannel(name: FlutterMeteor.HzRouterMethodChannelName, binaryMessenger: self.binaryMessenger)
         channel.setMethodCallHandler {[weak self] call, result in
             self?.handleFlutterMethodCall(call, result: result)
         }
@@ -101,12 +117,19 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
 
     deinit {
         FlutterMeteor.pluginRegistryDelegate.unRegister(pluginRegistry: self.pluginRegistry())
+        FlutterMeteor.engineCache.removeObject(forKey: self.engine)
+        print("channelList engineCache: \(String(describing: FlutterMeteor.engineCache.allObjects()))")
+        print("channelList: \(FlutterMeteor.channelList.allObjects)")
         print("HzFlutterViewController did deinit")
-//        print("current engins \(FlutterMeteor.engineCache.count())")
-//        HzEngineManager.printCache()
+
     }
     
     public func pop(options: FMMeteorOptions?) {
+        FMNativeNavigator.pop()
+        popCallBack?(options?.arguments)
+    }
+    
+    public func dismiss(options: FMMeteorOptions?) {
         FMNativeNavigator.pop()
         popCallBack?(options?.arguments)
     }

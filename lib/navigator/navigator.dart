@@ -128,7 +128,7 @@ class MeteorNavigator {
     _nativeNavigator.popToRoot();
   }
 
-  // /// flutter路由观察者，用于记录当前路由变化
+  /// flutter路由观察者，用于记录当前路由变化
   static final MeteorRouteObserver navigatorObserver = MeteorFlutterNavigator.routeObserver;
 
   /// 当前路由名栈
@@ -143,9 +143,6 @@ class MeteorNavigator {
 
   /// 根路由名称
   static Future<String?> rootRouteName() async {
-    if (MeteorEngine.isMain) {
-      return navigatorObserver.rootRouteName;
-    }
     return await _nativeNavigator.rootRouteName();
   }
 
@@ -156,7 +153,8 @@ class MeteorNavigator {
 
   /// 判断路由routeName是否为根路由
   static Future<bool> isRoot(String routeName) async {
-    return await _nativeNavigator.isRoot(routeName);
+    String? rootName = await rootRouteName();
+    return rootName != null && rootName == routeName;
   }
 
   /// 判断当前路由根路由

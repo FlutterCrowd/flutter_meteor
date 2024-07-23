@@ -33,14 +33,14 @@ extension UIViewController {
     @objc func swizzled_present(_ viewControllerToPresent: UIViewController, animated flag: Bool, completion: (() -> Void)? = nil) {
         swizzled_present(viewControllerToPresent, animated: flag) {
             completion?()
-            GlobalRouterManager.shared.updateViewControllerStack()
+            FMRouterManager.shared.updateViewControllerStack()
         }
     }
     
     @objc func swizzled_dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         swizzled_dismiss(animated: flag) {
             completion?()
-            GlobalRouterManager.shared.updateViewControllerStack()
+            FMRouterManager.shared.updateViewControllerStack()
         }
     }
 }
