@@ -8,6 +8,7 @@ import flutter_meteor
         GeneratedPluginRegistrant.register(with: pluginRegistry)
     }
     
+    
     func unRegister(pluginRegistry: any FlutterPluginRegistry) {
         
     }
@@ -19,32 +20,17 @@ import flutter_meteor
   ) -> Bool {
 //    GeneratedPluginRegistrant.register(with: self)
     
-      UIViewController.swizzlePresentation
-      FlutterMeteor.pluginRegistryDelegate = self
-
+      FlutterMeteor.setUp(pluginRegistryDelegate: self)
+      
       let vc: FMFlutterViewController =  FMFlutterViewController.init()
-      vc.routeName = "MeteorRootPage"
+      vc.routeName = "RootPage"
       let navi: UINavigationController = UINavigationController.init(rootViewController: vc)
-//      navi.navigationBar.isHidden = /*true*/
+//      navi.navigationBar.isHidden = true/
       navi.title = "首页导航"
       self.window.rootViewController = navi
       
-      
-      FlutterMeteorRouter.startMonitoring()
-
-      
-//      let vc: UIViewController =  self.window.rootViewController!//TestViewController.init()//
-//      vc.title = "首页"
-//      let navi: UINavigationController = UINavigationController.init(rootViewController: vc)
-//      navi.navigationBar.isHidden = true
-//      navi.title = "首页导航"
-//      self.window.rootViewController = navi
-      
-
-      
       // 指定自定义路由
       FlutterMeteor.customRouterDelegate = HzCustomRouter.init()
-      
       // 初始化路由表
       HzRouterMapExemple.setUp()
 

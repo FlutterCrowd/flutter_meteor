@@ -23,9 +23,6 @@ public class FlutterMeteorRouter: NSObject {
     
     private static var routerDict = Dictionary<String, FMRouterBuilder>()
     
-    public static func startMonitoring() {
-        FMRouterManager.shared.startMonitoring()
-    }
     
     public static func insertRouter(routeName:String, routerBuilder: @escaping FMRouterBuilder) {
         routerDict[routeName] = routerBuilder
@@ -49,7 +46,7 @@ public class FlutterMeteorRouter: NSObject {
     
         let outSemaphore = DispatchSemaphore(value: 0)
         var routeViewController: UIViewController? = nil
-        let vcStack = FMRouterManager.shared.routeStack
+        let vcStack = FMNavigatorObserver.shared.routeStack
         DispatchQueue.global().async { /// 开启异步队列避免阻塞
             let dispatchGroup = DispatchGroup() /// DispatchGroup 用于管理并发任务
             let semaphore = DispatchSemaphore(value: 1) /// 信号量用于同步遍历执行，保证路由栈的顺序
@@ -135,7 +132,7 @@ public class FlutterMeteorRouter: NSObject {
     
     public static func rootRouteName(result: @escaping FlutterResult) {
         
-        let rootVc = FMRouterManager.shared.routeStack.first
+        let rootVc = FMNavigatorObserver.shared.routeStack.first
         if(rootVc is FlutterViewController) {
             let flutterVc = rootVc as! FlutterViewController
             if (flutterVc.engine != nil) {
@@ -150,15 +147,12 @@ public class FlutterMeteorRouter: NSObject {
             result(rootVc?.routeName)
         }
         
-//        FlutterMeteor.flutterRootEngineMethodChannel?.invokeMethod(FMRootRouteName, arguments: nil) { ret in
-//            result(ret)
-//        }
     }
     
     public static func topRouteName(result: @escaping FlutterResult) {
         
-        let vc = FMRouterManager.shared.routeStack.last
-        let topVc = FMRouterManager.getTopVC(withCurrentVC: vc)
+        let vc = FMNavigatorObserver.shared.routeStack.last
+        let topVc = FMNavigatorObserver.getTopVC(withCurrentVC: vc)
         if topVc is FlutterViewController {
             let flutterVc = vc as! FlutterViewController
             if (flutterVc.engine != nil) {
@@ -178,7 +172,7 @@ public class FlutterMeteorRouter: NSObject {
     
 
     public static func routeNameStack(result: @escaping FlutterResult) {
-        let vcStack = FMRouterManager.shared.routeStack
+        let vcStack = FMNavigatorObserver.shared.routeStack
         DispatchQueue.global().async { /// 开启异步队列避免阻塞
             let dispatchGroup = DispatchGroup() /// DispatchGroup 用于管理并发任务
             let semaphore = DispatchSemaphore(value: 1) /// 信号量用于同步遍历执行，保证路由栈的顺序
@@ -225,16 +219,8 @@ public class FlutterMeteorRouter: NSObject {
     
     
     public static func topRouteIsNative(result: @escaping FlutterResult) {
-//        
-//        print("routeStack.last:\(String(describing: FMRouterManager.shared.routeStack.last))")
-////        print("routeStack.last:\(FMRouterManager.topViewController()!)")
-//        if (FMRouterManager.topViewController() == FMRouterManager.shared.routeStack.last) {
-//            print("是同一个ViewController")
-//        } else {
-//            print("不是同一个ViewController")
-//        }
-        let vc = FMRouterManager.shared.routeStack.last
-        let topVc = FMRouterManager.getTopVC(withCurrentVC: vc)
+        let vc = FMNavigatorObserver.shared.routeStack.last
+        let topVc = FMNavigatorObserver.getTopVC(withCurrentVC: vc)
         if topVc is FlutterViewController {
             result(false)
         } else {

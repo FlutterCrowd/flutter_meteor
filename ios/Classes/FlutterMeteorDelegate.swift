@@ -69,11 +69,6 @@ public protocol FlutterMeteorDelegate {
 
  public extension FlutterMeteorDelegate {
 
-     var flutterNavigator: FMFlutterNavigator {
-        get {
-            return FlutterMeteor.flutterNavigator
-        }
-    }
 
      func handleFlutterMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
          

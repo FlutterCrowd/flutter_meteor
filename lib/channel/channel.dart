@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_meteor/engine/engine.dart';
 import 'package:hz_tools/hz_tools.dart';
 
 import '../event_bus/meteor_event_bus.dart';
@@ -13,8 +11,8 @@ class MeteorMethodChannel {
   MeteorMethodChannel() {
     methodChannel.setMethodCallHandler(
       (call) async {
-        HzLog.t(
-            'Meteor 原生调用flutter isMain:${MeteorEngine.isMain}  method:${call.method}, methodArguments:${call.arguments}');
+        // HzLog.t(
+        // 'Meteor 原生调用flutter isMain:${MeteorEngine.isMain}  method:${call.method}, methodArguments:${call.arguments}');
         Map<String, dynamic> arguments = <String, dynamic>{};
         if (call.arguments is Map) {
           Map res = call.arguments;

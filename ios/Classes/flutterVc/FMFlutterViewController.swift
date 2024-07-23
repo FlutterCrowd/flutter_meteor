@@ -40,15 +40,7 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         FlutterMeteor.pluginRegistryDelegate.register(pluginRegistry: self.pluginRegistry())
         let _methodChannel: FlutterMethodChannel = createMethodChannel()
         methodChannel = _methodChannel
-
-        if (FlutterMeteor.flutterRootEngineMethodChannel == nil) {
-            FlutterMeteor.flutterRootEngineMethodChannel = _methodChannel
-        }
         FlutterMeteor.saveMehtodChannel(engine: engine, chennel: _methodChannel)
-        if (FlutterMeteor.mainEnginRouterDelegate == nil) {
-            FlutterMeteor.mainEnginRouterDelegate = self
-        }
-        
     }
     
     /***
@@ -117,8 +109,6 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
 
     deinit {
         FlutterMeteor.pluginRegistryDelegate.unRegister(pluginRegistry: self.pluginRegistry())
-        FlutterMeteor.engineCache.removeObject(forKey: self.engine)
-        print("channelList engineCache: \(String(describing: FlutterMeteor.engineCache.allObjects()))")
         print("channelList: \(FlutterMeteor.channelList.allObjects)")
         print("HzFlutterViewController did deinit")
 
