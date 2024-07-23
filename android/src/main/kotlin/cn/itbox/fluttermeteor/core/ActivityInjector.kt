@@ -5,12 +5,14 @@ import android.app.Application
 import android.os.Bundle
 import android.util.Log
 import cn.itbox.fluttermeteor.engine.EngineInjector
+import io.flutter.plugin.common.MethodChannel
 import java.lang.ref.WeakReference
 
 data class ActivityInfo(
     var avtivity:WeakReference<Activity>,
     var isRoot:Boolean,
     var routeName: String,
+    var channel: MethodChannel?,
 )
 
 internal object ActivityInjector {
@@ -23,8 +25,14 @@ internal object ActivityInjector {
 
     val lastActivityRouteName get() = activityList.lastOrNull()?.routeName
 
+    val activityInfoStack get() = activityList.reversed()
+
     fun inject(application: Application) {
         application.registerActivityLifecycleCallbacks(ActivityLifecycle())
+    }
+
+    fun attachChannel(channel: MethodChannel){
+        activityList.lastOrNull()?.channel = channel
     }
 
     fun finishToRoot() {
@@ -67,7 +75,8 @@ internal object ActivityInjector {
             val initialRoute = intent.getStringExtra("initialRoute")
             val isRoot = initialRoute != null
             val rootName = name ?: (initialRoute ?: "")
-            activityList.add(ActivityInfo(WeakReference(activity),isRoot,rootName))
+            Log.e("FlutterMeteor","onActivityCreated------$name<---<----$initialRoute---->-->${activity.hashCode()}")
+            activityList.add(ActivityInfo(WeakReference(activity),isRoot,rootName,null))
         }
 
         override fun onActivityStarted(activity: Activity) {

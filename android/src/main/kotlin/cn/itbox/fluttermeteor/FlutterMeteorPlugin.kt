@@ -60,11 +60,9 @@ class FlutterMeteorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                                 builder.arguments(args)
                             }
                             builder.backgroundMode(if (newEngineOpaque) FlutterActivityLaunchConfigs.BackgroundMode.opaque else FlutterActivityLaunchConfigs.BackgroundMode.transparent)
-                            Log.e("FlutterMeteor","onPushFlutterPage------$initialRoute")
                             FlutterMeteor.delegate?.onPushFlutterPage(theActivity, builder.build())
                         }
                     } else if (openNative) {
-                        Log.e("FlutterMeteor","onPushNativePage------$routeName<------->$routeArguments")
                         FlutterMeteor.delegate?.onPushNativePage(routeName, routeArguments)
                     }
                 }
@@ -72,7 +70,6 @@ class FlutterMeteorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             }
             "popUntil" ->{
                 val routeName = call.argument<String>("routeName")
-                Log.e("FlutterMeteor","popUntil------$routeName")
                 if(routeName != null){
                     popUntil(routeName)
                 }
@@ -207,41 +204,56 @@ class FlutterMeteorPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
      * 遍历当前所有引擎channel
      */
     private fun collectRouteNamesFromChannels(result: (List<String>) -> Unit) {
-        val channels = EngineInjector.allChannels()
-        val routeNameStack = mutableListOf<String>()
-        val remainingCalls = AtomicInteger(channels.size)
-        if (channels.isNotEmpty()) {
-            for ((index, channel) in channels.withIndex()) {
-                channel.invokeMethod("routeNameStack", null, object : MethodChannel.Result {
-                    override fun success(p0: Any?) {
-                        val routeStack: List<String> = p0 as List<String>
-                        if (routeStack.isNotEmpty()) {
-                            synchronized(routeNameStack) {
-                                routeNameStack.addAll(routeStack)
+        val activityInfoStack = ActivityInjector.activityInfoStack
+        val routeNameStack = mutableListOf<Triple<Int, Int, String>>()
+        val remainingCalls = AtomicInteger(activityInfoStack.size)
+        if (activityInfoStack.isNotEmpty()) {
+            for ((outerIndex,activityInfo) in activityInfoStack.withIndex()) {
+                if(activityInfo.channel != null){
+                    activityInfo.channel?.invokeMethod("routeNameStack", null, object : MethodChannel.Result {
+                        override fun success(p0: Any?) {
+                            val routeStack: List<String> = p0 as List<String>
+                            if (routeStack.isNotEmpty()) {
+                                synchronized(routeNameStack) {
+                                    routeStack.reversed().forEachIndexed { innerIndex, routeName ->
+                                        routeNameStack.add(Triple(outerIndex, innerIndex, routeName))
+                                    }
+                                }
+                            }
+                            if (remainingCalls.decrementAndGet() == 0) {
+                                // 所有调用已经完成，调用传入的回调函数
+                                val sortedRouteNames = routeNameStack.sortedWith(compareBy({ it.first }, { it.second })).map { it.third }
+                                result.invoke(sortedRouteNames.reversed())
                             }
                         }
-                        if (remainingCalls.decrementAndGet() == 0) {
-                            // 所有调用已经完成，调用传入的回调函数
-                            result.invoke(routeNameStack)
-                        }
-                    }
 
-                    override fun error(p0: String, p1: String?, p2: Any?) {
-                        // 错误处理
-                        if (remainingCalls.decrementAndGet() == 0) {
-                            // 所有调用已经完成，调用传入的回调函数
-                            result.invoke(routeNameStack)
+                        override fun error(p0: String, p1: String?, p2: Any?) {
+                            // 错误处理
+                            if (remainingCalls.decrementAndGet() == 0) {
+                                // 所有调用已经完成，调用传入的回调函数
+                                val sortedRouteNames = routeNameStack.sortedWith(compareBy({ it.first }, { it.second })).map { it.third }
+                                result.invoke(sortedRouteNames.reversed())
+                            }
                         }
-                    }
 
-                    override fun notImplemented() {
-                        // 未实现情况处理
-                        if (remainingCalls.decrementAndGet() == 0) {
-                            // 所有调用已经完成，调用传入的回调函数
-                            result.invoke(routeNameStack)
+                        override fun notImplemented() {
+                            // 未实现情况处理
+                            if (remainingCalls.decrementAndGet() == 0) {
+                                // 所有调用已经完成，调用传入的回调函数
+                                val sortedRouteNames = routeNameStack.sortedWith(compareBy({ it.first }, { it.second })).map { it.third }
+                                result.invoke(sortedRouteNames.reversed())
+                            }
                         }
+                    })
+                }else{
+                    synchronized(routeNameStack) {
+                        routeNameStack.add(Triple(outerIndex, 0, activityInfo.routeName))                    }
+                    if (remainingCalls.decrementAndGet() == 0) {
+                        // 所有调用已经完成，调用传入的回调函数
+                        val sortedRouteNames = routeNameStack.sortedWith(compareBy({ it.first }, { it.second })).map { it.third }
+                        result.invoke(sortedRouteNames.reversed())
                     }
-                })
+                }
             }
         } else {
             // 如果channels为空，直接调用传入的回调函数
