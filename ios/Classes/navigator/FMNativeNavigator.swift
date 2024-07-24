@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+
 public class FMNativeNavigator: NSObject {
     
     static public func present(toPage: UIViewController, animated: Bool = true) {
