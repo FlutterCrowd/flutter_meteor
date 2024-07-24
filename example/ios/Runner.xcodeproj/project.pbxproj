@@ -18,6 +18,7 @@
 		B9415A6C2C4F958F003931E2 /* TestViewController1.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9415A6B2C4F958F003931E2 /* TestViewController1.swift */; };
 		B9415A6E2C4F959B003931E2 /* TestViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9415A6D2C4F959B003931E2 /* TestViewController2.swift */; };
 		B9415A702C4F9FD4003931E2 /* TestViewController3.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9415A6F2C4F9FD4003931E2 /* TestViewController3.swift */; };
+		B9415A722C509853003931E2 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9415A712C509853003931E2 /* TabBarViewController.swift */; };
 		B9EDC2872BEB4159001B5592 /* HzCustomRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDC2862BEB4159001B5592 /* HzCustomRouter.swift */; };
 		B9EDC2AC2BF11D4F001B5592 /* HzRouterMapExemple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDC2AB2BF11D4F001B5592 /* HzRouterMapExemple.swift */; };
 		B9EDC2AF2BF13112001B5592 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDC2AE2BF13112001B5592 /* TestViewController.swift */; };
@@ -72,6 +73,7 @@
 		B9415A6B2C4F958F003931E2 /* TestViewController1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController1.swift; sourceTree = "<group>"; };
 		B9415A6D2C4F959B003931E2 /* TestViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController2.swift; sourceTree = "<group>"; };
 		B9415A6F2C4F9FD4003931E2 /* TestViewController3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController3.swift; sourceTree = "<group>"; };
+		B9415A712C509853003931E2 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		B9EDC2862BEB4159001B5592 /* HzCustomRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HzCustomRouter.swift; sourceTree = "<group>"; };
 		B9EDC2AB2BF11D4F001B5592 /* HzRouterMapExemple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HzRouterMapExemple.swift; sourceTree = "<group>"; };
 		B9EDC2AE2BF13112001B5592 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				B9415A6B2C4F958F003931E2 /* TestViewController1.swift */,
 				B9415A6D2C4F959B003931E2 /* TestViewController2.swift */,
 				B9415A6F2C4F9FD4003931E2 /* TestViewController3.swift */,
+				B9415A712C509853003931E2 /* TabBarViewController.swift */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -398,6 +401,7 @@
 				B9EDC2AF2BF13112001B5592 /* TestViewController.swift in Sources */,
 				B9EDC2AC2BF11D4F001B5592 /* HzRouterMapExemple.swift in Sources */,
 				B9415A6C2C4F958F003931E2 /* TestViewController1.swift in Sources */,
+				B9415A722C509853003931E2 /* TabBarViewController.swift in Sources */,
 				B9EDC2872BEB4159001B5592 /* HzCustomRouter.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
 				B9415A702C4F9FD4003931E2 /* TestViewController3.swift in Sources */,

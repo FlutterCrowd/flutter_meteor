@@ -4,6 +4,7 @@ import flutter_meteor
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate, FMNewEnginePluginRegistryDelegate {
+    
     func register(pluginRegistry: any FlutterPluginRegistry) {
         GeneratedPluginRegistrant.register(with: pluginRegistry)
     }
@@ -18,8 +19,10 @@ import flutter_meteor
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-//    GeneratedPluginRegistrant.register(with: self)
+      //
+      GeneratedPluginRegistrant.register(with: self)
     
+      // 在第一次使用FMFlutterViewController之前调用
       FlutterMeteor.setUp(pluginRegistryDelegate: self)
       
       let vc: FMFlutterViewController =  FMFlutterViewController.init()
@@ -28,6 +31,9 @@ import flutter_meteor
 //      navi.navigationBar.isHidden = true/
       navi.title = "首页导航"
       self.window.rootViewController = navi
+      
+      // 开始监听路由，需要在self.window.rootViewController 设置完成之后调用
+      FMNavigatorObserver.shared.startMonitoring()
       
       // 指定自定义路由
       FlutterMeteor.customRouterDelegate = HzCustomRouter.init()

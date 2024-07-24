@@ -27,7 +27,6 @@ public class FlutterMeteor  {
         // method switch
         UIViewController.fmInitializeSwizzling
         FlutterMeteor.pluginRegistryDelegate = pluginRegistryDelegate
-        FMNavigatorObserver.shared.startMonitoring()
     }
     
     // 自定义路由代理

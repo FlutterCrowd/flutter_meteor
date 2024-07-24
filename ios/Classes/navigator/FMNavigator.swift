@@ -74,6 +74,7 @@ public class FMNavigator {
                     }
                 }
             } else {
+                FMNativeNavigator.pop()
                 options?.callBack?(nil)
                 print("查无此路由")
             }

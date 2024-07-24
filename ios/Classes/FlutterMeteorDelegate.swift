@@ -26,6 +26,7 @@ public struct FMMeteorOptions {
     public var withNewEngine: Bool = false
     public var newEngineOpaque: Bool = false
     public var present: Bool = false
+    public var animated: Bool = true
     public var arguments: Dictionary<String, Any>?
     public var callBack: FlutterMeteorRouterCallBack?
     public init(arguments: Dictionary<String, Any>? = nil, callBack: FlutterMeteorRouterCallBack? = nil) {

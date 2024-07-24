@@ -13,21 +13,36 @@ class HzRouterMapExemple  {
     static func setUp() -> Void {
         FlutterMeteorRouter.insertRouter(routeName: "test") { arguments in
             let testVc = TestViewController.init()
+            testVc.hidesBottomBarWhenPushed = true
+            testVc.title = "test"
             return testVc
         }
         
         FlutterMeteorRouter.insertRouter(routeName: "test1") { arguments in
             let testVc = TestViewController1.init()
+            testVc.title = "test1"
+            testVc.hidesBottomBarWhenPushed = true
             return testVc
         }
         
         FlutterMeteorRouter.insertRouter(routeName: "test2") { arguments in
             let testVc = TestViewController2.init()
+            testVc.hidesBottomBarWhenPushed = true
+            testVc.title = "test2"
+            return testVc
+        }
+        
+        FlutterMeteorRouter.insertRouter(routeName: "test3") { arguments in
+            let testVc = TestViewController3.init()
+            testVc.title = "test3"
+            testVc.hidesBottomBarWhenPushed = true
             return testVc
         }
         
         FlutterMeteorRouter.insertRouter(routeName: "push_native") { arguments in
-            let testVc = TestViewController3.init()
+            let testVc = TabBarViewController.init()
+            testVc.title = "push_native"
+//            testVc.hidesBottomBarWhenPushed = true
             return testVc
         }
         
