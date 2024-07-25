@@ -1,5 +1,5 @@
 //
-//  HzFlutterViewController.swift
+//  FMFlutterViewController.swift
 //  hz_router
 //
 //  Created by itbox_djx on 2024/5/9.
@@ -33,7 +33,7 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         fatalError("init(coder:) has not been implemented")
     }
     
-    public override init(engine: FlutterEngine, nibName: String?, bundle nibBundle: Bundle?) {
+    private override init(engine: FlutterEngine, nibName: String?, bundle nibBundle: Bundle?) {
     
         super.init(engine: engine, nibName: nibName, bundle: nibBundle)
         // 创建Method Channel
@@ -43,29 +43,23 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         FlutterMeteor.saveMehtodChannel(engine: engine, chennel: _methodChannel)
     }
     
-    /***
-     * @ param popCallBack 退出页面的回调
-     */
     public convenience init () {
         // 创建新的引擎
-        let flutterEngine = FlutterMeteor.createFlutterEngine(entryPoint: "main", initialRoute: nil)
+        let flutterEngine = FlutterMeteor.createFlutterEngine()
         // 初始化VC
         self.init(engine: flutterEngine, nibName: nil, bundle: nil)
     }
     
     /***
-     * @ param entryPoint flutter 端入口函数
-     * @ param initialRoute flutter端页面路由
-     * @ param entrypointArgs 参数
+     * @ param options FMEngineGroupOptions
      * @ param popCallBack 退出页面的回调
      */
-    public convenience init (entryPoint: String?,
-         entrypointArgs: Dictionary<String, Any>?,
-         initialRoute: String?,
-         popCallBack: FlutterMeteorPopCallBack?
+    public convenience init (
+        options: FMEngineGroupOptions?,
+        popCallBack: FlutterMeteorPopCallBack?
     ) {
         // 创建新的引擎
-        let flutterEngine = FlutterMeteor.createFlutterEngine(entryPoint: entryPoint, initialRoute: initialRoute, entrypointArgs: entrypointArgs)
+        let flutterEngine = FlutterMeteor.createFlutterEngine(options: options)
         // 初始化VC
         self.init(engine: flutterEngine, nibName: nil, bundle: nil)
         self.popCallBack = popCallBack
@@ -73,20 +67,19 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
     }
     
     /***
-     * @ param entryPoint flutter 端入口函数
-     * @ param initialRoute flutter端页面路由
-     * @ param entrypointArgs 参数
+     * @ param options FMEngineGroupOptions
+     * @ param nibName
+     * @ param bundle
      * @ param popCallBack 退出页面的回调
      */
-    public convenience init (entryPoint: String?,
-          entrypointArgs: Dictionary<String, Any>?,
-          initialRoute: String?,
-           nibName: String?,
-           bundle: Bundle?,
+    public convenience init (
+        options: FMEngineGroupOptions?,
+        nibName: String?,
+        bundle: Bundle?,
       popCallBack: FlutterMeteorPopCallBack?
     ) {
          // 创建新的引擎
-         let flutterEngine = FlutterMeteor.createFlutterEngine(entryPoint: entryPoint, initialRoute: initialRoute, entrypointArgs: entrypointArgs)
+         let flutterEngine = FlutterMeteor.createFlutterEngine(options: options)
          // 初始化VC
          self.init(engine: flutterEngine, nibName: nibName, bundle: bundle)
          self.popCallBack = popCallBack

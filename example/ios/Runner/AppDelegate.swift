@@ -21,6 +21,7 @@ import flutter_meteor
   ) -> Bool {
       //
       GeneratedPluginRegistrant.register(with: self)
+      
     
       // 在第一次使用FMFlutterViewController之前调用
       FlutterMeteor.setUp(pluginRegistryDelegate: self)

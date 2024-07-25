@@ -238,13 +238,17 @@ public class FMNavigator {
     }
     
     
-    
     private static func createFlutterVc(routeName: String, options: FMMeteorOptions?) -> FMFlutterViewController {
         let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
-        let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: routeName, nibName: nil, bundle:nil, popCallBack: {result in
-            print(result ?? "")
+        
+        let engineGroupOptions = FMEngineGroupOptions.init(
+            entrypoint: "childEntry",
+            initialRoute: routeName,
+            entrypointArgs: options?.arguments)
+        
+        let flutterVc = FMFlutterViewController.init(options: engineGroupOptions) { response in
             options?.callBack?(nil)
-        })
+        }
         flutterVc.routeName = routeName
         flutterVc.isViewOpaque = newEngineOpaque
         flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen

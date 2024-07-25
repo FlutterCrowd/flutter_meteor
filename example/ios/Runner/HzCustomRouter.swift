@@ -17,9 +17,16 @@ import flutter_meteor
             options?.callBack?(true)
         } else if (routeName == "present_native") {
             let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
-            let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: "multi_engin2", nibName: nil, bundle:nil, popCallBack: {result in
-                print(result ?? "")
-            })
+            
+            let engineGroupOptions = FMEngineGroupOptions.init(
+                entrypoint: "childEntry",
+                initialRoute: routeName,
+                entrypointArgs: options?.arguments)
+            
+            let flutterVc = FMFlutterViewController.init(options: engineGroupOptions) { response in
+                options?.callBack?(nil)
+            }
+            
             flutterVc.isViewOpaque = newEngineOpaque
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
@@ -32,9 +39,14 @@ import flutter_meteor
             let withNewEngine: Bool = options?.withNewEngine ?? false
             if(withNewEngine) {
                 let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
-                let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: routeName, nibName: nil, bundle:nil, popCallBack: {result in
-                    print(result ?? "")
-                })
+                let engineGroupOptions = FMEngineGroupOptions.init(
+                    entrypoint: "childEntry",
+                    initialRoute: routeName,
+                    entrypointArgs: options?.arguments)
+                
+                let flutterVc = FMFlutterViewController.init(options: engineGroupOptions) { response in
+                    options?.callBack?(nil)
+                }
                 flutterVc.isViewOpaque = newEngineOpaque
                 flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
                 flutterVc.view.backgroundColor = UIColor.clear
@@ -52,9 +64,14 @@ import flutter_meteor
             }
         } else if (routeName == "multi_engin2") {
             let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
-            let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: "popWindow", nibName: nil, bundle:nil, popCallBack: {result in
-                print(result ?? "")
-            })
+            let engineGroupOptions = FMEngineGroupOptions.init(
+                entrypoint: "childEntry",
+                initialRoute: routeName,
+                entrypointArgs: options?.arguments)
+            
+            let flutterVc = FMFlutterViewController.init(options: engineGroupOptions) { response in
+                options?.callBack?(nil)
+            }
             flutterVc.isViewOpaque = newEngineOpaque
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
@@ -63,16 +80,26 @@ import flutter_meteor
             
         } else  if (routeName == "test4"){
             let _: Bool = options?.newEngineOpaque ?? true
-            let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: "multi_engin2", nibName: nil, bundle:nil, popCallBack: {result in
-                print(result ?? "")
-            })
+            let engineGroupOptions = FMEngineGroupOptions.init(
+                entrypoint: "childEntry",
+                initialRoute: routeName,
+                entrypointArgs: options?.arguments)
+            
+            let flutterVc = FMFlutterViewController.init(options: engineGroupOptions) { response in
+                options?.callBack?(nil)
+            }
             FMNativeNavigator.push(toPage: flutterVc)
             options?.callBack?(true)
         } else {
             let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
-            let flutterVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: options?.arguments, initialRoute: "multi_engin2", nibName: nil, bundle:nil, popCallBack: {result in
-                print(result ?? "")
-            })
+            let engineGroupOptions = FMEngineGroupOptions.init(
+                entrypoint: "childEntry",
+                initialRoute: routeName,
+                entrypointArgs: options?.arguments)
+            
+            let flutterVc = FMFlutterViewController.init(options: engineGroupOptions) { response in
+                options?.callBack?(nil)
+            }
             flutterVc.isViewOpaque = newEngineOpaque
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear

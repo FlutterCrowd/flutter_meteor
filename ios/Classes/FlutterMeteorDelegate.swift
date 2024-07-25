@@ -172,12 +172,10 @@ public protocol FlutterMeteorDelegate {
      }
      
       func push(routeName: String, options: FMMeteorOptions?) {
-          print("Call push untilRouteName:\(routeName)")
           FMNavigator.push(routeName: routeName, options: options)
      }
      
       func popUntil(untilRouteName: String, options: FMMeteorOptions?) {
-          print("Call popUntil untilRouteName:\(untilRouteName)")
           FMNavigator.popUntil(untilRouteName: untilRouteName, options: options)
      }
      

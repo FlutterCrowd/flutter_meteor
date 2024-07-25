@@ -8,7 +8,30 @@
 import Foundation
 import Flutter
 
-//  
+public class FMEngineGroupOptions {
+    
+    
+    let entrypoint: String?
+    
+    let initialRoute: String?
+    
+    let entrypointArgs: Dictionary<String, Any>?
+    
+    let libraryURI: String?
+    
+    public init(entrypoint: String? = "main",
+         initialRoute: String? = nil,
+         entrypointArgs: Dictionary<String, Any>? = nil,
+         libraryURI: String? = nil) {
+        self.entrypoint = entrypoint
+        self.initialRoute = initialRoute
+        self.entrypointArgs = entrypointArgs
+        self.libraryURI = libraryURI
+    }
+    
+}
+
+//
 public protocol FMNewEnginePluginRegistryDelegate {
     // GeneratedPluginRegistrant.register(with: self) 方法需要在这里调用
     func register(pluginRegistry: any FlutterPluginRegistry)
@@ -21,8 +44,7 @@ public class FlutterMeteor  {
  
     // 多引擎插件初始化
     //
-    // @param pluginRegistryDelegate 注册插件的回调FMNewEnginePluginRegistryDelegate
-    // @return void
+    // @param pluginRegistryDelegate FMNewEnginePluginRegistryDelegate
     public static func setUp(pluginRegistryDelegate: FMNewEnginePluginRegistryDelegate) {
         // method switch
         UIViewController.fmInitializeSwizzling
@@ -81,36 +103,13 @@ public class FlutterMeteor  {
         channel.setMethodCallHandler(result)
         return channel
     }
-    
-    
-    public static func createFlutterEngine() -> FlutterEngine  {
-        let flutterEngine = flutterEngineGroup.makeEngine(with: nil)
-        return flutterEngine
-    }
-
-    public static func createFlutterEngine(entryPoint: String?, initialRoute: String?) -> FlutterEngine  {
-        return createFlutterEngine(entryPoint: nil, initialRoute: initialRoute, entrypointArgs: nil, libraryURI: nil)
-    }
-    
-
-    public static func createFlutterEngine(
-        entryPoint: String?,
-        initialRoute: String?,
-        entrypointArgs: Dictionary<String, Any>?
-    ) -> FlutterEngine  {
       
-        return createFlutterEngine(entryPoint: entryPoint, initialRoute: initialRoute, entrypointArgs: entrypointArgs, libraryURI: nil)
-    }
-    
-    public static func createFlutterEngine(
-        entryPoint: String?,
-        initialRoute: String?,
-        entrypointArgs: Dictionary<String, Any>?,
-        libraryURI: String?
-    ) -> FlutterEngine  {
+    public static func createFlutterEngine(options: FMEngineGroupOptions? = nil) -> FlutterEngine  {
       
         var arguments: Dictionary<String, Any> = Dictionary<String, Any>.init()
 
+        let initialRoute = options?.initialRoute
+        let entrypointArgs = options?.entrypointArgs
         if(initialRoute != nil) {
             arguments["initialRoute"] = initialRoute
         }
@@ -130,10 +129,10 @@ public class FlutterMeteor  {
         
         // 创建新引擎
         let engineGroupOptions = FlutterEngineGroupOptions.init()
-        engineGroupOptions.entrypoint = entryPoint
+        engineGroupOptions.entrypoint = options?.entrypoint
         engineGroupOptions.initialRoute = initialRoute
         engineGroupOptions.entrypointArgs = entrypointArgList
-        engineGroupOptions.libraryURI = libraryURI
+        engineGroupOptions.libraryURI = options?.libraryURI
         let flutterEngine = flutterEngineGroup.makeEngine(with: engineGroupOptions)
         return flutterEngine
     }

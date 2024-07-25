@@ -63,7 +63,11 @@ class HzRouterMapExemple  {
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
-            let testVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2", popCallBack: nil)
+            let engineGroupOptions = FMEngineGroupOptions.init(
+                entrypoint: "childEntry",
+                initialRoute: "multi_engin2",
+                entrypointArgs: arg)
+            let testVc = FMFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)
             return testVc
         }
         
@@ -71,7 +75,11 @@ class HzRouterMapExemple  {
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
-            let testVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin", popCallBack: nil)
+            let engineGroupOptions = FMEngineGroupOptions.init(
+                entrypoint: "childEntry",
+                initialRoute: "multi_engin",
+                entrypointArgs: arg)
+            let testVc = FMFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)
             return testVc
         }
         
@@ -79,7 +87,11 @@ class HzRouterMapExemple  {
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
-            let testVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2", popCallBack: nil)
+            let engineGroupOptions = FMEngineGroupOptions.init(
+                entrypoint: "childEntry",
+                initialRoute: "home",
+                entrypointArgs: arg)
+            let testVc = FMFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)
             return testVc
         }
     }
