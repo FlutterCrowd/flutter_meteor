@@ -104,8 +104,11 @@ class _MyAppState extends State<MyApp> {
           print('initialRoute: $initialRoute');
         }
         // MeteorNavigator.rootRoute = initialRoute;
-        final route = _generateRoute(
+        var route = _generateRoute(
           RouteSettings(name: initialRoute, arguments: widget.routeArguments),
+        );
+        route ??= _generateRoute(
+          const RouteSettings(name: "home", arguments: null),
         );
         return [route!];
       },
