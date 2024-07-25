@@ -10,14 +10,17 @@ import Flutter
 
 
 public let FMRouterMethodChannelName: String = "itbox.meteor.channel"
-public let FMPushNamedMethod: String = "pushNamed";
-public let FMPushReplacementNamedMethod: String = "pushReplacementNamed";
-public let FMPushNamedAndRemoveUntilMethod: String = "pushNamedAndRemoveUntil";
-public let FMPopMethod: String = "pop";
-public let FMPopUntilMethod: String = "popUntil";
-public let FMPopToRootMethod: String = "popToRoot";
-public let FMDismissMethod: String = "dismiss";
-public let FMMultiEngineEventCallMethod: String = "cn.itbox.multiEnginEvent";
+public let FMPushNamedMethod: String = "pushNamed"
+public let FMPushReplacementNamedMethod: String = "pushReplacementNamed"
+public let FMPushNamedAndRemoveUntilMethod: String = "pushNamedAndRemoveUntil"
+public let FMPushNamedAndRemoveUntilRootMethod: String = "pushNamedAndRemoveUntilRoot"
+public let FMPopMethod: String = "pop"
+public let FMPopUntilMethod: String = "popUntil"
+public let FMPopToRootMethod: String = "popToRoot"
+public let FMDismissMethod: String = "dismiss"
+public let FMMultiEngineEventCallMethod: String = "cn.itbox.multiEnginEvent"
+
+
 
 
 public typealias FlutterMeteorRouterCallBack = (_ response: Any?) -> Void
@@ -65,6 +68,9 @@ public protocol FlutterMeteorDelegate {
     /// @parma routeName 要跳转的页面，
     /// @parma untilRouteName 移除截止页面，默认根页面，
     func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: FMMeteorOptions?)
+    
+    func pushNamedAndRemoveUntilRoot(routeName: String, options: FMMeteorOptions?)
+    
 }
 
 
@@ -80,6 +86,7 @@ public protocol FlutterMeteorDelegate {
          if (call.arguments is Dictionary<String, Any>) {
              methodArguments = call.arguments as? Dictionary<String, Any>
              options.newEngineOpaque = (methodArguments!["newEngineOpaque"] != nil) && methodArguments!["newEngineOpaque"] as! Bool == true
+             options.animated = methodArguments!["animated"] as? Bool ?? true
              options.withNewEngine = methodArguments!["withNewEngine"] as? Bool ?? false
              options.present = methodArguments!["present"] as? Bool ?? false
              routeName = methodArguments!["routeName"] as? String ?? ""
@@ -111,6 +118,9 @@ public protocol FlutterMeteorDelegate {
                  options.arguments = getPushAguments(call)
                  self.pushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
                  break
+             case FMPushNamedAndRemoveUntilRootMethod:
+                 FlutterMeteorRouter.topRouteIsNative(result: result)
+                break
              case FMPopUntilMethod:
                  options.arguments = getPopResult(call)
                  self.popUntil(untilRouteName: untilRouteName ?? routeName, options: options)
@@ -150,6 +160,7 @@ public protocol FlutterMeteorDelegate {
              case FMTopRouteIsNative:
                  FlutterMeteorRouter.topRouteIsNative(result: result)
                  break
+             
              default:
                result(FlutterMethodNotImplemented)
              }
@@ -188,7 +199,12 @@ public protocol FlutterMeteorDelegate {
       
       func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: FMMeteorOptions?) {
           FMNavigator.pushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
+      }
+     
+     func pushNamedAndRemoveUntilRoot(routeName: String, options: FMMeteorOptions?) {
+         FMNavigator.pushNamedAndRemoveUntilRoot(routeName: routeName, options: options)
      }
+     
       
      private func  getPopResult(_ call: FlutterMethodCall) -> Dictionary<String, Any>? {
      

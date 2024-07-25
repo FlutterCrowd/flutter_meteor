@@ -168,6 +168,70 @@ class _MultiEnginPageState extends State<BackPage> {
           ),
           Center(
             child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.popUntil('test');
+              },
+              child: const Text(
+                'popUntil',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.popUntil('multi_engin2');
+              },
+              child: const Text(
+                'popUntil2',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.pushReplacementNamed('test', openNative: true);
+              },
+              child: const Text(
+                'pushAndReplace',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.pushNamedAndRemoveUntil('test2', 'multi_engin2', openNative: true);
+              },
+              child: const Text(
+                'pushAndRemoveUntil',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
               onTap: () async {
                 debugPrint(
                     'MeteorNavigator routeNameStack: ${await MeteorNavigator.routeNameStack()}');

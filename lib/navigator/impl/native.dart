@@ -20,6 +20,7 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
     bool newEngineOpaque = true,
     bool openNative = false,
     bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
     Map<String, dynamic> params = {};
@@ -29,28 +30,56 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
     params["openNative"] = openNative;
     params["present"] = present;
     params["arguments"] = arguments;
+    params["animated"] = animated;
     HzLog.t('MeteorNativeNavigator pushNamed:$routeName, arguments:$params');
     return await methodChannel.invokeMethod<T>(MeteorChannelMethod.pushNamedMethod, params);
   }
 
   @override
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
-    String newRouteName,
+    String routeName,
     String untilRouteName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
+    Map<String, dynamic> params = {};
+    params["routeName"] = routeName;
+    params["untilRouteName"] = untilRouteName;
+    params["withNewEngine"] = withNewEngine;
+    params["newEngineOpaque"] = newEngineOpaque;
+    params["openNative"] = openNative;
+    params["present"] = present;
+    params["arguments"] = arguments;
+    params["animated"] = animated;
     // HzLog.w('MeteorNativeNavigator pushNamed:$routeName, arguments:$params');
-    HzLog.w('MeteorNativeNavigator No implemented method name pushNamedAndRemoveUntil in native ');
-    return null;
+    return await methodChannel.invokeMethod<T>(
+        MeteorChannelMethod.pushNamedAndRemoveUntilMethod, params);
   }
 
   @override
   Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    HzLog.w('MeteorNativeNavigator No implemented method name pushReplacementNamed in native ');
-    return null;
+    Map<String, dynamic> params = {};
+    params["routeName"] = routeName;
+    params["withNewEngine"] = withNewEngine;
+    params["newEngineOpaque"] = newEngineOpaque;
+    params["openNative"] = openNative;
+    params["present"] = present;
+    params["arguments"] = arguments;
+    params["animated"] = animated;
+    return await methodChannel.invokeMethod<T>(
+        MeteorChannelMethod.pushReplacementNamedMethod, params);
   }
 
   @override
@@ -68,7 +97,8 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
 
   @override
   Future<T?> popUntil<T extends Object?>(String routeName) async {
-    await methodChannel.invokeMethod<T>(MeteorChannelMethod.popUntilMethod,{'routeName':routeName});
+    await methodChannel
+        .invokeMethod<T>(MeteorChannelMethod.popUntilMethod, {'routeName': routeName});
     return null;
   }
 
@@ -89,11 +119,25 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
   }
 
   @override
-  Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(String newRouteName,
-      {Map<String, dynamic>? arguments}) async {
-    HzLog.w(
-        'MeteorNativeNavigator No implemented method name pushNamedAndRemoveUntilRoot in native ');
-    return null;
+  Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
+    String routeName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
+    Map<String, dynamic>? arguments,
+  }) async {
+    Map<String, dynamic> params = {};
+    params["routeName"] = routeName;
+    params["withNewEngine"] = withNewEngine;
+    params["newEngineOpaque"] = newEngineOpaque;
+    params["openNative"] = openNative;
+    params["present"] = present;
+    params["arguments"] = arguments;
+    params["animated"] = animated;
+    return await methodChannel.invokeMethod<T>(
+        MeteorChannelMethod.pushReplacementNamedMethod, arguments);
   }
 
   @override

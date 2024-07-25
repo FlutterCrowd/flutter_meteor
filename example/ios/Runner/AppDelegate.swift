@@ -28,7 +28,7 @@ import flutter_meteor
       let vc: FMFlutterViewController =  FMFlutterViewController.init()
       vc.routeName = "RootPage"
       let navi: UINavigationController = UINavigationController.init(rootViewController: vc)
-//      navi.navigationBar.isHidden = true/
+      navi.navigationBar.isHidden = true
       navi.title = "首页导航"
       self.window.rootViewController = navi
       

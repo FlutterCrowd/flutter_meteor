@@ -14,7 +14,6 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin, FlutterMeteorDelegat
     }
     
     
-    
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         handleFlutterMethodCall(call, result: result)
     }

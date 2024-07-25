@@ -148,11 +148,42 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushNamedAndRemoveUntil('multi_engin', '/');
-                // MeteorNavigator.pushNamedAndRemoveUntil('multi_engin', '/');
+                MeteorNavigator.pushNamedAndRemoveUntil('multi_engin', 'test');
               },
               child: const Text(
                 'pushNamedAndRemoveUntil',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.pushReplacementNamed('multi_engin');
+              },
+              child: const Text(
+                'pushReplacementNamed',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.pushReplacementNamed('multi_engin2');
+              },
+              child: const Text(
+                'pushReplacementNamed',
                 style: TextStyle(
                   backgroundColor: Colors.yellow,
                 ),

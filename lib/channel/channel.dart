@@ -30,6 +30,12 @@ class MeteorMethodChannel {
           return await flutterPopRoRoot(arguments: arguments);
         } else if (call.method == MeteorChannelMethod.pushNamedMethod) {
           return await flutterPushNamed(arguments: arguments);
+        } else if (call.method == MeteorChannelMethod.pushReplacementNamedMethod) {
+          return await flutterPushAndReplace(arguments: arguments);
+        } else if (call.method == MeteorChannelMethod.pushNamedAndRemoveUntilMethod) {
+          return await flutterPushAndRemoveUntil(arguments: arguments);
+        } else if (call.method == MeteorChannelMethod.pushNamedAndRemoveUntilRootMethod) {
+          return await flutterPushAndRemoveUntilRoot(arguments: arguments);
         } else if (call.method == MeteorChannelMethod.multiEngineEventCallMethod) {
           String eventName = arguments['eventName'];
           List<MeteorEventBusListener> list = MeteorEventBus.listenersForEvent(eventName) ?? [];
@@ -96,6 +102,50 @@ class MeteorMethodChannel {
     HzLog.t('Channel flutterPushNamed arguments: $arguments');
     if (routeName != null) {
       return await _flutterNavigator.pushNamed(routeName);
+    }
+  }
+
+  Future<dynamic> flutterPushAndReplace({Map<String, dynamic>? arguments}) async {
+    Map<String, dynamic> arg = {};
+    if (arguments != null) {
+      arg.addAll(arguments);
+    }
+    String? routeName = arg["routeName"];
+    HzLog.t('Channel flutterPushNamed arguments: $arguments');
+    if (routeName != null) {
+      return await _flutterNavigator.pushReplacementNamed(routeName);
+    }
+  }
+
+  Future<dynamic> flutterPushAndRemoveUntil({Map<String, dynamic>? arguments}) async {
+    Map<String, dynamic> arg = {};
+    if (arguments != null) {
+      arg.addAll(arguments);
+    }
+    String? routeName = arg["routeName"];
+    String? untilRouteName = arg["untilRouteName"];
+    HzLog.t('Channel flutterPushNamed arguments: $arguments');
+    if (routeName != null) {
+      if (untilRouteName != null) {
+        return await _flutterNavigator.pushNamedAndRemoveUntil(routeName, untilRouteName);
+      } else {
+        return await _flutterNavigator.pushNamed(routeName);
+      }
+    } else {
+      return null;
+    }
+  }
+
+  Future<dynamic> flutterPushAndRemoveUntilRoot({Map<String, dynamic>? arguments}) async {
+    Map<String, dynamic> arg = {};
+    if (arguments != null) {
+      arg.addAll(arguments);
+    }
+    String? routeName = arg["routeName"];
+    if (routeName != null) {
+      return await _flutterNavigator.pushNamedAndRemoveUntilRoot(routeName);
+    } else {
+      return null;
     }
   }
 }

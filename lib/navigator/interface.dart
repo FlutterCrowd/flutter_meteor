@@ -12,6 +12,7 @@ abstract class MeteorNavigatorInterface {
   /// @parma newEngineOpaque 是否透明 默认-true 不透明
   /// @parma openNative 是否打开原生
   /// @parma present iOS特有参数，默认false，当present = true时通过iOS的present方法打开新页面
+  /// @parma animated 是否开启动画，默认开启
   /// @return T  泛型，用于指定返回类型
   Future<T?> pushNamed<T extends Object?>(
     String routeName, {
@@ -19,6 +20,7 @@ abstract class MeteorNavigatorInterface {
     bool newEngineOpaque = true,
     bool openNative = false,
     bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   });
 
@@ -28,6 +30,11 @@ abstract class MeteorNavigatorInterface {
   /// @return T  泛型，用于指定返回类型
   Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   });
 
@@ -37,8 +44,13 @@ abstract class MeteorNavigatorInterface {
   /// @parma untilRouteName 移除截止页面，如果untilRouteName不存在会直接push
   /// @return T  泛型，用于指定返回类型
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
-    String newRouteName,
+    String routeName,
     String untilRouteName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   });
 
@@ -47,7 +59,12 @@ abstract class MeteorNavigatorInterface {
   /// @parma routeName 要跳转的页面，
   /// @return T  泛型，用于指定返回类型
   Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
-    String newRouteName, {
+    String routeName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   });
 

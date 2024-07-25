@@ -33,6 +33,7 @@ class MeteorNavigator {
     bool newEngineOpaque = true,
     bool openNative = false,
     bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
     if (withNewEngine || openNative) {
@@ -41,8 +42,9 @@ class MeteorNavigator {
         withNewEngine: withNewEngine,
         newEngineOpaque: newEngineOpaque,
         openNative: openNative,
-        arguments: arguments,
         present: present,
+        animated: animated,
+        arguments: arguments,
       );
     } else {
       return await _flutterNavigator.pushNamed<T>(
@@ -58,40 +60,97 @@ class MeteorNavigator {
   /// @return T  泛型，用于指定返回类型
   static Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    return await _flutterNavigator.pushReplacementNamed<T, TO>(routeName, arguments: arguments);
+    /// 当前引擎路由栈大于一个页面的时候直接在flutter端替换
+    if (navigatorObserver.routeNameStack.length > 1 && !openNative) {
+      return await _flutterNavigator.pushReplacementNamed<T, TO>(
+        routeName,
+        arguments: arguments,
+      );
+    } else {
+      /// 当前引擎路由栈只有一个页面时调原生方法
+      return await _nativeNavigator.pushReplacementNamed<T, TO>(
+        routeName,
+        withNewEngine: withNewEngine,
+        newEngineOpaque: newEngineOpaque,
+        openNative: openNative,
+        present: present,
+        animated: animated,
+        arguments: arguments,
+      );
+    }
   }
 
   /// push 到指定页面，同时会清除从页面pushNamedAndRemoveUntil页面到指定routeName链路上的所有页面
   ///
-  /// @parma newRouteName 要跳转的页面，
+  /// @parma routeName 要跳转的页面，
   /// @parma untilRouteName 移除截止页面
   /// @return T  泛型，用于指定返回类型
   static Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
-    String newRouteName,
+    String routeName,
     String untilRouteName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    return await _flutterNavigator.pushNamedAndRemoveUntil<T>(
-      newRouteName,
-      untilRouteName,
-      arguments: arguments,
-    );
+    if (navigatorObserver.routeExists(untilRouteName) && !openNative) {
+      return await _flutterNavigator.pushNamedAndRemoveUntil<T>(
+        routeName,
+        untilRouteName,
+        arguments: arguments,
+      );
+    } else {
+      return await _nativeNavigator.pushNamedAndRemoveUntil<T>(
+        routeName,
+        untilRouteName,
+        withNewEngine: withNewEngine,
+        newEngineOpaque: newEngineOpaque,
+        openNative: openNative,
+        present: present,
+        animated: animated,
+        arguments: arguments,
+      );
+    }
   }
 
   /// push 到指定页面，同时会清除从页面跟页面到指定routeName链路上的所有页面
   ///
-  /// @parma newRouteName 要跳转的页面，
+  /// @parma routeName 要跳转的页面，
   /// @return T  泛型，用于指定返回类型
   static Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
-    String newRouteName, {
+    String routeName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    return await _flutterNavigator.pushNamedAndRemoveUntilRoot<T>(
-      newRouteName,
-      arguments: arguments,
-    );
+    if (MeteorEngine.isMain) {
+      return await _flutterNavigator.pushNamedAndRemoveUntilRoot<T>(
+        routeName,
+        arguments: arguments,
+      );
+    } else {
+      return await _nativeNavigator.pushNamedAndRemoveUntilRoot<T>(
+        routeName,
+        withNewEngine: withNewEngine,
+        newEngineOpaque: newEngineOpaque,
+        openNative: openNative,
+        present: present,
+        animated: animated,
+        arguments: arguments,
+      );
+    }
   }
 
   /// pop到上一个页面
@@ -119,7 +178,7 @@ class MeteorNavigator {
   /// pop 到指定页面并替换当前页面
   ///
   /// @parma routeName 要pod到的页面
-  static Future<void> popUntil(String routeName) async{
+  static Future<void> popUntil(String routeName) async {
     _nativeNavigator.popUntil(routeName);
   }
 

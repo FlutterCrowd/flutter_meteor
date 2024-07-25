@@ -57,6 +57,14 @@ public class FlutterMeteor  {
         return engineCache[engine]
     }
     
+    public static func methodChannel(flutterVc: FlutterViewController) -> FlutterMethodChannel? {
+        if flutterVc.engine != nil {
+            return engineCache[flutterVc.engine!]
+        } else {
+            return nil
+        }
+    }
+    
     public static func sendEvent(eventName: String, arguments: Any?) {
 
         var methodAguments: Dictionary<String, Any> = Dictionary<String, Any> .init()

@@ -122,6 +122,35 @@ public class FMNativeNavigator: NSObject {
         }
 
         let topVc = topViewController()
+        if topVc != untilPage {
+            if let topView = topVc?.view  {
+                // 这里临时将顶层视图覆盖到要返回的视图，避免闪屏
+                let  topSuperView = topView.superview
+                untilPage?.view .addSubview(topView)
+                popUntil(untilPage: untilPage!, animated: false)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    // 在push动画完成后恢复原样
+                    topView.removeFromSuperview()
+                    topSuperView?.addSubview(topView)
+                }
+            } else {
+                popUntil(untilPage: untilPage!, animated: false)
+            }
+        }
+        push(toPage: toPage, animated: true)
+    }
+    
+    
+    static public func pushToAndRemoveUntilRoot(toPage: UIViewController, animated: Bool = true) {
+        
+        let untilPage = rootViewController()
+        if (untilPage == nil) {
+            print("untilPage is nil")
+            push(toPage: toPage)
+            return
+        }
+
+        let topVc = topViewController()
         if let topView = topVc?.view {
             // 这里临时将顶层视图覆盖到要返回的视图，避免闪屏
             let  topSuperView = topView.superview
@@ -138,6 +167,7 @@ public class FMNativeNavigator: NSObject {
 
         push(toPage: toPage, animated: true)
     }
+    
     
     /// 获取顶部控制器
     public static func topViewController() -> UIViewController? {

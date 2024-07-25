@@ -67,6 +67,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
     bool newEngineOpaque = true,
     bool openNative = false,
     bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
     HzLog.t(
@@ -80,15 +81,20 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
 
   @override
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
-    String newRouteName,
+    String routeName,
     String untilRouteName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
     HzLog.t(
-        'MeteorFlutterNavigator pushReplacementNamed newRouteName:$newRouteName, untilRouteName:$untilRouteName, arguments:$arguments');
+        'MeteorFlutterNavigator pushReplacementNamed newRouteName:$routeName, untilRouteName:$untilRouteName, arguments:$arguments');
     if (routeObserver.routeExists(untilRouteName)) {
       return await Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
-        newRouteName,
+        routeName,
         ModalRoute.withName(untilRouteName),
         arguments: arguments,
       );
@@ -96,7 +102,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
       HzLog.w(
           'MeteorFlutterNavigator untilRouteName:$untilRouteName is not exist in navigator routeStack');
       return await Navigator.of(rootContext).pushNamed<T>(
-        newRouteName,
+        routeName,
         arguments: arguments,
       );
     }
@@ -104,13 +110,18 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
 
   @override
   Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
-    String newRouteName, {
+    String routeName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
     HzLog.t(
-        'MeteorFlutterNavigator pushNamedAndRemoveUntilRoot newRouteName:$newRouteName, arguments:$arguments');
+        'MeteorFlutterNavigator pushNamedAndRemoveUntilRoot newRouteName:$routeName, arguments:$arguments');
     return await Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
-      newRouteName,
+      routeName,
       (Route<dynamic> route) => route.isFirst,
       arguments: arguments,
     );
@@ -119,6 +130,11 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   @override
   Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
+    bool withNewEngine = false,
+    bool newEngineOpaque = true,
+    bool openNative = false,
+    bool present = false,
+    bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
     HzLog.t(
