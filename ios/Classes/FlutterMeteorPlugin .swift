@@ -4,13 +4,16 @@ import UIKit
 public class FlutterMeteorPlugin : NSObject, FlutterPlugin, FlutterMeteorDelegate {
     
     
-    public static var flutterRootEngineMethodChannel: FlutterMethodChannel!
+    public var methodChannel: FlutterMethodChannel!
     
     
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let flutterMethodChannel = FlutterMethodChannel.init(name: FMRouterMethodChannelName, binaryMessenger: registrar.messenger())
+       let channel = FlutterMethodChannel.init(name: FMRouterMethodChannelName, binaryMessenger: registrar.messenger())
         let instance = FlutterMeteorPlugin()
-        registrar.addMethodCallDelegate(instance, channel: flutterMethodChannel)
+        instance.methodChannel = channel
+        registrar.addMethodCallDelegate(instance, channel: channel)
+        
+        FlutterMeteor.saveMehtodChannel(key:registrar.messenger(), chennel: channel)
     }
     
     
@@ -19,7 +22,7 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin, FlutterMeteorDelegat
     }
     
     public func detachFromEngine(for registrar: any FlutterPluginRegistrar) {
-        
+//        FlutterMeteor.sremoveMehtodChannel(key: registrar.messenger())
     }
     
 }

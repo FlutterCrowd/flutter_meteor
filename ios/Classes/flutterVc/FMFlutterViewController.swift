@@ -38,9 +38,9 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         super.init(engine: engine, nibName: nibName, bundle: nibBundle)
         // 创建Method Channel
         FlutterMeteor.pluginRegistryDelegate.register(pluginRegistry: self.pluginRegistry())
-        let _methodChannel: FlutterMethodChannel = createMethodChannel()
-        methodChannel = _methodChannel
-        FlutterMeteor.saveMehtodChannel(engine: engine, chennel: _methodChannel)
+//        let _methodChannel: FlutterMethodChannel = createMethodChannel()
+//        methodChannel = _methodChannel
+//        FlutterMeteor.saveMehtodChannel(engine: engine, chennel: _methodChannel)
     }
     
     public convenience init () {

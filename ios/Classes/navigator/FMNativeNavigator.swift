@@ -100,7 +100,7 @@ public class FMNativeNavigator: NSObject {
     static public func popToRoot(animated: Bool = true) {
         
         if rootViewController()?.presentedViewController == nil {
-            topViewController()?.navigationController?.popToRootViewController(animated: animated)
+            rootNavigationController()?.popToRootViewController(animated: animated)
         } else {
             topViewController()?.dismiss(animated: false, completion: {
                 popToRoot()

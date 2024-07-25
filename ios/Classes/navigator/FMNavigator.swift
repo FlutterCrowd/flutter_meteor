@@ -221,7 +221,6 @@ public class FMNavigator {
    
     public static func popToRoot(options: FMMeteorOptions?) {
         
-        FMNativeNavigator.popToRoot(animated: options?.animated ?? true)
         let vc = FMNavigatorObserver.shared.routeStack.first
         if let flutterVc = vc as? FlutterViewController {
             if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
@@ -229,11 +228,13 @@ public class FMNavigator {
                     options?.callBack?(response)
                 }
             } else {
-                print("Failed to create method channel")
+                print("No valid method channel")
             }
         } else {
             print("ViewController is not a FlutterViewController")
         }
+        FMNativeNavigator.popToRoot(animated: options?.animated ?? true)
+
     }
    
     public static func dismiss(options: FMMeteorOptions?) {

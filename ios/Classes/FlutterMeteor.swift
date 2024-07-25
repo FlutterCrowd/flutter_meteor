@@ -59,7 +59,7 @@ public class FlutterMeteor  {
  
   
     private static let flutterEngineGroup = FlutterEngineGroup(name: "itbox.meteor.flutterEnginGroup", project: nil)
-    private static let engineCache = FMWeakDictionary<FlutterEngine, FlutterMethodChannel>()
+    private static let channelMap = FMWeakDictionary<AnyObject, FlutterMethodChannel>()
     private static let _channelList = FMWeakArray<FlutterMethodChannel>()
     public static let HzRouterMethodChannelName = "itbox.meteor.channel"
 
@@ -70,21 +70,38 @@ public class FlutterMeteor  {
     }
     
     public static func saveMehtodChannel(engine: FlutterEngine, chennel: FlutterMethodChannel) {
-        engineCache[engine] = chennel
+        channelMap[engine] = chennel
         _channelList.add(chennel)
-        print("channelList: \(channelList.allObjects), chennel: \(chennel)")
     }
     
+    public static func saveMehtodChannel(key: AnyObject, chennel: FlutterMethodChannel) {
+        channelMap[key] = chennel
+        _channelList.add(chennel)
+    }
+    
+    public static func sremoveMehtodChannel(key: AnyObject) {
+        guard let channel = channelMap[key] else { 
+            print("No channel for key: \(key)")
+            return
+        }
+        channelMap.removeObject(forKey: key)
+        _channelList.remove(channel)
+    }
+    
+    
     public static func methodChannel(engine: FlutterEngine) -> FlutterMethodChannel? {
-        return engineCache[engine]
+        return channelMap[engine]
     }
     
     public static func methodChannel(flutterVc: FlutterViewController) -> FlutterMethodChannel? {
+        var channel: FlutterMethodChannel?
         if flutterVc.engine != nil {
-            return engineCache[flutterVc.engine!]
-        } else {
-            return nil
+            channel = channelMap[flutterVc.engine!]
         }
+        if(channel == nil) {
+            channel = channelMap[flutterVc.binaryMessenger as! NSObject]
+        }
+        return channel
     }
     
     public static func sendEvent(eventName: String, arguments: Any?) {
