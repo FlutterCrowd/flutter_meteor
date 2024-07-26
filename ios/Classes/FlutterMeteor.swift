@@ -69,11 +69,11 @@ public class FlutterMeteor  {
         }
     }
     
-    public static func saveMehtodChannel(engine: FlutterEngine, chennel: FlutterMethodChannel) {
-        channelMap[engine] = chennel
-        _channelList.add(chennel)
-    }
-    
+//    public static func saveMehtodChannel(engine: FlutterEngine, chennel: FlutterMethodChannel) {
+//        channelMap[engine] = chennel
+//        _channelList.add(chennel)
+//    }
+//    
     public static func saveMehtodChannel(key: AnyObject, chennel: FlutterMethodChannel) {
         channelMap[key] = chennel
         _channelList.add(chennel)

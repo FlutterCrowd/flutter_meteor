@@ -42,7 +42,7 @@ class HzRouterMapExemple  {
         FlutterMeteorRouter.insertRouter(routeName: "push_native") { arguments in
             let testVc = TabBarViewController.init()
             testVc.title = "push_native"
-//            testVc.hidesBottomBarWhenPushed = true
+            testVc.hidesBottomBarWhenPushed = true
             return testVc
         }
         

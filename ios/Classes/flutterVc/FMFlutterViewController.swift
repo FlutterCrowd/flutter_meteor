@@ -38,9 +38,6 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         super.init(engine: engine, nibName: nibName, bundle: nibBundle)
         // 创建Method Channel
         FlutterMeteor.pluginRegistryDelegate.register(pluginRegistry: self.pluginRegistry())
-//        let _methodChannel: FlutterMethodChannel = createMethodChannel()
-//        methodChannel = _methodChannel
-//        FlutterMeteor.saveMehtodChannel(engine: engine, chennel: _methodChannel)
     }
     
     public convenience init () {
@@ -89,21 +86,34 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
     func createMethodChannel() -> FlutterMethodChannel {
         let channel = FlutterMethodChannel(name: FlutterMeteor.HzRouterMethodChannelName, binaryMessenger: self.binaryMessenger)
         channel.setMethodCallHandler {[weak self] call, result in
-            self?.handleFlutterMethodCall(call, result: result)
-        }
+            self?.handleFlutterMethodCall(call, result: result)    }
         return channel
     }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
-        // Do any additional setup after loading the view.
+
+        var _methodChannel: FlutterMethodChannel? = FlutterMeteor.methodChannel(flutterVc: self)
+        if (_methodChannel == nil) {
+            _methodChannel = createMethodChannel()
+            FlutterMeteor.saveMehtodChannel(key: self.binaryMessenger, chennel: _methodChannel!)
+        } else {
+            _methodChannel!.setMethodCallHandler {[weak self] call, result in
+                self?.handleFlutterMethodCall(call, result: result)
+            }
+        }
+        methodChannel = _methodChannel
+
     }
+    
 
     deinit {
         FlutterMeteor.pluginRegistryDelegate.unRegister(pluginRegistry: self.pluginRegistry())
         print("channelList: \(FlutterMeteor.channelList.allObjects)")
         print("HzFlutterViewController did deinit")
+        FlutterMeteor.sremoveMehtodChannel(key: self.binaryMessenger)
+
 
     }
     

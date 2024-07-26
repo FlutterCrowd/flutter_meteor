@@ -31,8 +31,9 @@ import flutter_meteor
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
             let naviVc = UINavigationController.init(rootViewController: flutterVc)
+            naviVc.navigationBar.isHidden = true
             FMNativeNavigator.present(toPage: naviVc)
-            options?.callBack?(true)
+            options?.callBack?(nil)
             
         } else if (routeName == "popWindow") {
             

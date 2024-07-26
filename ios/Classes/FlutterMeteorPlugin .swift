@@ -12,17 +12,16 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin, FlutterMeteorDelegat
         let instance = FlutterMeteorPlugin()
         instance.methodChannel = channel
         registrar.addMethodCallDelegate(instance, channel: channel)
-        
         FlutterMeteor.saveMehtodChannel(key:registrar.messenger(), chennel: channel)
     }
     
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        handleFlutterMethodCall(call, result: result)
+        self.handleFlutterMethodCall(call, result: result)
     }
     
     public func detachFromEngine(for registrar: any FlutterPluginRegistrar) {
-//        FlutterMeteor.sremoveMehtodChannel(key: registrar.messenger())
+        FlutterMeteor.sremoveMehtodChannel(key: registrar.messenger())
     }
     
 }
