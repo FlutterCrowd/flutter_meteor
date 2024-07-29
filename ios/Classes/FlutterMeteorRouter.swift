@@ -59,19 +59,18 @@ public class FlutterMeteorRouter: NSObject {
                 semaphore.wait()
                 dispatchGroup.enter()
                 if let flutterVc = vc as? FlutterViewController {
-                    let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)
-                    if(channel != nil) {
-                        let arguments = ["routeName": routeName]
-                        channel!.invokeMethod(FMRouteExists, arguments: arguments) { ret in
-                            if let exit = ret as? Bool {
-                                if (exit) {
-                                    routeViewController = vc
-                                    shouldBreak = true
+                    if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+                            let arguments = ["routeName": routeName]
+                            channel.save_invoke(method: FMRouteExists, arguments: arguments) { ret in
+                                if let exit = ret as? Bool {
+                                    if (exit) {
+                                        routeViewController = vc
+                                        shouldBreak = true
+                                    }
                                 }
+                                dispatchGroup.leave()
+                                semaphore.signal() // 释放信号量
                             }
-                            dispatchGroup.leave()
-                            semaphore.signal() // 释放信号量
-                        }
                     } else {
                         dispatchGroup.leave()
                         semaphore.signal() // 释放信号量
@@ -131,7 +130,7 @@ public class FlutterMeteorRouter: NSObject {
         if(rootVc is FlutterViewController) {
             let flutterVc = rootVc as! FlutterViewController
             let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)//FlutterMeteor.channelList.allObjects.last
-            channel?.invokeMethod(FMRootRouteName, arguments: nil) { ret in
+            channel?.save_invoke(method:FMRootRouteName, arguments: nil) { ret in
                 result(ret)
             }
         } else {
@@ -147,14 +146,13 @@ public class FlutterMeteorRouter: NSObject {
         if topVc is FlutterViewController {
             let flutterVc = vc as! FlutterViewController
             let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)//FlutterMeteor.channelList.allObjects.last
-            channel?.invokeMethod(FMTopRouteName, arguments: nil) { ret in
+            channel?.save_invoke(method: FMTopRouteName, arguments: nil) { ret in
                 result(ret)
             }
     
         } else {
             result(topVc?.routeName)
         }
-        
     }
     
 
@@ -165,18 +163,16 @@ public class FlutterMeteorRouter: NSObject {
             let semaphore = DispatchSemaphore(value: 1) /// 信号量用于同步遍历执行，保证路由栈的顺序
             var routeStack = Array<String>()
             vcStack.forEach { vc in
-//                print("DispatchGroup enter")
                 semaphore.wait()
                 dispatchGroup.enter()
                 if let flutterVc = vc as? FlutterViewController {
-                    let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)
-                    if(channel != nil) {
-                        channel!.invokeMethod(FMRouteNameStack, arguments: nil) { ret in
-                            if ret is Array<String> {
-                                routeStack.append(contentsOf: ret as! Array<String>)
-                            }
-                            dispatchGroup.leave()
-                            semaphore.signal() // 释放信号量
+                   if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+                       channel.save_invoke(method: FMRouteNameStack, arguments: nil) { ret in
+                           if ret is Array<String> {
+                               routeStack.append(contentsOf: ret as! Array<String>)
+                           }
+                           dispatchGroup.leave()
+                           semaphore.signal() // 释放信号量
                         }
                     } else {
                         routeStack.append(vc.routeName ?? "\(type(of: vc))")

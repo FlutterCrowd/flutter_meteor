@@ -101,7 +101,8 @@ public class FlutterMeteor  {
         methodAguments["arguments"] = arguments ?? Dictionary<String, Any> .init()
         channelList.allObjects.forEach { channel in
             print("FlutterMeteor start channel:\(channel.description) invoke method: \(FMMultiEngineEventCallMethod), eventName:\(eventName)")
-            channel.invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments)
+            channel.save_invoke(method: FMMultiEngineEventCallMethod, arguments: arguments)
+//            channel.save_invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments)
         }
     }
 

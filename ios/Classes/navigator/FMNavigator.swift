@@ -70,14 +70,13 @@ public class FMNavigator {
         if (toPage != nil) {
             if let flutterVc =  untilPage as? FlutterViewController {
                 FMNativeNavigator.push(toPage: toPage!)
-                let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)
-                if(channel != nil) {
+                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                     var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
                     if (arguments["routeName"] == nil) {
                         arguments["routeName"] = untilRouteName
                         arguments["arguments"] = arguments
                     }
-                    channel!.invokeMethod(FMPopUntilMethod, arguments: arguments) { ret in
+                    channel.save_invoke(method: FMPopUntilMethod, arguments: arguments) { ret in
                         options?.callBack?(ret)
                     }
                 } else {
@@ -105,7 +104,7 @@ public class FMNavigator {
                         arguments["untilRouteName"] = untilRouteName
                         arguments["arguments"] = arguments
                     }
-                    channel.invokeMethod(FMPushNamedAndRemoveUntilMethod, arguments: arguments) { ret in
+                    channel.save_invoke(method: FMPushNamedAndRemoveUntilMethod, arguments: arguments) { ret in
                         options?.callBack?(ret)
                     }
                 } else {
@@ -124,14 +123,13 @@ public class FMNavigator {
         if (toPage != nil) {
             FMNativeNavigator.pushToAndRemoveUntilRoot(toPage: toPage!, animated: true)
         } else if let flutterVc = FMNavigatorObserver.shared.routeStack.first as? FlutterViewController {
-            let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)
-            if(channel != nil) {
+            if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                 var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
                 if (arguments["routeName"] == nil) {
                     arguments["routeName"] = routeName
                     arguments["arguments"] = arguments
                 }
-                channel!.invokeMethod(FMPushNamedAndRemoveUntilRootMethod, arguments: arguments) { ret in
+                channel.save_invoke(method: FMPushNamedAndRemoveUntilRootMethod, arguments: arguments) { ret in
                     options?.callBack?(ret)
                 }
             } else {
@@ -158,14 +156,13 @@ public class FMNavigator {
        } else {
            let currentVc = FMNavigatorObserver.shared.routeStack.last
            if let flutterVc = currentVc as? FlutterViewController {
-               let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)
-               if(channel != nil) {
+               if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                    var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
                    if (arguments["routeName"] == nil) {
                        arguments["routeName"] = routeName
                        arguments["arguments"] = arguments
                    }
-                   channel!.invokeMethod(FMPushReplacementNamedMethod, arguments: arguments) { ret in
+                   channel.save_invoke(method: FMPushReplacementNamedMethod, arguments: arguments) { ret in
                        options?.callBack?(ret)
                    }
                } else {
@@ -205,14 +202,13 @@ public class FMNavigator {
             }
             if let flutterVc = untilPage as? FlutterViewController {
                 // 3、如果是FlutterViewController则通过Channel通道在flutter端popUntil
-                let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)
-                if(channel != nil) {
+                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                     var arguments: Dictionary<String, Any?> = options?.result ?? [:]
                     if (arguments["routeName"] == nil) {
                         arguments["routeName"] = untilRouteName
                         arguments["arguments"] = arguments
                     }
-                    channel!.invokeMethod(FMPopUntilMethod, arguments: arguments) { ret in
+                    channel.save_invoke(method: FMPopUntilMethod, arguments: arguments) { ret in
                         options?.callBack?(ret)
                     }
                 } else {
