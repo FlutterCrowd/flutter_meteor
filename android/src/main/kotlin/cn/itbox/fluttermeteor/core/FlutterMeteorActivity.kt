@@ -39,7 +39,15 @@ open class FlutterMeteorActivity : FlutterActivity() {
         }
     }
 
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+
+        println("flutterEngine: $flutterEngine")
+        super.configureFlutterEngine(flutterEngine)
+    }
+
+
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
+        println("engineBindings.engine: ${engineBindings.engine}")
         return engineBindings.engine
     }
 

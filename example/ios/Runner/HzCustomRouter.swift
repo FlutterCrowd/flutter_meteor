@@ -14,7 +14,7 @@ import flutter_meteor
         if (routeName == "push_native") {
             let vc:TestViewController  = TestViewController.init()
             FMNativeNavigator.push(toPage: vc);
-             options?.callBack?(true)
+             options?.callBack?(nil)
         } else if (routeName == "present_native") {
 //            let newEngineOpaque: Bool =  options?.newEngineOpaque ?? true
             
@@ -31,8 +31,9 @@ import flutter_meteor
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
             let naviVc = UINavigationController.init(rootViewController: flutterVc)
+            naviVc.navigationBar.isHidden = true
             FMNativeNavigator.present(toPage: naviVc)
-             options?.callBack?(true)
+            options?.callBack?(nil)
             
         } else if (routeName == "popWindow") {
             
@@ -58,7 +59,7 @@ import flutter_meteor
                 button.backgroundColor = UIColor.red
                 vc.view.addSubview(button)
                 FMNativeNavigator.present(toPage: vc)
-                 options?.callBack?(true)
+                 options?.callBack?(nil)
             }
         } else if ( routeName == "multi_engin2") {
             let newEngineOpaque: Bool =  options?.newEngineOpaque ?? true
@@ -74,7 +75,7 @@ import flutter_meteor
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
             FMNativeNavigator.push(toPage: flutterVc)
-             options?.callBack?(true)
+             options?.callBack?(nil)
             
         } else  if (routeName  == "test4"){
             let engineGroupOptions = FMEngineGroupOptions.init(
@@ -86,7 +87,7 @@ import flutter_meteor
                  options?.callBack?(nil)
             }
             FMNativeNavigator.push(toPage: flutterVc)
-             options?.callBack?(true)
+             options?.callBack?(nil)
         } else {
             let engineGroupOptions = FMEngineGroupOptions.init(
                 entrypoint: "childEntry",
@@ -100,7 +101,7 @@ import flutter_meteor
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
             FMNativeNavigator.push(toPage: flutterVc)
-             options?.callBack?(false)
+             options?.callBack?(nil)
         }
         
     }

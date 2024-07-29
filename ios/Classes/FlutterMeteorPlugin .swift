@@ -6,7 +6,7 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
     
     public var methodChannel: FlutterMethodChannel!
     
-    private let navigator: FlutterMeteorDelegate = FMDefaultNavigator.shared
+    private let _defaultNavigator: FlutterMeteorDelegate = FMDefaultNavigator.shared
     
     public static func register(with registrar: FlutterPluginRegistrar) {
        let channel = FlutterMethodChannel.init(name: FMRouterMethodChannelName, binaryMessenger: registrar.messenger())
@@ -18,7 +18,7 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
     
     
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        navigator.handleFlutterMethodCall(call, result: result)
+        _defaultNavigator.handleFlutterMethodCall(call, result: result)
     }
     
     public func detachFromEngine(for registrar: any FlutterPluginRegistrar) {
