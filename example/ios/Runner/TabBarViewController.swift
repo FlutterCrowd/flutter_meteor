@@ -35,6 +35,7 @@ class TabBarViewController: UITabBarController {
         navController.tabBarItem.image = UIImage(named: imageName)
         vc.navigationItem.title = title
         vc.routeName = title
+        navController.isNavigationBarHidden = true
         return navController
     }
 }

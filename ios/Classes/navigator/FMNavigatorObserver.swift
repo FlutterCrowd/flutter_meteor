@@ -31,9 +31,18 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
             viewControllerStack.append(contentsOf: navigationController.viewControllers)
         } else {
             viewControllerStack.append(viewController)
+
+            if let tabBarVc = viewController as? UITabBarController {
+                if tabBarVc.selectedViewController != nil  {
+                    setupViewController(tabBarVc.selectedViewController!)
+                } else {
+                    viewController.children.forEach { setupViewController($0) }
+                }
+            } else {
+                viewController.children.forEach { setupViewController($0) }
+            }
         }
-        
-        viewController.children.forEach { setupViewController($0) }
+
         if let presentedViewController = viewController.presentedViewController {
             setupViewController(presentedViewController)
         }
@@ -61,11 +70,25 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
                 }
             }
         } else {
+            viewController.children.forEach { vc in
+                if let navi = vc as? UINavigationController {
+                    navi.delegate = self
+                }
+            }
             if !viewControllerStack.contains(viewController) {
                 viewControllerStack.append(viewController)
             }
         }
-        viewController.children.forEach { collectViewControllers(from: $0) }
+        if let tabBarVc = viewController as? UITabBarController {
+            if tabBarVc.selectedViewController != nil  {
+                collectViewControllers(from: tabBarVc.selectedViewController!)
+            } else {
+                viewController.children.forEach { collectViewControllers(from: $0) }
+            }
+        } else {
+            viewController.children.forEach { collectViewControllers(from: $0) }
+        }
+//        viewController.children.forEach { collectViewControllers(from: $0) }
         if let presentedViewController = viewController.presentedViewController {
             collectViewControllers(from: presentedViewController)
         }
@@ -77,6 +100,13 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
         FlutterMeteorRouter.routeNameStack { ret in
             print("Current View routeNameStack: \(String(describing: ret))")
         }
+        
+        print("topViewController: \(FMNavigatorObserver.topViewController() ?? nil)")
+        print("lastViewController: \(FMNavigatorObserver.shared.viewControllerStack.last)")
+        
+        print("rootViewController: \(FMNavigatorObserver.rootViewController() ?? nil)")
+        print("firstViewController: \(FMNavigatorObserver.shared.viewControllerStack.first)")
+        
     }
     
     /// 获取顶部控制器

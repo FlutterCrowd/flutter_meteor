@@ -26,9 +26,11 @@ import flutter_meteor
       // 在第一次使用FMFlutterViewController之前调用
       FlutterMeteor.setUp(pluginRegistryDelegate: self)
       
-      let vc: FMFlutterViewController =  FMFlutterViewController.init()
-      vc.routeName = "RootPage"
-      let navi: UINavigationController = UINavigationController.init(rootViewController: vc)
+//      let vc: FMFlutterViewController =  FMFlutterViewController.init()
+//      vc.routeName = "RootPage"
+      let vc =  self.window.rootViewController
+
+      let navi: UINavigationController = UINavigationController.init(rootViewController: vc!)
       navi.navigationBar.isHidden = true
       navi.title = "首页导航"
       self.window.rootViewController = navi

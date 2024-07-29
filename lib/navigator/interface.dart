@@ -71,23 +71,23 @@ abstract class MeteorNavigatorInterface {
   /// pop到上一个页面
   ///
   /// @parma result 接受回调，T是个泛型，可以指定要返回的数据类型
-  Future<T?> pop<T extends Object?>([T? result]);
+  void pop<T extends Object?>([T? result]);
 
   /// pop 到指定页面并替换当前页面
   ///
   /// @parma routeName 要pod到的页面，如果对应routeName的路由不存在会pop到上一个页面
-  Future<T?> popUntil<T extends Object?>(String routeName);
+  void popUntil<T extends Object?>(String routeName);
 
   /// pop 到最近的一个原生页面
   ///
   /// @parma routeName 要pod到的页面
-  Future<T?> popUntilLastNative<T extends Object?>();
+  void popUntilLastNative<T extends Object?>();
 
   /// pop 到根页面
-  Future<T?> popToRoot<T extends Object?>();
+  void popToRoot<T extends Object?>();
 
   /// 返回原生模态出的视图
-  Future<T?> dismiss<T extends Object?>([T? result]);
+  void dismiss<T extends Object?>();
   //
   /// 当前路由名栈
   Future<List<String>> routeNameStack();

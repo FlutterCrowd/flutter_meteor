@@ -15,7 +15,7 @@ class TestViewController1: TestViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "测试1-test1"
+//        self.title = "测试1-test1"
         self.view.backgroundColor = UIColor.lightGray
           
     }

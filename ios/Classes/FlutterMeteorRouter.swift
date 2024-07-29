@@ -59,21 +59,16 @@ public class FlutterMeteorRouter: NSObject {
                 semaphore.wait()
                 dispatchGroup.enter()
                 if let flutterVc = vc as? FlutterViewController {
-                    if (flutterVc.engine != nil) {
-                        let channel = FlutterMeteor.methodChannel(engine: flutterVc.engine!)
-                        if(channel != nil) {
-                            let arguments = ["routeName": routeName]
-                            channel!.invokeMethod(FMRouteExists, arguments: arguments) { ret in
-                                if let exit = ret as? Bool {
-                                    if (exit) {
-                                        routeViewController = vc
-                                        shouldBreak = true
-                                    }
+                    let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)
+                    if(channel != nil) {
+                        let arguments = ["routeName": routeName]
+                        channel!.invokeMethod(FMRouteExists, arguments: arguments) { ret in
+                            if let exit = ret as? Bool {
+                                if (exit) {
+                                    routeViewController = vc
+                                    shouldBreak = true
                                 }
-                                dispatchGroup.leave()
-                                semaphore.signal() // 释放信号量
                             }
-                        } else {
                             dispatchGroup.leave()
                             semaphore.signal() // 释放信号量
                         }
@@ -135,13 +130,9 @@ public class FlutterMeteorRouter: NSObject {
         let rootVc = FMNavigatorObserver.shared.routeStack.first
         if(rootVc is FlutterViewController) {
             let flutterVc = rootVc as! FlutterViewController
-            if (flutterVc.engine != nil) {
-                let channel = FlutterMeteor.methodChannel(engine: flutterVc.engine!)//FlutterMeteor.channelList.allObjects.last
-                channel?.invokeMethod(FMRootRouteName, arguments: nil) { ret in
-                    result(ret)
-                }
-            } else {
-                result(rootVc?.routeName)
+            let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)//FlutterMeteor.channelList.allObjects.last
+            channel?.invokeMethod(FMRootRouteName, arguments: nil) { ret in
+                result(ret)
             }
         } else {
             result(rootVc?.routeName)
@@ -155,13 +146,9 @@ public class FlutterMeteorRouter: NSObject {
         let topVc = FMNavigatorObserver.getTopVC(withCurrentVC: vc)
         if topVc is FlutterViewController {
             let flutterVc = vc as! FlutterViewController
-            if (flutterVc.engine != nil) {
-                let channel = FlutterMeteor.methodChannel(engine: flutterVc.engine!)//FlutterMeteor.channelList.allObjects.last
-                channel?.invokeMethod(FMTopRouteName, arguments: nil) { ret in
-                    result(ret)
-                }
-            } else {
-                result(topVc?.routeName)
+            let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)//FlutterMeteor.channelList.allObjects.last
+            channel?.invokeMethod(FMTopRouteName, arguments: nil) { ret in
+                result(ret)
             }
     
         } else {
@@ -181,21 +168,13 @@ public class FlutterMeteorRouter: NSObject {
 //                print("DispatchGroup enter")
                 semaphore.wait()
                 dispatchGroup.enter()
-                if vc is FlutterViewController {
-                    let flutterVc = vc as! FlutterViewController
-                    if (flutterVc.engine != nil) {
-                        let channel = FlutterMeteor.methodChannel(engine: flutterVc.engine!)
-                        if(channel != nil) {
-//                            routeStack.append(contentsOf: getFlutterRouteStack(channel: channel!))
-                            channel!.invokeMethod(FMRouteNameStack, arguments: nil) { ret in
-                                if ret is Array<String> {
-                                    routeStack.append(contentsOf: ret as! Array<String>)
-                                }
-                                dispatchGroup.leave()
-                                semaphore.signal() // 释放信号量
+                if let flutterVc = vc as? FlutterViewController {
+                    let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)
+                    if(channel != nil) {
+                        channel!.invokeMethod(FMRouteNameStack, arguments: nil) { ret in
+                            if ret is Array<String> {
+                                routeStack.append(contentsOf: ret as! Array<String>)
                             }
-                        } else {
-                            routeStack.append(vc.routeName ?? "\(type(of: vc))")
                             dispatchGroup.leave()
                             semaphore.signal() // 释放信号量
                         }

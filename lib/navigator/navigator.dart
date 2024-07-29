@@ -160,30 +160,30 @@ class MeteorNavigator {
     if (Navigator.canPop(MeteorFlutterNavigator.rootContext)) {
       _flutterNavigator.pop(result);
     } else {
-      await _nativeNavigator.pop(result);
+      _nativeNavigator.pop(result);
     }
   }
 
   /// dismiss当前页面，针对原生模态出来的页面
   ///
   /// @parma result 接受回调，T是个泛型，可以指定要返回的数据类型
-  static void dismiss<T extends Object?>([T? result]) async {
-    await _nativeNavigator.dismiss(result);
+  static void dismiss<T extends Object?>() async {
+    _nativeNavigator.dismiss();
   }
 
-  static Future<T?> popUntilLastNative<T extends Object?>() async {
-    return await _nativeNavigator.pop();
+  static void popUntilLastNative<T extends Object?>() async {
+    _nativeNavigator.pop();
   }
 
   /// pop 到指定页面并替换当前页面
   ///
   /// @parma routeName 要pod到的页面
-  static Future<void> popUntil(String routeName) async {
+  static void popUntil(String routeName) async {
     _nativeNavigator.popUntil(routeName);
   }
 
   /// pop 到根页面
-  static Future<void> popToRoot() async {
+  static void popToRoot() async {
     _nativeNavigator.popToRoot();
   }
 

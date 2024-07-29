@@ -171,7 +171,7 @@ class TestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.title = "测试-test"
+//        self.title = "测试-test"
         self.view.backgroundColor = UIColor.white
         
         let buttonWidth = 300.0
@@ -270,59 +270,61 @@ class TestViewController: UIViewController {
   
     // 按钮点击时调用的方,
     @objc func buttonTapped(_ sender: UIButton) {
-        FMNavigator.push(routeName: "test", options: nil)
+        FMNavigator.push(routeName: "test")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped2(_ sender: UIButton) {
-        FMNavigator.push(routeName: "test1", options: nil)
+        FMNavigator.push(routeName: "test1")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped3(_ sender: UIButton) {
         print("test2")
-        FMNavigator.push(routeName: "test2", options: nil)
+        FMNavigator.push(routeName: "test2")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped4(_ sender: UIButton) {
         print("打开新引擎")
-        FMNavigator.push(routeName: "multi_engin2", options: nil)
+        FMNavigator.push(routeName: "multi_engin2")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped5(_ sender: UIButton) {
         print("pop")
-        FMNavigator.pop(options: nil)
+        FMNavigator.pop()
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped6(_ sender: UIButton) {
         print("pop until")
-        FMNavigator.popUntil(untilRouteName: "首页", options: nil)//test
+        FMNavigator.push(routeName: "multi_engin2")
+
+        FMNavigator.popUntil(untilRouteName: "首页")//test
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped7(_ sender: UIButton) {
         print("push and replace")
-        FMNavigator.pushToReplacement(routeName: "test1", options: nil)
+        FMNavigator.pushToReplacement(routeName: "test1")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped8(_ sender: UIButton) {
         print("push and remove until")
-        FMNavigator.pushToAndRemoveUntil(routeName: "test2", untilRouteName: "multi_engin2", options: nil)
+        FMNavigator.pushToAndRemoveUntil(routeName: "test1", untilRouteName: "multi_engin2")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped9(_ sender: UIButton) {
         print("push and remove until")
-        FMNavigator.popUntil(untilRouteName: "multi_engin2", options: nil)
+        FMNavigator.popUntil(untilRouteName: "multi_engin2")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped10(_ sender: UIButton) {
         print("push and remove until")
-        FMNavigator.present(routeName: "push_native", options: nil)
+        FMNavigator.present(routeName: "push_native")
     }
 }

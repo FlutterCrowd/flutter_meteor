@@ -83,42 +83,6 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
   }
 
   @override
-  Future<T?> pop<T extends Object?>([T? result]) async {
-    HzLog.t('MeteorNativeNavigator pop');
-    await methodChannel.invokeMethod(MeteorChannelMethod.popMethod, result);
-    return null;
-  }
-
-  @override
-  Future<T?> popToRoot<T extends Object?>() async {
-    HzLog.i('MeteorNativeNavigator popToRoot');
-    return await methodChannel.invokeMethod<T>(MeteorChannelMethod.popToRootMethod);
-  }
-
-  @override
-  Future<T?> popUntil<T extends Object?>(String routeName) async {
-    await methodChannel
-        .invokeMethod<T>(MeteorChannelMethod.popUntilMethod, {'routeName': routeName});
-    return null;
-  }
-
-  @override
-  Future<T?> popUntilLastNative<T extends Object?>() async {
-    HzLog.t('MeteorNativeNavigator popUntilLastNative');
-    return await methodChannel.invokeMethod<T>(MeteorChannelMethod.popMethod);
-  }
-
-  @override
-  Future<T?> dismiss<T extends Object?>([T? result]) async {
-    HzLog.t('MeteorNativeNavigator dismiss');
-    if (Platform.isIOS) {
-      return await methodChannel.invokeMethod<T>(MeteorChannelMethod.dismissMethod);
-    } else {
-      return await methodChannel.invokeMethod<T>(MeteorChannelMethod.popMethod);
-    }
-  }
-
-  @override
   Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
@@ -138,6 +102,41 @@ class MeteorNativeNavigator extends MeteorNavigatorInterface {
     params["animated"] = animated;
     return await methodChannel.invokeMethod<T>(
         MeteorChannelMethod.pushReplacementNamedMethod, arguments);
+  }
+
+  @override
+  void pop<T extends Object?>([T? result]) async {
+    HzLog.t('MeteorNativeNavigator pop');
+    await methodChannel.invokeMethod(MeteorChannelMethod.popMethod, result);
+    return null;
+  }
+
+  @override
+  void popToRoot<T extends Object?>([T? result]) async {
+    HzLog.i('MeteorNativeNavigator popToRoot');
+    await methodChannel.invokeMethod<T>(MeteorChannelMethod.popToRootMethod);
+  }
+
+  @override
+  void popUntil<T extends Object?>(String routeName, [T? result]) async {
+    await methodChannel
+        .invokeMethod<T>(MeteorChannelMethod.popUntilMethod, {'routeName': routeName});
+  }
+
+  @override
+  void popUntilLastNative<T extends Object?>() async {
+    HzLog.t('MeteorNativeNavigator popUntilLastNative');
+    await methodChannel.invokeMethod<T>(MeteorChannelMethod.popMethod);
+  }
+
+  @override
+  void dismiss<T extends Object?>() async {
+    HzLog.t('MeteorNativeNavigator dismiss');
+    if (Platform.isIOS) {
+      await methodChannel.invokeMethod<T>(MeteorChannelMethod.dismissMethod);
+    } else {
+      await methodChannel.invokeMethod<T>(MeteorChannelMethod.popMethod);
+    }
   }
 
   @override

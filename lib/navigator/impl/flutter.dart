@@ -153,7 +153,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   }
 
   @override
-  Future<T?> dismiss<T extends Object?>([T? result]) async {
+  Future<T?> dismiss<T extends Object?>() async {
     HzLog.w('This method:dismiss need to be implemented by native');
     return null;
   }

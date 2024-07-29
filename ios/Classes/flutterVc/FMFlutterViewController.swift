@@ -13,18 +13,6 @@ public typealias FlutterMeteorPopCallBack = (_ response: Dictionary<String, Any>
 public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelegate  {
     
     
-    private var _flutterNavigator: (any FlutterMeteorDelegate)?
-    
-    public var flutterNavigator: any FlutterMeteorDelegate {
-        get {
-            return _flutterNavigator!
-        }
-        
-        set {
-            _flutterNavigator = newValue
-        }
-    }
-    
     var methodChannel: FlutterMethodChannel?
     var popCallBack: FlutterMeteorPopCallBack?
     
@@ -107,14 +95,14 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
 
     }
     
-    public func pop(options: FMMeteorOptions?) {
+    public func pop(options: FMPopOptions?) {
         FMNativeNavigator.pop()
-        popCallBack?(options?.arguments)
+        popCallBack?(options?.result)
     }
     
-    public func dismiss(options: FMMeteorOptions?) {
+    public func dismiss(options: FMPopOptions?) {
         FMNativeNavigator.pop()
-        popCallBack?(options?.arguments)
+        popCallBack?(options?.result)
     }
     
 }
