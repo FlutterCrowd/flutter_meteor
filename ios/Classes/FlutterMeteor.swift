@@ -47,7 +47,6 @@ public class FlutterMeteor  {
     // @param pluginRegistryDelegate FMNewEnginePluginRegistryDelegate
     public static func setUp(pluginRegistryDelegate: FMNewEnginePluginRegistryDelegate) {
         // method switch
-        UIViewController.fmInitializeSwizzling
         FlutterMeteor.pluginRegistryDelegate = pluginRegistryDelegate
     }
     
@@ -102,7 +101,6 @@ public class FlutterMeteor  {
         channelList.allObjects.forEach { channel in
             print("FlutterMeteor start channel:\(channel.description) invoke method: \(FMMultiEngineEventCallMethod), eventName:\(eventName)")
             channel.save_invoke(method: FMMultiEngineEventCallMethod, arguments: arguments)
-//            channel.save_invokeMethod(FMMultiEngineEventCallMethod, arguments: methodAguments)
         }
     }
 

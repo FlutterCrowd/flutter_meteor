@@ -182,7 +182,7 @@ extension FlutterMeteorDelegate {
             
         case FMRouteExists:
             if let methodArguments = call.arguments as? Dictionary<String, Any> {
-                if let routeName = methodArguments["routName"] as? String {
+                if let routeName = methodArguments["routeName"] as? String {
                     FlutterMeteorRouter.routeExists(routeName: routeName, result: result)
                 } else {
                     print("Invalid routeName")
@@ -195,7 +195,7 @@ extension FlutterMeteorDelegate {
             break
         case FMIsRoot:
             if let methodArguments = call.arguments as? Dictionary<String, Any> {
-                if let routeName = methodArguments["routName"] as? String {
+                if let routeName = methodArguments["routeName"] as? String {
                     FlutterMeteorRouter.isRoot(routeName: routeName, result: result)
                 } else {
                     print("Invalid routeName")

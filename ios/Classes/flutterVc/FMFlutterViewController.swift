@@ -92,7 +92,6 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
             }
         }
         methodChannel = _methodChannel
-
     }
     
 
@@ -101,8 +100,6 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         print("channelList: \(FlutterMeteor.channelList.allObjects)")
         print("HzFlutterViewController did deinit")
         FlutterMeteor.sremoveMehtodChannel(key: self.binaryMessenger)
-
-
     }
     
     public func pop(options: FMPopOptions?) {

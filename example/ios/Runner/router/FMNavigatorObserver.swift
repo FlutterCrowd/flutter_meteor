@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import flutter_meteor
 
 public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
     public static let shared = FMNavigatorObserver()
@@ -60,6 +61,7 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
         printCurrentViewControllerStack()
     }
     
+    
     private func collectViewControllers(from viewController: UIViewController) {
 
         if let navigationController = viewController as? UINavigationController {
@@ -101,59 +103,12 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
             print("Current View routeNameStack: \(String(describing: ret))")
         }
         
-        print("topViewController: \(FMNavigatorObserver.topViewController() ?? nil)")
-        print("lastViewController: \(FMNavigatorObserver.shared.viewControllerStack.last)")
+        print("topViewController: \(FMRouterManager.topViewController() ?? nil)")
+        print("lastViewController: \(FMNavigatorObserver.shared.routeStack.last)")
         
-        print("rootViewController: \(FMNavigatorObserver.rootViewController() ?? nil)")
+        print("rootViewController: \(FMRouterManager.rootViewController() ?? nil)")
         print("firstViewController: \(FMNavigatorObserver.shared.viewControllerStack.first)")
         
-    }
-    
-    /// 获取顶部控制器
-    public static func rootViewController() -> UIViewController? {
-        var window = UIApplication.shared.keyWindow
-        // 是否为当前显示的window
-        if ((window?.windowLevel.rawValue) != 0) {
-            let windows = UIApplication.shared.windows
-            for  windowTemp in windows{
-                if windowTemp.windowLevel.rawValue == 0{
-                    window = windowTemp
-                    break
-                }
-            }
-        }
-
-        let vc = window?.rootViewController
-        return vc
-    }
-    
-    /// 获取顶部控制器 无要求
-    public static func topViewController() -> UIViewController? {
-        let vc = rootViewController()
-        return getTopVC(withCurrentVC: vc)
-    }
-    
-    public static func getTopVC(withCurrentVC VC: UIViewController?) -> UIViewController? {
-        guard let currentVC = VC else {
-            return nil
-        }
-        
-        if let presentedVC = currentVC.presentedViewController {
-            // Modal出来的控制器
-            return getTopVC(withCurrentVC: presentedVC)
-        } else if let tabVC = currentVC as? UITabBarController {
-            // tabBar 的根控制器
-            if let selectedVC = tabVC.selectedViewController {
-                return getTopVC(withCurrentVC: selectedVC)
-            }
-            return tabVC
-        } else if let navVC = currentVC as? UINavigationController {
-            // 控制器是导航控制器
-            return getTopVC(withCurrentVC: navVC.visibleViewController)
-        } else {
-            // 返回顶层控制器
-            return currentVC
-        }
     }
 }
 

@@ -9,18 +9,8 @@
 import UIKit
 import ObjectiveC
 
-private var FMAssociatedObjectHandle: UInt8 = 0
 
 extension UIViewController {
-    
-    public var routeName: String? {
-        get {
-            return objc_getAssociatedObject(self, &FMAssociatedObjectHandle) as? String
-        }
-        set {
-            objc_setAssociatedObject(self, &FMAssociatedObjectHandle, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-        }
-    }
     
     public static let swizzlePresentation: Void = {
         // Ensure original and swizzled methods exist

@@ -95,7 +95,7 @@ public class FMNavigator {
         } else if(FlutterMeteor.customRouterDelegate != nil) {
             FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
         } else {
-            let currentVc = FMNavigatorObserver.shared.routeStack.last
+            let currentVc = FMRouterManager.viewControllerStack.last
             if let flutterVc = currentVc as? FlutterViewController {
                 if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                     var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
@@ -122,7 +122,7 @@ public class FMNavigator {
         let toPage: UIViewController? = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments)
         if (toPage != nil) {
             FMNativeNavigator.pushToAndRemoveUntilRoot(toPage: toPage!, animated: true)
-        } else if let flutterVc = FMNavigatorObserver.shared.routeStack.first as? FlutterViewController {
+        } else if let flutterVc = FMRouterManager.viewControllerStack.first as? FlutterViewController {
             if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                 var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
                 if (arguments["routeName"] == nil) {
@@ -154,7 +154,7 @@ public class FMNavigator {
        } else if(FlutterMeteor.customRouterDelegate != nil) {
            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
        } else {
-           let currentVc = FMNavigatorObserver.shared.routeStack.last
+           let currentVc = FMRouterManager.viewControllerStack.last
            if let flutterVc = currentVc as? FlutterViewController {
                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                    var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
@@ -197,7 +197,7 @@ public class FMNavigator {
         // 1、先查询untilRouteName所在的viewController
         if (untilPage != nil) {
             // 2、如果不是最上层的viewController，调用原生的popUntil
-            if(untilPage != FMNavigatorObserver.shared.routeStack.last) {
+            if(untilPage != FMRouterManager.viewControllerStack.last) {
                 FMNativeNavigator.popUntil(untilPage: untilPage!, animated: options?.animated ?? true)
             }
             if let flutterVc = untilPage as? FlutterViewController {
@@ -225,14 +225,24 @@ public class FMNavigator {
    
     public static func popToRoot(options: FMPopOptions? = nil) {
         
-        let vc = FMNavigatorObserver.shared.routeStack.first
+        let vc = FMRouterManager.viewControllerStack.first
         if let flutterVc = vc as? FlutterViewController {
             if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                channel.invokeMethod(FMPopToRootMethod, arguments: options?.result) { response in
+                channel.save_invoke(method: FMPopToRootMethod, arguments: options?.result) { response in
                     options?.callBack?(response)
                 }
             } else {
                 print("No valid method channel")
+            }
+        } else if let naviVc = vc as? UINavigationController {
+            if let flutterVc = naviVc.viewControllers.first as? FlutterViewController {
+                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+                    channel.save_invoke(method: FMPopToRootMethod, arguments: options?.result) { response in
+                        options?.callBack?(response)
+                    }
+                } else {
+                    print("No valid method channel")
+                }
             }
         } else {
             print("ViewController is not a FlutterViewController")

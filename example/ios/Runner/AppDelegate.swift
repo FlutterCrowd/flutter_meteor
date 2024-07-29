@@ -25,7 +25,7 @@ import flutter_meteor
     
       // 在第一次使用FMFlutterViewController之前调用
       FlutterMeteor.setUp(pluginRegistryDelegate: self)
-      
+      UIViewController.fmInitializeSwizzling
 //      let vc: FMFlutterViewController =  FMFlutterViewController.init()
 //      vc.routeName = "RootPage"
       let vc =  self.window.rootViewController

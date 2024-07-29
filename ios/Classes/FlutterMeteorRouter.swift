@@ -46,7 +46,7 @@ public class FlutterMeteorRouter: NSObject {
     
         let outSemaphore = DispatchSemaphore(value: 0)
         var routeViewController: UIViewController? = nil
-        let vcStack = FMNavigatorObserver.shared.routeStack
+        let vcStack = FMRouterManager.viewControllerStack
         DispatchQueue.global().async { /// 开启异步队列避免阻塞
             let dispatchGroup = DispatchGroup() /// DispatchGroup 用于管理并发任务
             let semaphore = DispatchSemaphore(value: 1) /// 信号量用于同步遍历执行，保证路由栈的顺序
@@ -126,7 +126,7 @@ public class FlutterMeteorRouter: NSObject {
     
     public static func rootRouteName(result: @escaping FlutterResult) {
         
-        let rootVc = FMNavigatorObserver.shared.routeStack.first
+        let rootVc = FMRouterManager.viewControllerStack.first
         if(rootVc is FlutterViewController) {
             let flutterVc = rootVc as! FlutterViewController
             let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)//FlutterMeteor.channelList.allObjects.last
@@ -141,8 +141,8 @@ public class FlutterMeteorRouter: NSObject {
     
     public static func topRouteName(result: @escaping FlutterResult) {
         
-        let vc = FMNavigatorObserver.shared.routeStack.last
-        let topVc = FMNavigatorObserver.getTopVC(withCurrentVC: vc)
+        let vc = FMRouterManager.viewControllerStack.last
+        let topVc = FMRouterManager.getTopVC(withCurrentVC: vc)
         if topVc is FlutterViewController {
             let flutterVc = vc as! FlutterViewController
             let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)//FlutterMeteor.channelList.allObjects.last
@@ -157,7 +157,7 @@ public class FlutterMeteorRouter: NSObject {
     
 
     public static func routeNameStack(result: @escaping FlutterResult) {
-        let vcStack = FMNavigatorObserver.shared.routeStack
+        let vcStack = FMRouterManager.viewControllerStack
         DispatchQueue.global().async { /// 开启异步队列避免阻塞
             let dispatchGroup = DispatchGroup() /// DispatchGroup 用于管理并发任务
             let semaphore = DispatchSemaphore(value: 1) /// 信号量用于同步遍历执行，保证路由栈的顺序
@@ -194,8 +194,8 @@ public class FlutterMeteorRouter: NSObject {
     
     
     public static func topRouteIsNative(result: @escaping FlutterResult) {
-        let vc = FMNavigatorObserver.shared.routeStack.last
-        let topVc = FMNavigatorObserver.getTopVC(withCurrentVC: vc)
+        let vc = FMRouterManager.viewControllerStack.last
+        let topVc = FMRouterManager.getTopVC(withCurrentVC: vc)
         if topVc is FlutterViewController {
             result(false)
         } else {
@@ -205,6 +205,5 @@ public class FlutterMeteorRouter: NSObject {
     }
     
     /*------------------------router method end--------------------------*/
-
 
 }
