@@ -72,7 +72,7 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
     
     
     func createMethodChannel() -> FlutterMethodChannel {
-        let channel = FlutterMethodChannel(name: FlutterMeteor.HzRouterMethodChannelName, binaryMessenger: self.binaryMessenger)
+        let channel = FlutterMethodChannel(name: FMRouterMethodChannelName, binaryMessenger: self.binaryMessenger)
         channel.setMethodCallHandler {[weak self] call, result in
             self?.handleFlutterMethodCall(call, result: result)    }
         return channel

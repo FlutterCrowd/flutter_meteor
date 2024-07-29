@@ -8,6 +8,10 @@
 import Foundation
 import Flutter
 
+
+public let FMRouterMethodChannelName: String = "itbox.meteor.channel"
+
+
 public class FMEngineGroupOptions {
     
     
@@ -60,7 +64,6 @@ public class FlutterMeteor  {
     private static let flutterEngineGroup = FlutterEngineGroup(name: "itbox.meteor.flutterEnginGroup", project: nil)
     private static let channelMap = FMWeakDictionary<AnyObject, FlutterMethodChannel>()
     private static let _channelList = FMWeakArray<FlutterMethodChannel>()
-    public static let HzRouterMethodChannelName = "itbox.meteor.channel"
 
     static var channelList: FMWeakArray<FlutterMethodChannel> {
         get {
@@ -102,12 +105,6 @@ public class FlutterMeteor  {
             print("FlutterMeteor start channel:\(channel.description) invoke method: \(FMMultiEngineEventCallMethod), eventName:\(eventName)")
             channel.save_invoke(method: FMMultiEngineEventCallMethod, arguments: arguments)
         }
-    }
-
-    public static func createRouterMethodChannel (binaryMessenger: any FlutterBinaryMessenger, result: @escaping FlutterMethodCallHandler) -> FlutterMethodChannel {
-        let channel = FlutterMethodChannel(name: HzRouterMethodChannelName, binaryMessenger: binaryMessenger)
-        channel.setMethodCallHandler(result)
-        return channel
     }
       
     public static func createFlutterEngine(options: FMEngineGroupOptions? = nil) -> FlutterEngine  {

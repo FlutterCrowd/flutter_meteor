@@ -9,7 +9,6 @@ import Foundation
 import Flutter
 
 
-public let FMRouterMethodChannelName: String = "itbox.meteor.channel"
 public let FMPushNamedMethod: String = "pushNamed"
 public let FMPushReplacementNamedMethod: String = "pushReplacementNamed"
 public let FMPushNamedAndRemoveUntilMethod: String = "pushNamedAndRemoveUntil"
@@ -18,8 +17,8 @@ public let FMPopMethod: String = "pop"
 public let FMPopUntilMethod: String = "popUntil"
 public let FMPopToRootMethod: String = "popToRoot"
 public let FMDismissMethod: String = "dismiss"
-public let FMMultiEngineEventCallMethod: String = "cn.itbox.multiEnginEvent"
 
+public let FMMultiEngineEventCallMethod: String = "cn.itbox.multiEnginEvent"
 
 
 public typealias FlutterMeteorRouterCallBack = (_ response: Any?) -> Void
