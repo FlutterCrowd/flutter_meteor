@@ -13,6 +13,7 @@ data class ActivityInfo(
     var isRoot:Boolean,
     var routeName: String,
     var channel: MethodChannel?,
+    var hashCode: Int,
 )
 
 internal object ActivityInjector {
@@ -31,8 +32,12 @@ internal object ActivityInjector {
         application.registerActivityLifecycleCallbacks(ActivityLifecycle())
     }
 
-    fun attachChannel(channel: MethodChannel){
-        activityList.lastOrNull()?.channel = channel
+    fun attachChannel(hashCode: Int,channel: MethodChannel){
+        for(info in activityList){
+            if(hashCode == info.hashCode){
+                info.channel = channel
+            }
+        }
     }
 
     fun finishToRoot() {
@@ -76,7 +81,7 @@ internal object ActivityInjector {
             val isRoot = initialRoute != null
             val rootName = name ?: (initialRoute ?: "")
             Log.e("FlutterMeteor","onActivityCreated------$name<---<----$initialRoute---->-->${activity.hashCode()}")
-            activityList.add(ActivityInfo(WeakReference(activity),isRoot,rootName,null))
+            activityList.add(ActivityInfo(WeakReference(activity),isRoot,rootName,null,activity.hashCode()))
         }
 
         override fun onActivityStarted(activity: Activity) {

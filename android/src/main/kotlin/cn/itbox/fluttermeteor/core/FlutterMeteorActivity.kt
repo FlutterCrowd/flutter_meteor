@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import cn.itbox.fluttermeteor.engine.EngineBindings
 import cn.itbox.fluttermeteor.engine.EngineInjector
+import cn.itbox.fluttermeteor.core.ActivityInjector
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.engine.FlutterEngine
@@ -40,8 +41,11 @@ open class FlutterMeteorActivity : FlutterActivity() {
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-
-        println("flutterEngine: $flutterEngine")
+        val channel = EngineInjector.getChannel(flutterEngine)
+        if(channel != null){
+            ActivityInjector.attachChannel(this.hashCode(),channel)
+        }
+        println("开始关联channel------>${this.hashCode()}")
         super.configureFlutterEngine(flutterEngine)
     }
 
