@@ -103,13 +103,17 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
     }
     
     public func pop(options: FMPopOptions?) {
-        FMNativeNavigator.pop()
+        FMNavigator.pop()
         popCallBack?(options?.result)
     }
     
     public func dismiss(options: FMPopOptions?) {
-        FMNativeNavigator.pop()
+        FMNavigator.dismiss()
         popCallBack?(options?.result)
+    }
+    
+    public func popUntil(untilRouteName: String?, options: FMPopOptions?) {
+        FMNavigator.popUntil(untilRouteName: untilRouteName, options: options)
     }
     
 }
