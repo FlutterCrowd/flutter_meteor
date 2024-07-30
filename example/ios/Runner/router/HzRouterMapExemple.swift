@@ -55,41 +55,41 @@ class HzRouterMapExemple  {
 //            var arg = Dictionary<String, Any>.init()
 //            arg["1"] = 1
 //            arg["2"] = "2"
-//            let testVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multi_engin2", popCallBack: nil)
+//            let testVc = FMFlutterViewController.init(entryPoint: "childEntry", entrypointArgs: arg, initialRoute: "multiEnginePage2", popCallBack: nil)
 //            return testVc
 //        }
 //        
-        FlutterMeteorRouter.insertRouter(routeName: "multi_engin2") { arguments in
+        FlutterMeteorRouter.insertRouter(routeName: "multiEnginePage2") { arguments in
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
             let engineGroupOptions = FMEngineGroupOptions.init(
                 entrypoint: "childEntry",
-                initialRoute: "multi_engin2",
+                initialRoute: "multiEnginePage2",
                 entrypointArgs: arg)
             let testVc = FMFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)
             return testVc
         }
         
-        FlutterMeteorRouter.insertRouter(routeName: "multi_engin") { arguments in
+        FlutterMeteorRouter.insertRouter(routeName: "multiEnginePage") { arguments in
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
             let engineGroupOptions = FMEngineGroupOptions.init(
                 entrypoint: "childEntry",
-                initialRoute: "multi_engin",
+                initialRoute: "multiEnginePage",
                 entrypointArgs: arg)
             let testVc = FMFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)
             return testVc
         }
         
-        FlutterMeteorRouter.insertRouter(routeName: "multi_engin_native") { arguments in
+        FlutterMeteorRouter.insertRouter(routeName: "multiEnginePage") { arguments in
             var arg = Dictionary<String, Any>.init()
             arg["1"] = 1
             arg["2"] = "2"
             let engineGroupOptions = FMEngineGroupOptions.init(
                 entrypoint: "childEntry",
-                initialRoute: "home",
+                initialRoute: "homePage",
                 entrypointArgs: arg)
             let testVc = FMFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)
             return testVc

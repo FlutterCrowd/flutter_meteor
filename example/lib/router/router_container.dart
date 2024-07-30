@@ -7,24 +7,24 @@ class MixinRouteContainer {
     _routes.addAll(routes);
   }
 
-  /// 不透明路由
+  /// MaterialPageRoute
   void addRoute(String name, RouteWidgetBuilder builder) {
     RouteOptions<MaterialPageRouteOptions> options =
         RouteOptions(builder, MaterialPageRouteOptions());
     _routes.putIfAbsent(name, () => options);
   }
 
-  /// 透明路由
+  /// PageRouteBuilder
   void addTransparentRoute(String name, RouteWidgetBuilder builder) {
-    PageRouteOptions pageRouteOptions = PageRouteOptions(
+    PageRouteBuilderOptions pageRouteOptions = PageRouteBuilderOptions(
       opaque: false,
     );
-    RouteOptions<PageRouteOptions> options =
-        RouteOptions<PageRouteOptions>(builder, pageRouteOptions);
+    RouteOptions<PageRouteBuilderOptions> options =
+        RouteOptions<PageRouteBuilderOptions>(builder, pageRouteOptions);
     _routes.putIfAbsent(name, () => options);
   }
 
-  /// 自定义不透明Material路由
+  /// MaterialPageRoute
   void addCustomMaterialPageRoute(String name, RouteWidgetBuilder builder,
       {MaterialPageRouteOptions? pageRouteOptions}) {
     RouteOptions<MaterialPageRouteOptions> options = RouteOptions<MaterialPageRouteOptions>(
@@ -32,11 +32,11 @@ class MixinRouteContainer {
     _routes.putIfAbsent(name, () => options);
   }
 
-  /// 自定义路由
+  /// PageRouteBuilder
   void addCustomPageRoute(String name, RouteWidgetBuilder builder,
-      {PageRouteOptions? pageRouteOptions}) {
-    RouteOptions<PageRouteOptions> options =
-        RouteOptions<PageRouteOptions>(builder, pageRouteOptions ?? PageRouteOptions());
+      {PageRouteBuilderOptions? pageRouteOptions}) {
+    RouteOptions<PageRouteBuilderOptions> options = RouteOptions<PageRouteBuilderOptions>(
+        builder, pageRouteOptions ?? PageRouteBuilderOptions());
     _routes.putIfAbsent(name, () => options);
   }
 

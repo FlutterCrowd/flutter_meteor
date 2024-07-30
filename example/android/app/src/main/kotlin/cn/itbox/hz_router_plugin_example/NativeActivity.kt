@@ -16,7 +16,7 @@ class NativeActivity : AppCompatActivity() {
         val button = findViewById<View>(R.id.button)
         button.setOnClickListener {
             val options = FlutterMeteorRouteOptions.Builder()
-                .initialRoute("multi_engin")
+                .initialRoute("multiEnginePage")
                 .requestCode(200)
                 .build()
             FlutterMeteor.open(this, options)

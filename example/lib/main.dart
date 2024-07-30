@@ -3,14 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 import 'package:hz_router_plugin_example/router/router_center.dart';
 
-import 'back_widget.dart';
-import 'home_page.dart';
-import 'mine_page.dart';
-import 'multi_engin_page.dart';
-import 'multi_engin_page2.dart';
-import 'pop_window.dart';
-import 'root_page.dart';
-
+final GlobalKey<NavigatorState> rootKey = GlobalKey<NavigatorState>();
 void main() {
   runApp(const MyApp());
 }
@@ -41,51 +34,52 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-Map<String, WidgetBuilder> _routes = {
-  "rootPage": (context) => const RootPage(),
-  "home": (context) => const HomePage(),
-  "mine": (context) => MinePage(),
-  "multi_engin": (context) => MultiEnginPage(),
-  "multi_engin2": (context) => const MultiEnginPage2(),
-  "popWindow": (context) => const PopWindowPage(),
-  "back_test": (context) => BackPage(),
-};
+// Map<String, WidgetBuilder> _routes = {
+//   "rootPage": (context) => const RootPage(),
+//   "homePage": (context) => const HomePage(),
+//   "minePage": (context) => MinePage(),
+//   "multiEnginePage": (context) => MultiEnginPage(),
+//   "multiEnginePage2": (context) => const MultiEnginPage2(),
+//   "popWindowPage": (context) => const PopWindowPage(),
+//   "backPage": (context) => BackPage(),
+// };
 
-Route<dynamic>? _generateRoute(RouteSettings settings) {
-  final String? name = settings.name;
-  final Widget Function(BuildContext)? pageRouteBuilder = _routes[name];
-  if (pageRouteBuilder != null) {
-    if (name == 'popWindow') {
-      return PageRouteBuilder(
-        opaque: false,
-        pageBuilder: (context, _, __) => pageRouteBuilder(context),
-        settings: settings,
-      );
-    }
-    final Route<dynamic> route = MaterialPageRoute(
-      builder: pageRouteBuilder,
-      settings: settings,
-    );
-    return route;
-  } else {
-    return null;
-  }
-}
+// Route<dynamic>? _generateRoute(RouteSettings settings) {
+//   final String? name = settings.name;
+//   final Widget Function(BuildContext)? pageRouteBuilder = _routes[name];
+//   if (pageRouteBuilder != null) {
+//     if (name == 'popWindowPage') {
+//       return PageRouteBuilder(
+//         opaque: false,
+//         pageBuilder: (context, _, __) => pageRouteBuilder(context),
+//         settings: settings,
+//       );
+//     }
+//     final Route<dynamic> route = MaterialPageRoute(
+//       builder: pageRouteBuilder,
+//       settings: settings,
+//     );
+//     return route;
+//   } else {
+//     return null;
+//   }
+// }
 
 class _MyAppState extends State<MyApp> {
   late String initRoute;
-  final GlobalKey<NavigatorState> rootKey = GlobalKey<NavigatorState>();
+
   @override
   void initState() {
     super.initState();
     initRoute = widget.initRoute ?? 'rootPage';
+    RouterCenter.setup();
     MeteorNavigator.init(rootKey: rootKey);
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      onGenerateRoute: _generateRoute,
+      onGenerateRoute: RouterCenter.generateRoute,
       navigatorKey: rootKey,
       navigatorObservers: [
         MeteorNavigator.navigatorObserver,
@@ -104,11 +98,11 @@ class _MyAppState extends State<MyApp> {
           print('initialRoute: $initialRoute');
         }
         // MeteorNavigator.rootRoute = initialRoute;
-        var route = _generateRoute(
+        var route = RouterCenter.generateRoute(
           RouteSettings(name: initialRoute, arguments: widget.routeArguments),
         );
-        route ??= _generateRoute(
-          const RouteSettings(name: "home", arguments: null),
+        route ??= RouterCenter.generateRoute(
+          const RouteSettings(name: "homePage", arguments: null),
         );
         return [route!];
       },

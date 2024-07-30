@@ -142,7 +142,7 @@ class TestViewController: UIViewController {
     let myButton9: UIButton = {
         let button = UIButton(type: .system)
         // 设置按钮的标题
-        button.setTitle("返回multi_engin2", for: .normal)
+        button.setTitle("返回multiEnginePage2", for: .normal)
         // 设置按钮的背景颜色（可选）
         button.backgroundColor = .cyan
         // 设置按钮的标题颜色（可选）
@@ -287,7 +287,7 @@ class TestViewController: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped4(_ sender: UIButton) {
         print("打开新引擎")
-        FMNavigator.push(routeName: "multi_engin2")
+        FMNavigator.push(routeName: "multiEnginePage2")
     }
     
     // 按钮点击时调用的方法
@@ -299,7 +299,7 @@ class TestViewController: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped6(_ sender: UIButton) {
         print("pop until")
-        FMNavigator.push(routeName: "multi_engin2")
+        FMNavigator.push(routeName: "multiEnginePage2")
 
         FMNavigator.popUntil(untilRouteName: "首页")//test
     }
@@ -313,13 +313,13 @@ class TestViewController: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped8(_ sender: UIButton) {
         print("push and remove until")
-        FMNavigator.pushToAndRemoveUntil(routeName: "test1", untilRouteName: "multi_engin2")
+        FMNavigator.pushToAndRemoveUntil(routeName: "test1", untilRouteName: "multiEnginePage2")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped9(_ sender: UIButton) {
         print("push and remove until")
-        FMNavigator.popUntil(untilRouteName: "multi_engin2")
+        FMNavigator.popUntil(untilRouteName: "multiEnginePage2")
     }
     
     // 按钮点击时调用的方法

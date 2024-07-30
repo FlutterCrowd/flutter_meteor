@@ -6,8 +6,6 @@ class RouteOptions<T> {
   final RouteWidgetBuilder builder;
   final T pageOptions;
   RouteOptions(this.builder, this.pageOptions);
-
-  bool get isMaterial => pageOptions is MaterialPageRouteOptions;
 }
 
 class MaterialPageRouteOptions {
@@ -23,7 +21,7 @@ class MaterialPageRouteOptions {
   });
 }
 
-class PageRouteOptions {
+class PageRouteBuilderOptions {
   final RouteTransitionsBuilder? transitionsBuilder;
   final Duration? transitionDuration;
   final Duration? reverseTransitionDuration;
@@ -35,7 +33,7 @@ class PageRouteOptions {
   final bool? fullscreenDialog;
   final bool? allowSnapshotting;
 
-  PageRouteOptions({
+  PageRouteBuilderOptions({
     this.transitionsBuilder,
     this.transitionDuration,
     this.reverseTransitionDuration,

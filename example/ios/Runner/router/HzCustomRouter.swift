@@ -35,7 +35,7 @@ import flutter_meteor
             FMNativeNavigator.present(toPage: naviVc)
             options?.callBack?(nil)
             
-        } else if (routeName == "popWindow") {
+        } else if (routeName == "popWindowPage") {
             
             if(options?.withNewEngine ?? false) {
                 let engineGroupOptions = FMEngineGroupOptions.init(
@@ -61,7 +61,7 @@ import flutter_meteor
                 FMNativeNavigator.present(toPage: vc)
                  options?.callBack?(nil)
             }
-        } else if ( routeName == "multi_engin2") {
+        } else if ( routeName == "multiEnginePage2") {
             let newEngineOpaque: Bool =  options?.newEngineOpaque ?? true
             let engineGroupOptions = FMEngineGroupOptions.init(
                 entrypoint: "childEntry",
