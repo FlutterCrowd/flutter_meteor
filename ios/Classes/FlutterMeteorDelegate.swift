@@ -158,7 +158,6 @@ extension FlutterMeteorDelegate {
             break
         case FMPopUntilMethod:
             let params = getPopParams(call, result: result)
-            pop(options: params.options)
             popUntil(untilRouteName: params.untilRouteName, options: params.options)
             break
         case FMPopToRootMethod:
