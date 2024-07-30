@@ -68,7 +68,7 @@ class MeteorNavigator {
     Map<String, dynamic>? arguments,
   }) async {
     /// 当前引擎路由栈大于一个页面的时候直接在flutter端替换
-    if (navigatorObserver.routeNameStack.length > 1 && !openNative) {
+    if (navigatorObserver.routeNameStack.length > 1 && !openNative && !withNewEngine) {
       return await _flutterNavigator.pushReplacementNamed<T, TO>(
         routeName,
         arguments: arguments,
@@ -102,7 +102,7 @@ class MeteorNavigator {
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    if (navigatorObserver.routeExists(untilRouteName) && !openNative) {
+    if (navigatorObserver.routeExists(untilRouteName) && !openNative && !withNewEngine) {
       return await _flutterNavigator.pushNamedAndRemoveUntil<T>(
         routeName,
         untilRouteName,
@@ -135,22 +135,15 @@ class MeteorNavigator {
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    if (MeteorEngine.isMain) {
-      return await _flutterNavigator.pushNamedAndRemoveUntilRoot<T>(
-        routeName,
-        arguments: arguments,
-      );
-    } else {
-      return await _nativeNavigator.pushNamedAndRemoveUntilRoot<T>(
-        routeName,
-        withNewEngine: withNewEngine,
-        newEngineOpaque: newEngineOpaque,
-        openNative: openNative,
-        present: present,
-        animated: animated,
-        arguments: arguments,
-      );
-    }
+    return await _nativeNavigator.pushNamedAndRemoveUntilRoot<T>(
+      routeName,
+      withNewEngine: withNewEngine,
+      newEngineOpaque: newEngineOpaque,
+      openNative: openNative,
+      present: present,
+      animated: animated,
+      arguments: arguments,
+    );
   }
 
   /// pop到上一个页面
