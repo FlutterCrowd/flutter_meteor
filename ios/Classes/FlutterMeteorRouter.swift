@@ -21,22 +21,22 @@ public typealias FMRouterSearchBlock = (_ viewController: UIViewController?) -> 
 
 public class FlutterMeteorRouter: NSObject {
     
-    private static var routerDict = Dictionary<String, FMRouterBuilder>()
+    private static var routes = Dictionary<String, FMRouterBuilder>()
     
     var semaphore = DispatchSemaphore(value: 1)
     public static func insertRouter(routeName:String, routerBuilder: @escaping FMRouterBuilder) {
-        routerDict[routeName] = routerBuilder
+        routes[routeName] = routerBuilder
     }
     
     public static func routerBuilder(routeName:String) -> FMRouterBuilder? {
-        return routerDict[routeName]
+        return routes[routeName]
     }
     
     public static func viewController(routeName: String?, arguments: Dictionary<String, Any>?) -> UIViewController? {
         if(routeName == nil) {
             return nil
         }
-        let vcBuilder: FMRouterBuilder? = FlutterMeteorRouter.routerDict[routeName!]
+        let vcBuilder: FMRouterBuilder? = FlutterMeteorRouter.routes[routeName!]
         let vc: UIViewController? = vcBuilder?(arguments)
         vc?.routeName = routeName
         return vc
@@ -141,7 +141,6 @@ public class FlutterMeteorRouter: NSObject {
             channel?.save_invoke(method: FMTopRouteName, arguments: nil) { ret in
                 result(ret)
             }
-    
         } else {
             result(topVc?.routeName)
         }

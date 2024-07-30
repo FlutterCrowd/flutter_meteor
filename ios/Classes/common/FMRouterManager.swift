@@ -24,37 +24,96 @@ public class FMRouterManager: NSObject {
     }
     
     
-    // 递归遍历视图控制器层次结构
-    private static func _currentRouteStack(from rootViewController: UIViewController) -> [UIViewController] {
-        var currentRouteStack: [UIViewController] = []
-        
-        if let navigationController = rootViewController as? UINavigationController {
-            if let presentedViewController = rootViewController.presentedViewController {
-                currentRouteStack.append(contentsOf: _currentRouteStack(from: presentedViewController))
-            }
-            for viewController in navigationController.viewControllers {
-                currentRouteStack.append(contentsOf: _currentRouteStack(from: viewController))
-            }
-        } else {
-            currentRouteStack.append(rootViewController)
-            if let presentedViewController = rootViewController.presentedViewController {
-                currentRouteStack.append(contentsOf: _currentRouteStack(from: presentedViewController))
-            }
-            if let tabBarController = rootViewController as? UITabBarController {
-                if let seletedVc = tabBarController.selectedViewController {
-                    currentRouteStack.append(contentsOf: _currentRouteStack(from: seletedVc))
+//    // 递归遍历视图控制器层次结构
+//    private static func _currentRouteStack(from rootViewController: UIViewController) -> [UIViewController] {
+//        var currentRouteStack: [UIViewController] = []
+//        
+//        if let navigationController = rootViewController as? UINavigationController {
+//            for viewController in navigationController.viewControllers {
+//                currentRouteStack.append(contentsOf: _currentRouteStack(from: viewController))
+//            }
+//        } else {
+//            if !currentRouteStack.contains(rootViewController) {
+//                currentRouteStack.append(rootViewController)
+//            }
+//            if let tabBarController = rootViewController as? UITabBarController {
+//                if let seletedVc = tabBarController.selectedViewController {
+//                    currentRouteStack.append(contentsOf: _currentRouteStack(from: seletedVc))
+//                } else {
+//                    for viewController in tabBarController.viewControllers ?? [] {
+//                        currentRouteStack.append(contentsOf: _currentRouteStack(from: viewController))
+//                    }
+//                }
+//            } else {
+//                for childViewController in rootViewController.children {
+//                    currentRouteStack.append(contentsOf: _currentRouteStack(from: childViewController))
+//                }
+//            }
+//        }
+//        if let presentedViewController = rootViewController.presentedViewController {
+//            currentRouteStack.append(contentsOf: _currentRouteStack(from: presentedViewController))
+//        }
+//        return currentRouteStack
+//    }
+//    
+    static func _currentRouteStack(from rootViewController: UIViewController) -> [UIViewController] {
+        var allViewControllers: [UIViewController] = []
+        func traverse(_ viewController: UIViewController) {
+            if let naviVc = viewController as? UINavigationController  {
+                if !naviVc.viewControllers.isEmpty  {
+                    for childViewController in naviVc.viewControllers {
+                        if !allViewControllers.contains(childViewController) {
+                            allViewControllers.append(childViewController)
+                        }
+                    }
+                    traverse(naviVc.viewControllers.last!)
                 } else {
-                    for viewController in tabBarController.viewControllers ?? [] {
-                        currentRouteStack.append(contentsOf: _currentRouteStack(from: viewController))
+                    if let presentedViewController = viewController.presentedViewController {
+                        traverse(presentedViewController)
+                    }
+                }
+         
+            } else if let tabBarVc = viewController as? UITabBarController {
+                if !allViewControllers.contains(viewController) {
+                    allViewControllers.append(viewController)
+                }
+
+                if let selectedVc = tabBarVc.selectedViewController {
+                    traverse(selectedVc)
+                } else if !tabBarVc.children.isEmpty {
+                    for childViewController in viewController.children {
+                        if !allViewControllers.contains(childViewController) {
+                            allViewControllers.append(childViewController)
+                        }
+                    }
+                    traverse(tabBarVc.children.last!)
+                } else {
+                    if let presentedViewController = viewController.presentedViewController {
+                        traverse(presentedViewController)
                     }
                 }
             } else {
-                for childViewController in rootViewController.children {
-                    currentRouteStack.append(contentsOf: _currentRouteStack(from: childViewController))
+                if !allViewControllers.contains(viewController) {
+                    allViewControllers.append(viewController)
+                }
+                
+                if !viewController.children.isEmpty {
+                    for childViewController in viewController.children {
+                        if !allViewControllers.contains(childViewController) {
+                            allViewControllers.append(childViewController)
+                        }
+                    }
+                    traverse(viewController.children.last!)
+                } else {
+                    if let presentedViewController = viewController.presentedViewController {
+                        traverse(presentedViewController)
+                    }
                 }
             }
         }
-        return currentRouteStack
+
+        traverse(rootViewController)
+        return allViewControllers
     }
     
     /// 获取顶部控制器

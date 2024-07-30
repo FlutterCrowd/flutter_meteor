@@ -201,10 +201,16 @@ public class FMNavigator {
     private static func _popUntil(untilRouteName: String, untilPage: UIViewController?, options: FMPopOptions?) {
         // 1、先查询untilRouteName所在的viewController
         if (untilPage != nil) {
-            // 2、如果不是最上层的viewController，调用原生的popUntil
-            if(untilPage != FMRouterManager.viewControllerStack.last) {
-                FMNativeNavigator.popUntil(untilPage: untilPage!, animated: options?.animated ?? true)
+            let reversedRouteStack = FMRouterManager.viewControllerStack.reversed()
+            for vc in reversedRouteStack { // 2、将untilPage上层的VC一个个出栈
+                if vc == untilPage {
+                    FMNativeNavigator.popUntil(untilPage: untilPage!, animated: options?.animated ?? true)
+                    break
+                } else {
+                    FMNativeNavigator.popUntil(untilPage: vc, animated: false)
+                }
             }
+            
             if let flutterVc = untilPage as? FlutterViewController {
                 // 3、如果是FlutterViewController则通过Channel通道在flutter端popUntil
                 if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
@@ -221,10 +227,10 @@ public class FMNavigator {
                     print("MethodChannel 为空")
                 }
             }
-        } else {
+        } else { //如果untilPage不存在则返回上一页
             FMNativeNavigator.pop(animated: options?.animated ?? true)
             options?.callBack?(nil)
-            print("查无此路由")
+            print("pop until 查无此路由直接返回上一级页面")
         }
     }
    

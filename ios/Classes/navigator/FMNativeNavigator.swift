@@ -89,7 +89,6 @@ public class FMNativeNavigator: NSObject {
     }
     
     static public func popUntil(untilPage: UIViewController, animated: Bool = true) {
-        
         if let navigationController = untilPage.navigationController {
             navigationController.popToViewController(untilPage, animated: animated)
         } else if (untilPage.presentedViewController != nil) {

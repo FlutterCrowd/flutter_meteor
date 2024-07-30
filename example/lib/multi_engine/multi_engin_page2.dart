@@ -52,7 +52,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushNamed("present_native", openNative: true);
+                MeteorNavigator.pushNamed("push_native", openNative: true, present: true);
               },
               child: const Text(
                 'present原生页面',
