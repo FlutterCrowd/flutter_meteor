@@ -23,7 +23,7 @@ public class FlutterMeteorRouter: NSObject {
     
     private static var routerDict = Dictionary<String, FMRouterBuilder>()
     
-    
+    var semaphore = DispatchSemaphore(value: 1)
     public static func insertRouter(routeName:String, routerBuilder: @escaping FMRouterBuilder) {
         routerDict[routeName] = routerBuilder
     }
@@ -42,68 +42,60 @@ public class FlutterMeteorRouter: NSObject {
         return vc
     }
     
+    
+    
+    
     public static func searchRoute(routeName: String, result: @escaping FMRouterSearchBlock) {
     
-        let outSemaphore = DispatchSemaphore(value: 0)
-        var routeViewController: UIViewController? = nil
-        let vcStack = FMRouterManager.viewControllerStack
-        DispatchQueue.global().async { /// 开启异步队列避免阻塞
-            let dispatchGroup = DispatchGroup() /// DispatchGroup 用于管理并发任务
-            let semaphore = DispatchSemaphore(value: 1) /// 信号量用于同步遍历执行，保证路由栈的顺序
-            var shouldBreak = false
-            for (_, vc) in vcStack.enumerated().reversed(){
-                if(shouldBreak) {
-                    outSemaphore.signal()
-                    break
-                }
-                semaphore.wait()
-                dispatchGroup.enter()
-                if let flutterVc = vc as? FlutterViewController {
-                    if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                            let arguments = ["routeName": routeName]
-                            channel.save_invoke(method: FMRouteExists, arguments: arguments) { ret in
-                                if let exit = ret as? Bool {
-                                    if (exit) {
-                                        routeViewController = vc
-                                        shouldBreak = true
-                                    }
-                                }
-                                dispatchGroup.leave()
-                                semaphore.signal() // 释放信号量
-                            }
-                    } else {
-                        dispatchGroup.leave()
-                        semaphore.signal() // 释放信号量
-                    }
-                } else {
-                    if(routeName == vc.routeName) {
-                        routeViewController = vc
-                        shouldBreak = true
-                    }
-                    dispatchGroup.leave()
-                    semaphore.signal() // 释放信号量
-                }
+        let vcStack = FMRouterManager.viewControllerStack.reversed() // 反转数组，从顶层向下层搜索
+        let serialQueue = FMSerialTaskQueue(label: "cn.itbox.serialTaskQueue.routeSearch")
+
+        func search(in stack: [UIViewController], index: Int) {
+            guard index < stack.count else {
+                // 搜索完成，调用结果回调
+                result(nil)
+                return
             }
-            
-            dispatchGroup.notify(queue: .main) {
-                result(routeViewController)
+
+            let vc = stack[index]
+            let continueSearch = {
+                search(in: stack, index: index + 1)
+            }
+
+            serialQueue.addTask { finish in
+                defer { finish() }
+                if let flutterVc = vc as? FlutterViewController,
+                   let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+                    let arguments = ["routeName": routeName]
+                    channel.save_invoke(method: FMRouteExists, arguments: arguments) { ret in
+                        if let exists = ret as? Bool, exists {
+                            // 找到匹配的路由，调用结果回调
+                            result(vc)
+                        } else {
+                            // 继续搜索下一个
+                            continueSearch()
+                        }
+                    }
+                } else if routeName == vc.routeName {
+                    // 找到匹配的路由，调用结果回调
+                    result(vc)
+                } else {
+                    // 继续搜索下一个
+                    continueSearch()
+                }
             }
         }
+
+        // 从第一个元素开始搜索
+        search(in: Array(vcStack), index: 0)
     }
     
     
     /*------------------------router method start--------------------------*/
     public static func routeExists(routeName:String, result: @escaping FlutterResult) {
-        routeNameStack { routeStack in
-            if(routeStack is Array<String>) {
-                let stack = routeStack as! Array<String>
-                let ret = stack.contains { e in
-                    return e == routeName
-                }
-                result(ret)
-            } else {
-                result(false)
-            }
+        searchRoute(routeName: routeName) { viewController in
+            let exists = viewController != nil// 没有对应的ViewCOntroller则可以认为没有这个路由
+            result(exists)
         }
     }
     
@@ -157,37 +149,35 @@ public class FlutterMeteorRouter: NSObject {
     
 
     public static func routeNameStack(result: @escaping FlutterResult) {
+        let serialQueue = FMSerialTaskQueue(label: "cn.itbox.serialTaskQueue.routeNameStack")
         let vcStack = FMRouterManager.viewControllerStack
-        DispatchQueue.global().async { /// 开启异步队列避免阻塞
-            let dispatchGroup = DispatchGroup() /// DispatchGroup 用于管理并发任务
-            let semaphore = DispatchSemaphore(value: 1) /// 信号量用于同步遍历执行，保证路由栈的顺序
-            var routeStack = Array<String>()
-            vcStack.forEach { vc in
-                semaphore.wait()
-                dispatchGroup.enter()
-                if let flutterVc = vc as? FlutterViewController {
-                   if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                       channel.save_invoke(method: FMRouteNameStack, arguments: nil) { ret in
-                           if ret is Array<String> {
-                               routeStack.append(contentsOf: ret as! Array<String>)
-                           }
-                           dispatchGroup.leave()
-                           semaphore.signal() // 释放信号量
+        let dispatchGroup = DispatchGroup() // DispatchGroup 用于管理并发任务
+        var routeStack = [String]()
+        
+        vcStack.forEach { vc in
+            dispatchGroup.enter()
+            serialQueue.addTask { finish in
+                if let flutterVc = vc as? FlutterViewController,
+                   let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+                    channel.save_invoke(method: FMRouteNameStack, arguments: nil) { ret in
+                        if let retArray = ret as? [String] {
+                            routeStack.append(contentsOf: retArray)
+                        } else {
+                            routeStack.append(vc.routeName ?? "\(type(of: vc))")
                         }
-                    } else {
-                        routeStack.append(vc.routeName ?? "\(type(of: vc))")
                         dispatchGroup.leave()
-                        semaphore.signal() // 释放信号量
+                        finish()
                     }
                 } else {
                     routeStack.append(vc.routeName ?? "\(type(of: vc))")
                     dispatchGroup.leave()
-                    semaphore.signal() // 释放信号量
+                    finish()
                 }
             }
-            dispatchGroup.notify(queue: .main) {
-                result(routeStack)
-            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            result(routeStack)
         }
     }
     

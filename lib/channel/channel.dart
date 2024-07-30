@@ -84,7 +84,7 @@ class MeteorMethodChannel {
     if (routeName != null) {
       return await _flutterNavigator.popUntil(routeName);
     } else {
-      return await _flutterNavigator.pop(null);
+      return await _flutterNavigator.pop();
     }
   }
 
