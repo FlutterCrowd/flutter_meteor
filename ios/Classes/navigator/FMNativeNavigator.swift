@@ -61,6 +61,8 @@ public class FMNativeNavigator: NSObject {
                 parentNavi.popViewController(animated: animated)
             } else if let presentedVc = navigationController.presentedViewController {
                 presentedVc.dismiss(animated: animated, completion: nil)
+            } else {
+                topVc.dismiss(animated: animated)
             }
         } else {
             if let rootNavi = rootNavigationController() {

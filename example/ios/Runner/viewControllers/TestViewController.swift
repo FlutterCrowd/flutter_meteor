@@ -312,19 +312,19 @@ class TestViewController: UIViewController {
     
     // 按钮点击时调用的方法
     @objc func buttonTapped8(_ sender: UIButton) {
-        print("push and remove until")
+        print("push and remove until multiEnginePage2")
         FMNavigator.pushToAndRemoveUntil(routeName: "test1", untilRouteName: "multiEnginePage2")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped9(_ sender: UIButton) {
-        print("push and remove until")
+        print("返回multiEnginePage2")
         FMNavigator.popUntil(untilRouteName: "multiEnginePage2")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped10(_ sender: UIButton) {
-        print("push and remove until")
+        print("present tabBar")
         FMNavigator.present(routeName: "push_native")
     }
 }
