@@ -35,9 +35,14 @@ public class FMNavigator {
            options?.callBack?(nil)
        } else if(options?.withNewEngine ?? false) {
            let flutterVc = createFlutterVc(routeName: routeName, options: options)
-           let navi = UINavigationController.init(rootViewController: flutterVc)
-           navi.navigationBar.isHidden = true
-           FMNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
+           if options?.newEngineOpaque == false {
+               FMNativeNavigator.present(toPage: flutterVc, animated: options?.animated ?? true)
+           } else {
+               let navi = UINavigationController.init(rootViewController: flutterVc)
+               navi.navigationBar.isHidden = true
+               FMNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
+           }
+
            options?.callBack?(nil)
        } else if(FlutterMeteor.customRouterDelegate != nil) {
            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)

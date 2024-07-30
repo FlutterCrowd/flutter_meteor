@@ -118,7 +118,11 @@ extension FlutterMeteorDelegate {
         switch call.method {
         case FMPushNamedMethod:
             if let params = getPushParams(call, result: result) {
-                push(routeName: params.routeName, options: params.options)
+                if params.options?.present == true {
+                    present(routeName: params.routeName, options: params.options)
+                } else {
+                    push(routeName: params.routeName, options: params.options)
+                }
             } else {
                 print("Invalid push params")
                 result(nil)
@@ -232,6 +236,7 @@ extension FlutterMeteorDelegate {
             options.result = methodArguments["result"] as? Dictionary<String, Any>
             options.callBack = {response in
                 result(response)
+            params.options = options
             }
         }
         return params
@@ -252,6 +257,7 @@ extension FlutterMeteorDelegate {
                     result(response)
                 }
                 options.arguments = methodArguments["arguments"] as? Dictionary<String, Any>
+                params?.options = options
             } else {
                 print("No valid routeName to push")
             }
