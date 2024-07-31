@@ -109,7 +109,7 @@ public class FMNativeNavigator: NSObject {
                         } else if let parent =  naviController.parent{
                             traversePop(currrentVc: parent)
                         } else {
-                            
+                            pop(animated: animated)
                         }
                     } else {
                         untilPage.navigationController?.popToViewController(untilPage, animated: animated)
