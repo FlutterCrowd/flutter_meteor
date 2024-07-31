@@ -52,7 +52,7 @@ class TestViewController: UIViewController {
     let myButton3: UIButton = {
         let button = UIButton(type: .system)
         // 设置按钮的标题
-        button.setTitle("打开test2", for: .normal)
+        button.setTitle("pushNamedAndRemoveUntilRoot打开test2", for: .normal)
         // 设置按钮的背景颜色（可选）
         button.backgroundColor = .cyan
         // 设置按钮的标题颜色（可选）
@@ -280,8 +280,8 @@ class TestViewController: UIViewController {
     
     // 按钮点击时调用的方法
     @objc func buttonTapped3(_ sender: UIButton) {
-        print("test2")
-        FMNavigator.push(routeName: "test2")
+        print("pushNamedAndRemoveUntilRoot test2")
+        FMNavigator.pushNamedAndRemoveUntilRoot(routeName: "test2")
     }
     
     // 按钮点击时调用的方法
@@ -299,9 +299,7 @@ class TestViewController: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped6(_ sender: UIButton) {
         print("pop until")
-        FMNavigator.push(routeName: "multiEnginePage2")
-
-        FMNavigator.popUntil(untilRouteName: "首页")//test
+        FMNavigator.popUntil(untilRouteName: "test")//test
     }
     
     // 按钮点击时调用的方法

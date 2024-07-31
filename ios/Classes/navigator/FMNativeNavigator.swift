@@ -10,13 +10,14 @@ import UIKit
 
 
 public class FMNativeNavigator: NSObject {
-    
+        
     static public func present(toPage: UIViewController, animated: Bool = true) {
         guard let topVc = topViewController() else {
             print("No top view controller found")
             return
         }
         topVc.present(toPage, animated: animated)
+        
     }
     
     static public func push(toPage: UIViewController, animated: Bool = true) {
@@ -52,6 +53,7 @@ public class FMNativeNavigator: NSObject {
             print("This view controller cannot be dismissed or popped")
         }
     }
+    
 
     private static func handleParentNavigationControllerPop(for navigationController: UINavigationController, topVc: UIViewController, animated: Bool) {
         if let parentVc = navigationController.parent {
@@ -89,14 +91,51 @@ public class FMNativeNavigator: NSObject {
     }
     
     static public func popUntil(untilPage: UIViewController, animated: Bool = true) {
-        if let navigationController = untilPage.navigationController {
-            navigationController.popToViewController(untilPage, animated: animated)
-        } else if (untilPage.presentedViewController != nil) {
-            untilPage.dismiss(animated: animated)
-        } else if (untilPage.navigationController != topViewController()?.navigationController){
-            print("View controller 不在当前路由栈中， 可能存在于其他栈中，请检查")
+        let topVc = topViewController()
+        if topVc == untilPage {
+            print("CurentviewController is self, no need to popUntil")
+        } else {
+
+            func traversePop(currrentVc: UIViewController? ){
+                if currrentVc == untilPage {
+                    return
+                }
+                if let naviController = currrentVc as? UINavigationController ?? currrentVc?.navigationController {
+                    if naviController != untilPage.navigationController {
+                        if naviController.presentedViewController != nil {
+                            naviController.dismiss(animated: false) {
+                                traversePop(currrentVc: topViewController())
+                            }
+                        } else if let parent =  naviController.parent{
+                            traversePop(currrentVc: parent)
+                        } else {
+                            
+                        }
+                    } else {
+                        untilPage.navigationController?.popToViewController(untilPage, animated: animated)
+                    }
+                } else {
+                    currrentVc?.dismiss(animated: false) {
+                        traversePop(currrentVc: topViewController())
+                    }
+                }
+            }
+            
+            if topVc?.navigationController != untilPage.navigationController { //如果要返回的页面不在当前栈里面
+                
+                traversePop(currrentVc: topVc)
+
+            } else if let navigationController = untilPage.navigationController {
+                navigationController.popToViewController(untilPage, animated: animated)
+            } else {
+                untilPage.dismiss(animated: animated)
+            }
+
         }
+   
     }
+    
+    
     
     static public func popToRoot(animated: Bool = true) {
         
@@ -104,20 +143,24 @@ public class FMNativeNavigator: NSObject {
             rootNavigationController()?.popToRootViewController(animated: animated)
         } else {
             topViewController()?.dismiss(animated: false, completion: {
-                popToRoot()
+                popToRoot(animated: animated)
             })
         }
     }
     
     static public func pushToReplacement(toPage: UIViewController, animated: Bool = true) {
-        if let navigationController = topViewController()?.navigationController {
+        let topVc = topViewController()
+        if let navigationController = topVc?.navigationController {
             if (navigationController.viewControllers.count > 0) {
                 navigationController.popViewController(animated: false)
                 navigationController.pushViewController(toPage, animated: animated)
             } else {
-                
                 navigationController.pushViewController(toPage, animated: animated)
             }
+        } else {
+            topVc?.dismiss(animated: false, completion: {
+                topViewController()?.navigationController?.pushViewController(toPage, animated: animated)
+            })
         }
     }
     
@@ -151,29 +194,27 @@ public class FMNativeNavigator: NSObject {
     
     static public func pushToAndRemoveUntilRoot(toPage: UIViewController, animated: Bool = true) {
         
-        let untilPage = rootViewController()
-        if (untilPage == nil) {
-            print("untilPage is nil")
-            push(toPage: toPage)
-            return
+        
+        var rootVc = rootViewController()
+        if let rootNavi = rootVc as? UINavigationController {
+            rootVc = rootNavi.viewControllers.first
         }
-
         let topVc = topViewController()
-        if let topView = topVc?.view {
+        if let topView = topVc?.view, rootVc != nil {
             // 这里临时将顶层视图覆盖到要返回的视图，避免闪屏
             let  topSuperView = topView.superview
-            untilPage?.view .addSubview(topView)
-            popUntil(untilPage: untilPage!, animated: false)
+            rootVc?.view .addSubview(topView)
+            popToRoot(animated: false)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 // 在push动画完成后恢复原样
                 topView.removeFromSuperview()
                 topSuperView?.addSubview(topView)
             }
         } else {
-            popUntil(untilPage: untilPage!, animated: false)
+            popToRoot(animated: false)
         }
-
-        push(toPage: toPage, animated: true)
+        rootNavigationController()?.pushViewController(toPage, animated: animated)
+//        push(toPage: toPage, animated: animated)
     }
     
     
@@ -189,10 +230,7 @@ public class FMNativeNavigator: NSObject {
 
     /// 获取根控制器
     public static func rootNavigationController() -> UINavigationController? {
-        let rootVc = FMRouterManager.rootViewController()
-        if(rootVc is UINavigationController) {
-            return rootVc as? UINavigationController
-        }
-        return rootVc?.navigationController
+        return FMRouterManager.rootNavigationController()
+        
     }
 }

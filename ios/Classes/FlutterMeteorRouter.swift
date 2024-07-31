@@ -43,17 +43,22 @@ public class FlutterMeteorRouter: NSObject {
     }
     
     
-    
-    
     public static func searchRoute(routeName: String, result: @escaping FMRouterSearchBlock) {
     
         let vcStack = FMRouterManager.viewControllerStack.reversed() // 反转数组，从顶层向下层搜索
         let serialQueue = FMSerialTaskQueue(label: "cn.itbox.serialTaskQueue.routeSearch")
 
+        func callBack(viewController: UIViewController?){
+            DispatchQueue.main.async {
+                result(viewController)
+            }
+        }
+        
         func search(in stack: [UIViewController], index: Int) {
+            
             guard index < stack.count else {
                 // 搜索完成，调用结果回调
-                result(nil)
+                callBack(viewController: nil)
                 return
             }
 
@@ -61,27 +66,30 @@ public class FlutterMeteorRouter: NSObject {
             let continueSearch = {
                 search(in: stack, index: index + 1)
             }
-
+            
             serialQueue.addTask { finish in
-                defer { finish() }
                 if let flutterVc = vc as? FlutterViewController,
                    let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                     let arguments = ["routeName": routeName]
                     channel.save_invoke(method: FMRouteExists, arguments: arguments) { ret in
+                        defer { finish() }
                         if let exists = ret as? Bool, exists {
                             // 找到匹配的路由，调用结果回调
-                            result(vc)
+                            callBack(viewController: vc)
                         } else {
                             // 继续搜索下一个
                             continueSearch()
                         }
                     }
-                } else if routeName == vc.routeName {
-                    // 找到匹配的路由，调用结果回调
-                    result(vc)
                 } else {
-                    // 继续搜索下一个
-                    continueSearch()
+                    defer { finish() }
+                    if routeName == vc.routeName {
+                       // 找到匹配的路由，调用结果回调
+                        callBack(viewController: vc)
+                   } else {
+                       // 继续搜索下一个
+                       continueSearch()
+                   }
                 }
             }
         }
@@ -118,25 +126,32 @@ public class FlutterMeteorRouter: NSObject {
     
     public static func rootRouteName(result: @escaping FlutterResult) {
         
-        let rootVc = FMRouterManager.viewControllerStack.first
-        if(rootVc is FlutterViewController) {
-            let flutterVc = rootVc as! FlutterViewController
-            let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)//FlutterMeteor.channelList.allObjects.last
-            channel?.save_invoke(method:FMRootRouteName, arguments: nil) { ret in
-                result(ret)
+        func getFlutterRootRoute(flutterVc: FlutterViewController, result: @escaping FlutterResult){
+            if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+                channel.save_invoke(method: FMRootRouteName) { response in
+                    result(response)
+                }
+            } else {
+                print("No valid method channel")
+            }
+        }
+        
+        let rootVc = FMRouterManager.rootViewController()
+        if let flutterVc = rootVc as? FlutterViewController {
+            getFlutterRootRoute(flutterVc: flutterVc, result: result)
+        } else if let naviVc = rootVc as? UINavigationController {
+            if let flutterVc = naviVc.viewControllers.first as? FlutterViewController {
+                getFlutterRootRoute(flutterVc: flutterVc, result: result)
             }
         } else {
             result(rootVc?.routeName)
         }
-        
     }
     
     public static func topRouteName(result: @escaping FlutterResult) {
         
-        let vc = FMRouterManager.viewControllerStack.last
-        let topVc = FMRouterManager.getTopVC(withCurrentVC: vc)
-        if topVc is FlutterViewController {
-            let flutterVc = vc as! FlutterViewController
+        let topVc = FMRouterManager.topViewController()
+        if let flutterVc = topVc as? FlutterViewController {
             let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc)//FlutterMeteor.channelList.allObjects.last
             channel?.save_invoke(method: FMTopRouteName, arguments: nil) { ret in
                 result(ret)
@@ -148,6 +163,7 @@ public class FlutterMeteorRouter: NSObject {
     
 
     public static func routeNameStack(result: @escaping FlutterResult) {
+        
         let serialQueue = FMSerialTaskQueue(label: "cn.itbox.serialTaskQueue.routeNameStack")
         let vcStack = FMRouterManager.viewControllerStack
         let dispatchGroup = DispatchGroup() // DispatchGroup 用于管理并发任务
@@ -159,18 +175,18 @@ public class FlutterMeteorRouter: NSObject {
                 if let flutterVc = vc as? FlutterViewController,
                    let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                     channel.save_invoke(method: FMRouteNameStack, arguments: nil) { ret in
+                        defer { finish() }
                         if let retArray = ret as? [String] {
                             routeStack.append(contentsOf: retArray)
                         } else {
                             routeStack.append(vc.routeName ?? "\(type(of: vc))")
                         }
                         dispatchGroup.leave()
-                        finish()
                     }
                 } else {
+                    defer { finish() }
                     routeStack.append(vc.routeName ?? "\(type(of: vc))")
                     dispatchGroup.leave()
-                    finish()
                 }
             }
         }

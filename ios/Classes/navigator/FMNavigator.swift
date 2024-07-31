@@ -11,29 +11,29 @@ import Flutter
 public class FMNavigator {
        
     public static func push(routeName: String, options: FMPushOptions? = nil) {
-//        print("Call push untilRouteName:\(routeName)")
+
         let vc: UIViewController? = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments)
-       if (vc != nil) {
+        if (vc != nil) {
            FMNativeNavigator.push(toPage: vc!, animated: options?.animated ?? true)
            options?.callBack?(nil)
-       } else if(options?.withNewEngine ?? false) {
+        } else if(options?.withNewEngine ?? false) {
            let flutterVc = createFlutterVc(routeName: routeName, options: options)
            FMNativeNavigator.push(toPage: flutterVc, animated: options?.animated ?? true)
            options?.callBack?(nil)
-       } else if(FlutterMeteor.customRouterDelegate != nil) {
+        } else if(FlutterMeteor.customRouterDelegate != nil) {
            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
-       } else {
+        } else {
            options?.callBack?(nil)
-       }
+        }
     }
     
     public static func present(routeName: String, options: FMPushOptions? = nil) {
        
-       let vc: UIViewController? = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments)
-       if (vc != nil) {
+        let vc: UIViewController? = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments)
+        if (vc != nil) {
            FMNativeNavigator.present(toPage: vc!, animated: options?.animated ?? true)
            options?.callBack?(nil)
-       } else if(options?.withNewEngine ?? false) {
+        } else if(options?.withNewEngine ?? false) {
            let flutterVc = createFlutterVc(routeName: routeName, options: options)
            if options?.newEngineOpaque == false {
                FMNativeNavigator.present(toPage: flutterVc, animated: options?.animated ?? true)
@@ -42,13 +42,12 @@ public class FMNavigator {
                navi.navigationBar.isHidden = true
                FMNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
            }
-
            options?.callBack?(nil)
-       } else if(FlutterMeteor.customRouterDelegate != nil) {
+        } else if(FlutterMeteor.customRouterDelegate != nil) {
            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
-       } else {
+        } else {
            options?.callBack?(nil)
-       }
+        }
    }
     
     public static func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: FMPushOptions? = nil) {
@@ -69,12 +68,10 @@ public class FMNavigator {
         untilRouteName: String?,
         untilPage: UIViewController?,
         options: FMPushOptions? = nil) {
-        
-        let toPage: UIViewController? = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments)
-        
-        if (toPage != nil) {
+                
+        if let toPage = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments) {
             if let flutterVc =  untilPage as? FlutterViewController {
-                FMNativeNavigator.push(toPage: toPage!)
+                FMNativeNavigator.push(toPage: toPage, animated: options?.animated ?? true)
                 if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                     var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
                     if (arguments["routeName"] == nil) {
@@ -89,10 +86,9 @@ public class FMNavigator {
                     print("MethodChannel 为空")
                 }
             } else {
-                FMNativeNavigator.pushToAndRemoveUntil(toPage: toPage!, untilPage: untilPage, animated: options?.animated ?? true)
-
+                FMNativeNavigator.pushToAndRemoveUntil(toPage: toPage, untilPage: untilPage, animated: options?.animated ?? true)
+                options?.callBack?(nil)
             }
-            options?.callBack?(nil)
         } else if(options?.withNewEngine ?? false) {
             let flutterVc = createFlutterVc(routeName: routeName, options: options)
             FMNativeNavigator.pushToAndRemoveUntil(toPage: flutterVc, untilPage: untilPage, animated: options?.animated ?? true)
@@ -100,7 +96,7 @@ public class FMNavigator {
         } else if(FlutterMeteor.customRouterDelegate != nil) {
             FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
         } else {
-            let currentVc = FMRouterManager.viewControllerStack.last
+            let currentVc = FMRouterManager.topViewController()
             if let flutterVc = currentVc as? FlutterViewController {
                 if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                     var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
@@ -123,34 +119,41 @@ public class FMNavigator {
     }
     
     public static func pushNamedAndRemoveUntilRoot(routeName: String, options: FMPushOptions? = nil) {
-                
-        let toPage: UIViewController? = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments)
-        if (toPage != nil) {
-            FMNativeNavigator.pushToAndRemoveUntilRoot(toPage: toPage!, animated: true)
-        } else if let flutterVc = FMRouterManager.viewControllerStack.first as? FlutterViewController {
-            if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
-                if (arguments["routeName"] == nil) {
-                    arguments["routeName"] = routeName
-                    arguments["arguments"] = arguments
+           
+        func flutterPopToRoot() {
+            if let flutterVc = FMRouterManager.topViewController() as? FlutterViewController {
+                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+                    var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
+                    if (arguments["routeName"] == nil) {
+                        arguments["routeName"] = routeName
+                        arguments["arguments"] = arguments
+                    }
+                    channel.save_invoke(method: FMPushNamedAndRemoveUntilRootMethod, arguments: arguments) { ret in
+                        options?.callBack?(ret)
+                    }
+                } else {
+                    options?.callBack?(nil)
+                    print("MethodChannel 为空")
                 }
-                channel.save_invoke(method: FMPushNamedAndRemoveUntilRootMethod, arguments: arguments) { ret in
-                    options?.callBack?(ret)
-                }
-            } else {
-                options?.callBack?(nil)
-                print("MethodChannel 为空")
             }
         }
-        
+        let toPage: UIViewController? = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments)
+        if (toPage != nil) {
+            FMNativeNavigator.pushToAndRemoveUntilRoot(toPage: toPage!, animated: options?.animated ?? true)
+            options?.callBack?(nil)
+        } else if(options?.withNewEngine ?? false) {
+            let flutterVc = createFlutterVc(routeName: routeName, options: options)
+            FMNativeNavigator.pushToAndRemoveUntilRoot(toPage: flutterVc, animated: options?.animated ?? true)
+            options?.callBack?(nil)
+        }
+        flutterPopToRoot()
     }
 
    
     public static func pushToReplacement(routeName: String, options: FMPushOptions? = nil) {
 
-        let vc: UIViewController? = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments)
-       if (vc != nil) {
-           FMNativeNavigator.pushToReplacement(toPage: vc!, animated: options?.animated ?? true)
+       if let vc = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments) {
+           FMNativeNavigator.pushToReplacement(toPage: vc, animated: options?.animated ?? true)
            options?.callBack?(nil)
        } else if(options?.withNewEngine ?? false) {
            let flutterVc = createFlutterVc(routeName: routeName, options: options)
@@ -159,7 +162,7 @@ public class FMNavigator {
        } else if(FlutterMeteor.customRouterDelegate != nil) {
            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
        } else {
-           let currentVc = FMRouterManager.viewControllerStack.last
+           let currentVc = FMRouterManager.topViewController()
            if let flutterVc = currentVc as? FlutterViewController {
                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                    var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
@@ -201,16 +204,7 @@ public class FMNavigator {
     private static func _popUntil(untilRouteName: String, untilPage: UIViewController?, options: FMPopOptions?) {
         // 1、先查询untilRouteName所在的viewController
         if (untilPage != nil) {
-            let reversedRouteStack = FMRouterManager.viewControllerStack.reversed()
-            for vc in reversedRouteStack { // 2、将untilPage上层的VC一个个出栈
-                if vc == untilPage {
-                    FMNativeNavigator.popUntil(untilPage: untilPage!, animated: options?.animated ?? true)
-                    break
-                } else {
-                    FMNativeNavigator.popUntil(untilPage: vc, animated: false)
-                }
-            }
-            
+            FMNativeNavigator.popUntil(untilPage: untilPage!, animated: options?.animated ?? true)
             if let flutterVc = untilPage as? FlutterViewController {
                 // 3、如果是FlutterViewController则通过Channel通道在flutter端popUntil
                 if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
@@ -236,27 +230,27 @@ public class FMNavigator {
    
     public static func popToRoot(options: FMPopOptions? = nil) {
         
-        let vc = FMRouterManager.viewControllerStack.first
-        if let flutterVc = vc as? FlutterViewController {
+        func flutterPopRoot(flutterVc: FlutterViewController, options: FMPopOptions?){
             if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                 channel.save_invoke(method: FMPopToRootMethod, arguments: options?.result) { response in
                     options?.callBack?(response)
                 }
             } else {
+                options?.callBack?(nil)
                 print("No valid method channel")
             }
-        } else if let naviVc = vc as? UINavigationController {
+        }
+        
+        let rootVc = FMRouterManager.rootViewController()
+        if let flutterVc = rootVc as? FlutterViewController {
+            flutterPopRoot(flutterVc: flutterVc, options: options)
+        } else if let naviVc = rootVc as? UINavigationController {
             if let flutterVc = naviVc.viewControllers.first as? FlutterViewController {
-                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                    channel.save_invoke(method: FMPopToRootMethod, arguments: options?.result) { response in
-                        options?.callBack?(response)
-                    }
-                } else {
-                    print("No valid method channel")
-                }
+                flutterPopRoot(flutterVc: flutterVc, options: options)
             }
         } else {
             print("ViewController is not a FlutterViewController")
+            options?.callBack?(nil)
         }
         FMNativeNavigator.popToRoot(animated: options?.animated ?? true)
 

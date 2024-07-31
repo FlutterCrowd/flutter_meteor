@@ -17,12 +17,18 @@ class FMSerialTaskQueue {
     }
     
     func addTask(_ task: @escaping (@escaping () -> Void) -> Void) {
+//        queue.async {
+//            self.semaphore.wait()
+//            DispatchQueue.main.async {
+//                task {
+//                    self.semaphore.signal()
+//                }
+//            }
+//        }
         queue.async {
             self.semaphore.wait()
-            DispatchQueue.main.async {
-                task {
-                    self.semaphore.signal()
-                }
+            task {
+                self.semaphore.signal()
             }
         }
     }
@@ -30,8 +36,10 @@ class FMSerialTaskQueue {
     func addSyncTask(_ task: @escaping () -> Void) {
         queue.async {
             self.semaphore.wait()
+            defer {
+               self.semaphore.signal()
+            }
             task()
-            self.semaphore.signal()
         }
     }
 }

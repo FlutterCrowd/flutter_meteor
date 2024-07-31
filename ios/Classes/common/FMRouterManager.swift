@@ -23,98 +23,58 @@ public class FMRouterManager: NSObject {
         return _currentRouteStack(from: rootViewController)
     }
     
-    
-//    // 递归遍历视图控制器层次结构
-//    private static func _currentRouteStack(from rootViewController: UIViewController) -> [UIViewController] {
-//        var currentRouteStack: [UIViewController] = []
-//        
-//        if let navigationController = rootViewController as? UINavigationController {
-//            for viewController in navigationController.viewControllers {
-//                currentRouteStack.append(contentsOf: _currentRouteStack(from: viewController))
-//            }
-//        } else {
-//            if !currentRouteStack.contains(rootViewController) {
-//                currentRouteStack.append(rootViewController)
-//            }
-//            if let tabBarController = rootViewController as? UITabBarController {
-//                if let seletedVc = tabBarController.selectedViewController {
-//                    currentRouteStack.append(contentsOf: _currentRouteStack(from: seletedVc))
-//                } else {
-//                    for viewController in tabBarController.viewControllers ?? [] {
-//                        currentRouteStack.append(contentsOf: _currentRouteStack(from: viewController))
-//                    }
-//                }
-//            } else {
-//                for childViewController in rootViewController.children {
-//                    currentRouteStack.append(contentsOf: _currentRouteStack(from: childViewController))
-//                }
-//            }
-//        }
-//        if let presentedViewController = rootViewController.presentedViewController {
-//            currentRouteStack.append(contentsOf: _currentRouteStack(from: presentedViewController))
-//        }
-//        return currentRouteStack
-//    }
-//    
+    // 获取当前展示的视图控制器栈
     static func _currentRouteStack(from rootViewController: UIViewController) -> [UIViewController] {
-        var allViewControllers: [UIViewController] = []
+        var vcStack: [UIViewController] = []
+        
+        // 定义一个闭包，用于添加视图控制器到 vcStack
+            let addViewControllerIfNeeded: (UIViewController) -> Void = { viewController in
+                if !vcStack.contains(where: { $0 === viewController }) {
+                    vcStack.append(viewController)
+                }
+            }
+        
+        // 递归查找视图控制器
         func traverse(_ viewController: UIViewController) {
-            if let naviVc = viewController as? UINavigationController  {
-                if !naviVc.viewControllers.isEmpty  {
-                    for childViewController in naviVc.viewControllers {
-                        if !allViewControllers.contains(childViewController) {
-                            allViewControllers.append(childViewController)
-                        }
-                    }
-                    traverse(naviVc.viewControllers.last!)
-                } else {
-                    if let presentedViewController = viewController.presentedViewController {
-                        traverse(presentedViewController)
-                    }
+            
+            if let navController = viewController as? UINavigationController  {// 如果当前是一个导航控制器啊，且其视图栈不为空
+                for childViewController in navController.viewControllers {// 添加所有视图控制器
+                    addViewControllerIfNeeded(childViewController)
                 }
-         
-            } else if let tabBarVc = viewController as? UITabBarController {
-                if !allViewControllers.contains(viewController) {
-                    allViewControllers.append(viewController)
+            
+                if let topViewController = navController.topViewController { // 递归找到最上层视图控制器
+                    traverse(topViewController)
                 }
-
-                if let selectedVc = tabBarVc.selectedViewController {
-                    traverse(selectedVc)
-                } else if !tabBarVc.children.isEmpty {
-                    for childViewController in viewController.children {
-                        if !allViewControllers.contains(childViewController) {
-                            allViewControllers.append(childViewController)
-                        }
-                    }
-                    traverse(tabBarVc.children.last!)
-                } else {
-                    if let presentedViewController = viewController.presentedViewController {
-                        traverse(presentedViewController)
-                    }
-                }
+                         
             } else {
-                if !allViewControllers.contains(viewController) {
-                    allViewControllers.append(viewController)
-                }
-                
-                if !viewController.children.isEmpty {
-                    for childViewController in viewController.children {
-                        if !allViewControllers.contains(childViewController) {
-                            allViewControllers.append(childViewController)
-                        }
-                    }
-                    traverse(viewController.children.last!)
+                addViewControllerIfNeeded(viewController)
+                if let tabBarVc = viewController as? UITabBarController,
+                   let selectedVc = tabBarVc.selectedViewController {  // 如果是UITabBarController，且有选中的VC
+                    traverse(selectedVc)
+                    
                 } else {
-                    if let presentedViewController = viewController.presentedViewController {
-                        traverse(presentedViewController)
+                    if !viewController.children.isEmpty { // 普通VC遍历所有子VC
+                        for childViewController in viewController.children {
+                            addViewControllerIfNeeded(childViewController)
+                        }
+                        /*
+                         WARNING: 这段代码逻辑需要优化
+                         注意：这里获取最后一个VC比较简单粗暴。
+                         */
+                        traverse(viewController.children.last!) // 递归最后一个VC
                     }
                 }
+            }
+            if let presentedViewController = viewController.presentedViewController { // 处理模态出来的视图控制器
+                traverse(presentedViewController)
             }
         }
 
         traverse(rootViewController)
-        return allViewControllers
+        return vcStack
     }
+//    
+    
     
     /// 获取顶部控制器
     public static func rootViewController() -> UIViewController? {
@@ -132,6 +92,15 @@ public class FMRouterManager: NSObject {
 
         let vc = window?.rootViewController
         return vc
+    }
+    
+    /// 获取根控制器
+    public static func rootNavigationController() -> UINavigationController? {
+        let rootVc = self.rootViewController()
+        if(rootVc is UINavigationController) {
+            return rootVc as? UINavigationController
+        }
+        return rootVc?.navigationController
     }
     
     /// 获取顶部控制器 无要求
