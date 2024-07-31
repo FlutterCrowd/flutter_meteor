@@ -119,8 +119,32 @@ public class FMNavigator {
     }
     
     public static func pushNamedAndRemoveUntilRoot(routeName: String, options: FMPushOptions? = nil) {
-           
-        func flutterPopToRoot() {
+        
+        func flutterPopRoot(){
+            let rootVc = FMRouterManager.rootViewController()
+            if let flutterVc = rootVc as? FlutterViewController {
+                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+                    channel.save_invoke(method: FMPopToRootMethod)
+                }
+            } else if let naviVc = rootVc as? UINavigationController,
+                        let flutterVc = naviVc.viewControllers.first as? FlutterViewController {
+                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+                    channel.save_invoke(method: FMPopToRootMethod)
+                }
+            }
+        }
+        
+        let toPage: UIViewController? = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments)
+        if (toPage != nil) {
+            FMNativeNavigator.pushToAndRemoveUntilRoot(toPage: toPage!, animated: options?.animated ?? true)
+            flutterPopRoot()
+            options?.callBack?(nil)
+        } else if(options?.withNewEngine ?? false) {
+            let flutterVc = createFlutterVc(routeName: routeName, options: options)
+            FMNativeNavigator.pushToAndRemoveUntilRoot(toPage: flutterVc, animated: options?.animated ?? true)
+            flutterPopRoot()
+            options?.callBack?(nil)
+        } else {
             if let flutterVc = FMRouterManager.topViewController() as? FlutterViewController {
                 if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
                     var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
@@ -137,16 +161,8 @@ public class FMNavigator {
                 }
             }
         }
-        let toPage: UIViewController? = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments)
-        if (toPage != nil) {
-            FMNativeNavigator.pushToAndRemoveUntilRoot(toPage: toPage!, animated: options?.animated ?? true)
-            options?.callBack?(nil)
-        } else if(options?.withNewEngine ?? false) {
-            let flutterVc = createFlutterVc(routeName: routeName, options: options)
-            FMNativeNavigator.pushToAndRemoveUntilRoot(toPage: flutterVc, animated: options?.animated ?? true)
-            options?.callBack?(nil)
-        }
-        flutterPopToRoot()
+        
+        
     }
 
    
