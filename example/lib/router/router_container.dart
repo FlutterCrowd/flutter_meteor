@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hz_router_plugin_example/router/route_options.dart';
 
 class MixinRouteContainer {
@@ -8,52 +9,176 @@ class MixinRouteContainer {
   }
 
   /// MaterialPageRoute
-  void addRoute(String name, RouteWidgetBuilder builder) {
-    RouteOptions<MaterialPageRouteOptions> options =
-        RouteOptions(builder, MaterialPageRouteOptions());
-    _routes.putIfAbsent(name, () => options);
+  void addRoute(String name, RouteWidgetBuilder builder,
+      {FMStandardRouteType? routeType = FMStandardRouteType.material}) {
+    if (routeType == FMStandardRouteType.material) {
+      addMaterialPageRoute(name, builder);
+    } else if (routeType == FMStandardRouteType.material) {
+      addCupertinoPageRoute(name, builder);
+    } else if (routeType == FMStandardRouteType.dialog) {
+      addDialogPageRoute(name, builder);
+    } else if (routeType == FMStandardRouteType.bottomSheet) {
+      addBottomSheetPageRoute(name, builder);
+    } else {
+      print('Unknown routeType: $routeType');
+    }
   }
 
   /// PageRouteBuilder
   void addTransparentRoute(String name, RouteWidgetBuilder builder) {
-    PageRouteBuilderOptions pageRouteOptions = PageRouteBuilderOptions(
+    PageRouteBuilderOptions options = PageRouteBuilderOptions(
       opaque: false,
     );
-    RouteOptions<PageRouteBuilderOptions> options =
-        RouteOptions<PageRouteBuilderOptions>(builder, pageRouteOptions);
-    _routes.putIfAbsent(name, () => options);
+    RouteOptions<PageRouteBuilderOptions> routeOptions =
+        RouteOptions<PageRouteBuilderOptions>(builder, options);
+    _routes.putIfAbsent(name, () => routeOptions);
   }
 
   /// MaterialPageRoute
-  void addCustomMaterialPageRoute(String name, RouteWidgetBuilder builder,
-      {MaterialPageRouteOptions? pageRouteOptions}) {
-    RouteOptions<MaterialPageRouteOptions> options = RouteOptions<MaterialPageRouteOptions>(
-        builder, pageRouteOptions ?? MaterialPageRouteOptions());
-    _routes.putIfAbsent(name, () => options);
+  void addMaterialPageRoute(
+    String name,
+    RouteWidgetBuilder builder, {
+    bool? maintainState = true,
+    bool? fullscreenDialog = false,
+    bool? allowSnapshotting = true,
+    bool? barrierDismissible = false,
+  }) {
+    RouteOptions<MaterialPageRouteOptions> routeOptions = RouteOptions<MaterialPageRouteOptions>(
+        builder,
+        MaterialPageRouteOptions(
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+          allowSnapshotting: allowSnapshotting,
+          barrierDismissible: barrierDismissible,
+        ));
+    _routes.putIfAbsent(name, () => routeOptions);
+  }
+
+  void addCupertinoPageRoute(
+    String name,
+    RouteWidgetBuilder builder, {
+    bool? maintainState = true,
+    bool? fullscreenDialog = false,
+    bool? allowSnapshotting = true,
+    bool? barrierDismissible = false,
+  }) {
+    RouteOptions<CupertinoPageRouteOptions> routeOptions = RouteOptions<CupertinoPageRouteOptions>(
+        builder,
+        CupertinoPageRouteOptions(
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+          allowSnapshotting: allowSnapshotting,
+          barrierDismissible: barrierDismissible,
+        ));
+    _routes.putIfAbsent(name, () => routeOptions);
   }
 
   /// PageRouteBuilder
-  void addCustomPageRoute(String name, RouteWidgetBuilder builder,
-      {PageRouteBuilderOptions? pageRouteOptions}) {
-    RouteOptions<PageRouteBuilderOptions> options = RouteOptions<PageRouteBuilderOptions>(
-        builder, pageRouteOptions ?? PageRouteBuilderOptions());
-    _routes.putIfAbsent(name, () => options);
+  void addCustomPageRoute(
+    String name,
+    RouteWidgetBuilder builder, {
+    RouteTransitionsBuilder? transitionsBuilder,
+    Duration? transitionDuration = const Duration(milliseconds: 300),
+    Duration? reverseTransitionDuration = const Duration(milliseconds: 300),
+    bool? opaque = true,
+    Color? barrierColor,
+    String? barrierLabel,
+    bool? maintainState = true,
+    bool? fullscreenDialog = false,
+    bool? allowSnapshotting = true,
+    bool? barrierDismissible = false,
+  }) {
+    RouteOptions<PageRouteBuilderOptions> routeOptions = RouteOptions<PageRouteBuilderOptions>(
+        builder,
+        PageRouteBuilderOptions(
+          transitionsBuilder: transitionsBuilder,
+          transitionDuration: transitionDuration,
+          reverseTransitionDuration: reverseTransitionDuration,
+          opaque: opaque,
+          barrierColor: barrierColor,
+          barrierLabel: barrierLabel,
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+          allowSnapshotting: allowSnapshotting,
+          barrierDismissible: barrierDismissible,
+        ));
+    _routes.putIfAbsent(name, () => routeOptions);
   }
 
   /// 自定义Dialog路由
-  void addDialogPageRoute(String name, RouteWidgetBuilder builder,
-      {DialogRouteOptions? pageRouteOptions}) {
-    RouteOptions<DialogRouteOptions> options =
-        RouteOptions<DialogRouteOptions>(builder, pageRouteOptions ?? DialogRouteOptions());
-    _routes.putIfAbsent(name, () => options);
+  void addDialogPageRoute(
+    String name,
+    RouteWidgetBuilder builder, {
+    CapturedThemes? themes,
+    Color barrierColor = Colors.black54,
+    barrierDismissible = false,
+    String? barrierLabel,
+    bool? useSafeArea = true,
+    Offset? anchorPoint,
+    TraversalEdgeBehavior? traversalEdgeBehavior,
+  }) {
+    RouteOptions<DialogRouteOptions> routeOptions = RouteOptions<DialogRouteOptions>(
+      builder,
+      DialogRouteOptions(
+        themes: themes,
+        barrierDismissible: barrierDismissible,
+        barrierColor: barrierColor,
+        barrierLabel: barrierLabel,
+        useSafeArea: useSafeArea,
+        anchorPoint: anchorPoint,
+        traversalEdgeBehavior: traversalEdgeBehavior,
+      ),
+    );
+    _routes.putIfAbsent(name, () => routeOptions);
   }
 
   /// 自定义bottomSheet路由
-  void addBottomSheetPageRoute(String name, RouteWidgetBuilder builder,
-      {BottomSheetRouteOptions? pageRouteOptions}) {
-    RouteOptions<BottomSheetRouteOptions> options = RouteOptions<BottomSheetRouteOptions>(
-        builder, pageRouteOptions ?? BottomSheetRouteOptions());
-    _routes.putIfAbsent(name, () => options);
+  void addBottomSheetPageRoute(
+    String name,
+    RouteWidgetBuilder builder, {
+    InheritedTheme? capturedThemes,
+    Color? backgroundColor,
+    final double? elevation,
+    final ShapeBorder? shape,
+    final Clip? clipBehavior,
+    final BoxConstraints? constraints,
+    final bool? isScrollControlled,
+    final bool? isDismissible,
+    final bool? enableDrag,
+    final bool? showDragHandle,
+    final bool? useSafeArea,
+    final Color? barrierColor,
+    final String? barrierLabel,
+    final bool? useRootNavigator,
+    final Offset? anchorPoint,
+    final double? scrollControlDisabledMaxHeightRatio = 9.0 / 16.0,
+    final TraversalEdgeBehavior? traversalEdgeBehavior,
+    final AnimationController? transitionAnimationController,
+  }) {
+    RouteOptions<BottomSheetRouteOptions> routeOptions = RouteOptions<BottomSheetRouteOptions>(
+      builder,
+      BottomSheetRouteOptions(
+        capturedThemes: capturedThemes,
+        backgroundColor: backgroundColor,
+        elevation: elevation,
+        shape: shape,
+        clipBehavior: clipBehavior,
+        constraints: constraints,
+        isScrollControlled: isScrollControlled,
+        isDismissible: isDismissible,
+        enableDrag: enableDrag,
+        showDragHandle: showDragHandle,
+        useSafeArea: useSafeArea,
+        barrierColor: barrierColor,
+        barrierLabel: barrierLabel,
+        useRootNavigator: useRootNavigator,
+        anchorPoint: anchorPoint,
+        scrollControlDisabledMaxHeightRatio: scrollControlDisabledMaxHeightRatio,
+        traversalEdgeBehavior: traversalEdgeBehavior,
+        transitionAnimationController: transitionAnimationController,
+      ),
+    );
+    _routes.putIfAbsent(name, () => routeOptions);
   }
 
   void install() {

@@ -63,6 +63,39 @@ class RootPage extends StatelessWidget {
             child: Text('弹出一个底部弹窗'),
           ),
         ),
+        const SizedBox(
+          height: 20,
+        ),
+        GestureDetector(
+          onTap: () {
+            MeteorNavigator.pushNamed('materialPageRoute');
+          },
+          child: const Center(
+            child: Text('materialPageRoute'),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        GestureDetector(
+          onTap: () {
+            MeteorNavigator.pushNamed('cupertinoPageRoute');
+          },
+          child: const Center(
+            child: Text('cupertinoPageRoute'),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        GestureDetector(
+          onTap: () {
+            MeteorNavigator.pushNamed("customPageRoute");
+          },
+          child: const Center(
+            child: Text('customPageRoute'),
+          ),
+        ),
         Expanded(child: Container()),
       ],
     );

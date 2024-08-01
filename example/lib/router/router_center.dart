@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/navigator/impl/flutter.dart';
 import 'package:hz_router_plugin_example/home/home_router.dart';
@@ -40,6 +41,8 @@ class RouterCenter extends MixinRouteContainer
     final pageOptions = options.pageOptions;
     if (pageOptions is MaterialPageRouteOptions) {
       return _buildMaterialPageRoute(settings, options, pageOptions);
+    } else if (pageOptions is CupertinoPageRouteOptions) {
+      return _buildCupertinoPageRoute(settings, options, pageOptions);
     } else if (pageOptions is PageRouteBuilderOptions) {
       return _buildPageRouteBuilder(settings, options, pageOptions);
     } else if (pageOptions is DialogRouteOptions) {
@@ -54,6 +57,18 @@ class RouterCenter extends MixinRouteContainer
   static MaterialPageRoute _buildMaterialPageRoute(
       RouteSettings settings, RouteOptions options, MaterialPageRouteOptions pageRouteOptions) {
     return MaterialPageRoute(
+      settings: settings,
+      maintainState: pageRouteOptions.maintainState ?? true,
+      fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
+      allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
+      barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
+      builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
+    );
+  }
+
+  static CupertinoPageRoute _buildCupertinoPageRoute(
+      RouteSettings settings, RouteOptions options, CupertinoPageRouteOptions pageRouteOptions) {
+    return CupertinoPageRoute(
       settings: settings,
       maintainState: pageRouteOptions.maintainState ?? true,
       fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
@@ -89,7 +104,6 @@ class RouterCenter extends MixinRouteContainer
       from: context,
       to: Navigator.of(context, rootNavigator: pageRouteOptions.useRootNavigator ?? true).context,
     );
-
     return DialogRoute(
       context: context,
       settings: settings,

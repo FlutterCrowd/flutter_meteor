@@ -16,7 +16,9 @@ public class FMNativeNavigator: NSObject {
             print("No top view controller found")
             return
         }
-        topVc.present(toPage, animated: animated)
+        topVc.present(toPage, animated: animated) {
+            
+        }
         
     }
     

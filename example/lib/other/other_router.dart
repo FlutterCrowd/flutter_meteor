@@ -20,5 +20,32 @@ mixin OtherRouter on MixinRouteContainer {
       'backPage',
       (arguments) => BackPage(),
     );
+
+    addMaterialPageRoute(
+      'materialPageRoute',
+      (arguments) => BackPage(),
+      maintainState: false,
+      fullscreenDialog: false,
+      allowSnapshotting: false,
+      barrierDismissible: false,
+    );
+
+    addCupertinoPageRoute(
+      'cupertinoPageRoute',
+      (arguments) => BackPage(),
+      maintainState: false,
+      fullscreenDialog: false,
+      allowSnapshotting: false,
+      barrierDismissible: false,
+    );
+
+    addCustomPageRoute(
+      'customPageRoute',
+      (arguments) => BackPage(),
+      maintainState: false,
+      fullscreenDialog: false,
+      allowSnapshotting: false,
+      barrierDismissible: false,
+    );
   }
 }
