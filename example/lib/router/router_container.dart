@@ -1,16 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:hz_router_plugin_example/router/route_options.dart';
+import 'package:hz_router_plugin_example/router/common.dart';
 
 class MixinRouteContainer {
   final Map<String, RouteOptions> _routes = {};
   Map<String, RouteOptions> get mixinRoutes => _routes;
+
   void addRoutes(Map<String, RouteOptions> routes) {
     _routes.addAll(routes);
   }
 
   /// MaterialPageRoute
   void addRoute(String name, RouteWidgetBuilder builder,
-      {FMStandardRouteType? routeType = FMStandardRouteType.material}) {
+      {FMStandardRouteType? routeType = FMStandardRouteType.native}) {
     if (routeType == FMStandardRouteType.material) {
       addMaterialPageRoute(name, builder);
     } else if (routeType == FMStandardRouteType.material) {
@@ -19,6 +22,12 @@ class MixinRouteContainer {
       addDialogPageRoute(name, builder);
     } else if (routeType == FMStandardRouteType.bottomSheet) {
       addBottomSheetPageRoute(name, builder);
+    } else if (routeType == FMStandardRouteType.native) {
+      if (Platform.isAndroid) {
+        addMaterialPageRoute(name, builder);
+      } else {
+        addCupertinoPageRoute(name, builder);
+      }
     } else {
       print('Unknown routeType: $routeType');
     }
@@ -26,11 +35,11 @@ class MixinRouteContainer {
 
   /// PageRouteBuilder
   void addTransparentRoute(String name, RouteWidgetBuilder builder) {
-    PageRouteBuilderOptions options = PageRouteBuilderOptions(
+    CustomPageRouteOptions options = CustomPageRouteOptions(
       opaque: false,
     );
-    RouteOptions<PageRouteBuilderOptions> routeOptions =
-        RouteOptions<PageRouteBuilderOptions>(builder, options);
+    RouteOptions<CustomPageRouteOptions> routeOptions =
+        RouteOptions<CustomPageRouteOptions>(builder, options);
     _routes.putIfAbsent(name, () => routeOptions);
   }
 
@@ -74,6 +83,34 @@ class MixinRouteContainer {
   }
 
   /// PageRouteBuilder
+  void addStandardPageRoute(
+    String name,
+    RouteWidgetBuilder builder, {
+    FMTransitionType? transitionType = FMTransitionType.inFromRight,
+    bool? opaque = true,
+    Color? barrierColor,
+    String? barrierLabel,
+    bool? maintainState = true,
+    bool? fullscreenDialog = false,
+    bool? allowSnapshotting = true,
+    bool? barrierDismissible = false,
+  }) {
+    RouteOptions<StandardPageRouteOptions> routeOptions = RouteOptions<StandardPageRouteOptions>(
+        builder,
+        StandardPageRouteOptions(
+          transitionType: transitionType,
+          opaque: opaque,
+          barrierColor: barrierColor,
+          barrierLabel: barrierLabel,
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+          allowSnapshotting: allowSnapshotting,
+          barrierDismissible: barrierDismissible,
+        ));
+    _routes.putIfAbsent(name, () => routeOptions);
+  }
+
+  /// PageRouteBuilder
   void addCustomPageRoute(
     String name,
     RouteWidgetBuilder builder, {
@@ -88,9 +125,9 @@ class MixinRouteContainer {
     bool? allowSnapshotting = true,
     bool? barrierDismissible = false,
   }) {
-    RouteOptions<PageRouteBuilderOptions> routeOptions = RouteOptions<PageRouteBuilderOptions>(
+    RouteOptions<CustomPageRouteOptions> routeOptions = RouteOptions<CustomPageRouteOptions>(
         builder,
-        PageRouteBuilderOptions(
+        CustomPageRouteOptions(
           transitionsBuilder: transitionsBuilder,
           transitionDuration: transitionDuration,
           reverseTransitionDuration: reverseTransitionDuration,

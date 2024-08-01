@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 typedef RouteWidgetBuilder = Widget Function(Map<String, dynamic>? arguments);
 
 enum FMStandardRouteType {
+  none,
+  native,
   material,
   cupertino,
   dialog,
@@ -10,7 +12,6 @@ enum FMStandardRouteType {
 }
 
 enum FMTransitionType {
-  native,
   nativeModal,
   inFromLeft,
   inFromTop,
@@ -25,55 +26,77 @@ class RouteOptions<T> {
   RouteOptions(this.builder, this.pageOptions);
 }
 
-class MaterialPageRouteOptions {
+class PageRouteOptions {
   final bool? maintainState;
   final bool? fullscreenDialog;
   final bool? allowSnapshotting;
   final bool? barrierDismissible;
+  PageRouteOptions({
+    this.maintainState,
+    this.fullscreenDialog,
+    this.allowSnapshotting,
+    this.barrierDismissible,
+  });
+}
+
+class MaterialPageRouteOptions extends PageRouteOptions {
   MaterialPageRouteOptions({
-    this.maintainState,
-    this.fullscreenDialog,
-    this.allowSnapshotting,
-    this.barrierDismissible,
+    super.maintainState,
+    super.fullscreenDialog,
+    super.allowSnapshotting,
+    super.barrierDismissible,
   });
 }
 
-class CupertinoPageRouteOptions {
-  final bool? maintainState;
-  final bool? fullscreenDialog;
-  final bool? allowSnapshotting;
-  final bool? barrierDismissible;
+class CupertinoPageRouteOptions extends PageRouteOptions {
   CupertinoPageRouteOptions({
-    this.maintainState,
-    this.fullscreenDialog,
-    this.allowSnapshotting,
-    this.barrierDismissible,
+    super.maintainState,
+    super.fullscreenDialog,
+    super.allowSnapshotting,
+    super.barrierDismissible,
   });
 }
 
-class PageRouteBuilderOptions {
+class StandardPageRouteOptions extends PageRouteOptions {
+  static const defaultTransitionDuration = Duration(milliseconds: 250);
+  final FMTransitionType? transitionType;
+  final Duration transitionDuration = defaultTransitionDuration;
+  final Duration reverseTransitionDuration = defaultTransitionDuration;
+  final bool? opaque;
+  final Color? barrierColor;
+  final String? barrierLabel;
+
+  StandardPageRouteOptions({
+    this.transitionType,
+    this.opaque,
+    this.barrierColor,
+    this.barrierLabel,
+    super.maintainState,
+    super.fullscreenDialog,
+    super.allowSnapshotting,
+    super.barrierDismissible,
+  });
+}
+
+class CustomPageRouteOptions extends PageRouteOptions {
   final RouteTransitionsBuilder? transitionsBuilder;
   final Duration? transitionDuration;
   final Duration? reverseTransitionDuration;
   final bool? opaque;
-  final bool? barrierDismissible;
   final Color? barrierColor;
   final String? barrierLabel;
-  final bool? maintainState;
-  final bool? fullscreenDialog;
-  final bool? allowSnapshotting;
 
-  PageRouteBuilderOptions({
+  CustomPageRouteOptions({
     this.transitionsBuilder,
     this.transitionDuration,
     this.reverseTransitionDuration,
     this.opaque,
-    this.barrierDismissible,
     this.barrierColor,
     this.barrierLabel,
-    this.maintainState,
-    this.fullscreenDialog,
-    this.allowSnapshotting,
+    super.maintainState,
+    super.fullscreenDialog,
+    super.allowSnapshotting,
+    super.barrierDismissible,
   });
 }
 
@@ -137,4 +160,19 @@ class BottomSheetRouteOptions {
     this.transitionAnimationController,
     this.scrollControlDisabledMaxHeightRatio,
   });
+}
+
+class RouteNotFoundException implements Exception {
+  RouteNotFoundException(
+    this.message,
+    this.path,
+  );
+
+  final String message;
+  final String path;
+
+  @override
+  String toString() {
+    return "No registered route was found to handle '$path'";
+  }
 }
