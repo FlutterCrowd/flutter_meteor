@@ -72,19 +72,7 @@ public class FMNavigator {
         if let toPage = FlutterMeteorRouter.viewController(routeName: routeName, arguments: options?.arguments) {
             if let flutterVc =  untilPage as? FlutterViewController {
                 FMNativeNavigator.push(toPage: toPage, animated: options?.animated ?? true)
-                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                    var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
-                    if (arguments["routeName"] == nil) {
-                        arguments["routeName"] = untilRouteName
-                        arguments["arguments"] = arguments
-                    }
-                    channel.save_invoke(method: FMPopUntilMethod, arguments: arguments) { ret in
-                        options?.callBack?(ret)
-                    }
-                } else {
-                    options?.callBack?(nil)
-                    print("MethodChannel 为空")
-                }
+                FMFlutterNavigator.popUntil(flutterVc: flutterVc, untilRouteName: untilRouteName, options: nil)
             } else {
                 FMNativeNavigator.pushToAndRemoveUntil(toPage: toPage, untilPage: untilPage, animated: options?.animated ?? true)
                 options?.callBack?(nil)
@@ -98,20 +86,7 @@ public class FMNavigator {
         } else {
             let currentVc = FMRouterManager.topViewController()
             if let flutterVc = currentVc as? FlutterViewController {
-                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                    var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
-                    if (arguments["routeName"] == nil) {
-                        arguments["routeName"] = routeName
-                        arguments["untilRouteName"] = untilRouteName
-                        arguments["arguments"] = arguments
-                    }
-                    channel.save_invoke(method: FMPushNamedAndRemoveUntilMethod, arguments: arguments) { ret in
-                        options?.callBack?(ret)
-                    }
-                } else {
-                    options?.callBack?(nil)
-                    print("MethodChannel 为空")
-                }
+                FMFlutterNavigator.pushToAndRemoveUntil(flutterVc: flutterVc, routeName: routeName, untilRouteName: untilRouteName, options: options)
             } else {
                 options?.callBack?(nil)
             }
@@ -146,19 +121,7 @@ public class FMNavigator {
             options?.callBack?(nil)
         } else {
             if let flutterVc = FMRouterManager.topViewController() as? FlutterViewController {
-                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                    var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
-                    if (arguments["routeName"] == nil) {
-                        arguments["routeName"] = routeName
-                        arguments["arguments"] = arguments
-                    }
-                    channel.save_invoke(method: FMPushNamedAndRemoveUntilRootMethod, arguments: arguments) { ret in
-                        options?.callBack?(ret)
-                    }
-                } else {
-                    options?.callBack?(nil)
-                    print("MethodChannel 为空")
-                }
+                FMFlutterNavigator.pushNamedAndRemoveUntilRoot(flutterVc: flutterVc, routeName: routeName, options: options)
             }
         }
     }
@@ -178,19 +141,7 @@ public class FMNavigator {
        } else {
            let currentVc = FMRouterManager.topViewController()
            if let flutterVc = currentVc as? FlutterViewController {
-               if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                   var arguments: Dictionary<String, Any?> = options?.arguments ?? [:]
-                   if (arguments["routeName"] == nil) {
-                       arguments["routeName"] = routeName
-                       arguments["arguments"] = arguments
-                   }
-                   channel.save_invoke(method: FMPushReplacementNamedMethod, arguments: arguments) { ret in
-                       options?.callBack?(ret)
-                   }
-               } else {
-                   options?.callBack?(nil)
-                   print("MethodChannel 为空")
-               }
+               FMFlutterNavigator.pushToReplacement(flutterVc: flutterVc, routeName: routeName, options: options)
            } else {
                options?.callBack?(nil)
            }
@@ -209,7 +160,13 @@ public class FMNavigator {
                 _popUntil(untilRouteName: untilRouteName!, untilPage: viewController, options: options)
             }
         } else {
-            pop(options: options)
+            if let flutterVc = FMRouterManager.topViewController() as? FlutterViewController {
+                FMFlutterNavigator.pop(flutterVc: flutterVc)
+            } else {
+                FMNativeNavigator.pop(animated: options?.animated ?? true)
+                options?.callBack?(nil)
+                print("pop until 查无此路由直接返回上一级页面")
+            }
             print("No valid untilRouteName")
         }
    
@@ -221,46 +178,27 @@ public class FMNavigator {
             FMNativeNavigator.popUntil(untilPage: untilPage!, animated: options?.animated ?? true)
             if let flutterVc = untilPage as? FlutterViewController {
                 // 3、如果是FlutterViewController则通过Channel通道在flutter端popUntil
-                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                    var arguments: Dictionary<String, Any?> = options?.result ?? [:]
-                    if (arguments["routeName"] == nil) {
-                        arguments["routeName"] = untilRouteName
-                        arguments["arguments"] = arguments
-                    }
-                    channel.save_invoke(method: FMPopUntilMethod, arguments: arguments) { ret in
-                        options?.callBack?(ret)
-                    }
-                } else {
-                    options?.callBack?(nil)
-                    print("MethodChannel 为空")
-                }
+                FMFlutterNavigator.popUntil(flutterVc: flutterVc, untilRouteName: untilRouteName, options: options)
             }
         } else { //如果untilPage不存在则返回上一页
-            FMNativeNavigator.pop(animated: options?.animated ?? true)
-            options?.callBack?(nil)
-            print("pop until 查无此路由直接返回上一级页面")
+            if let flutterVc = FMRouterManager.topViewController() as? FlutterViewController {
+                FMFlutterNavigator.pop(flutterVc: flutterVc)
+            } else {
+                FMNativeNavigator.pop(animated: options?.animated ?? true)
+                options?.callBack?(nil)
+                print("pop until 查无此路由直接返回上一级页面")
+            }
         }
     }
    
     public static func popToRoot(options: FMPopOptions? = nil) {
         
-        func flutterPopRoot(flutterVc: FlutterViewController, options: FMPopOptions?){
-            if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                channel.save_invoke(method: FMPopToRootMethod, arguments: options?.result) { response in
-                    options?.callBack?(response)
-                }
-            } else {
-                options?.callBack?(nil)
-                print("No valid method channel")
-            }
-        }
-        
         let rootVc = FMRouterManager.rootViewController()
         if let flutterVc = rootVc as? FlutterViewController {
-            flutterPopRoot(flutterVc: flutterVc, options: options)
+            FMFlutterNavigator.popToRoot(flutterVc: flutterVc, options: options)
         } else if let naviVc = rootVc as? UINavigationController {
             if let flutterVc = naviVc.viewControllers.first as? FlutterViewController {
-                flutterPopRoot(flutterVc: flutterVc, options: options)
+                FMFlutterNavigator.popToRoot(flutterVc: flutterVc, options: options)
             }
         } else {
             print("ViewController is not a FlutterViewController")

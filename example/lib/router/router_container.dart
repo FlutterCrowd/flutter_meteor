@@ -12,8 +12,11 @@ class MixinRouteContainer {
   }
 
   /// MaterialPageRoute
-  void addRoute(String name, RouteWidgetBuilder builder,
-      {FMStandardRouteType? routeType = FMStandardRouteType.native}) {
+  void addRoute(
+    String name,
+    RouteWidgetBuilder builder, {
+    FMStandardRouteType? routeType = FMStandardRouteType.native,
+  }) {
     if (routeType == FMStandardRouteType.material) {
       addMaterialPageRoute(name, builder);
     } else if (routeType == FMStandardRouteType.material) {

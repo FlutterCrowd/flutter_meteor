@@ -24,6 +24,7 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
     public func detachFromEngine(for registrar: any FlutterPluginRegistrar) {
         FlutterMeteor.sremoveMehtodChannel(key: registrar.messenger())
     }
+    
     deinit {
     
     }
