@@ -7,10 +7,12 @@ class BottomSheetPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // color: Colors.black.withOpacity(0.6),
-      color: Colors.transparent,
+      color: Colors.black.withOpacity(0.6),
+      // color: Colors.transparent,
       alignment: Alignment.center,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           GestureDetector(
             onTap: () {
@@ -21,6 +23,7 @@ class BottomSheetPage extends StatelessWidget {
               width: 200,
               height: 200,
               color: Colors.yellow,
+              alignment: Alignment.center,
               child: const Text('我是透明底部弹窗, 点我就返回'),
             ),
           ),

@@ -86,6 +86,11 @@ public class FlutterMeteor  {
     }
     
     public static func methodChannel(flutterVc: FlutterViewController) -> FlutterMethodChannel? {
+        
+        let pluginPublish = flutterVc.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin") as? FlutterMeteorPluginPubish
+        return pluginPublish?.navigatorChannel
+//        return FlutterMethodChannel(name: "FMRouterMethodChannelName", binaryMessenger: flutterVc.binaryMessenger)
+        
         var channel: FlutterMethodChannel?
         if flutterVc.engine != nil {
             channel = channelMap[flutterVc.engine!]
@@ -136,7 +141,7 @@ public class FlutterMeteor  {
         engineGroupOptions.initialRoute = initialRoute
         engineGroupOptions.entrypointArgs = entrypointArgList
         engineGroupOptions.libraryURI = options?.libraryURI
-        let flutterEngine = flutterEngineGroup.makeEngine(with: engineGroupOptions)
+        let flutterEngine: FlutterEngine = flutterEngineGroup.makeEngine(with: engineGroupOptions)
         return flutterEngine
     }
     

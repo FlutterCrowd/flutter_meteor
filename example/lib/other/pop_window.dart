@@ -6,46 +6,16 @@ class PopWindowPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      // color: Colors.black.withOpacity(0.6),
-      color: Colors.transparent,
-      alignment: Alignment.center,
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: () {
-              print('点我就返回');
-              MeteorNavigator.pop();
-            },
-            child: Container(
-              width: 200,
-              height: 200,
-              color: Colors.yellow,
-              child: const Text('我是透明弹窗, 点我就返回'),
-            ),
-          ),
-          GestureDetector(
-            onTap: () {
-              MeteorNavigator.pushNamed('multiEnginePage2');
-            },
-            child: Container(
-              width: 200,
-              height: 200,
-              color: Colors.yellow,
-              child: const Text('下一页'),
-            ),
-          )
-        ],
-      ),
-    );
-    return Material(
-      color: Colors.transparent,
+    return Center(
       child: Container(
         // color: Colors.black.withOpacity(0.6),
         color: Colors.transparent,
         alignment: Alignment.center,
         child: Column(
           children: [
+            const SizedBox(
+              height: 300,
+            ),
             GestureDetector(
               onTap: () {
                 print('点我就返回');

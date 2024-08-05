@@ -132,7 +132,7 @@ extension FlutterMeteorDelegate {
             if let params = getPushParams(call, result: result) {
                 pushToReplacement(routeName: params.routeName, options: params.options)
             } else {
-                print("Invalid push params")
+                print("Invalid PushReplacementNamed params")
                 result(nil)
             }
             break
@@ -140,7 +140,7 @@ extension FlutterMeteorDelegate {
             if let params = getPushParams(call, result: result) {
                 pushToAndRemoveUntil(routeName: params.routeName, untilRouteName: params.untilRouteName, options: params.options)
             } else {
-                print("Invalid push params")
+                print("Invalid PushNamedAndRemoveUntil params")
                 result(nil)
             }
             break
@@ -148,7 +148,7 @@ extension FlutterMeteorDelegate {
             if let params = getPushParams(call, result: result) {
                 pushNamedAndRemoveUntilRoot(routeName: params.routeName, options: params.options)
             } else {
-                print("Invalid push params")
+                print("Invalid NamedAndRemoveUntilRoot params")
                 result(nil)
             }
             break

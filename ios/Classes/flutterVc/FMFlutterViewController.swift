@@ -92,13 +92,42 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
             }
         }
         methodChannel = _methodChannel
+        print("-----+viewWillAppear FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
     }
     
+//    public override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+////        print("-----+viewWillAppear CurrentEngineId:\(String(describing: self.engine?.isolateId))")
+//        print("-----+viewWillAppear FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
+//    }
+//    
+//    public override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+////        print("-----+viewDidAppear CurrentEngineId:\(String(describing: self.engine?.isolateId))")
+//        print("-----+viewDidAppear FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
+//    }
+//    
+//    public override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+////        print("-----+viewWillDisappear CurrentEngineId:\(String(describing: self.engine?.isolateId))")
+//        print("-----+viewWillDisappear FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
+//    }
+//    
+//    public override func viewDidDisappear(_ animated: Bool) {
+//        super.viewDidDisappear(animated)
+////        print("-----+viewDidDisappear CurrentEngineId:\(String(describing: self.engine?.isolateId))")
+//        print("-----+viewDidDisappear FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
+//    }
+//    
 
     deinit {
+        
+        print("-----+deinit CurrentEngineId:\(String(describing: self.engine?.isolateId))")
+        print("-----+deinit FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
+        
         FlutterMeteor.pluginRegistryDelegate.unRegister(pluginRegistry: self.pluginRegistry())
-        print("channelList: \(FlutterMeteor.channelList.allObjects)")
-        print("HzFlutterViewController did deinit")
+//        print("channelList: \(FlutterMeteor.channelList.allObjects)")
+//        print("HzFlutterViewController did deinit")
         FlutterMeteor.sremoveMehtodChannel(key: self.binaryMessenger)
     }
     

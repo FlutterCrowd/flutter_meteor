@@ -1,4 +1,8 @@
+import 'dart:ui';
+
 import 'package:hz_router_plugin_example/other/pop_window.dart';
+import 'package:hz_router_plugin_example/other/webview_page.dart';
+import 'package:hz_router_plugin_example/router/common.dart';
 import 'package:hz_router_plugin_example/router/router_container.dart';
 
 import 'back_widget.dart';
@@ -12,6 +16,12 @@ mixin OtherRouter on MixinRouteContainer {
       'popWindowPage',
       (arguments) => const PopWindowPage(),
     );
+
+    addDialogPageRoute(
+      'dialogWindowPage',
+      (arguments) => const PopWindowPage(),
+      anchorPoint: const Offset(100, 200),
+    );
     addBottomSheetPageRoute(
       "bottomSheetPage",
       (arguments) => const BottomSheetPage(),
@@ -24,28 +34,53 @@ mixin OtherRouter on MixinRouteContainer {
     addMaterialPageRoute(
       'materialPageRoute',
       (arguments) => BackPage(),
-      maintainState: false,
-      fullscreenDialog: false,
-      allowSnapshotting: false,
-      barrierDismissible: false,
     );
 
     addCupertinoPageRoute(
       'cupertinoPageRoute',
       (arguments) => BackPage(),
-      maintainState: false,
-      fullscreenDialog: false,
-      allowSnapshotting: false,
-      barrierDismissible: false,
     );
 
     addCustomPageRoute(
       'customPageRoute',
       (arguments) => BackPage(),
-      maintainState: false,
-      fullscreenDialog: false,
-      allowSnapshotting: false,
-      barrierDismissible: false,
+    );
+
+    addStandardPageRoute(
+      'standardPageRoute_ltr',
+      (arguments) => BackPage(),
+      transitionType: FMTransitionType.inFromLeft,
+    );
+
+    addStandardPageRoute(
+      'standardPageRoute_rtl',
+      (arguments) => BackPage(),
+      transitionType: FMTransitionType.inFromRight,
+    );
+
+    addStandardPageRoute(
+      'standardPageRoute_top',
+      (arguments) => BackPage(),
+      transitionType: FMTransitionType.inFromTop,
+    );
+
+    addStandardPageRoute(
+      'standardPageRoute_bottom',
+      (arguments) => BackPage(),
+      transitionType: FMTransitionType.inFromBottom,
+    );
+
+    addStandardPageRoute(
+      'standardPageRoute_fadeIn',
+      (arguments) => BackPage(),
+      transitionType: FMTransitionType.fadeIn,
+    );
+
+    addRoute(
+      'webViewPage',
+      (arguments) => WebViewPage(
+        url: arguments?['url'],
+      ),
     );
   }
 }

@@ -12,7 +12,6 @@ enum FMStandardRouteType {
 }
 
 enum FMTransitionType {
-  nativeModal,
   inFromLeft,
   inFromTop,
   inFromRight,
