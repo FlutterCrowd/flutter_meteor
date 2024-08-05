@@ -87,8 +87,8 @@ public class FlutterMeteor  {
     
     public static func methodChannel(flutterVc: FlutterViewController) -> FlutterMethodChannel? {
         
-        let pluginPublish = flutterVc.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin") as? FlutterMeteorPluginPubish
-        return pluginPublish?.navigatorChannel
+//        let pluginPublish = flutterVc.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin") as? FlutterMeteorPluginPubish
+//        return pluginPublish?.navigatorChannel
 //        return FlutterMethodChannel(name: "FMRouterMethodChannelName", binaryMessenger: flutterVc.binaryMessenger)
         
         var channel: FlutterMethodChannel?

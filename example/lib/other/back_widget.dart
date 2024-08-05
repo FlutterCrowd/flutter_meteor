@@ -148,7 +148,7 @@ class _MultiEnginPageState extends State<BackPage> {
                 MeteorEventBus.addListener(
                     eventName: 'eventName',
                     listener: (data) {
-                      debugPrint('来了，他来了');
+                      debugPrint('来了，他来了: $data');
                     });
                 MeteorEventBus.commit(
                   eventName: 'eventName',

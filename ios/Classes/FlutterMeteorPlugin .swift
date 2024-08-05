@@ -73,8 +73,8 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
         instance.methodChannel = channel
         registrar.addMethodCallDelegate(instance, channel: channel)
         FlutterMeteor.saveMehtodChannel(key:registrar.messenger(), chennel: channel)
-        let  pluginPubish = FlutterMeteorPluginPubish.init(registrar: registrar)
-        registrar.publish(pluginPubish)
+//        let  pluginPubish = FlutterMeteorPluginPubish.init(registrar: registrar)
+//        registrar.publish(pluginPubish)
     }
     
     
