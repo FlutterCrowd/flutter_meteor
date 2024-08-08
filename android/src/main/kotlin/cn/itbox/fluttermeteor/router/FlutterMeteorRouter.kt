@@ -72,7 +72,7 @@ class  FlutterMeteorRouter: MethodChannel.MethodCallHandler {
                     result.success(
                         when {
                             routeStack.isEmpty() -> null
-                            activityRouteName != null && activityRouteName.isNotEmpty() && !routeStack.contains(activityRouteName) -> activityRouteName
+                            !activityRouteName.isNullOrEmpty() && !routeStack.contains(activityRouteName) -> activityRouteName
                             else -> routeStack.last()
                         }
                     )
@@ -140,28 +140,19 @@ class  FlutterMeteorRouter: MethodChannel.MethodCallHandler {
                 val provider = activityInfo.channelProvider
                 if (provider != null) {
                     val channel = provider.routerChannel
-                    if (channel != null) {
-                        channel.invokeMethod("routeNameStack", null, object : MethodChannel.Result {
-                            override fun success(p0: Any?) {
-                                processRouteStack(p0, routeNameStack, outerIndex, remainingCalls, result)
-                            }
-
-                            override fun error(p0: String, p1: String?, p2: Any?) {
-                                processRouteStack(emptyList<String>(), routeNameStack, outerIndex, remainingCalls, result)
-                            }
-
-                            override fun notImplemented() {
-                                processRouteStack(emptyList<String>(), routeNameStack, outerIndex, remainingCalls, result)
-                            }
-                        })
-                    } else {
-                        synchronized(routeNameStack) {
-                            routeNameStack.add(Triple(outerIndex, 0, activityInfo.routeName))
+                    channel.invokeMethod("routeNameStack", null, object : MethodChannel.Result {
+                        override fun success(p0: Any?) {
+                            processRouteStack(p0, routeNameStack, outerIndex, remainingCalls, result)
                         }
-                        if (remainingCalls.decrementAndGet() == 0) {
-                            finalizeRouteStack(routeNameStack, result)
+
+                        override fun error(p0: String, p1: String?, p2: Any?) {
+                            processRouteStack(emptyList<String>(), routeNameStack, outerIndex, remainingCalls, result)
                         }
-                    }
+
+                        override fun notImplemented() {
+                            processRouteStack(emptyList<String>(), routeNameStack, outerIndex, remainingCalls, result)
+                        }
+                    })
                 } else {
 
                 }

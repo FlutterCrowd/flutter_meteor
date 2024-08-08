@@ -5,14 +5,12 @@ import androidx.annotation.RequiresApi
 
 import cn.itbox.fluttermeteor.engine.EngineInjector
 import cn.itbox.fluttermeteor.event_bus.FlutterMeteorEventBus
-import cn.itbox.fluttermeteor.FlutterMeteorChannelProvider
 import cn.itbox.fluttermeteor.router.FlutterMeteorRouter
 import cn.itbox.fluttermeteor.navigator.FlutterMeteorNavigator
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
-import io.flutter.plugin.common.MethodChannel
 
 
 /** HzRouterPlugin */
@@ -40,7 +38,6 @@ class FlutterMeteorPlugin : FlutterPlugin, ActivityAware {
 //        EngineInjector.put(flutterPluginBinding.flutterEngine, channel)
 
         val provider = FlutterMeteorChannelProvider(flutterPluginBinding.binaryMessenger)
-//        channelProviders[flutterPluginBinding.flutterEngine] = provider
         provider.navigatorChannel.setMethodCallHandler(flutterMeteorNavigator)
         provider.routerChannel.setMethodCallHandler(flutterMeteorRouter)
         provider.eventBusChannel.setMessageHandler { message, reply ->

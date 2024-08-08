@@ -2,8 +2,7 @@ package cn.itbox.fluttermeteor.router
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
-import androidx.fragment.app.Fragment
+
 
 typealias FMRouterBuilder = (arguments: Map<String, Any>?) -> Intent
 typealias FMRouterSearchBlock = (activity: Activity?) -> Unit
