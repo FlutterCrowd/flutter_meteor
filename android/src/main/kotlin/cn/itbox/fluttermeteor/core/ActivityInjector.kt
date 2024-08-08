@@ -5,14 +5,16 @@ import android.app.Application
 import android.os.Bundle
 import android.util.Log
 import cn.itbox.fluttermeteor.engine.EngineInjector
+import cn.itbox.fluttermeteor.FlutterMeteorChannelProvider
 import io.flutter.plugin.common.MethodChannel
 import java.lang.ref.WeakReference
+import java.nio.channels.spi.AsynchronousChannelProvider
 
 data class ActivityInfo(
     var avtivity:WeakReference<Activity>,
     var isRoot:Boolean,
     var routeName: String,
-    var channel: MethodChannel?,
+    var channelProvider: FlutterMeteorChannelProvider?,
     var hashCode: Int,
 )
 
@@ -32,10 +34,10 @@ internal object ActivityInjector {
         application.registerActivityLifecycleCallbacks(ActivityLifecycle())
     }
 
-    fun attachChannel(hashCode: Int,channel: MethodChannel){
+    fun attachChannel(hashCode: Int, channelProvider: FlutterMeteorChannelProvider?){
         for(info in activityList){
             if(hashCode == info.hashCode){
-                info.channel = channel
+                info.channelProvider = channelProvider
             }
         }
     }

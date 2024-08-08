@@ -41,10 +41,9 @@ open class FlutterMeteorActivity : FlutterActivity() {
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
-        val channel = EngineInjector.getChannel(flutterEngine)
-        if(channel != null){
-            ActivityInjector.attachChannel(this.hashCode(),channel)
-        }
+        val channelProvider = EngineInjector.getChannelProvider(flutterEngine)
+        ActivityInjector.attachChannel(this.hashCode(), channelProvider)
+
         println("开始关联channel------>${this.hashCode()}")
         super.configureFlutterEngine(flutterEngine)
     }
