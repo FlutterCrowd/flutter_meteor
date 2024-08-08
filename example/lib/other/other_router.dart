@@ -80,6 +80,7 @@ mixin OtherRouter on MixinRouteContainer {
       'webViewPage',
       (arguments) => WebViewPage(
         url: arguments?['url'],
+        title: '这是一个网页',
       ),
     );
   }

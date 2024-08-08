@@ -234,30 +234,20 @@ class _MultiEnginPageState extends State<BackPage> {
           Center(
             child: GestureDetector(
               onTap: () async {
+                debugPrint('开始打印');
                 debugPrint(
-                    'MeteorNavigator routeNameStack: ${await MeteorNavigator.routeNameStack()}');
-                debugPrint('MeteorNavigator topRouteName: ${await MeteorNavigator.topRouteName()}');
+                    'MeteorNavigator routeNameStack: ${await FMRouterManager.routeNameStack()}');
+                debugPrint('MeteorNavigator topRouteName: ${await FMRouterManager.topRouteName()}');
                 debugPrint(
-                    'MeteorNavigator rootRouteName: ${await MeteorNavigator.rootRouteName()}');
-                debugPrint('MeteorNavigator isRoot: ${await MeteorNavigator.isRoot('rootPage')}');
+                    'MeteorNavigator rootRouteName: ${await FMRouterManager.rootRouteName()}');
+                debugPrint('MeteorNavigator isRoot: ${await FMRouterManager.isRoot('rootPage')}');
                 debugPrint(
-                    'MeteorNavigator isCurrentRoot: ${await MeteorNavigator.isCurrentRoot()}');
+                    'MeteorNavigator isCurrentRoot: ${await FMRouterManager.isCurrentRoot()}');
                 debugPrint(
-                    'MeteorNavigator routeExists multiEnginePage2:${await MeteorNavigator.routeExists('multiEnginePage2')}');
+                    'MeteorNavigator routeExists multiEnginePage2:${await FMRouterManager.routeExists('multiEnginePage2')}');
                 debugPrint(
-                    'MeteorNavigator topRouteIsNative:${await MeteorNavigator.topRouteIsNative()}');
-                // debugPrint(
-                //     'MeteorNavigator routeNameStack1: ${MeteorNavigator.navigatorObserver.routeNameStack}');
-                // debugPrint(
-                //     'MeteorNavigator topRouteName1: ${MeteorNavigator.navigatorObserver.topRouteName}');
-                // debugPrint(
-                //     'MeteorNavigator rootRouteName1: ${MeteorNavigator.navigatorObserver.rootRouteName}');
-                // debugPrint(
-                //     'MeteorNavigator isRoot1: ${MeteorNavigator.navigatorObserver.isRootRoute('multiEnginePage2')}');
-                // debugPrint(
-                //     'MeteorNavigator isCurrentRoot1: ${MeteorNavigator.navigatorObserver.isCurrentRoot()}');
-                // debugPrint(
-                //     'MeteorNavigator routeExists1:${MeteorNavigator.navigatorObserver.routeExists('multiEnginePage2')}');
+                    'MeteorNavigator topRouteIsNative:${await FMRouterManager.topRouteIsNative()}');
+                debugPrint('结束打印');
               },
               child: const Text(
                 '打印当前路由',
