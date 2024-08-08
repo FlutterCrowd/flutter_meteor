@@ -221,6 +221,16 @@ class MixinRouteContainer {
     _routes.putIfAbsent(name, () => routeOptions);
   }
 
+  /// PageRouteBuilder
+  void addUnknownRoute(RouteWidgetBuilder builder) {
+    CustomPageRouteOptions options = CustomPageRouteOptions(
+      opaque: false,
+    );
+    RouteOptions<CustomPageRouteOptions> routeOptions =
+        RouteOptions<CustomPageRouteOptions>(builder, options);
+    _routes.putIfAbsent("UnknownRouteName", () => routeOptions);
+  }
+
   void install() {
     // print('MixinRouteContainer Install routers');
   }

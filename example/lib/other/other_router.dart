@@ -1,5 +1,6 @@
-import 'dart:ui';
-
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_meteor/flutter_meteor.dart';
 import 'package:hz_router_plugin_example/other/pop_window.dart';
 import 'package:hz_router_plugin_example/other/webview_page.dart';
 import 'package:hz_router_plugin_example/router/common.dart';
@@ -83,5 +84,21 @@ mixin OtherRouter on MixinRouteContainer {
         title: '这是一个网页',
       ),
     );
+
+    if (kDebugMode) {
+      addUnknownRoute(
+        (arguments) => Container(
+          color: Colors.white,
+          child: Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.pop();
+              },
+              child: const Text('未找到相关页面，点击返回'),
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

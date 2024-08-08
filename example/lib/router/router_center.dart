@@ -29,11 +29,14 @@ class RouterCenter extends MixinRouteContainer
   static const defaultTransitionDuration = Duration(milliseconds: 250);
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     final String? name = settings.name;
-    final RouteOptions? options = routes[name];
-
+    RouteOptions? options = routes[name];
     if (name == null || options == null) {
-      return _notFoundRoute('unKnowRouteName', maintainState: true);
-      ;
+      options = routes['UnknownRouteName'];
+      if (options == null) {
+        return _notFoundRoute('UnknownRouteName', maintainState: true);
+      } else {
+        return _buildCustomPageRouteBuilder(settings, options, options.pageOptions);
+      }
     }
 
     final pageOptions = options.pageOptions;

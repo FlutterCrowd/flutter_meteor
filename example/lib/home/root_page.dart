@@ -8,7 +8,6 @@ class RootPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final widget = ListView(
       children: [
-        Expanded(child: Container()),
         GestureDetector(
           onTap: () async {
             MeteorNavigator.pushNamed("multiEnginePage2");
@@ -191,6 +190,19 @@ class RootPage extends StatelessWidget {
           },
           child: const Center(
             child: Text('webViewPage'),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        GestureDetector(
+          onTap: () {
+            MeteorNavigator.pushNamed(
+              "UnknownPage",
+            );
+          },
+          child: const Center(
+            child: Text('Unknown page'),
           ),
         ),
       ],
