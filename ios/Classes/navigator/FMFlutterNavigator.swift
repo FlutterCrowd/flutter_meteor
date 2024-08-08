@@ -11,11 +11,19 @@ import Flutter
 
 public class FMFlutterNavigator {
        
+    
+
+    public static func navigatorChannel(flutterVc: FlutterViewController) -> FlutterMethodChannel? {
+        
+        let channelProvider = FlutterMeteorPlugin.channelProvider(with: flutterVc.pluginRegistry())
+        return channelProvider?.navigatorChannel
+    }
+    
     public static func push(flutterVc:FlutterViewController,
                             routeName: String,
                             options: FMPushOptions? = nil) {
 
-        if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+        if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
             arguments["routeName"] = routeName
             arguments["arguments"] = options?.arguments
@@ -34,7 +42,7 @@ public class FMFlutterNavigator {
                                             untilRouteName: String?,
                                             options: FMPushOptions? = nil) {
         
-        if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+        if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
             arguments["routeName"] = routeName
             arguments["arguments"] = options?.arguments
@@ -53,7 +61,7 @@ public class FMFlutterNavigator {
                                                    routeName: String,
                                                    options: FMPushOptions? = nil) {
         
-        if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+        if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
             arguments["routeName"] = routeName
             arguments["arguments"] = options?.arguments
@@ -71,7 +79,7 @@ public class FMFlutterNavigator {
                                          routeName: String,
                                          options: FMPushOptions? = nil) {
 
-        if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+        if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
             arguments["routeName"] = routeName
             arguments["arguments"] = options?.arguments
@@ -86,7 +94,7 @@ public class FMFlutterNavigator {
    
     public static func pop(flutterVc:FlutterViewController,
                            options: FMPopOptions? = nil) {
-        if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+        if let channel = navigatorChannel(flutterVc: flutterVc) {
             channel.save_invoke(method: FMPopMethod, arguments: nil) { ret in
                 options?.callBack?(ret)
             }
@@ -100,7 +108,7 @@ public class FMFlutterNavigator {
                                 untilRouteName: String?,
                                 options: FMPopOptions? = nil) {
         
-        if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+        if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
             arguments["routeName"] = untilRouteName
             channel.save_invoke(method: FMPopUntilMethod, arguments: nil) { ret in
@@ -115,7 +123,7 @@ public class FMFlutterNavigator {
    
     public static func popToRoot(flutterVc: FlutterViewController,
                                  options: FMPopOptions? = nil) {
-        if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
+        if let channel = navigatorChannel(flutterVc: flutterVc) {
             channel.save_invoke(method: FMPopToRootMethod, arguments: options?.result) { response in
                 options?.callBack?(response)
             }

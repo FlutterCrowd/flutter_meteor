@@ -1,6 +1,6 @@
 //
 //  FMFlutterViewController.swift
-//  hz_router
+//  FlutterMeteor
 //
 //  Created by itbox_djx on 2024/5/9.
 //
@@ -10,7 +10,7 @@ import Flutter
 public typealias FlutterMeteorPopCallBack = (_ response: Dictionary<String, Any>?) -> Void
 
 
-public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelegate  {
+public class FMFlutterViewController: FlutterViewController, FMNavigatorDelegate  {
     
     
     var methodChannel: FlutterMethodChannel?
@@ -30,7 +30,7 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
     
     public convenience init () {
         // 创建新的引擎
-        let flutterEngine = FlutterMeteor.createFlutterEngine()
+        let flutterEngine = FMEngineManager.createFlutterEngine()
         // 初始化VC
         self.init(engine: flutterEngine, nibName: nil, bundle: nil)
     }
@@ -44,7 +44,7 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         popCallBack: FlutterMeteorPopCallBack?
     ) {
         // 创建新的引擎
-        let flutterEngine = FlutterMeteor.createFlutterEngine(options: options)
+        let flutterEngine = FMEngineManager.createFlutterEngine(options: options)
         // 初始化VC
         self.init(engine: flutterEngine, nibName: nil, bundle: nil)
         self.popCallBack = popCallBack
@@ -64,7 +64,7 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
       popCallBack: FlutterMeteorPopCallBack?
     ) {
          // 创建新的引擎
-         let flutterEngine = FlutterMeteor.createFlutterEngine(options: options)
+         let flutterEngine = FMEngineManager.createFlutterEngine(options: options)
          // 初始化VC
          self.init(engine: flutterEngine, nibName: nibName, bundle: bundle)
          self.popCallBack = popCallBack
@@ -72,7 +72,7 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
     
     
     func createMethodChannel() -> FlutterMethodChannel {
-        let channel = FlutterMethodChannel(name: FMRouterMethodChannelName, binaryMessenger: self.binaryMessenger)
+        let channel = FlutterMethodChannel(name: FMNavigatorMethodChannelName, binaryMessenger: self.binaryMessenger)
         channel.setMethodCallHandler {[weak self] call, result in
             self?.handleFlutterMethodCall(call, result: result)    }
         return channel
@@ -82,53 +82,39 @@ public class FMFlutterViewController: FlutterViewController, FlutterMeteorDelega
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
 
-        var _methodChannel: FlutterMethodChannel? = FlutterMeteor.methodChannel(flutterVc: self)
+        let channelProvider = FlutterMeteorPlugin.channelProvider(with: self.pluginRegistry())
+        var _methodChannel: FlutterMethodChannel? = channelProvider?.navigatorChannel
         if (_methodChannel == nil) {
             _methodChannel = createMethodChannel()
-            FlutterMeteor.saveMehtodChannel(key: self.binaryMessenger, chennel: _methodChannel!)
+//            FlutterMeteor.saveMehtodChannel(key: self.binaryMessenger, chennel: _methodChannel!)
         } else {
             _methodChannel!.setMethodCallHandler {[weak self] call, result in
                 self?.handleFlutterMethodCall(call, result: result)
             }
+//            print("-------:\(channelHolder?.registrar.messenger())")
+//            print("-------:\(self.binaryMessenger)")
+//            print("-------:\(self.engine?.binaryMessenger)")
+//            print("-------:\(FMEngineManager.engineCache[channelHolder!.registrar.messenger()])")
+//            print("-------:\(FMEngineManager.engineCache[self.binaryMessenger])")
+//            print("-------:\(self.engine)")
+//            print("-------:\(FMEngineManager.engineCache.allObjects())")
+//            print("-------:\(FMEngineManager.engineCache)")
+
         }
         methodChannel = _methodChannel
-        print("-----+viewWillAppear FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
+//        print("-----+viewWillAppear FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
     }
     
-//    public override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-////        print("-----+viewWillAppear CurrentEngineId:\(String(describing: self.engine?.isolateId))")
-//        print("-----+viewWillAppear FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
-//    }
-//    
-//    public override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-////        print("-----+viewDidAppear CurrentEngineId:\(String(describing: self.engine?.isolateId))")
-//        print("-----+viewDidAppear FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
-//    }
-//    
-//    public override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-////        print("-----+viewWillDisappear CurrentEngineId:\(String(describing: self.engine?.isolateId))")
-//        print("-----+viewWillDisappear FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
-//    }
-//    
-//    public override func viewDidDisappear(_ animated: Bool) {
-//        super.viewDidDisappear(animated)
-////        print("-----+viewDidDisappear CurrentEngineId:\(String(describing: self.engine?.isolateId))")
-//        print("-----+viewDidDisappear FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
-//    }
-//    
 
     deinit {
         
-        print("-----+deinit CurrentEngineId:\(String(describing: self.engine?.isolateId))")
-        print("-----+deinit FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
+//        print("-----+deinit CurrentEngineId:\(String(describing: self.engine?.isolateId))")
+//        print("-----+deinit FlutterMeteorPluginPubish:\(String(describing: self.pluginRegistry().valuePublished(byPlugin: "FlutterMeteorPlugin")))")
         
         FlutterMeteor.pluginRegistryDelegate.unRegister(pluginRegistry: self.pluginRegistry())
 //        print("channelList: \(FlutterMeteor.channelList.allObjects)")
 //        print("HzFlutterViewController did deinit")
-        FlutterMeteor.sremoveMehtodChannel(key: self.binaryMessenger)
+//        FlutterMeteor.removeMehtodChannel(key: self.binaryMessenger)
     }
     
     public func pop(options: FMPopOptions?) {

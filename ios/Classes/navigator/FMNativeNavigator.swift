@@ -222,17 +222,17 @@ public class FMNativeNavigator: NSObject {
     
     /// 获取顶部控制器
     public static func topViewController() -> UIViewController? {
-        return FMRouterManager.topViewController()
+        return FMRouterHelper.topViewController()
     }
     
     /// 获取根控制器
     public static func rootViewController() -> UIViewController? {
-        return FMRouterManager.rootViewController()
+        return FMRouterHelper.rootViewController()
     }
 
     /// 获取根控制器
     public static func rootNavigationController() -> UINavigationController? {
-        return FMRouterManager.rootNavigationController()
+        return FMRouterHelper.rootNavigationController()
         
     }
 }

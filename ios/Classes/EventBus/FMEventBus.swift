@@ -6,16 +6,16 @@
 //
 
 import UIKit
+import Flutter
 
 typealias FMEventBusListener = ([String: Any?]?) -> Void
 
 class FMEventBus: NSObject {
-    
-    
-    
-    
+      
+
     static private var listeners = [String: [FMEventBusListener]]()
 
+    
     static func addListener(eventName: String, listener: @escaping FMEventBusListener) {
         listeners[eventName, default: []].append(listener)
     }
@@ -25,7 +25,26 @@ class FMEventBus: NSObject {
     }
 
     static func commit(eventName: String, data: [String: Any?]?) {
+        
+        // 通知原生的 listeners
         listeners[eventName]?.forEach { $0(data) }
+        
+        // 遍历多引擎Channel
+        var message = [String: Any?]()
+        message["eventName"] = eventName
+        message["data"] = data
+        
+        FlutterMeteorPlugin.channelHolderList.allObjects.forEach {  provider in
+            provider.eventBusChannel.sendMessage(message)
+        }
     }
 
+    // 处理从flutter端收到的消息
+    static func receiveMessageFromFlutter(message: Any?) {
+        if let map = message as? [String: Any?]? {
+            if let eventName = map?["eventName"] as? String {
+                commit(eventName: eventName, data: map?["data"] as? [String : Any?])
+            }
+        }
+    }
 }

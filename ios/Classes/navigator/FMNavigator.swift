@@ -84,7 +84,7 @@ public class FMNavigator {
         } else if(FlutterMeteor.customRouterDelegate != nil) {
             FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
         } else {
-            let currentVc = FMRouterManager.topViewController()
+            let currentVc = FMRouterHelper.topViewController()
             if let flutterVc = currentVc as? FlutterViewController {
                 FMFlutterNavigator.pushToAndRemoveUntil(flutterVc: flutterVc, routeName: routeName, untilRouteName: untilRouteName, options: options)
             } else {
@@ -96,16 +96,12 @@ public class FMNavigator {
     public static func pushNamedAndRemoveUntilRoot(routeName: String, options: FMPushOptions? = nil) {
         
         func flutterPopRoot(){
-            let rootVc = FMRouterManager.rootViewController()
+            let rootVc = FMRouterHelper.rootViewController()
             if let flutterVc = rootVc as? FlutterViewController {
-                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                    channel.save_invoke(method: FMPopToRootMethod)
-                }
+                FMFlutterNavigator.popToRoot(flutterVc: flutterVc)
             } else if let naviVc = rootVc as? UINavigationController,
                         let flutterVc = naviVc.viewControllers.first as? FlutterViewController {
-                if let channel = FlutterMeteor.methodChannel(flutterVc: flutterVc) {
-                    channel.save_invoke(method: FMPopToRootMethod)
-                }
+                FMFlutterNavigator.popToRoot(flutterVc: flutterVc)
             }
         }
         
@@ -120,7 +116,7 @@ public class FMNavigator {
             flutterPopRoot()
             options?.callBack?(nil)
         } else {
-            if let flutterVc = FMRouterManager.topViewController() as? FlutterViewController {
+            if let flutterVc = FMRouterHelper.topViewController() as? FlutterViewController {
                 FMFlutterNavigator.pushNamedAndRemoveUntilRoot(flutterVc: flutterVc, routeName: routeName, options: options)
             }
         }
@@ -139,7 +135,7 @@ public class FMNavigator {
        } else if(FlutterMeteor.customRouterDelegate != nil) {
            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
        } else {
-           let currentVc = FMRouterManager.topViewController()
+           let currentVc = FMRouterHelper.topViewController()
            if let flutterVc = currentVc as? FlutterViewController {
                FMFlutterNavigator.pushToReplacement(flutterVc: flutterVc, routeName: routeName, options: options)
            } else {
@@ -160,7 +156,7 @@ public class FMNavigator {
                 _popUntil(untilRouteName: untilRouteName!, untilPage: viewController, options: options)
             }
         } else {
-            if let flutterVc = FMRouterManager.topViewController() as? FlutterViewController {
+            if let flutterVc = FMRouterHelper.topViewController() as? FlutterViewController {
                 FMFlutterNavigator.pop(flutterVc: flutterVc)
             } else {
                 FMNativeNavigator.pop(animated: options?.animated ?? true)
@@ -181,7 +177,7 @@ public class FMNavigator {
                 FMFlutterNavigator.popUntil(flutterVc: flutterVc, untilRouteName: untilRouteName, options: options)
             }
         } else { //如果untilPage不存在则返回上一页
-            if let flutterVc = FMRouterManager.topViewController() as? FlutterViewController {
+            if let flutterVc = FMRouterHelper.topViewController() as? FlutterViewController {
                 FMFlutterNavigator.pop(flutterVc: flutterVc)
             } else {
                 FMNativeNavigator.pop(animated: options?.animated ?? true)
@@ -193,7 +189,7 @@ public class FMNavigator {
    
     public static func popToRoot(options: FMPopOptions? = nil) {
         
-        let rootVc = FMRouterManager.rootViewController()
+        let rootVc = FMRouterHelper.rootViewController()
         if let flutterVc = rootVc as? FlutterViewController {
             FMFlutterNavigator.popToRoot(flutterVc: flutterVc, options: options)
         } else if let naviVc = rootVc as? UINavigationController {
