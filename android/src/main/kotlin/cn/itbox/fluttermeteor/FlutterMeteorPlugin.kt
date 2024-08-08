@@ -12,6 +12,7 @@ import cn.itbox.fluttermeteor.navigator.FlutterMeteorNavigator
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
+import io.flutter.plugin.common.MethodChannel
 
 
 /** HzRouterPlugin */

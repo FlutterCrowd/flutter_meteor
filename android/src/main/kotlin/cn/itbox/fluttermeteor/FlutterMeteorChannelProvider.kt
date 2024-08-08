@@ -16,11 +16,12 @@ class FlutterMeteorChannelProvider(messenger: BinaryMessenger) {
     val navigatorChannel: MethodChannel
         get() = _navigatorChannel
 
+    private val _routerChannel = MethodChannel(messenger, routerMethodChannelName)
+    val routerChannel: MethodChannel
+        get() = _routerChannel
+
     private val _eventBusChannel = BasicMessageChannel(messenger, eventBusMessageChannelName, StandardMessageCodec())
     val eventBusChannel: BasicMessageChannel<Any>
         get() = _eventBusChannel
 
-    private val _routerChannel = MethodChannel(messenger, routerMethodChannelName)
-    val routerChannel: MethodChannel
-        get() = _routerChannel
 }
