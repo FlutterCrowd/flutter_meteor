@@ -1,13 +1,13 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_meteor/channel/channel.dart';
 import 'package:flutter_meteor/engine/engine.dart';
 import 'package:hz_tools/hz_tools.dart';
-
-import '../channel/channel_method.dart';
 
 typedef MeteorEventBusListener = void Function(dynamic arguments);
 
 class MeteorEventBus {
+  final BasicMessageChannel methodChannel =
+      const BasicMessageChannel('itbox.meteor.multiEnginEventChannel', StandardMessageCodec());
+
   // 工厂方法构造函数 - 通过UserModel()获取对象
   factory MeteorEventBus() => _getInstance();
 
@@ -26,12 +26,19 @@ class MeteorEventBus {
   //初始化...
   MeteorEventBus._internal() {
     //初始化其他操作...
-    _pluginPlatform = MeteorMethodChannel();
+    // _pluginPlatform = MeteorMethodChannel();
+
+    methodChannel.setMessageHandler(
+      (message) async {
+        print('收到来自原生的通知message:$message');
+        receiveEvent(message);
+      },
+    );
   }
 
-  late MeteorMethodChannel _pluginPlatform;
+  // late MeteorMethodChannel _pluginPlatform;
 
-  MethodChannel get methodChannel => _pluginPlatform.methodChannel;
+  // MethodChannel get methodChannel => _pluginPlatform.methodChannel;
 
   final Map<String, List<MeteorEventBusListener>> _listenerMap = {};
 
@@ -128,17 +135,31 @@ class MeteorEventBus {
     /// 如果支持多引擎则交给原生处理
     Map<String, dynamic> methodArguments = {};
     methodArguments['eventName'] = eventName;
-    methodArguments['arguments'] = data;
-    final result = await instance.methodChannel
-        .invokeMethod(MeteorChannelMethod.multiEngineEventCallMethod, methodArguments);
+    methodArguments['data'] = data;
+    // final result = await instance.methodChannel
+    //     .invokeMethod(MeteorChannelMethod.multiEngineEventCallMethod, methodArguments);
+    final result = await instance.methodChannel.send(methodArguments);
     HzLog.t('MeteorEventBus commitToMultiEngine isMain:${MeteorEngine.isMain} result:$result');
     return result;
   }
 
-  static List<MeteorEventBusListener>? listenersForEvent(String eventName) {
-    HzLog.t('MeteorEventBus isMain:${MeteorEngine.isMain} allListeners:${instance._listenerMap}');
-    var list = instance._listenerMap[eventName];
-    HzLog.d('MeteorEventBus isMain:${MeteorEngine.isMain} eventName:$eventName, listeners $list');
-    return list;
+  static void receiveEvent(dynamic event) {
+    if (event is Map<String, dynamic>) {
+      final eventMap = event;
+      final eventName = event['eventName'];
+      HzLog.t('MeteorEventBus isMain:${MeteorEngine.isMain} allListeners:${instance._listenerMap}');
+      var list = instance._listenerMap[eventName];
+      list?.forEach((listener) {
+        listener.call(eventMap['data']);
+      });
+      HzLog.d('MeteorEventBus isMain:${MeteorEngine.isMain} eventName:$eventName, listeners $list');
+    }
   }
+
+  // static List<MeteorEventBusListener>? listenersForEvent(String eventName) {
+  //   HzLog.t('MeteorEventBus isMain:${MeteorEngine.isMain} allListeners:${instance._listenerMap}');
+  //   var list = instance._listenerMap[eventName];
+  //   HzLog.d('MeteorEventBus isMain:${MeteorEngine.isMain} eventName:$eventName, listeners $list');
+  //   return list;
+  // }
 }

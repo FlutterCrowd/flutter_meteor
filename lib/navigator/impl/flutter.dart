@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_meteor/navigator/observer.dart';
+import 'package:flutter_meteor/router/impl/flutter_router.dart';
 import 'package:hz_tools/hz_tools.dart';
 
-import '../interface.dart';
+import '../navigator_api.dart';
 
 /// 实现flutter层页面路由
-class MeteorFlutterNavigator extends MeteorNavigatorInterface {
-  // static String rootRoute = '/';
+class MeteorFlutterNavigator extends MeteorNavigatorApi {
   static GlobalKey<NavigatorState>? rootKey;
-  static MeteorRouteObserver routeObserver = MeteorRouteObserver();
+  static final FMFlutterRouter _flutterRouter = FMFlutterRouter();
   static BuildContext get rootContext {
     if (rootKey?.currentContext == null) {
       throw Exception("Context is null, you need to sure MeteorNavigator did init");
@@ -38,7 +37,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   @override
   Future<T?> popUntil<T extends Object?>(String routeName) async {
     HzLog.t('MeteorFlutterNavigator popUntil routeName:$routeName');
-    if (routeObserver.routeExists(routeName)) {
+    if (await _flutterRouter.routeExists(routeName) && rootContext.mounted) {
       Navigator.popUntil(
         rootContext,
         ModalRoute.withName(
@@ -92,7 +91,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   }) async {
     HzLog.t(
         'MeteorFlutterNavigator pushReplacementNamed newRouteName:$routeName, untilRouteName:$untilRouteName, arguments:$arguments');
-    if (routeObserver.routeExists(untilRouteName)) {
+    if (await _flutterRouter.routeExists(untilRouteName) && rootContext.mounted) {
       return await Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
         routeName,
         ModalRoute.withName(untilRouteName),
@@ -155,37 +154,6 @@ class MeteorFlutterNavigator extends MeteorNavigatorInterface {
   @override
   Future<T?> dismiss<T extends Object?>() async {
     HzLog.w('This method:dismiss need to be implemented by native');
-    return null;
-  }
-
-  @override
-  Future<bool> isRoot(String routeName) async {
-    return routeObserver.isRootRoute(routeName);
-  }
-
-  @override
-  Future<String?> rootRouteName() async {
-    return routeObserver.rootRouteName;
-  }
-
-  @override
-  Future<bool> routeExists(String routeName) async {
-    return routeObserver.routeExists(routeName);
-  }
-
-  @override
-  Future<List<String>> routeNameStack() async {
-    return routeObserver.routeNameStack;
-  }
-
-  @override
-  Future<String?> topRouteName() async {
-    return routeObserver.topRouteName;
-  }
-
-  @override
-  Future<bool>? topRouteIsNative() {
-    HzLog.w('This method:topRouteIsNative need to be implemented by native');
     return null;
   }
 }

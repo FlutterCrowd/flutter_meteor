@@ -3,7 +3,7 @@
 * */
 
 /// 路由接口
-abstract class MeteorNavigatorInterface {
+abstract class MeteorNavigatorApi {
   /// push 到一个已经存在路由表的页面
   ///
   /// @parma routeName 要跳转的页面，
@@ -88,22 +88,4 @@ abstract class MeteorNavigatorInterface {
 
   /// 返回原生模态出的视图
   void dismiss<T extends Object?>();
-  //
-  /// 当前路由名栈
-  Future<List<String>> routeNameStack();
-
-  /// 最上层路由名称
-  Future<String?> topRouteName();
-
-  /// 最上层路由是否为原生
-  Future<bool>? topRouteIsNative();
-
-  /// 根路由名称
-  Future<String?> rootRouteName();
-
-  /// 判断路由routeName是否存在
-  Future<bool> routeExists(String routeName);
-
-  /// 判断路由routeName是否为根路由
-  Future<bool> isRoot(String routeName);
 }

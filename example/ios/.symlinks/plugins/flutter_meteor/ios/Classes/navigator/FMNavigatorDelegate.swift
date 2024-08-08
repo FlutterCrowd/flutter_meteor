@@ -73,14 +73,7 @@ private struct FMPopParams {
 }
 
 
-
-public protocol FlutterMeteorCustomDelegate {
-        
-    func push(routeName: String, options: FMPushOptions?)
-}
-
-
-protocol FlutterMeteorDelegate {
+protocol FMNavigatorDelegate {
         
     // push
     func present(routeName: String, options: FMPushOptions?)
@@ -112,7 +105,7 @@ protocol FlutterMeteorDelegate {
 }
 
 
-extension FlutterMeteorDelegate {
+extension FMNavigatorDelegate {
     
     func handleFlutterMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
@@ -168,58 +161,6 @@ extension FlutterMeteorDelegate {
             let params = getPopParams(call, result: result)
             dismiss(options: params.options)
             break
-            
-            
-        case FMMultiEngineEventCallMethod:
-            if (call.arguments is Dictionary<String, Any>) {
-                let methodArguments: Dictionary<String, Any> = call.arguments as! Dictionary<String, Any>
-                let eventName = methodArguments["eventName"] as? String ?? ""
-                let arguments = methodArguments["arguments"]
-                FlutterMeteor.sendEvent(eventName: eventName, arguments: arguments)
-                
-            } else {
-                print("Invalid call.arguments")
-            }
-            break
-            
-        case FMRouteExists:
-            if let methodArguments = call.arguments as? Dictionary<String, Any> {
-                if let routeName = methodArguments["routeName"] as? String {
-                    FlutterMeteorRouter.routeExists(routeName: routeName, result: result)
-                } else {
-                    print("Invalid routeName")
-                    result(false)
-                }
-            } else {
-                print("Invalid methodArguments")
-                result(false)
-            }
-            break
-        case FMIsRoot:
-            if let methodArguments = call.arguments as? Dictionary<String, Any> {
-                if let routeName = methodArguments["routeName"] as? String {
-                    FlutterMeteorRouter.isRoot(routeName: routeName, result: result)
-                } else {
-                    print("Invalid routeName")
-                    result(false)
-                }
-            } else {
-                print("Invalid methodArguments")
-                result(false)
-            }
-            break
-        case FMRootRouteName:
-            FlutterMeteorRouter.rootRouteName(result: result)
-            break
-        case FMTopRouteName:
-            FlutterMeteorRouter.topRouteName(result: result)
-            break
-        case FMRouteNameStack:
-            FlutterMeteorRouter.routeNameStack(result: result)
-            break
-        case FMTopRouteIsNative:
-            FlutterMeteorRouter.topRouteIsNative(result: result)
-            break
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -271,7 +212,7 @@ extension FlutterMeteorDelegate {
 
 /// 默认实现
 
-extension FlutterMeteorDelegate {
+extension FMNavigatorDelegate {
     
     func present(routeName: String, options: FMPushOptions?) {
         FMNavigator.present(routeName: routeName, options: options)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class FMRouterManager: NSObject {
+public class FMRouterHelper: NSObject {
     
     public static var viewControllerStack: [UIViewController] {
         get{

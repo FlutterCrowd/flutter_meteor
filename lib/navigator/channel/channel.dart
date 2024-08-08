@@ -1,9 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:hz_tools/hz_tools.dart';
 
-import '../event_bus/meteor_event_bus.dart';
-import '../navigator/impl/flutter.dart';
-import 'channel_method.dart';
+import '../impl/flutter.dart';
+import 'method.dart';
 
 class MeteorMethodChannel {
   static final MeteorFlutterNavigator _flutterNavigator = MeteorFlutterNavigator();
@@ -22,44 +21,20 @@ class MeteorMethodChannel {
         } else {
           arguments["arguments"] = call.arguments;
         }
-        if (call.method == MeteorChannelMethod.popMethod) {
+        if (call.method == FMNavigatorMethod.popMethod) {
           return await flutterPop(arguments: arguments);
-        } else if (call.method == MeteorChannelMethod.popUntilMethod) {
+        } else if (call.method == FMNavigatorMethod.popUntilMethod) {
           return await flutterPopUntil(arguments: arguments);
-        } else if (call.method == MeteorChannelMethod.popToRootMethod) {
+        } else if (call.method == FMNavigatorMethod.popToRootMethod) {
           return await flutterPopRoRoot(arguments: arguments);
-        } else if (call.method == MeteorChannelMethod.pushNamedMethod) {
+        } else if (call.method == FMNavigatorMethod.pushNamedMethod) {
           return await flutterPushNamed(arguments: arguments);
-        } else if (call.method == MeteorChannelMethod.pushReplacementNamedMethod) {
+        } else if (call.method == FMNavigatorMethod.pushReplacementNamedMethod) {
           return await flutterPushAndReplace(arguments: arguments);
-        } else if (call.method == MeteorChannelMethod.pushNamedAndRemoveUntilMethod) {
+        } else if (call.method == FMNavigatorMethod.pushNamedAndRemoveUntilMethod) {
           return await flutterPushAndRemoveUntil(arguments: arguments);
-        } else if (call.method == MeteorChannelMethod.pushNamedAndRemoveUntilRootMethod) {
+        } else if (call.method == FMNavigatorMethod.pushNamedAndRemoveUntilRootMethod) {
           return await flutterPushAndRemoveUntilRoot(arguments: arguments);
-        } else if (call.method == MeteorChannelMethod.multiEngineEventCallMethod) {
-          String eventName = arguments['eventName'];
-          List<MeteorEventBusListener> list = MeteorEventBus.listenersForEvent(eventName) ?? [];
-          for (var listener in list) {
-            listener.call(arguments['arguments']);
-          }
-        } else if (call.method == MeteorChannelMethod.routeExists) {
-          String routeName = arguments['routeName'] ?? '';
-          bool ret = await _flutterNavigator.routeExists(routeName);
-          return ret;
-        } else if (call.method == MeteorChannelMethod.isRoot) {
-          String routeName = arguments['routeName'] ?? '';
-          bool ret = await _flutterNavigator.isRoot(routeName);
-          return ret;
-        } else if (call.method == MeteorChannelMethod.rootRouteName) {
-          String? ret = await _flutterNavigator.rootRouteName();
-          return ret;
-        } else if (call.method == MeteorChannelMethod.topRouteName) {
-          String? ret = await _flutterNavigator.topRouteName();
-          return ret;
-        } else if (call.method == MeteorChannelMethod.routeNameStack) {
-          List<String> routeNameStack = await _flutterNavigator.routeNameStack();
-          // List<String> routeNameStack = MeteorFlutterNavigator.routeObserver.routeNameStack;
-          return routeNameStack;
         } else {
           return null;
         }
@@ -68,7 +43,7 @@ class MeteorMethodChannel {
   }
 
   /// The method channel used to interact with the native platform.
-  final MethodChannel methodChannel = const MethodChannel('itbox.meteor.channel');
+  final MethodChannel methodChannel = const MethodChannel('itbox.meteor.navigatorChannel');
 
   /// ***********Native to flutter*************/
   Future<dynamic> flutterPop({Map<String, dynamic>? arguments}) async {
@@ -76,11 +51,11 @@ class MeteorMethodChannel {
   }
 
   Future<dynamic> flutterPopUntil({Map<String, dynamic>? arguments}) async {
-    Map<String, dynamic> arg = {};
-    if (arguments != null) {
-      arg.addAll(arguments);
-    }
-    String? routeName = arg["routeName"];
+    // Map<String, dynamic> arg = {};
+    // if (arguments != null) {
+    //   arg.addAll(arguments);
+    // }
+    String? routeName = arguments?["routeName"];
     if (routeName != null) {
       return await _flutterNavigator.popUntil(routeName);
     } else {
@@ -94,11 +69,11 @@ class MeteorMethodChannel {
   }
 
   Future<dynamic> flutterPushNamed({Map<String, dynamic>? arguments}) async {
-    Map<String, dynamic> arg = {};
-    if (arguments != null) {
-      arg.addAll(arguments);
-    }
-    String? routeName = arg["routeName"];
+    // Map<String, dynamic> arg = {};
+    // if (arguments != null) {
+    //   arg.addAll(arguments);
+    // }
+    String? routeName = arguments?["routeName"];
     HzLog.t('Channel flutterPushNamed arguments: $arguments');
     if (routeName != null) {
       return await _flutterNavigator.pushNamed(routeName);
@@ -106,11 +81,11 @@ class MeteorMethodChannel {
   }
 
   Future<dynamic> flutterPushAndReplace({Map<String, dynamic>? arguments}) async {
-    Map<String, dynamic> arg = {};
-    if (arguments != null) {
-      arg.addAll(arguments);
-    }
-    String? routeName = arg["routeName"];
+    // Map<String, dynamic> arg = {};
+    // if (arguments != null) {
+    //   arg.addAll(arguments);
+    // }
+    String? routeName = arguments?["routeName"];
     HzLog.t('Channel flutterPushNamed arguments: $arguments');
     if (routeName != null) {
       return await _flutterNavigator.pushReplacementNamed(routeName);
@@ -118,12 +93,12 @@ class MeteorMethodChannel {
   }
 
   Future<dynamic> flutterPushAndRemoveUntil({Map<String, dynamic>? arguments}) async {
-    Map<String, dynamic> arg = {};
-    if (arguments != null) {
-      arg.addAll(arguments);
-    }
-    String? routeName = arg["routeName"];
-    String? untilRouteName = arg["untilRouteName"];
+    // Map<String, dynamic> arg = {};
+    // if (arguments != null) {
+    //   arg.addAll(arguments);
+    // }
+    String? routeName = arguments?["routeName"];
+    String? untilRouteName = arguments?["untilRouteName"];
     HzLog.t('Channel flutterPushNamed arguments: $arguments');
     if (routeName != null) {
       if (untilRouteName != null) {
@@ -137,11 +112,11 @@ class MeteorMethodChannel {
   }
 
   Future<dynamic> flutterPushAndRemoveUntilRoot({Map<String, dynamic>? arguments}) async {
-    Map<String, dynamic> arg = {};
-    if (arguments != null) {
-      arg.addAll(arguments);
-    }
-    String? routeName = arg["routeName"];
+    // Map<String, dynamic> arg = {};
+    // if (arguments != null) {
+    //   arg.addAll(arguments);
+    // }
+    String? routeName = arguments?["routeName"];
     if (routeName != null) {
       return await _flutterNavigator.pushNamedAndRemoveUntilRoot(routeName);
     } else {
