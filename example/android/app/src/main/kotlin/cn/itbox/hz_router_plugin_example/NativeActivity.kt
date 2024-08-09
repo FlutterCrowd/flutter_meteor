@@ -1,5 +1,7 @@
 package cn.itbox.hz_router_plugin_example
 
+import FlutterMeteorRouteManager.startActivity
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,6 +11,7 @@ import cn.itbox.fluttermeteor.core.FlutterMeteor
 import cn.itbox.fluttermeteor.core.FlutterMeteorRouteOptions
 
 class NativeActivity : AppCompatActivity() {
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_native)
@@ -26,6 +29,11 @@ class NativeActivity : AppCompatActivity() {
         root.setOnClickListener {
             FlutterMeteor.popToRoot()
 //            startActivity(Intent(this, MainActivity::class.java))
+        }
+
+        val test = findViewById<View>(R.id.test)
+        test.setOnClickListener {
+            startActivity("test")
         }
     }
 

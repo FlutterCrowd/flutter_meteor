@@ -1,27 +1,30 @@
-package cn.itbox.fluttermeteor.router
-
 import android.app.Activity
 import android.content.Intent
+import java.lang.IllegalArgumentException
 
-
+// Typealias for a function that takes optional arguments and returns an Intent
 typealias FMRouterBuilder = (arguments: Map<String, Any>?) -> Intent
-typealias FMRouterSearchBlock = (activity: Activity?) -> Unit
+
 object FlutterMeteorRouteManager {
 
     private val routes = mutableMapOf<String, FMRouterBuilder>()
 
+    // Method to register a route
     fun insertRouter(routeName: String, routerBuilder: FMRouterBuilder) {
         routes[routeName] = routerBuilder
     }
 
+    // Method to get the router builder for a specific route
     fun routerBuilder(routeName: String): FMRouterBuilder? {
         return routes[routeName]
     }
 
-    fun createActivity(routeName: String?, arguments: Map<String, Any>?) : Intent? {
+    // Method to create an Intent for a given route
+    fun createActivityIntent(routeName: String?, arguments: Map<String, Any>?): Intent? {
         if (routeName == null) {
             return null
         }
+
         val intentBuilder: FMRouterBuilder? = routes[routeName]
         val intent: Intent? = intentBuilder?.invoke(arguments)
         intent?.putExtra("routeName", routeName)
@@ -38,6 +41,16 @@ object FlutterMeteorRouteManager {
                 else -> throw IllegalArgumentException("Unsupported argument type for key $key")
             }
         }
-        return  intent
+        return intent
+    }
+
+    // Extension function to start an activity from the current activity
+    fun Activity.startActivity(routeName: String, arguments: Map<String, Any>? = null) {
+        val intent = createActivityIntent(routeName, arguments)
+        intent?.let { startActivity(it) }
     }
 }
+
+// Example usage:
+
+// Register routes

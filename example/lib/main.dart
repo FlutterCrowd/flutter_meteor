@@ -80,6 +80,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       onGenerateRoute: RouterCenter.generateRoute,
+
       navigatorKey: rootKey,
       navigatorObservers: [
         FMRouterManager.instance.routerObserver,
