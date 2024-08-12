@@ -1,61 +1,53 @@
 package cn.itbox.fluttermeteor.event_bus
 import cn.itbox.fluttermeteor.engine.EngineInjector
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+typealias MeteorEventBusListener = (Map<String, Any?>?) -> Unit
 
+private data class MeteorEventBusListenerItem(
+    val listenerId: String?,
+    val listener: MeteorEventBusListener
+)
 
+object MeteorEventBus {
 
-import kotlin.collections.HashMap
+    private val listeners = mutableMapOf<String, MutableList<MeteorEventBusListenerItem>>()
 
-typealias FMEventBusListener = (Map<String, Any?>?) -> Unit
+    fun addListener(eventName: String, listenerId: String? = null, listener: MeteorEventBusListener) {
+        listeners.getOrPut(eventName) { mutableListOf() }.add(MeteorEventBusListenerItem(listenerId, listener))
+    }
 
-class FlutterMeteorEventBus {
-
-    companion object {
-        private val listeners: MutableMap<String, MutableList<FMEventBusListener>> = HashMap()
-
-        @JvmStatic
-        fun addListener(eventName: String, listener: FMEventBusListener) {
-            listeners.getOrPut(eventName) { mutableListOf() }.add(listener)
-        }
-
-        @JvmStatic
-        fun removeListener(eventName: String, listener: FMEventBusListener) {
-            listeners[eventName]?.removeAll { it == listener }
-        }
-
-        @RequiresApi(Build.VERSION_CODES.N)
-        @JvmStatic
-        fun commit(eventName: String, data: Map<String, Any?>?) {
-            // 通知原生的 listeners
-            listeners[eventName]?.forEach { listener ->
-                listener(data);
-            }
-
-            // 遍历多引擎Channel
-            val message = HashMap<String, Any?>()
-            message["eventName"] = eventName
-            message["data"] = data
-
-            EngineInjector.allChannelProviders().forEach { provider ->
-                if (provider != null) {
-                    provider.eventBusChannel.send(message);
-                }
+    fun removeListener(eventName: String, listenerId: String? = null, listener: MeteorEventBusListener? = null) {
+        listeners[eventName]?.apply {
+            when {
+                listenerId != null -> removeAll { it.listenerId == listenerId }
+                listener != null -> removeAll { it.listener == listener }
+                else -> clear()
             }
         }
+    }
 
-        // 处理从flutter端收到的消息
-        @RequiresApi(Build.VERSION_CODES.N)
-        @JvmStatic
-        fun receiveMessageFromFlutter(message: Any?) {
-            if (message is Map<*, *>) {
-                val eventName = message["eventName"] as? String
-                val data = message["data"] as? Map<String, Any?>
-                if (eventName != null) {
-                    commit(eventName, data)
-                }
+    fun commit(eventName: String, data: Map<String, Any?>?) {
+        // Notify native listeners
+        listeners[eventName]?.forEach { it.listener(data) }
+
+        // Broadcast to multiple engine channels
+        val message = mutableMapOf<String, Any?>(
+            "eventName" to eventName,
+            "data" to data
+        )
+
+        EngineInjector.allChannelProviders().forEach { provider ->
+            provider?.eventBusChannel?.send(message)
+        }
+    }
+
+    // Handle messages received from Flutter
+    fun receiveMessageFromFlutter(message: Any?) {
+        (message as? Map<String, Any?>)?.let { map ->
+            map["eventName"]?.let { eventName ->
+                commit(eventName as String, map["data"] as? Map<String, Any?>)
             }
         }
     }
 }
+

@@ -1,50 +1,66 @@
-//
-//  FMEventBus.swift
-//  flutter_meteor
-//
-//  Created by itbox_djx on 2024/8/5.
-//
-
 import UIKit
 import Flutter
 
+// 定义事件监听器的别名
 typealias MeteorEventBusListener = ([String: Any?]?) -> Void
 
-class MeteorEventBus: NSObject {
-      
-
-    static private var listeners = [String: [MeteorEventBusListener]]()
-
+// 事件监听器条目，包含监听器 ID 和监听器函数
+private struct MeteorEventBusListenerItem {
+    let listenerId: String?
+    let listener: MeteorEventBusListener
     
-    static func addListener(eventName: String, listener: @escaping MeteorEventBusListener) {
-        listeners[eventName, default: []].append(listener)
+    init(listenerId: String? = nil, listener: @escaping MeteorEventBusListener) {
+        self.listenerId = listenerId
+        self.listener = listener
+    }
+}
+
+class MeteorEventBus: NSObject {
+
+    // 存储事件监听器
+    private static var listeners = [String: [MeteorEventBusListenerItem]]()
+
+    // 添加事件监听器
+    static func addListener(eventName: String, listenerId: String? = nil, listener: @escaping MeteorEventBusListener) {
+        let item = MeteorEventBusListenerItem(listenerId: listenerId, listener: listener)
+        listeners[eventName, default: []].append(item)
     }
 
-    static func removeListener(eventName: String, listener: @escaping MeteorEventBusListener) {
-        listeners[eventName]?.removeAll { $0 as AnyObject === listener as AnyObject }
+    // 移除事件监听器
+    static func removeListener(eventName: String, listenerId: String? = nil, listener: MeteorEventBusListener? = nil) {
+        guard var items = listeners[eventName] else { return }
+        
+        if let listenerId = listenerId {
+            items.removeAll { $0.listenerId == listenerId }
+        } else if let listener = listener {
+            items.removeAll { $0.listener as AnyObject === listener as AnyObject }
+        } else {
+            items.removeAll()
+        }
+
+        listeners[eventName] = items.isEmpty ? nil : items
     }
 
+    // 触发事件
     static func commit(eventName: String, data: [String: Any?]?) {
+        listeners[eventName]?.forEach { $0.listener(data) }
+
+        let message: [String: Any?] = [
+            "eventName": eventName,
+            "data": data
+        ]
         
-        // 通知原生的 listeners
-        listeners[eventName]?.forEach { $0(data) }
-        
-        // 遍历多引擎Channel
-        var message = [String: Any?]()
-        message["eventName"] = eventName
-        message["data"] = data
-        
-        FlutterMeteorPlugin.channelHolderList.allObjects.forEach {  provider in
+        FlutterMeteorPlugin.channelHolderMap.allObjects()?.forEach { provider in
             provider.eventBusChannel.sendMessage(message)
         }
     }
 
-    // 处理从flutter端收到的消息
+    // 处理从 Flutter 端收到的消息
     static func receiveMessageFromFlutter(message: Any?) {
-        if let map = message as? [String: Any?]? {
-            if let eventName = map?["eventName"] as? String {
-                commit(eventName: eventName, data: map?["data"] as? [String : Any?])
-            }
-        }
+        guard let map = message as? [String: Any?],
+              let eventName = map["eventName"] as? String else { return }
+        
+        commit(eventName: eventName, data: map["data"] as? [String: Any?])
     }
 }
+

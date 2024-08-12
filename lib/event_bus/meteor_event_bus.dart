@@ -4,6 +4,13 @@ import 'package:hz_tools/hz_tools.dart';
 
 typedef MeteorEventBusListener = void Function(dynamic arguments);
 
+class MeteorEventBusListenerItem {
+  final String? listenerId;
+  final MeteorEventBusListener listener;
+
+  MeteorEventBusListenerItem(this.listenerId, this.listener);
+}
+
 class MeteorEventBus {
   final BasicMessageChannel methodChannel =
       const BasicMessageChannel('itbox.meteor.multiEnginEventChannel', StandardMessageCodec());
@@ -30,71 +37,45 @@ class MeteorEventBus {
 
     methodChannel.setMessageHandler(
       (message) async {
-        print('收到来自原生的通知message:$message');
+        HzLog.d('收到来自原生的通知message:$message');
         receiveEvent(message);
       },
     );
   }
 
-  // late MeteorMethodChannel _pluginPlatform;
-
-  // MethodChannel get methodChannel => _pluginPlatform.methodChannel;
-
-  final Map<String, List<MeteorEventBusListener>> _listenerMap = {};
+  final Map<String, List<MeteorEventBusListenerItem>> _listenerMap = {};
 
   /// 添加订阅者-接收事件
-  static void addListener({required String eventName, required MeteorEventBusListener listener}) {
+  static void addListener(
+      {required String eventName, String? listenerId, required MeteorEventBusListener listener}) {
     HzLog.t(
         'MeteorEventBus addListener isMain:${MeteorEngine.isMain} eventName:$eventName, listener:$listener');
     var list = instance._listenerMap[eventName];
-    list ??= <MeteorEventBusListener>[];
-    list.add(listener);
+    list ??= <MeteorEventBusListenerItem>[];
+    list.add(MeteorEventBusListenerItem(listenerId, listener));
     instance._listenerMap[eventName] = list;
   }
 
   /// 移除订阅者-结束事件
   /// 当listener 为空时会移除eventName的所有listener，因此慎用
-  static void removeListener({required String eventName, MeteorEventBusListener? listener}) {
+  static void removeListener(
+      {required String eventName, String? listenerId, MeteorEventBusListener? listener}) {
     HzLog.t(
         'MeteorEventBus removeListener isMain:${MeteorEngine.isMain} eventName:$eventName, listener:$listener');
     var list = instance._listenerMap[eventName];
     if (eventName.isEmpty || list == null) return;
-    if (listener == null) {
-      instance._listenerMap.remove(eventName);
+    if (listenerId != null) {
+      list.removeWhere(
+        (element) => element.listenerId == listenerId,
+      );
+    } else if (listener != null) {
+      list.removeWhere(
+        (element) => element.listener == listener,
+      );
     } else {
-      list.remove(listener);
+      list.clear();
     }
-  }
-
-  /// 添加订阅者-接收事件
-  static void addListenerItem(
-      {required String eventName, required MeteorEventBusListener listener, String? listenerId}) {
-    HzLog.t(
-        'MeteorEventBus addListener isMain:${MeteorEngine.isMain} eventName:$eventName, listener:$listener, listenerId:$listenerId');
-    var list = instance._listenerMap[_eventKey(eventName: eventName, listenerId: listenerId)];
-    list ??= <MeteorEventBusListener>[];
-    list.add(listener);
     instance._listenerMap[eventName] = list;
-  }
-
-  static String _eventKey({required String eventName, String? listenerId}) {
-    final String key = listenerId == null ? eventName : '$eventName-$listenerId';
-    return key;
-  }
-
-  /// 移除订阅者-结束事件
-  /// 当listener 为空时会移除eventName的所有listener，因此慎用
-  static void removeListenerItem(
-      {required String eventName, MeteorEventBusListener? listener, String? listenerId}) {
-    HzLog.t(
-        'MeteorEventBus removeListener isMain:${MeteorEngine.isMain} eventName:$eventName, listener:$listener');
-    var list = instance._listenerMap[_eventKey(eventName: eventName, listenerId: listenerId)];
-    if (eventName.isEmpty || list == null) return;
-    if (listener != null) {
-      list.remove(listener);
-    } else {
-      instance._listenerMap.remove(_eventKey(eventName: eventName, listenerId: listenerId));
-    }
   }
 
   /// 已加订阅者-发送事件
@@ -122,7 +103,7 @@ class MeteorEventBus {
     //反向遍历，防止在订阅者在回调中移除自身带来的下标错位
     if (list.isNotEmpty) {
       for (var i = len; i > -1; --i) {
-        MeteorEventBusListener listener = list[i];
+        MeteorEventBusListener listener = list[i].listener;
         listener.call(data);
       }
     }
@@ -149,17 +130,10 @@ class MeteorEventBus {
       final eventName = event['eventName'];
       HzLog.t('MeteorEventBus isMain:${MeteorEngine.isMain} allListeners:${instance._listenerMap}');
       var list = instance._listenerMap[eventName];
-      list?.forEach((listener) {
-        listener.call(eventMap['data']);
+      list?.forEach((listenerItem) {
+        listenerItem.listener.call(eventMap['data']);
       });
       HzLog.d('MeteorEventBus isMain:${MeteorEngine.isMain} eventName:$eventName, listeners $list');
     }
   }
-
-  // static List<MeteorEventBusListener>? listenersForEvent(String eventName) {
-  //   HzLog.t('MeteorEventBus isMain:${MeteorEngine.isMain} allListeners:${instance._listenerMap}');
-  //   var list = instance._listenerMap[eventName];
-  //   HzLog.d('MeteorEventBus isMain:${MeteorEngine.isMain} eventName:$eventName, listeners $list');
-  //   return list;
-  // }
 }

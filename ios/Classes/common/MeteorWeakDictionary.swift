@@ -35,7 +35,7 @@ public class MeteorWeakDictionary<Key: AnyObject, Value: AnyObject> {
         return mapTable.count
     }
     
-    public func allObjects() -> [AnyObject]?{
-        return mapTable.objectEnumerator()?.allObjects as? [AnyObject]
+    public func allObjects() -> [Value]?{
+        return mapTable.objectEnumerator()?.allObjects as? [Value]
     }
 }
