@@ -40,7 +40,7 @@ public class FlutterMeteorChannelProvider: NSObject {
 
 public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
     
-    static let channelHolderList = MeteorWeakArray<FlutterMeteorChannelProvider>()
+//    static let channelHolderList = MeteorWeakArray<FlutterMeteorChannelProvider>()
     static let channelHolderMap = MeteorWeakDictionary<FlutterBinaryMessenger, FlutterMeteorChannelProvider>()
 
     
@@ -49,7 +49,7 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
         // 缓存Channel以供多引擎相互通信
         let  channelHolder = FlutterMeteorChannelProvider.init(registrar: registrar)
         registrar.publish(channelHolder)
-        channelHolderList.add(channelHolder)
+//        channelHolderList.add(channelHolder)
         channelHolderMap[registrar.messenger()] = channelHolder
         
        // 处理导航Channel
@@ -66,6 +66,9 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
             MeteorEventBus.receiveMessageFromFlutter(message: message)
             reply(nil)
         }
+        
+        // 处理共享缓存
+        MeteorCacheApiSetup.setUp(binaryMessenger: registrar.messenger(), api: MeteorMemoryCache.shared)
     }
     
     
@@ -89,45 +92,8 @@ extension FlutterMeteorPlugin {
     func handleRouterMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         print("原生收到来自flutter端的调用：\(call.method)")
         switch call.method {
-
-            case FMRouteExists:
-                if let methodArguments = call.arguments as? Dictionary<String, Any> {
-                    if let routeName = methodArguments["routeName"] as? String {
-                        MeteorNavigator.routeExists(routeName: routeName, result: result)
-                    } else {
-                        print("Invalid routeName")
-                        result(false)
-                    }
-                } else {
-                    print("Invalid methodArguments")
-                    result(false)
-                }
-                break
-            case FMIsRoot:
-                if let methodArguments = call.arguments as? Dictionary<String, Any> {
-                    if let routeName = methodArguments["routeName"] as? String {
-                        MeteorNavigator.isRoot(routeName: routeName, result: result)
-                    } else {
-                        print("Invalid routeName")
-                        result(false)
-                    }
-                } else {
-                    print("Invalid methodArguments")
-                    result(false)
-                }
-                break
-            case FMRootRouteName:
-            MeteorNavigator.rootRouteName(result: result)
-                break
-            case FMTopRouteName:
-            MeteorNavigator.topRouteName(result: result)
-                break
-            case FMRouteNameStack:
-            MeteorNavigator.routeNameStack(result: result)
-                break
-            case FMTopRouteIsNative:
-            MeteorNavigator.topRouteIsNative(result: result)
-                break
+        case "":
+            break
             default:
                 result(FlutterMethodNotImplemented)
         }

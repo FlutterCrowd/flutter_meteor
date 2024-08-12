@@ -4,7 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 
 import cn.itbox.fluttermeteor.engine.EngineInjector
-import cn.itbox.fluttermeteor.event_bus.FlutterMeteorEventBus
+import cn.itbox.fluttermeteor.event_bus.MeteorEventBus
 import cn.itbox.fluttermeteor.navigator.NavigatorMethodHandler
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -40,7 +40,7 @@ class FlutterMeteorPlugin : FlutterPlugin, ActivityAware {
         provider.navigatorChannel.setMethodCallHandler(flutterMeteorNavigator)
         provider.eventBusChannel.setMessageHandler { message, reply ->
             println("Received message from Flutter: $message")
-            FlutterMeteorEventBus.receiveMessageFromFlutter(message)
+            MeteorEventBus.receiveMessageFromFlutter(message)
             reply.reply("Android received your message: $message")
         }
         EngineInjector.put(flutterPluginBinding.flutterEngine, provider)
