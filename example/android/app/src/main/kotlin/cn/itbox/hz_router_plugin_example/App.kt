@@ -2,6 +2,7 @@ package cn.itbox.hz_router_plugin_example
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import cn.itbox.fluttermeteor.core.FlutterMeteor
 import cn.itbox.fluttermeteor.core.FlutterMeteorDelegate
 import cn.itbox.fluttermeteor.core.FlutterMeteorRouteOptions

@@ -35,6 +35,23 @@ class MeteorMethodChannel {
           return await flutterPushAndRemoveUntil(arguments: arguments);
         } else if (call.method == FMNavigatorMethod.pushNamedAndRemoveUntilRootMethod) {
           return await flutterPushAndRemoveUntilRoot(arguments: arguments);
+        } else if (call.method == FMNavigatorMethod.routeExists) {
+          String routeName = arguments['routeName'] ?? '';
+          bool ret = await _flutterNavigator.routeExists(routeName);
+          return ret;
+        } else if (call.method == FMNavigatorMethod.isRoot) {
+          String routeName = arguments['routeName'] ?? '';
+          bool ret = await _flutterNavigator.isRoot(routeName);
+          return ret;
+        } else if (call.method == FMNavigatorMethod.rootRouteName) {
+          String? ret = await _flutterNavigator.rootRouteName();
+          return ret;
+        } else if (call.method == FMNavigatorMethod.topRouteName) {
+          String? ret = await _flutterNavigator.topRouteName();
+          return ret;
+        } else if (call.method == FMNavigatorMethod.routeNameStack) {
+          List<String> routeNameStack = await _flutterNavigator.routeNameStack();
+          return routeNameStack;
         } else {
           return null;
         }

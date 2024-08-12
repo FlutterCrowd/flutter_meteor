@@ -90,7 +90,6 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
             _methodChannel!.setMethodCallHandler {[weak self] call, result in
                 self?.handleFlutterMethodCall(call, result: result)
             }
-
         }
         methodChannel = _methodChannel
     }
