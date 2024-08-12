@@ -295,7 +295,7 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
                     }
                 })
             } else {
-
+                remainingCalls.decrementAndGet()
             }
         }
     }
