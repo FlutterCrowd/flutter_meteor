@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi
 import cn.itbox.fluttermeteor.engine.EngineInjector
 import cn.itbox.fluttermeteor.event_bus.MeteorEventBus
 import cn.itbox.fluttermeteor.navigator.NavigatorMethodHandler
+import cn.itbox.hz_cache_plugin.MeteorMemoryChache
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -44,6 +45,7 @@ class FlutterMeteorPlugin : FlutterPlugin, ActivityAware {
             reply.reply("Android received your message: $message")
         }
         EngineInjector.put(flutterPluginBinding.flutterEngine, provider)
+        MeteorCacheApi.setUp(flutterPluginBinding.binaryMessenger, api = MeteorMemoryChache)
     }
 
 

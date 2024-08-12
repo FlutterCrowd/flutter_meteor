@@ -35,7 +35,7 @@ class SharedCacheApi {
 
   Future<void> setString(String key, String? value) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.setString$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.setString$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -58,7 +58,7 @@ class SharedCacheApi {
 
   Future<String?> getString(String key) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.getString$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.getString$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -81,7 +81,7 @@ class SharedCacheApi {
 
   Future<void> setBool(String key, bool? value) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.setBool$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.setBool$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -104,7 +104,7 @@ class SharedCacheApi {
 
   Future<bool?> getBool(String key) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.getBool$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.getBool$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -127,7 +127,7 @@ class SharedCacheApi {
 
   Future<void> setInt(String key, int? value) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.setInt$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.setInt$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -150,7 +150,7 @@ class SharedCacheApi {
 
   Future<int?> getInt(String key) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.getInt$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.getInt$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -173,7 +173,7 @@ class SharedCacheApi {
 
   Future<void> setDouble(String key, double? value) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.setDouble$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.setDouble$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -196,7 +196,7 @@ class SharedCacheApi {
 
   Future<double?> getDouble(String key) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.getDouble$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.getDouble$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -219,7 +219,7 @@ class SharedCacheApi {
 
   Future<void> setList(String key, List<Object?>? value) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.setList$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.setList$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -242,7 +242,7 @@ class SharedCacheApi {
 
   Future<List<Object?>?> getList(String key) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.getList$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.getList$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -265,7 +265,7 @@ class SharedCacheApi {
 
   Future<void> setMap(String key, Map<String?, Object?>? value) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.setMap$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.setMap$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -288,7 +288,7 @@ class SharedCacheApi {
 
   Future<Map<String?, Object?>?> getMap(String key) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.getMap$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.getMap$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -311,7 +311,7 @@ class SharedCacheApi {
 
   Future<void> setBytes(String key, List<int?>? value) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.setBytes$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.setBytes$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,
@@ -334,7 +334,7 @@ class SharedCacheApi {
 
   Future<List<int?>?> getBytes(String key) async {
     final String __pigeon_channelName =
-        'dev.flutter.pigeon.hz_cache_plugin.CacheApi.getBytes$__pigeon_messageChannelSuffix';
+        'cn.itbox.flutter_meteor.CacheApi.getBytes$__pigeon_messageChannelSuffix';
     final BasicMessageChannel<Object?> __pigeon_channel = BasicMessageChannel<Object?>(
       __pigeon_channelName,
       pigeonChannelCodec,

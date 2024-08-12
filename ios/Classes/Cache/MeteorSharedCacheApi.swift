@@ -107,7 +107,7 @@ class MeteorCacheApiSetup {
   /// Sets up an instance of `CacheApi` to handle messages through the `binaryMessenger`.
   static func setUp(binaryMessenger: FlutterBinaryMessenger, api: MeteorSharedCacheApi?, messageChannelSuffix: String = "") {
     let channelSuffix = messageChannelSuffix.count > 0 ? ".\(messageChannelSuffix)" : ""
-    let setStringChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setString\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setStringChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.setString\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setStringChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -123,7 +123,7 @@ class MeteorCacheApiSetup {
     } else {
       setStringChannel.setMessageHandler(nil)
     }
-    let getStringChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getString\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getStringChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.getString\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getStringChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -138,7 +138,7 @@ class MeteorCacheApiSetup {
     } else {
       getStringChannel.setMessageHandler(nil)
     }
-    let setBoolChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setBool\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setBoolChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.setBool\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setBoolChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -154,7 +154,7 @@ class MeteorCacheApiSetup {
     } else {
       setBoolChannel.setMessageHandler(nil)
     }
-    let getBoolChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getBool\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getBoolChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.getBool\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getBoolChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -169,7 +169,7 @@ class MeteorCacheApiSetup {
     } else {
       getBoolChannel.setMessageHandler(nil)
     }
-    let setIntChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setInt\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setIntChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.setInt\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setIntChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -185,7 +185,7 @@ class MeteorCacheApiSetup {
     } else {
       setIntChannel.setMessageHandler(nil)
     }
-    let getIntChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getInt\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getIntChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.getInt\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getIntChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -200,7 +200,7 @@ class MeteorCacheApiSetup {
     } else {
       getIntChannel.setMessageHandler(nil)
     }
-    let setDoubleChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setDouble\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setDoubleChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.setDouble\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setDoubleChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -216,7 +216,7 @@ class MeteorCacheApiSetup {
     } else {
       setDoubleChannel.setMessageHandler(nil)
     }
-    let getDoubleChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getDouble\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getDoubleChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.getDouble\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getDoubleChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -231,7 +231,7 @@ class MeteorCacheApiSetup {
     } else {
       getDoubleChannel.setMessageHandler(nil)
     }
-    let setListChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setList\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setListChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.setList\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setListChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -247,7 +247,7 @@ class MeteorCacheApiSetup {
     } else {
       setListChannel.setMessageHandler(nil)
     }
-    let getListChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getList\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getListChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.getList\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getListChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -262,7 +262,7 @@ class MeteorCacheApiSetup {
     } else {
       getListChannel.setMessageHandler(nil)
     }
-    let setMapChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setMap\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setMapChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.setMap\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setMapChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -278,7 +278,7 @@ class MeteorCacheApiSetup {
     } else {
       setMapChannel.setMessageHandler(nil)
     }
-    let getMapChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getMap\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getMapChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.getMap\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getMapChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -293,7 +293,7 @@ class MeteorCacheApiSetup {
     } else {
       getMapChannel.setMessageHandler(nil)
     }
-    let setBytesChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setBytes\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let setBytesChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.setBytes\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       setBytesChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]
@@ -309,7 +309,7 @@ class MeteorCacheApiSetup {
     } else {
       setBytesChannel.setMessageHandler(nil)
     }
-    let getBytesChannel = FlutterBasicMessageChannel(name: "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getBytes\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+    let getBytesChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.getBytes\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
     if let api = api {
       getBytesChannel.setMessageHandler { message, reply in
         let args = message as! [Any?]

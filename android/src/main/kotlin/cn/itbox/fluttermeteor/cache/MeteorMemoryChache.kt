@@ -1,9 +1,9 @@
 package cn.itbox.hz_cache_plugin
 
-import CacheApi
+import MeteorCacheApi
 import kotlin.collections.HashMap
 
-object MemoryChache: CacheApi {
+object MeteorMemoryChache: MeteorCacheApi {
     private val storage = HashMap<String, Any?>()
 
     @Synchronized

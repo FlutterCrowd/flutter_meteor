@@ -52,7 +52,7 @@ private object SharedCacheApiPigeonCodec : StandardMessageCodec() {
 }
 
 /** Generated interface from Pigeon that represents a handler of messages from Flutter. */
-interface CacheApi {
+interface MeteorCacheApi {
   fun setString(key: String, value: String?)
   fun getString(key: String): String?
   fun setBool(key: String, value: Boolean?)
@@ -75,10 +75,10 @@ interface CacheApi {
     }
     /** Sets up an instance of `CacheApi` to handle messages through the `binaryMessenger`. */
     @JvmOverloads
-    fun setUp(binaryMessenger: BinaryMessenger, api: CacheApi?, messageChannelSuffix: String = "") {
+    fun setUp(binaryMessenger: BinaryMessenger, api: MeteorCacheApi?, messageChannelSuffix: String = "") {
       val separatedMessageChannelSuffix = if (messageChannelSuffix.isNotEmpty()) ".$messageChannelSuffix" else ""
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setString$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.setString$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -97,7 +97,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getString$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.getString$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -114,7 +114,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setBool$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.setBool$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -133,7 +133,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getBool$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.getBool$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -150,7 +150,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setInt$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.setInt$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -169,7 +169,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getInt$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.getInt$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -186,7 +186,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setDouble$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.setDouble$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -205,7 +205,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getDouble$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.getDouble$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -222,7 +222,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setList$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.setList$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -241,7 +241,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getList$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.getList$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -258,7 +258,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setMap$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.setMap$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -277,7 +277,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getMap$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.getMap$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -294,7 +294,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.setBytes$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.setBytes$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
@@ -313,7 +313,7 @@ interface CacheApi {
         }
       }
       run {
-        val channel = BasicMessageChannel<Any?>(binaryMessenger, "dev.flutter.pigeon.hz_cache_plugin.CacheApi.getBytes$separatedMessageChannelSuffix", codec)
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.getBytes$separatedMessageChannelSuffix", codec)
         if (api != null) {
           channel.setMessageHandler { message, reply ->
             val args = message as List<Any?>
