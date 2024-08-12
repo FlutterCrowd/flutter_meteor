@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class FMRouterHelper: NSObject {
+public class MeteorRouterHelper: NSObject {
     
     public static var viewControllerStack: [UIViewController] {
         get{

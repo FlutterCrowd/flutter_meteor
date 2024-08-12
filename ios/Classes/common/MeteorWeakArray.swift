@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FMWeak<T: AnyObject> {
+class MeteorWeakObject<T: AnyObject> {
     weak var value: T?
 
     init(value: T?) {
@@ -15,18 +15,15 @@ class FMWeak<T: AnyObject> {
     }
 }
 
-class FMWeakArray<T: AnyObject> {
-    private var elements: [FMWeak<T>] = []
+class MeteorWeakArray<T: AnyObject> {
+    private var elements: [MeteorWeakObject<T>] = []
 
     func add(_ element: T) {
         if(!elements.contains { $0.value === element }) {
-            elements.append(FMWeak(value: element))
+            elements.append(MeteorWeakObject(value: element))
         }
-//        elements.append(FMWeak(value: element))
-
     }
     
-    // 添加多个对象
     func add(contentsOf newElements: [T]) {
         newElements.forEach { add($0) }
     }

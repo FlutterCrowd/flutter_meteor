@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FMSerialTaskQueue {
+class MeteorSerialTaskQueue {
     
     private let queue: DispatchQueue
     private let semaphore = DispatchSemaphore(value: 1)

@@ -9,7 +9,7 @@ import Foundation
 import Flutter
 
 
-public protocol FMNewEnginePluginRegistryDelegate {
+public protocol MeteorPluginRegistryDelegate {
     // GeneratedPluginRegistrant.register(with: self) 方法需要在这里调用
     func register(pluginRegistry: any FlutterPluginRegistry)
     // 对应的引擎销毁的时候会调用此方法
@@ -18,10 +18,8 @@ public protocol FMNewEnginePluginRegistryDelegate {
 
 public protocol FlutterMeteorCustomDelegate {
         
-    func push(routeName: String, options: FMPushOptions?)
+    func push(routeName: String, options: MeteotPushOptions?)
 }
-
-
 
 
 public class FlutterMeteor  {
@@ -29,7 +27,7 @@ public class FlutterMeteor  {
     // 多引擎插件初始化
     //
     // @param pluginRegistryDelegate FMNewEnginePluginRegistryDelegate
-    public static func setUp(pluginRegistryDelegate: FMNewEnginePluginRegistryDelegate) {
+    public static func setUp(pluginRegistryDelegate: MeteorPluginRegistryDelegate) {
         // method switch
         FlutterMeteor.pluginRegistryDelegate = pluginRegistryDelegate
     }
@@ -38,6 +36,6 @@ public class FlutterMeteor  {
     public static var customRouterDelegate: (any FlutterMeteorCustomDelegate)?
     
     // 注册插件代理
-    public static var  pluginRegistryDelegate: FMNewEnginePluginRegistryDelegate!
+    public static var  pluginRegistryDelegate: MeteorPluginRegistryDelegate!
     
 }

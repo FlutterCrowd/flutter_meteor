@@ -9,9 +9,8 @@ import UIKit
 import Foundation
 import Flutter
 
-public class FMFlutterNavigator {
+public class MeteorFlutterNavigator {
        
-    
 
     public static func navigatorChannel(flutterVc: FlutterViewController) -> FlutterMethodChannel? {
         
@@ -21,7 +20,7 @@ public class FMFlutterNavigator {
     
     public static func push(flutterVc:FlutterViewController,
                             routeName: String,
-                            options: FMPushOptions? = nil) {
+                            options: MeteotPushOptions? = nil) {
 
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
@@ -40,7 +39,7 @@ public class FMFlutterNavigator {
     public static func pushToAndRemoveUntil(flutterVc:FlutterViewController,
                                             routeName: String,
                                             untilRouteName: String?,
-                                            options: FMPushOptions? = nil) {
+                                            options: MeteotPushOptions? = nil) {
         
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
@@ -59,7 +58,7 @@ public class FMFlutterNavigator {
     
     public static func pushNamedAndRemoveUntilRoot(flutterVc:FlutterViewController,
                                                    routeName: String,
-                                                   options: FMPushOptions? = nil) {
+                                                   options: MeteotPushOptions? = nil) {
         
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
@@ -77,7 +76,7 @@ public class FMFlutterNavigator {
    
     public static func pushToReplacement(flutterVc:FlutterViewController,
                                          routeName: String,
-                                         options: FMPushOptions? = nil) {
+                                         options: MeteotPushOptions? = nil) {
 
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
@@ -93,7 +92,7 @@ public class FMFlutterNavigator {
    }
    
     public static func pop(flutterVc:FlutterViewController,
-                           options: FMPopOptions? = nil) {
+                           options: MeteorPopOptions? = nil) {
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             channel.save_invoke(method: FMPopMethod, arguments: nil) { ret in
                 options?.callBack?(ret)
@@ -106,7 +105,7 @@ public class FMFlutterNavigator {
     
     public static func popUntil(flutterVc:FlutterViewController,
                                 untilRouteName: String?,
-                                options: FMPopOptions? = nil) {
+                                options: MeteorPopOptions? = nil) {
         
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
@@ -122,7 +121,7 @@ public class FMFlutterNavigator {
     }
    
     public static func popToRoot(flutterVc: FlutterViewController,
-                                 options: FMPopOptions? = nil) {
+                                 options: MeteorPopOptions? = nil) {
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             channel.save_invoke(method: FMPopToRootMethod, arguments: options?.result) { response in
                 options?.callBack?(response)

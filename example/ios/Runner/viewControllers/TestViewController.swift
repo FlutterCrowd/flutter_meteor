@@ -272,59 +272,59 @@ class TestViewController: UIViewController {
   
     // 按钮点击时调用的方,
     @objc func buttonTapped(_ sender: UIButton) {
-        FMNavigator.push(routeName: "test")
+        MeteorNavigator.push(routeName: "test")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped2(_ sender: UIButton) {
-        FMNavigator.push(routeName: "test1")
+        MeteorNavigator.push(routeName: "test1")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped3(_ sender: UIButton) {
         print("pushNamedAndRemoveUntilRoot test2")
-        FMNavigator.pushNamedAndRemoveUntilRoot(routeName: "test2")
+        MeteorNavigator.pushNamedAndRemoveUntilRoot(routeName: "test2")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped4(_ sender: UIButton) {
         print("打开新引擎")
-        FMNavigator.push(routeName: "multiEnginePage2")
+        MeteorNavigator.push(routeName: "multiEnginePage2")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped5(_ sender: UIButton) {
         print("pop")
-        FMNavigator.pop()
+        MeteorNavigator.pop()
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped6(_ sender: UIButton) {
         print("pop until")
-        FMNavigator.popUntil(untilRouteName: "test")//test
+        MeteorNavigator.popUntil(untilRouteName: "test")//test
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped7(_ sender: UIButton) {
         print("push and replace")
-        FMNavigator.pushToReplacement(routeName: "test1")
+        MeteorNavigator.pushToReplacement(routeName: "test1")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped8(_ sender: UIButton) {
         print("push and remove until multiEnginePage2")
-        FMNavigator.pushToAndRemoveUntil(routeName: "test1", untilRouteName: "multiEnginePage2")
+        MeteorNavigator.pushToAndRemoveUntil(routeName: "test1", untilRouteName: "multiEnginePage2")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped9(_ sender: UIButton) {
         print("返回multiEnginePage2")
-        FMNavigator.popUntil(untilRouteName: "multiEnginePage2")
+        MeteorNavigator.popUntil(untilRouteName: "multiEnginePage2")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped10(_ sender: UIButton) {
         print("present tabBar")
-        FMNavigator.present(routeName: "push_native")
+        MeteorNavigator.present(routeName: "push_native")
     }
 }

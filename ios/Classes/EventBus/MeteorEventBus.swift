@@ -8,19 +8,19 @@
 import UIKit
 import Flutter
 
-typealias FMEventBusListener = ([String: Any?]?) -> Void
+typealias MeteorEventBusListener = ([String: Any?]?) -> Void
 
-class FMEventBus: NSObject {
+class MeteorEventBus: NSObject {
       
 
-    static private var listeners = [String: [FMEventBusListener]]()
+    static private var listeners = [String: [MeteorEventBusListener]]()
 
     
-    static func addListener(eventName: String, listener: @escaping FMEventBusListener) {
+    static func addListener(eventName: String, listener: @escaping MeteorEventBusListener) {
         listeners[eventName, default: []].append(listener)
     }
 
-    static func removeListener(eventName: String, listener: @escaping FMEventBusListener) {
+    static func removeListener(eventName: String, listener: @escaping MeteorEventBusListener) {
         listeners[eventName]?.removeAll { $0 as AnyObject === listener as AnyObject }
     }
 

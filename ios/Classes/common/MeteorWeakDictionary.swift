@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class FMWeakDictionary<Key: AnyObject, Value: AnyObject> {
+public class MeteorWeakDictionary<Key: AnyObject, Value: AnyObject> {
     public let mapTable: NSMapTable<Key, Value>
       
     init() {

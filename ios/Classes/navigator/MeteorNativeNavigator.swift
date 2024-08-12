@@ -9,7 +9,7 @@ import UIKit
 
 
 
-public class FMNativeNavigator: NSObject {
+public class MeteorNativeNavigator: NSObject {
         
     static public func present(toPage: UIViewController, animated: Bool = true) {
         guard let topVc = topViewController() else {
@@ -222,17 +222,17 @@ public class FMNativeNavigator: NSObject {
     
     /// 获取顶部控制器
     public static func topViewController() -> UIViewController? {
-        return FMRouterHelper.topViewController()
+        return MeteorRouterHelper.topViewController()
     }
     
     /// 获取根控制器
     public static func rootViewController() -> UIViewController? {
-        return FMRouterHelper.rootViewController()
+        return MeteorRouterHelper.rootViewController()
     }
 
     /// 获取根控制器
     public static func rootNavigationController() -> UINavigationController? {
-        return FMRouterHelper.rootNavigationController()
+        return MeteorRouterHelper.rootNavigationController()
         
     }
 }

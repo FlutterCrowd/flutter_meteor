@@ -3,7 +3,7 @@ import Flutter
 import flutter_meteor
 
 @UIApplicationMain
-@objc class AppDelegate: FlutterAppDelegate, FMNewEnginePluginRegistryDelegate {
+@objc class AppDelegate: FlutterAppDelegate, MeteorPluginRegistryDelegate {
     
     func register(pluginRegistry: any FlutterPluginRegistry) {
         GeneratedPluginRegistrant.register(with: pluginRegistry)
@@ -28,7 +28,7 @@ import flutter_meteor
       UIViewController.fmInitializeSwizzling
 //      let vc: FMFlutterViewController =  FMFlutterViewController.init()
 //      vc.routeName = "RootPage"
-      let vc: UIViewController =  FMFlutterViewController.init()//self.window.rootViewController ?? 
+      let vc: UIViewController =  MeteorFlutterViewController.init()//self.window.rootViewController ?? 
 
       let navi: UINavigationController = UINavigationController.init(rootViewController: vc)
       navi.navigationBar.isHidden = true

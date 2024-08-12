@@ -8,7 +8,7 @@
 import Foundation
 import Flutter
 
-public class FMEngineGroupOptions {
+public class MeteorEngineGroupOptions {
     
     let entrypoint: String?
     
@@ -30,13 +30,14 @@ public class FMEngineGroupOptions {
 }
 
 
-class FMEngineManager: NSObject {
+class MeteorEngineManager: NSObject {
     
+    // FlutterEngineGroup 用于管理所有引擎
     private static let flutterEngineGroup = FlutterEngineGroup(name: "itbox.meteor.flutterEnginGroup", project: nil)
     
-    public static  var engineCache:FMWeakDictionary = FMWeakDictionary<FlutterBinaryMessenger, FlutterEngine>()
+//    public static  var engineCache:MeteorWeakDictionary = MeteorWeakDictionary<FlutterBinaryMessenger, FlutterEngine>()
 
-    public static func createFlutterEngine(options: FMEngineGroupOptions? = nil) -> FlutterEngine  {
+    public static func createFlutterEngine(options: MeteorEngineGroupOptions? = nil) -> FlutterEngine  {
       
         var arguments: Dictionary<String, Any> = Dictionary<String, Any>.init()
 
@@ -66,7 +67,7 @@ class FMEngineManager: NSObject {
         engineGroupOptions.entrypointArgs = entrypointArgList
         engineGroupOptions.libraryURI = options?.libraryURI
         let flutterEngine: FlutterEngine = flutterEngineGroup.makeEngine(with: engineGroupOptions)
-        engineCache[flutterEngine.binaryMessenger] = flutterEngine
+//        engineCache[flutterEngine.binaryMessenger] = flutterEngine
         return flutterEngine
     }
 }

@@ -40,8 +40,8 @@ public class FlutterMeteorChannelProvider: NSObject {
 
 public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
     
-    static let channelHolderList = FMWeakArray<FlutterMeteorChannelProvider>()
-    static let channelHolderMap = FMWeakDictionary<FlutterBinaryMessenger, FlutterMeteorChannelProvider>()
+    static let channelHolderList = MeteorWeakArray<FlutterMeteorChannelProvider>()
+    static let channelHolderMap = MeteorWeakDictionary<FlutterBinaryMessenger, FlutterMeteorChannelProvider>()
 
     
     public static func register(with registrar: FlutterPluginRegistrar) {
@@ -63,7 +63,7 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
         
         // 处理路由EventBus Channel
         channelHolder.eventBusChannel.setMessageHandler { message, reply in
-            FMEventBus.receiveMessageFromFlutter(message: message)
+            MeteorEventBus.receiveMessageFromFlutter(message: message)
             reply(nil)
         }
     }
@@ -79,7 +79,7 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
     
 }
 
-extension FlutterMeteorPlugin: FMNavigatorDelegate {
+extension FlutterMeteorPlugin: MeteorNavigatorDelegate {
     
 }
 
@@ -93,7 +93,7 @@ extension FlutterMeteorPlugin {
             case FMRouteExists:
                 if let methodArguments = call.arguments as? Dictionary<String, Any> {
                     if let routeName = methodArguments["routeName"] as? String {
-                        FlutterMeteorRouter.routeExists(routeName: routeName, result: result)
+                        MeteorNavigator.routeExists(routeName: routeName, result: result)
                     } else {
                         print("Invalid routeName")
                         result(false)
@@ -106,7 +106,7 @@ extension FlutterMeteorPlugin {
             case FMIsRoot:
                 if let methodArguments = call.arguments as? Dictionary<String, Any> {
                     if let routeName = methodArguments["routeName"] as? String {
-                        FlutterMeteorRouter.isRoot(routeName: routeName, result: result)
+                        MeteorNavigator.isRoot(routeName: routeName, result: result)
                     } else {
                         print("Invalid routeName")
                         result(false)
@@ -117,16 +117,16 @@ extension FlutterMeteorPlugin {
                 }
                 break
             case FMRootRouteName:
-            FlutterMeteorRouter.rootRouteName(result: result)
+            MeteorNavigator.rootRouteName(result: result)
                 break
             case FMTopRouteName:
-                FlutterMeteorRouter.topRouteName(result: result)
+            MeteorNavigator.topRouteName(result: result)
                 break
             case FMRouteNameStack:
-                FlutterMeteorRouter.routeNameStack(result: result)
+            MeteorNavigator.routeNameStack(result: result)
                 break
             case FMTopRouteIsNative:
-                FlutterMeteorRouter.topRouteIsNative(result: result)
+            MeteorNavigator.topRouteIsNative(result: result)
                 break
             default:
                 result(FlutterMethodNotImplemented)
