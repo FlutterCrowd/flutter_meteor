@@ -5,8 +5,7 @@ import androidx.annotation.RequiresApi
 
 import cn.itbox.fluttermeteor.engine.EngineInjector
 import cn.itbox.fluttermeteor.event_bus.FlutterMeteorEventBus
-import cn.itbox.fluttermeteor.router.FlutterMeteorRouter
-import cn.itbox.fluttermeteor.navigator.FlutterMeteorNavigator
+import cn.itbox.fluttermeteor.navigator.NavigatorMethodHandler
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -23,8 +22,8 @@ class FlutterMeteorPlugin : FlutterPlugin, ActivityAware {
 //    private lateinit var channel: MethodChannel
 //
 //    private var activity: Activity? = null
-    private  val flutterMeteorNavigator: FlutterMeteorNavigator = FlutterMeteorNavigator()
-    private  val flutterMeteorRouter: FlutterMeteorRouter = FlutterMeteorRouter()
+    private  val flutterMeteorNavigator: NavigatorMethodHandler = NavigatorMethodHandler()
+//    private  val flutterMeteorRouter: FlutterMeteorRouter = FlutterMeteorRouter()
 
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -39,7 +38,6 @@ class FlutterMeteorPlugin : FlutterPlugin, ActivityAware {
 
         val provider = FlutterMeteorChannelProvider(flutterPluginBinding.binaryMessenger)
         provider.navigatorChannel.setMethodCallHandler(flutterMeteorNavigator)
-        provider.routerChannel.setMethodCallHandler(flutterMeteorRouter)
         provider.eventBusChannel.setMessageHandler { message, reply ->
             println("Received message from Flutter: $message")
             FlutterMeteorEventBus.receiveMessageFromFlutter(message)

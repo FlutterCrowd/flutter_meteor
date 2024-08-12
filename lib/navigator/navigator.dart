@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_meteor/flutter_meteor.dart';
-import 'package:flutter_meteor/router/impl/flutter_router.dart';
 import 'package:hz_tools/hz_tools.dart';
 
 import 'impl/flutter.dart';
 import 'impl/native.dart';
+import 'observer.dart';
 
 /// MeteorNavigator
 class MeteorNavigator {
   static final MeteorNativeNavigator _nativeNavigator = MeteorNativeNavigator();
   static final MeteorFlutterNavigator _flutterNavigator = MeteorFlutterNavigator();
 
-  static final FMFlutterRouter _flutterRouter = FMRouterManager.instance.flutterRouter;
+  static MeteorRouteObserver routerObserver = MeteorFlutterNavigator.routerObserver;
 
   static void init({
     required GlobalKey<NavigatorState> rootKey,
@@ -70,7 +69,7 @@ class MeteorNavigator {
     Map<String, dynamic>? arguments,
   }) async {
     /// 当前引擎路由栈大于一个页面的时候直接在flutter端替换
-    final routeStack = await _flutterRouter.routeNameStack();
+    final routeStack = routerObserver.routeNameStack;
     if (routeStack.length > 1 && !openNative && !withNewEngine) {
       return await _flutterNavigator.pushReplacementNamed<T, TO>(
         routeName,
@@ -105,7 +104,7 @@ class MeteorNavigator {
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    if (await _flutterRouter.routeExists(untilRouteName) && !openNative && !withNewEngine) {
+    if (routerObserver.routeExists(untilRouteName) && !openNative && !withNewEngine) {
       return await _flutterNavigator.pushNamedAndRemoveUntil<T>(
         routeName,
         untilRouteName,
@@ -181,5 +180,49 @@ class MeteorNavigator {
   /// pop 到根页面
   static void popToRoot() async {
     _nativeNavigator.popToRoot();
+  }
+
+  /// 当前路由名栈
+  static Future<List<String>> routeNameStack() async {
+    return await _nativeNavigator.routeNameStack();
+  }
+
+  /// 最上层路由名称
+  static Future<String?> topRouteName() async {
+    return await _nativeNavigator.topRouteName();
+  }
+
+  /// 根路由名称
+  static Future<String?> rootRouteName() async {
+    return await _nativeNavigator.rootRouteName();
+  }
+
+  /// 判断路由routeName是否存在
+  static Future<bool> routeExists(String routeName) async {
+    bool exists = routerObserver.routeExists(routeName);
+    if (exists) {
+      return exists;
+    }
+    return await _nativeNavigator.routeExists(routeName);
+  }
+
+  /// 判断路由顶层是否为原生
+  static Future<bool> topRouteIsNative() async {
+    return await _nativeNavigator.topRouteIsNative();
+  }
+
+  /// 判断路由routeName是否为根路由
+  static Future<bool> isRoot(String routeName) async {
+    String? rootName = await rootRouteName();
+    return rootName != null && rootName == routeName;
+  }
+
+  /// 判断当前路由根路由
+  static Future<bool> isCurrentRoot() async {
+    String? top = await topRouteName();
+    if (top == null) {
+      return false;
+    }
+    return await _nativeNavigator.isRoot(top);
   }
 }

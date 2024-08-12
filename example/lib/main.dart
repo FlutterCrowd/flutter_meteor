@@ -83,7 +83,7 @@ class _MyAppState extends State<MyApp> {
 
       navigatorKey: rootKey,
       navigatorObservers: [
-        FMRouterManager.instance.routerObserver,
+        MeteorNavigator.routerObserver,
         RouterCenter.routeObserver,
       ],
       // initialRoute: "home",

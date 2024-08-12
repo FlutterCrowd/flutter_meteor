@@ -137,4 +137,76 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
       await methodChannel.invokeMethod<T>(FMNavigatorMethod.popMethod);
     }
   }
+
+  @override
+  Future<bool> isRoot(String routeName) async {
+    // debugPrint('Flutter开始调用：method:${FMNavigatorMethod.isRoot}');
+    final ret = await methodChannel.invokeMethod<bool>(
+      FMNavigatorMethod.isRoot,
+      {
+        'routeName': routeName,
+      },
+    );
+    // debugPrint('Flutter结束调用：method:${FMNavigatorMethod.isRoot}');
+    return ret ?? false;
+  }
+
+  @override
+  Future<bool> routeExists(String routeName) async {
+    // debugPrint('Flutter开始调用：method:${FMNavigatorMethod.routeExists}');
+    final ret = await methodChannel.invokeMethod<bool>(
+      FMNavigatorMethod.routeExists,
+      {
+        'routeName': routeName,
+      },
+    );
+    // debugPrint('Flutter结束调用：method:${FMNavigatorMethod.routeExists}');
+    return ret ?? false;
+  }
+
+  @override
+  Future<List<String>> routeNameStack() async {
+    List<String> list = [];
+    // debugPrint('Flutter开始调用：method:${FMNavigatorMethod.routeNameStack}');
+    final ret = await methodChannel.invokeMethod(
+      FMNavigatorMethod.routeNameStack,
+    );
+    if (ret is List) {
+      for (var element in ret) {
+        list.add(element.toString());
+      }
+    }
+    // debugPrint('Flutter结束调用：method:${FMNavigatorMethod.routeNameStack}');
+    return list;
+  }
+
+  @override
+  Future<String?> topRouteName() async {
+    // debugPrint('Flutter开始调用：method:${FMNavigatorMethod.topRouteName}');
+
+    final ret = await methodChannel.invokeMethod<String>(
+      FMNavigatorMethod.topRouteName,
+    );
+    // debugPrint('Flutter结束调用：method:${FMNavigatorMethod.topRouteName}');
+    return ret;
+  }
+
+  @override
+  Future<String?> rootRouteName() async {
+    // debugPrint('Flutter开始调用：method:${FMNavigatorMethod.rootRouteName}');
+    final ret = await methodChannel.invokeMethod<String>(
+      FMNavigatorMethod.rootRouteName,
+    );
+    // debugPrint('Flutter结束调用：method:${FMNavigatorMethod.rootRouteName}');
+    return ret;
+  }
+
+  Future<bool> topRouteIsNative() async {
+    // debugPrint('Flutter开始调用：method:${FMNavigatorMethod.topRouteIsNative}');
+    final ret = await methodChannel.invokeMethod<bool>(
+      FMNavigatorMethod.topRouteIsNative,
+    );
+    // debugPrint('Flutter结束调用：method:${FMNavigatorMethod.topRouteIsNative}');
+    return ret ?? false;
+  }
 }

@@ -7,4 +7,11 @@ class FMNavigatorMethod {
   static const String popUntilMethod = 'popUntil';
   static const String popToRootMethod = 'popToRoot';
   static const String dismissMethod = 'dismiss';
+
+  static const String routeExists = 'routeExists';
+  static const String isRoot = 'isRoot';
+  static const String rootRouteName = 'rootRouteName';
+  static const String topRouteName = 'topRouteName';
+  static const String routeNameStack = 'routeNameStack';
+  static const String topRouteIsNative = 'topRouteIsNative';
 }

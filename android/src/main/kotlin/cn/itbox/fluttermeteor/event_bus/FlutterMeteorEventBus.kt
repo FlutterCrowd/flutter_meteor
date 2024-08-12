@@ -45,7 +45,6 @@ class FlutterMeteorEventBus {
             }
         }
 
-
         // 处理从flutter端收到的消息
         @RequiresApi(Build.VERSION_CODES.N)
         @JvmStatic
