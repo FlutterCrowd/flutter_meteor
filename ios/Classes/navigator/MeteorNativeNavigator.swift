@@ -54,7 +54,6 @@ public class MeteorNativeNavigator: NSObject {
             print("This view controller cannot be dismissed or popped")
         }
     }
-    
 
     private static func handleParentNavigationControllerPop(for navigationController: UINavigationController, topVc: UIViewController, animated: Bool) {
         if let parentVc = navigationController.parent {
@@ -81,8 +80,6 @@ public class MeteorNativeNavigator: NSObject {
         }
     }
 
-    
-    
     static public func dismiss(animated: Bool = true) {
         guard let topVc = topViewController() else {
             print("No top view controller found")
@@ -135,8 +132,6 @@ public class MeteorNativeNavigator: NSObject {
         }
    
     }
-    
-    
     
     static public func popToRoot(animated: Bool = true) {
         
@@ -192,9 +187,7 @@ public class MeteorNativeNavigator: NSObject {
         push(toPage: toPage, animated: true)
     }
     
-    
     static public func pushToAndRemoveUntilRoot(toPage: UIViewController, animated: Bool = true) {
-        
         
         var rootVc = rootViewController()
         if let rootNavi = rootVc as? UINavigationController {
@@ -217,7 +210,6 @@ public class MeteorNativeNavigator: NSObject {
         rootNavigationController()?.pushViewController(toPage, animated: animated)
 //        push(toPage: toPage, animated: animated)
     }
-    
     
     /// 获取顶部控制器
     public static func topViewController() -> UIViewController? {
