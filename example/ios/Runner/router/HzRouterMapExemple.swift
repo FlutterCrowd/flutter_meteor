@@ -15,8 +15,8 @@ class HzRouterMapExemple  {
             let testVc = TestViewController.init()
             testVc.hidesBottomBarWhenPushed = true
             testVc.title = "test"
-            let navi = UINavigationController.init(rootViewController: testVc)
-            return navi
+//            let navi = UINavigationController.init(rootViewController: testVc)
+            return testVc
         }
         
         MeteorRouterManager.insertRouter(routeName: "test1") { arguments in

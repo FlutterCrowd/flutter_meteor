@@ -33,7 +33,6 @@ abstract class MeteorNavigatorApi {
     bool withNewEngine = false,
     bool isOpaque = true,
     bool openNative = false,
-    bool present = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   });
@@ -49,7 +48,6 @@ abstract class MeteorNavigatorApi {
     bool withNewEngine = false,
     bool isOpaque = true,
     bool openNative = false,
-    bool present = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   });
@@ -63,7 +61,6 @@ abstract class MeteorNavigatorApi {
     bool withNewEngine = false,
     bool isOpaque = true,
     bool openNative = false,
-    bool present = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   });

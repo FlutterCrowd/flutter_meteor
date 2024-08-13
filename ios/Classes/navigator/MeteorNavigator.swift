@@ -162,7 +162,6 @@ public class MeteorNavigator {
                    } else {
                        MeteorNativeNavigator.pushToReplacement(toPage: vc, animated: options?.animated ?? true)
                    }
-
                }
            } else {
                MeteorNativeNavigator.pushToReplacement(toPage: vc, animated: options?.animated ?? true)

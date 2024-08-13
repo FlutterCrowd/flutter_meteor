@@ -42,7 +42,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
     bool withNewEngine = false,
     bool isOpaque = true,
     bool openNative = false,
-    bool present = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
@@ -52,7 +51,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
     params["withNewEngine"] = withNewEngine;
     params["isOpaque"] = isOpaque;
     params["openNative"] = openNative;
-    params["present"] = present;
     params["arguments"] = arguments;
     params["animated"] = animated;
     // HzLog.w('MeteorNativeNavigator pushNamed:$routeName, arguments:$params');
@@ -66,7 +64,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
     bool withNewEngine = false,
     bool isOpaque = true,
     bool openNative = false,
-    bool present = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
@@ -75,7 +72,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
     params["withNewEngine"] = withNewEngine;
     params["isOpaque"] = isOpaque;
     params["openNative"] = openNative;
-    params["present"] = present;
     params["arguments"] = arguments;
     params["animated"] = animated;
     return await methodChannel.invokeMethod<T>(
@@ -88,7 +84,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
     bool withNewEngine = false,
     bool isOpaque = true,
     bool openNative = false,
-    bool present = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
@@ -97,7 +92,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
     params["withNewEngine"] = withNewEngine;
     params["isOpaque"] = isOpaque;
     params["openNative"] = openNative;
-    params["present"] = present;
     params["arguments"] = arguments;
     params["animated"] = animated;
     return await methodChannel.invokeMethod<T>(

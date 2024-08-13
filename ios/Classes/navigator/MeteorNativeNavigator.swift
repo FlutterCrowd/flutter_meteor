@@ -23,6 +23,11 @@ public class MeteorNativeNavigator: NSObject {
     
     static public func push(toPage: UIViewController, animated: Bool = true) {
         
+        if toPage is UINavigationController  {
+            print("=====Error: Cannot push a UINavigationController, please check your router config")
+            return
+        }
+        
         guard let topNavi = topViewController()?.navigationController else {
             print("No top navigator controller found")
             return
@@ -145,6 +150,10 @@ public class MeteorNativeNavigator: NSObject {
     }
     
     static public func pushToReplacement(toPage: UIViewController, animated: Bool = true) {
+        if toPage is UINavigationController  {
+            print("=====Error: Cannot push a UINavigationController, please check your router config")
+            return
+        }
         let topVc = topViewController()
         if let navigationController = topVc?.navigationController {
             if (navigationController.viewControllers.count > 0) {
@@ -161,6 +170,11 @@ public class MeteorNativeNavigator: NSObject {
     }
     
     static public func pushToAndRemoveUntil(toPage: UIViewController, untilPage: UIViewController?, animated: Bool = true) {
+        
+        if toPage is UINavigationController  {
+            print("=====Error: Cannot push a UINavigationController, please check your router config")
+            return
+        }
         
         if (untilPage == nil) {
             print("untilPage is nil")
@@ -188,6 +202,11 @@ public class MeteorNativeNavigator: NSObject {
     }
     
     static public func pushToAndRemoveUntilRoot(toPage: UIViewController, animated: Bool = true) {
+        
+        if toPage is UINavigationController  {
+            print("=====Error: Cannot push a UINavigationController, please check your router config")
+            return
+        }
         
         var rootVc = rootViewController()
         if let rootNavi = rootVc as? UINavigationController {

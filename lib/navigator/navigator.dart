@@ -64,7 +64,6 @@ class MeteorNavigator {
     bool withNewEngine = false,
     bool isOpaque = true,
     bool openNative = false,
-    bool present = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
@@ -82,7 +81,6 @@ class MeteorNavigator {
         withNewEngine: withNewEngine,
         isOpaque: isOpaque,
         openNative: openNative,
-        present: present,
         animated: animated,
         arguments: arguments,
       );
@@ -100,7 +98,6 @@ class MeteorNavigator {
     bool withNewEngine = false,
     bool isOpaque = true,
     bool openNative = false,
-    bool present = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
@@ -117,7 +114,6 @@ class MeteorNavigator {
         withNewEngine: withNewEngine,
         isOpaque: isOpaque,
         openNative: openNative,
-        present: present,
         animated: animated,
         arguments: arguments,
       );
@@ -133,7 +129,6 @@ class MeteorNavigator {
     bool withNewEngine = false,
     bool isOpaque = true,
     bool openNative = false,
-    bool present = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
@@ -142,7 +137,6 @@ class MeteorNavigator {
       withNewEngine: withNewEngine,
       isOpaque: isOpaque,
       openNative: openNative,
-      present: present,
       animated: animated,
       arguments: arguments,
     );
