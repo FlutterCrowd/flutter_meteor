@@ -54,12 +54,30 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushNamed("multiEnginePage2",
+                MeteorNavigator.pushNamed("test",
                     isOpaque: false, withNewEngine: true, present: true);
                 // MeteorNavigator.pushNamed("test", openNative: true, present: true, isOpaque: false);
               },
               child: const Text(
                 'present原生页面 test',
+                style: TextStyle(
+                  backgroundColor: Colors.red,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.pushNamed("popWindowPage",
+                    isOpaque: false, withNewEngine: true, present: true);
+                // MeteorNavigator.pushNamed("test", openNative: true, present: true, isOpaque: false);
+              },
+              child: const Text(
+                'present透明新引擎 popWindowPage',
                 style: TextStyle(
                   backgroundColor: Colors.red,
                 ),

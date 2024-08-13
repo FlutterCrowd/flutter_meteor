@@ -272,7 +272,9 @@ class TestViewController: UIViewController {
   
     // 按钮点击时调用的方,
     @objc func buttonTapped(_ sender: UIButton) {
-        MeteorNavigator.push(routeName: "test")
+        let options = MeteorPushOptions(isOpaque: false, present: true)
+
+        MeteorNavigator.present(routeName: "test", options: options)
     }
     
     // 按钮点击时调用的方法

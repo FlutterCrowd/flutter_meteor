@@ -17,7 +17,6 @@ public class MeteorNativeNavigator: NSObject {
             return
         }
         topVc.present(toPage, animated: animated) {
-            print(MeteorRouterHelper.allViewControllers())
         }
         
     }

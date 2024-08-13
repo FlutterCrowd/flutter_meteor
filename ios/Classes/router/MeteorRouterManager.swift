@@ -24,14 +24,17 @@ public class MeteorRouterManager: NSObject {
         return routes[routeName]
     }
     
-    public static func viewController(routeName: String?, arguments: Dictionary<String, Any>?) -> UIViewController? {
+    public static func getViewController(routeName: String?, arguments: Dictionary<String, Any>?) -> UIViewController? {
         if(routeName == nil) {
             return nil
         }
-        let vcBuilder: FMRouterBuilder? = MeteorRouterManager.routes[routeName!]
+        let vcBuilder: FMRouterBuilder? = routes[routeName!]
         let vc: UIViewController? = vcBuilder?(arguments)
-        if let naviVC = vc as? UINavigationController  {
-            naviVC.viewControllers.first?.routeName = routeName
+        if let naviVC = vc as? UINavigationController,
+           let visibleVc = naviVC.visibleViewController {
+            if visibleVc.routeName == nil {
+                visibleVc.routeName = routeName
+            }
         }
         vc?.routeName = routeName
         return vc

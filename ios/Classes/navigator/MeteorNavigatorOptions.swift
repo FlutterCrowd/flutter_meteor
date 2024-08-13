@@ -11,14 +11,24 @@ public typealias MeteorNavigatorCallBack = (_ response: Any?) -> Void
 
 public struct MeteorPushOptions {
     public var withNewEngine: Bool = false
-    public var isOpaque: Bool = false
+    public var isOpaque: Bool = true
     public var present: Bool = false
     public var animated: Bool = true
     public var arguments: Dictionary<String, Any>?
     public var callBack: MeteorNavigatorCallBack?
-    public init(arguments: Dictionary<String, Any>? = nil, callBack: MeteorNavigatorCallBack? = nil) {
+    public init(arguments: Dictionary<String, Any>? = nil,
+                callBack: MeteorNavigatorCallBack? = nil,
+                isOpaque: Bool = true,
+                present: Bool = false,
+                animated: Bool = true,
+                withNewEngine: Bool = false
+    ) {
         self.arguments = arguments
         self.callBack = callBack
+        self.isOpaque = isOpaque
+        self.present = present
+        self.withNewEngine = withNewEngine
+        self.animated = animated
     }
 }
 

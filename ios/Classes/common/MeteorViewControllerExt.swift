@@ -13,8 +13,7 @@ extension UIViewController {
     
     public var routeName: String? {
         get {
-            let name: String = objc_getAssociatedObject(self, &FMAssociatedObjectHandle) as? String ?? self.title ?? "\(type(of: self))"
-            return name
+            return objc_getAssociatedObject(self, &FMAssociatedObjectHandle) as? String
         }
         set {
             objc_setAssociatedObject(self, &FMAssociatedObjectHandle, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
