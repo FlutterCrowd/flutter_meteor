@@ -131,6 +131,19 @@ public class MeteorFlutterNavigator {
             print("No valid method channel")
         }
     }
+    
 }
 
+
+extension MeteorFlutterNavigator {
+    
+    public static func flutterRouteNameStack(flutterVc: FlutterViewController, result: @escaping FlutterResult) {
+        if let channel = navigatorChannel(flutterVc: flutterVc) {
+            channel.save_invoke(method: FMRouteNameStack, arguments: nil, result: result)
+        } else {
+            result(nil)
+            print("No valid method channel")
+        }
+    }
+}
 

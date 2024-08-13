@@ -153,13 +153,26 @@ public class MeteorNavigator {
     public static func pushToReplacement(routeName: String, options: MeteorPushOptions? = nil) {
 
        if let vc = viewController(routeName: routeName, arguments: options?.arguments) {
-           MeteorNativeNavigator.pushToReplacement(toPage: vc, animated: options?.animated ?? true)
-           options?.callBack?(nil)
-       } else if(options?.withNewEngine ?? false) {
+           if let flutterVc = MeteorRouterHelper.topViewController() as? FlutterViewController {
+               MeteorFlutterNavigator.flutterRouteNameStack(flutterVc: flutterVc) { response in
+                   if let routeStack = response as? [String],
+                        routeStack.count > 1 { // 如果当前flutter页面大于一个，则调用flutter的pop
+                       MeteorNativeNavigator.push(toPage: vc, animated: options?.animated ?? true)
+                       MeteorFlutterNavigator.pop(flutterVc: flutterVc)
+                   } else {
+                       MeteorNativeNavigator.pushToReplacement(toPage: vc, animated: options?.animated ?? true)
+                   }
+
+               }
+           } else {
+               MeteorNativeNavigator.pushToReplacement(toPage: vc, animated: options?.animated ?? true)
+               options?.callBack?(nil)
+           }
+       } else if (options?.withNewEngine ?? false) {
            let flutterVc = createFlutterVc(routeName: routeName, options: options)
            MeteorNativeNavigator.pushToReplacement(toPage: flutterVc, animated: options?.animated ?? true)
            options?.callBack?(nil)
-       } else if(FlutterMeteor.customRouterDelegate != nil) {
+       } else if (FlutterMeteor.customRouterDelegate != nil) {
            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
        } else {
            let currentVc = MeteorRouterHelper.topViewController()

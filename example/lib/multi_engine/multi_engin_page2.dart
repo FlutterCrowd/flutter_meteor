@@ -235,6 +235,22 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
+                MeteorNavigator.pushReplacementNamed('multiEnginePage2', withNewEngine: true);
+              },
+              child: const Text(
+                'pushReplacementNamed multiEnginePage2',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
                 MeteorEventBus.commit(eventName: 'native_event', data: '这是数据');
               },
               child: const Text(
