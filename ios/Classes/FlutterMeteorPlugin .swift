@@ -56,10 +56,10 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
         let instance = FlutterMeteorPlugin()
         registrar.addMethodCallDelegate(instance, channel: channelHolder.navigatorChannel)
         
-        // 处理路由Channel
-        channelHolder.routerChannel.setMethodCallHandler { call, resault in
-            instance.handleRouterMethodCall(call, result: resault)
-        }
+//        // 处理路由Channel
+//        channelHolder.routerChannel.setMethodCallHandler { call, resault in
+//            instance.handleRouterMethodCall(call, result: resault)
+//        }
         
         // 处理路由EventBus Channel
         channelHolder.eventBusChannel.setMessageHandler { message, reply in
@@ -84,18 +84,4 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
 
 extension FlutterMeteorPlugin: MeteorNavigatorDelegate {
     
-}
-
-
-extension FlutterMeteorPlugin {
-    
-    func handleRouterMethodCall(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        print("原生收到来自flutter端的调用：\(call.method)")
-        switch call.method {
-        case "":
-            break
-            default:
-                result(FlutterMethodNotImplemented)
-        }
-    }
 }

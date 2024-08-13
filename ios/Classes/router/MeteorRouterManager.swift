@@ -30,6 +30,9 @@ public class MeteorRouterManager: NSObject {
         }
         let vcBuilder: FMRouterBuilder? = MeteorRouterManager.routes[routeName!]
         let vc: UIViewController? = vcBuilder?(arguments)
+        if let naviVC = vc as? UINavigationController  {
+            naviVC.viewControllers.first?.routeName = routeName
+        }
         vc?.routeName = routeName
         return vc
     }

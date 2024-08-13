@@ -64,7 +64,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   Future<T?> pushNamed<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,
@@ -84,7 +84,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
     String routeName,
     String untilRouteName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,
@@ -112,7 +112,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,
@@ -131,7 +131,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,

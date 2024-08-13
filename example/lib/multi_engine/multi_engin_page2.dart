@@ -19,14 +19,16 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
   @override
   void initState() {
     super.initState();
-    MeteorEventBusListener listener = (arguments) {
+    listener(arguments) {
       print('native_event, arguments:$arguments');
       MeteorNavigator.pushNamed('multiEnginePage');
-    };
-    MeteorEventBusListener listener2 = (arguments) {
+    }
+
+    listener2(arguments) {
       print('native_event2, arguments:$arguments');
       MeteorNavigator.pushNamed('multiEnginePage');
-    };
+    }
+
     MeteorEventBus.addListener(eventName: 'native_event', listener: listener);
     MeteorEventBus.addListener(eventName: 'native_event1', listener: listener2);
   }
@@ -52,10 +54,12 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushNamed("push_native", openNative: true, present: true);
+                MeteorNavigator.pushNamed("multiEnginePage2",
+                    isOpaque: false, withNewEngine: true, present: true);
+                // MeteorNavigator.pushNamed("test", openNative: true, present: true, isOpaque: false);
               },
               child: const Text(
-                'present原生页面',
+                'present原生页面 test',
                 style: TextStyle(
                   backgroundColor: Colors.red,
                 ),
@@ -88,7 +92,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
                     openNative: true, withNewEngine: true);
               },
               child: const Text(
-                '打开新引擎',
+                '打开新引擎 multiEnginePage2',
                 style: TextStyle(
                   backgroundColor: Colors.red,
                 ),
@@ -136,7 +140,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
                 MeteorNavigator.pushNamed("multiEnginePage");
               },
               child: const Text(
-                '下一个flutter页面',
+                '下一个flutter页面multiEnginePage',
                 style: TextStyle(
                   backgroundColor: Colors.yellow,
                 ),
@@ -152,7 +156,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
                 MeteorNavigator.pushNamedAndRemoveUntil('multiEnginePage', 'test');
               },
               child: const Text(
-                'pushNamedAndRemoveUntil',
+                'pushNamedAndRemoveUntil multiEnginePage test',
                 style: TextStyle(
                   backgroundColor: Colors.yellow,
                 ),
@@ -168,7 +172,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
                 MeteorNavigator.pushReplacementNamed('multiEnginePage');
               },
               child: const Text(
-                'pushReplacementNamed',
+                'pushReplacementNamed multiEnginePage',
                 style: TextStyle(
                   backgroundColor: Colors.yellow,
                 ),
@@ -200,7 +204,7 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
                 MeteorNavigator.pushNamedAndRemoveUntilRoot('multiEnginePage');
               },
               child: const Text(
-                'pushNamedAndRemoveUntilRoot',
+                'pushNamedAndRemoveUntilRoot multiEnginePage',
                 style: TextStyle(
                   backgroundColor: Colors.yellow,
                 ),

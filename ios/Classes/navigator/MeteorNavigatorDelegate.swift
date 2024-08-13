@@ -29,8 +29,8 @@ public let FMTopRouteIsNative: String  = "topRouteIsNative";
 private struct MeteorPushParams {
     public var routeName: String
     public var untilRouteName: String?
-    public var options: MeteotPushOptions?
-    public init(routeName: String, untilRouteName: String? = nil, options: MeteotPushOptions? = nil) {
+    public var options: MeteorPushOptions?
+    public init(routeName: String, untilRouteName: String? = nil, options: MeteorPushOptions? = nil) {
         self.routeName = routeName
         self.untilRouteName = untilRouteName
         self.options = options
@@ -52,22 +52,22 @@ private struct MeteorPopParams {
 protocol MeteorNavigatorDelegate {
         
     // push
-    func present(routeName: String, options: MeteotPushOptions?)
+    func present(routeName: String, options: MeteorPushOptions?)
     
-    func push(routeName: String, options: MeteotPushOptions?)
+    func push(routeName: String, options: MeteorPushOptions?)
          
     /// push 到指定页面并替换当前页面
     ///
     /// @parma toPage 要跳转的页面，
-    func pushToReplacement(routeName: String, options: MeteotPushOptions?)
+    func pushToReplacement(routeName: String, options: MeteorPushOptions?)
 
     /// push 到指定页面，同时会清除从页面untilRouteName页面到指定routeName链路上的所有页面
     ///
     /// @parma routeName 要跳转的页面，
     /// @parma untilRouteName 移除截止页面，默认根页面，
-    func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: MeteotPushOptions?)
+    func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: MeteorPushOptions?)
     
-    func pushNamedAndRemoveUntilRoot(routeName: String, options: MeteotPushOptions?)
+    func pushNamedAndRemoveUntilRoot(routeName: String, options: MeteorPushOptions?)
     
     // pop
     func pop(options: MeteorPopOptions?)
@@ -137,6 +137,44 @@ extension MeteorNavigatorDelegate {
             let params = getPopParams(call, result: result)
             dismiss(options: params.options)
             break
+        case FMRouteExists:
+            if let methodArguments = call.arguments as? Dictionary<String, Any> {
+                if let routeName = methodArguments["routeName"] as? String {
+                    MeteorNavigator.routeExists(routeName: routeName, result: result)
+                } else {
+                    print("Invalid routeName")
+                    result(false)
+                }
+            } else {
+                print("Invalid methodArguments")
+                result(false)
+            }
+            break
+        case FMIsRoot:
+            if let methodArguments = call.arguments as? Dictionary<String, Any> {
+                if let routeName = methodArguments["routeName"] as? String {
+                    MeteorNavigator.isRoot(routeName: routeName, result: result)
+                } else {
+                    print("Invalid routeName")
+                    result(false)
+                }
+            } else {
+                print("Invalid methodArguments")
+                result(false)
+            }
+            break
+        case FMRootRouteName:
+        MeteorNavigator.rootRouteName(result: result)
+            break
+        case FMTopRouteName:
+        MeteorNavigator.topRouteName(result: result)
+            break
+        case FMRouteNameStack:
+        MeteorNavigator.routeNameStack(result: result)
+            break
+        case FMTopRouteIsNative:
+        MeteorNavigator.topRouteIsNative(result: result)
+            break
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -164,8 +202,8 @@ extension MeteorNavigatorDelegate {
             if let routeName = methodArguments["routeName"] as? String   {
                 let untilRouteName = methodArguments["untilRouteName"] as? String
                 params = MeteorPushParams(routeName: routeName, untilRouteName: untilRouteName)
-                var options = MeteotPushOptions()
-                options.newEngineOpaque = (methodArguments["newEngineOpaque"] != nil) && methodArguments["newEngineOpaque"] as! Bool == true
+                var options = MeteorPushOptions()
+                options.isOpaque = (methodArguments["isOpaque"] != nil) && methodArguments["isOpaque"] as! Bool == true
                 options.animated = methodArguments["animated"] as? Bool ?? true
                 options.withNewEngine = methodArguments["withNewEngine"] as? Bool ?? false
                 options.present = methodArguments["present"] as? Bool ?? false
@@ -190,18 +228,18 @@ extension MeteorNavigatorDelegate {
 
 extension MeteorNavigatorDelegate {
     
-    func present(routeName: String, options: MeteotPushOptions?) {
+    func present(routeName: String, options: MeteorPushOptions?) {
         MeteorNavigator.present(routeName: routeName, options: options)
     }
     
-    func push(routeName: String, options: MeteotPushOptions?) {
+    func push(routeName: String, options: MeteorPushOptions?) {
         MeteorNavigator.push(routeName: routeName, options: options)
     }
          
     /// push 到指定页面并替换当前页面
     ///
     /// @parma toPage 要跳转的页面，
-    func pushToReplacement(routeName: String, options: MeteotPushOptions?) {
+    func pushToReplacement(routeName: String, options: MeteorPushOptions?) {
         MeteorNavigator.pushToReplacement(routeName: routeName, options: options)
     }
 
@@ -209,11 +247,11 @@ extension MeteorNavigatorDelegate {
     ///
     /// @parma routeName 要跳转的页面，
     /// @parma untilRouteName 移除截止页面，默认根页面，
-    func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: MeteotPushOptions?) {
+    func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: MeteorPushOptions?) {
         MeteorNavigator.pushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
     }
     
-    func pushNamedAndRemoveUntilRoot(routeName: String, options: MeteotPushOptions?) {
+    func pushNamedAndRemoveUntilRoot(routeName: String, options: MeteorPushOptions?) {
         MeteorNavigator.pushNamedAndRemoveUntilRoot(routeName: routeName, options: options)
     }
     

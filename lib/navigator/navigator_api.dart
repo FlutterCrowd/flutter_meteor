@@ -9,7 +9,7 @@ abstract class MeteorNavigatorApi {
   /// @parma routeName 要跳转的页面，
   /// @parma withNewEngine 是否开启新引擎，当 withNewEngine = true时，通过原生通道开启新引擎打开flutter页面
   /// 默认withNewEngine = false，直接走flutter端内部路由push新页面
-  /// @parma newEngineOpaque 是否透明 默认-true 不透明
+  /// @parma isOpaque 是否不透明 默认-true 不透明
   /// @parma openNative 是否打开原生
   /// @parma present iOS特有参数，默认false，当present = true时通过iOS的present方法打开新页面
   /// @parma animated 是否开启动画，默认开启
@@ -17,7 +17,7 @@ abstract class MeteorNavigatorApi {
   Future<T?> pushNamed<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,
@@ -31,7 +31,7 @@ abstract class MeteorNavigatorApi {
   Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,
@@ -47,7 +47,7 @@ abstract class MeteorNavigatorApi {
     String routeName,
     String untilRouteName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,
@@ -61,7 +61,7 @@ abstract class MeteorNavigatorApi {
   Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,

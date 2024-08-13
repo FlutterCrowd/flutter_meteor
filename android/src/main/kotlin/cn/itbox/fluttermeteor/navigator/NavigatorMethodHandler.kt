@@ -55,7 +55,7 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
         val arguments = call.arguments
         if (arguments is Map<*, *>) {
             val withNewEngine = arguments["withNewEngine"] == true
-            val newEngineOpaque = arguments["newEngineOpaque"] == true
+            val isOpaque = arguments["isOpaque"] == true
             val openNative = arguments["openNative"] == true
             val routeName = arguments["routeName"]?.toString() ?: ""
             val routeArguments = arguments["arguments"]
@@ -69,7 +69,7 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
                     if (args != null) {
                         builder.arguments(args)
                     }
-                    builder.backgroundMode(if (newEngineOpaque) FlutterActivityLaunchConfigs.BackgroundMode.opaque else FlutterActivityLaunchConfigs.BackgroundMode.transparent)
+                    builder.backgroundMode(if (isOpaque) FlutterActivityLaunchConfigs.BackgroundMode.opaque else FlutterActivityLaunchConfigs.BackgroundMode.transparent)
                     FlutterMeteor.delegate?.onPushFlutterPage(theActivity, builder.build())
                 }
             } else if (openNative) {

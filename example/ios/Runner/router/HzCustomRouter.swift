@@ -10,13 +10,13 @@ import flutter_meteor
 
  class HzCustomRouter: NSObject, FlutterMeteorCustomDelegate {
     
-     func push(routeName: String, options: MeteotPushOptions?) {
+     func push(routeName: String, options: MeteorPushOptions?) {
         if (routeName == "push_native") {
             let vc:TestViewController  = TestViewController.init()
             MeteorNativeNavigator.push(toPage: vc);
              options?.callBack?(nil)
         } else if (routeName == "present_native") {
-//            let newEngineOpaque: Bool =  options?.newEngineOpaque ?? true
+//            let isOpaque: Bool =  options?.isOpaque ?? true
             
             let engineGroupOptions = MeteorEngineGroupOptions.init(
                 entrypoint: "childEntry",
@@ -27,7 +27,7 @@ import flutter_meteor
                  options?.callBack?(nil)
             }
             
-            flutterVc.isViewOpaque = options?.newEngineOpaque ?? true
+            flutterVc.isViewOpaque = options?.isOpaque ?? true
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
             let naviVc = UINavigationController.init(rootViewController: flutterVc)
@@ -46,7 +46,7 @@ import flutter_meteor
                 let flutterVc = MeteorFlutterViewController.init(options: engineGroupOptions) { response in
                      options?.callBack?(nil)
                 }
-                flutterVc.isViewOpaque = options?.newEngineOpaque ?? true
+                flutterVc.isViewOpaque = options?.isOpaque ?? true
                 flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
                 flutterVc.view.backgroundColor = UIColor.clear
                 MeteorNativeNavigator.present(toPage: flutterVc)
@@ -62,7 +62,7 @@ import flutter_meteor
                  options?.callBack?(nil)
             }
         } else if ( routeName == "multiEnginePage2") {
-            let newEngineOpaque: Bool =  options?.newEngineOpaque ?? true
+            let isOpaque: Bool =  options?.isOpaque ?? true
             let engineGroupOptions = MeteorEngineGroupOptions.init(
                 entrypoint: "childEntry",
                 initialRoute: routeName,
@@ -71,7 +71,7 @@ import flutter_meteor
             let flutterVc = MeteorFlutterViewController.init(options: engineGroupOptions) { response in
                  options?.callBack?(nil)
             }
-            flutterVc.isViewOpaque = newEngineOpaque
+            flutterVc.isViewOpaque = isOpaque
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
             MeteorNativeNavigator.push(toPage: flutterVc)
@@ -97,7 +97,7 @@ import flutter_meteor
             let flutterVc = MeteorFlutterViewController.init(options: engineGroupOptions) { response in
                  options?.callBack?(nil)
             }
-            flutterVc.isViewOpaque = options?.newEngineOpaque ?? true
+            flutterVc.isViewOpaque = options?.isOpaque ?? true
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
             MeteorNativeNavigator.push(toPage: flutterVc)

@@ -18,7 +18,7 @@ public protocol MeteorPluginRegistryDelegate {
 
 public protocol FlutterMeteorCustomDelegate {
         
-    func push(routeName: String, options: MeteotPushOptions?)
+    func push(routeName: String, options: MeteorPushOptions?)
 }
 
 

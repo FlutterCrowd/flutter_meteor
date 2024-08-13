@@ -51,7 +51,7 @@ class RootPage extends StatelessWidget {
           onTap: () {
             MeteorNavigator.pushNamed(
               "popWindowPage",
-              newEngineOpaque: false,
+              isOpaque: false,
               withNewEngine: true,
               present: true,
             );
@@ -67,7 +67,7 @@ class RootPage extends StatelessWidget {
           onTap: () {
             MeteorNavigator.pushNamed(
               "dialogWindowPage",
-              newEngineOpaque: false,
+              isOpaque: false,
             );
           },
           child: const Center(
@@ -82,7 +82,7 @@ class RootPage extends StatelessWidget {
             MeteorNavigator.pushNamed(
               "bottomSheetPage",
               withNewEngine: true,
-              newEngineOpaque: false,
+              isOpaque: false,
               present: true,
             );
           },

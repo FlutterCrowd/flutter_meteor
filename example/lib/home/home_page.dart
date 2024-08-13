@@ -175,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                 MeteorNavigator.pushNamed(
                   "multiEnginePage2",
                   withNewEngine: true,
-                  newEngineOpaque: false,
+                  isOpaque: false,
                   present: true,
                   arguments: {
                     '业务参数': '业务参数',
@@ -211,8 +211,7 @@ class _HomePageState extends State<HomePage> {
           ),
           ElevatedButton(
               onPressed: () {
-                MeteorNavigator.pushNamed('popWindowPage',
-                    withNewEngine: true, newEngineOpaque: false);
+                MeteorNavigator.pushNamed('popWindowPage', withNewEngine: true, isOpaque: false);
               },
               child: const Text('打开Flutter弹窗')),
         ],

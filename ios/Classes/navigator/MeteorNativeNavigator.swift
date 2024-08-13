@@ -17,7 +17,7 @@ public class MeteorNativeNavigator: NSObject {
             return
         }
         topVc.present(toPage, animated: animated) {
-            
+            print(MeteorRouterHelper.allViewControllers())
         }
         
     }
@@ -176,7 +176,7 @@ public class MeteorNativeNavigator: NSObject {
 
         let topVc = topViewController()
         if topVc != untilPage {
-            if let topView = topVc?.view  {
+            if let topView = topVc?.view, animated  {
                 // 这里临时将顶层视图覆盖到要返回的视图，避免闪屏
                 let  topSuperView = topView.superview
                 untilPage?.view .addSubview(topView)

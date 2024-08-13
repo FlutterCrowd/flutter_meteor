@@ -20,7 +20,7 @@ public class MeteorFlutterNavigator {
     
     public static func push(flutterVc:FlutterViewController,
                             routeName: String,
-                            options: MeteotPushOptions? = nil) {
+                            options: MeteorPushOptions? = nil) {
 
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
@@ -39,7 +39,7 @@ public class MeteorFlutterNavigator {
     public static func pushToAndRemoveUntil(flutterVc:FlutterViewController,
                                             routeName: String,
                                             untilRouteName: String?,
-                                            options: MeteotPushOptions? = nil) {
+                                            options: MeteorPushOptions? = nil) {
         
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
@@ -58,7 +58,7 @@ public class MeteorFlutterNavigator {
     
     public static func pushNamedAndRemoveUntilRoot(flutterVc:FlutterViewController,
                                                    routeName: String,
-                                                   options: MeteotPushOptions? = nil) {
+                                                   options: MeteorPushOptions? = nil) {
         
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
@@ -76,7 +76,7 @@ public class MeteorFlutterNavigator {
    
     public static func pushToReplacement(flutterVc:FlutterViewController,
                                          routeName: String,
-                                         options: MeteotPushOptions? = nil) {
+                                         options: MeteorPushOptions? = nil) {
 
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
@@ -110,7 +110,7 @@ public class MeteorFlutterNavigator {
         if let channel = navigatorChannel(flutterVc: flutterVc) {
             var arguments: Dictionary<String, Any?> = [:]
             arguments["routeName"] = untilRouteName
-            channel.save_invoke(method: FMPopUntilMethod, arguments: nil) { ret in
+            channel.save_invoke(method: FMPopUntilMethod, arguments: arguments) { ret in
                 options?.callBack?(ret)
             }
         } else {

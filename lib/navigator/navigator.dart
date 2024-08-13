@@ -24,14 +24,14 @@ class MeteorNavigator {
   /// @parma routeName 要跳转的页面，
   /// @parma withNewEngine 是否开启新引擎，当 withNewEngine = true时，通过原生通道开启新引擎打开flutter页面
   /// 默认withNewEngine = false，直接走flutter端内部路由push新页面
-  /// @parma newEngineOpaque 是否透明 默认-true 不透明
+  /// @parma isOpaque 是否不透明 默认-true 不透明
   /// @parma openNative 是否打开原生
   /// @parma present iOS特有参数，默认false，当present = true时通过iOS的present方法打开新页面
   /// @return T  泛型，用于指定返回类型
   static Future<T?> pushNamed<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,
@@ -41,7 +41,7 @@ class MeteorNavigator {
       return await _nativeNavigator.pushNamed<T>(
         routeName,
         withNewEngine: withNewEngine,
-        newEngineOpaque: newEngineOpaque,
+        isOpaque: isOpaque,
         openNative: openNative,
         present: present,
         animated: animated,
@@ -62,7 +62,7 @@ class MeteorNavigator {
   static Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,
@@ -80,7 +80,7 @@ class MeteorNavigator {
       return await _nativeNavigator.pushReplacementNamed<T, TO>(
         routeName,
         withNewEngine: withNewEngine,
-        newEngineOpaque: newEngineOpaque,
+        isOpaque: isOpaque,
         openNative: openNative,
         present: present,
         animated: animated,
@@ -98,7 +98,7 @@ class MeteorNavigator {
     String routeName,
     String untilRouteName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,
@@ -115,7 +115,7 @@ class MeteorNavigator {
         routeName,
         untilRouteName,
         withNewEngine: withNewEngine,
-        newEngineOpaque: newEngineOpaque,
+        isOpaque: isOpaque,
         openNative: openNative,
         present: present,
         animated: animated,
@@ -131,7 +131,7 @@ class MeteorNavigator {
   static Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
-    bool newEngineOpaque = true,
+    bool isOpaque = true,
     bool openNative = false,
     bool present = false,
     bool animated = true,
@@ -140,7 +140,7 @@ class MeteorNavigator {
     return await _nativeNavigator.pushNamedAndRemoveUntilRoot<T>(
       routeName,
       withNewEngine: withNewEngine,
-      newEngineOpaque: newEngineOpaque,
+      isOpaque: isOpaque,
       openNative: openNative,
       present: present,
       animated: animated,
@@ -174,7 +174,11 @@ class MeteorNavigator {
   ///
   /// @parma routeName 要pod到的页面
   static void popUntil(String routeName) async {
-    _nativeNavigator.popUntil(routeName);
+    if (routerObserver.routeExists(routeName)) {
+      _flutterNavigator.popUntil(routeName);
+    } else {
+      _nativeNavigator.popUntil(routeName);
+    }
   }
 
   /// pop 到根页面

@@ -144,10 +144,6 @@ public class MeteorRouterHelper: NSObject {
     private static func allViewControllers(from rootViewController: UIViewController) -> [UIViewController] {
         var viewControllers = [rootViewController]
         
-        if let presentedViewController = rootViewController.presentedViewController {
-            viewControllers.append(contentsOf: allViewControllers(from: presentedViewController))
-        }
-        
         if let navigationController = rootViewController as? UINavigationController {
             for viewController in navigationController.viewControllers {
                 viewControllers.append(contentsOf: allViewControllers(from: viewController))
@@ -160,6 +156,10 @@ public class MeteorRouterHelper: NSObject {
             for childViewController in rootViewController.children {
                 viewControllers.append(contentsOf: allViewControllers(from: childViewController))
             }
+        }
+        
+        if let presentedViewController = rootViewController.presentedViewController {
+            viewControllers.append(contentsOf: allViewControllers(from: presentedViewController))
         }
         
         return viewControllers

@@ -6,7 +6,7 @@ typealias FlutterMeteorRouterCallBack = (response: Any?) -> Unit
 // FMPushOptions data class
 data class FMPushOptions(
     var withNewEngine: Boolean = false,
-    var newEngineOpaque: Boolean = false,
+    var isOpaque: Boolean = false,
     var present: Boolean = false,
     var animated: Boolean = true,
     var arguments: Map<String, Any>? = null,

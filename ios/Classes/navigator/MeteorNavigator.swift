@@ -13,7 +13,7 @@ public typealias MeteorNavigatorSearchBlock = (_ viewController: UIViewControlle
 
 public class MeteorNavigator {
        
-    public static func push(routeName: String, options: MeteotPushOptions? = nil) {
+    public static func push(routeName: String, options: MeteorPushOptions? = nil) {
 
         let vc: UIViewController? = MeteorRouterManager.viewController(routeName: routeName, arguments: options?.arguments)
         if (vc != nil) {
@@ -30,7 +30,7 @@ public class MeteorNavigator {
         }
     }
     
-    public static func present(routeName: String, options: MeteotPushOptions? = nil) {
+    public static func present(routeName: String, options: MeteorPushOptions? = nil) {
        
         let vc: UIViewController? = MeteorRouterManager.viewController(routeName: routeName, arguments: options?.arguments)
         if (vc != nil) {
@@ -38,7 +38,7 @@ public class MeteorNavigator {
            options?.callBack?(nil)
         } else if(options?.withNewEngine ?? false) {
            let flutterVc = createFlutterVc(routeName: routeName, options: options)
-           if options?.newEngineOpaque == false {
+           if options?.isOpaque == false {
                MeteorNativeNavigator.present(toPage: flutterVc, animated: options?.animated ?? true)
            } else {
                let navi = UINavigationController.init(rootViewController: flutterVc)
@@ -53,7 +53,7 @@ public class MeteorNavigator {
         }
    }
     
-    public static func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: MeteotPushOptions? = nil) {
+    public static func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: MeteorPushOptions? = nil) {
                 
         if  untilRouteName != nil {
             searchRoute(routeName: untilRouteName!) { viewController in
@@ -70,16 +70,15 @@ public class MeteorNavigator {
         routeName: String,
         untilRouteName: String?,
         untilPage: UIViewController?,
-        options: MeteotPushOptions? = nil) {
+        options: MeteorPushOptions? = nil) {
                 
         if let toPage = MeteorRouterManager.viewController(routeName: routeName, arguments: options?.arguments) {
+            MeteorNativeNavigator.pushToAndRemoveUntil(toPage: toPage, untilPage: untilPage, animated: options?.animated ?? true)
             if let flutterVc =  untilPage as? FlutterViewController {
-                MeteorNativeNavigator.push(toPage: toPage, animated: options?.animated ?? true)
                 MeteorFlutterNavigator.popUntil(flutterVc: flutterVc, untilRouteName: untilRouteName, options: nil)
-            } else {
-                MeteorNativeNavigator.pushToAndRemoveUntil(toPage: toPage, untilPage: untilPage, animated: options?.animated ?? true)
-                options?.callBack?(nil)
             }
+            options?.callBack?(nil)
+
         } else if(options?.withNewEngine ?? false) {
             let flutterVc = createFlutterVc(routeName: routeName, options: options)
             MeteorNativeNavigator.pushToAndRemoveUntil(toPage: flutterVc, untilPage: untilPage, animated: options?.animated ?? true)
@@ -96,7 +95,7 @@ public class MeteorNavigator {
         }
     }
     
-    public static func pushNamedAndRemoveUntilRoot(routeName: String, options: MeteotPushOptions? = nil) {
+    public static func pushNamedAndRemoveUntilRoot(routeName: String, options: MeteorPushOptions? = nil) {
         
         func flutterPopRoot(){
             let rootVc = MeteorRouterHelper.rootViewController()
@@ -126,7 +125,7 @@ public class MeteorNavigator {
     }
 
    
-    public static func pushToReplacement(routeName: String, options: MeteotPushOptions? = nil) {
+    public static func pushToReplacement(routeName: String, options: MeteorPushOptions? = nil) {
 
        if let vc = MeteorRouterManager.viewController(routeName: routeName, arguments: options?.arguments) {
            MeteorNativeNavigator.pushToReplacement(toPage: vc, animated: options?.animated ?? true)
@@ -159,13 +158,13 @@ public class MeteorNavigator {
                 _popUntil(untilRouteName: untilRouteName!, untilPage: viewController, options: options)
             }
         } else {
-            if let flutterVc = MeteorRouterHelper.topViewController() as? FlutterViewController {
-                MeteorFlutterNavigator.pop(flutterVc: flutterVc)
-            } else {
-                MeteorNativeNavigator.pop(animated: options?.animated ?? true)
-                options?.callBack?(nil)
-                print("pop until 查无此路由直接返回上一级页面")
-            }
+//            if let flutterVc = MeteorRouterHelper.topViewController() as? FlutterViewController {
+//                MeteorFlutterNavigator.pop(flutterVc: flutterVc)
+//            } else {
+//                MeteorNativeNavigator.pop(animated: options?.animated ?? true)
+//                options?.callBack?(nil)
+//                print("pop until 查无此路由直接返回上一级页面")
+//            }
             print("No valid untilRouteName")
         }
    
@@ -180,13 +179,15 @@ public class MeteorNavigator {
                 MeteorFlutterNavigator.popUntil(flutterVc: flutterVc, untilRouteName: untilRouteName, options: options)
             }
         } else { //如果untilPage不存在则返回上一页
-            if let flutterVc = MeteorRouterHelper.topViewController() as? FlutterViewController {
-                MeteorFlutterNavigator.pop(flutterVc: flutterVc)
-            } else {
-                MeteorNativeNavigator.pop(animated: options?.animated ?? true)
-                options?.callBack?(nil)
-                print("pop until 查无此路由直接返回上一级页面")
-            }
+//            if let flutterVc = MeteorRouterHelper.topViewController() as? FlutterViewController {
+//                MeteorFlutterNavigator.pop(flutterVc: flutterVc)
+//            } else {
+//                MeteorNativeNavigator.pop(animated: options?.animated ?? true)
+//                options?.callBack?(nil)
+//                print("pop until 查无此路由直接返回上一级页面")
+//            }
+            print("pop until 查无此路由直接返回上一级页面")
+
         }
     }
    
@@ -213,8 +214,8 @@ public class MeteorNavigator {
     }
     
     
-    private static func createFlutterVc(routeName: String, options: MeteotPushOptions?) -> MeteorFlutterViewController {
-        let newEngineOpaque: Bool = options?.newEngineOpaque ?? true
+    private static func createFlutterVc(routeName: String, options: MeteorPushOptions?) -> MeteorFlutterViewController {
+        let isOpaque: Bool = options?.isOpaque ?? true
         
         let engineGroupOptions = MeteorEngineGroupOptions.init(
             entrypoint: "childEntry",
@@ -225,9 +226,9 @@ public class MeteorNavigator {
             options?.callBack?(nil)
         }
         flutterVc.routeName = routeName
-        flutterVc.isViewOpaque = newEngineOpaque
+        flutterVc.isViewOpaque = isOpaque
         flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-        if(!newEngineOpaque) {
+        if(!isOpaque) {
             flutterVc.view.backgroundColor = UIColor.clear
         }
         return flutterVc
