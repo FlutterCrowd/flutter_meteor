@@ -185,7 +185,7 @@ class _MultiEnginPageState extends State<BackPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.popUntil('multiEnginePage2');
+                MeteorNavigator.popUntil('push_native');
               },
               child: const Text(
                 'popUntil multiEnginePage2',
@@ -258,7 +258,44 @@ class _MultiEnginPageState extends State<BackPage> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () async {
+                debugPrint(
+                    '旧栈: ${await MeteorNavigator.routeNameStack()}');
+                MeteorNavigator.pushReplacementNamed('standardPageRoute_top',withNewEngine: true);
+                debugPrint(
+                    '新栈: ${await MeteorNavigator.routeNameStack()}');
+              },
+              child: const Text(
+                'push并替换当前页面',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () async {
+                debugPrint(
+                    '旧栈: ${await MeteorNavigator.routeNameStack()}');
+                MeteorNavigator.pushNamedAndRemoveUntil('standardPageRoute_top','push_native');
+                debugPrint(
+                    '新栈: ${await MeteorNavigator.routeNameStack()}');
+              },
+              child: const Text(
+                'push到指定页面并替换当前页面',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
           ),
         ],
         // 创建Flutter引擎实例

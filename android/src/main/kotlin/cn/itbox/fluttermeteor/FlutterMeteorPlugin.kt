@@ -55,19 +55,18 @@ class FlutterMeteorPlugin : FlutterPlugin, ActivityAware {
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-        flutterMeteorNavigator.activity = binding.activity
     }
 
     override fun onDetachedFromActivityForConfigChanges() {
-        flutterMeteorNavigator.activity = null
+        println("Received message from Flutter: onDetachedFromActivityForConfigChanges")
     }
 
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
-        flutterMeteorNavigator.activity = binding.activity
+        println("Received message from Flutter: onReattachedToActivityForConfigChanges")
     }
 
     override fun onDetachedFromActivity() {
-        flutterMeteorNavigator.activity = null
+        println("Received message from Flutter: onDetachedFromActivity")
     }
 
 }

@@ -1,7 +1,5 @@
 package cn.itbox.fluttermeteor.navigator
 
-import androidx.fragment.app.Fragment
-
 object FlutterMeteorNavigator {
 
     @JvmStatic
