@@ -113,6 +113,7 @@ public class MeteorNativeNavigator: NSObject {
             
             func traversePop(currrentVc: UIViewController? ){
                 if currrentVc == untilPage {
+                    untilPage.navigationController?.popToViewController(untilPage, animated: animated)
                     return
                 }
                 if let naviController = currrentVc as? UINavigationController ?? currrentVc?.navigationController {
@@ -121,8 +122,20 @@ public class MeteorNativeNavigator: NSObject {
                             naviController.dismiss(animated: false) {
                                 traversePop(currrentVc: topViewController())
                             }
-                        } else if let parent =  naviController.parent{
-                            traversePop(currrentVc: parent)
+                        } else if let parent =  naviController.parent {
+                            if let parentNavi = parent as? UINavigationController ?? parent.navigationController {
+                                if let parentNaviPresentVC = parentNavi.presentedViewController {
+                                    parentNaviPresentVC.dismiss(animated: false) {
+                                        traversePop(currrentVc: topViewController())
+                                    }
+                                } else {
+                                    naviController.popToRootViewController(animated: animated)
+                                    traversePop(currrentVc: parent)
+                                }
+                            
+                            } else {
+                                traversePop(currrentVc: parent)
+                            }
                         } else {
                             pop(animated: animated)
                         }

@@ -210,7 +210,6 @@ public class MeteorNavigator {
             }
         } else { //如果untilPage不存在则返回上一页
             print("pop until 查无此路由：\(untilRouteName)")
-
         }
     }
    
