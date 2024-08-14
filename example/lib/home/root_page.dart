@@ -211,7 +211,17 @@ class RootPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('ROOT'),
       ),
-      body: widget,
+      body: Stack(
+        children: [
+          widget,
+          // Positioned(
+          //   top: 0,
+          //   left: 0,
+          //   right: 0,
+          //   child: PerformanceOverlay.allEnabled(),
+          // )
+        ],
+      ),
     );
   }
 }

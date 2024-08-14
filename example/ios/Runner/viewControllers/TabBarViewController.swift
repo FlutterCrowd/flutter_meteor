@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import flutter_meteor
 
 class TabBarViewController: UITabBarController {
 
@@ -38,6 +39,14 @@ class TabBarViewController: UITabBarController {
         navController.isNavigationBarHidden = true
         return navController
     }
+    
+//    public override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
+////            reportMemory()
+//            print("Memory info: \(report_memory().toJson())")
+//        }
+//    }
 }
 
 
