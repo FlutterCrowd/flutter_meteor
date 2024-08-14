@@ -35,9 +35,11 @@ public class MeteorNativeNavigator: NSObject {
         topNavi.pushViewController(toPage, animated: animated)
     }
     
-    static public func pop(animated: Bool = true) {
+
+    static public func pop(animated: Bool = true, completion: (() -> Void)? = nil) {
         guard let topVc = topViewController() else {
             print("No top view controller found")
+            completion?()
             return
         }
 
@@ -45,54 +47,65 @@ public class MeteorNativeNavigator: NSObject {
             if navigationController.viewControllers.count > 1 {
                 // 当前导航控制器中的 ViewController 大于 1，执行 pop
                 navigationController.popViewController(animated: animated)
+                completion?()
             } else {
                 // 当前导航控制器中的 ViewController 小于或等于 1，需要依赖父导航控制器或根导航控制器
-                handleParentNavigationControllerPop(for: navigationController, topVc: topVc, animated: animated)
+                handleParentNavigationControllerPop(for: navigationController, topVc: topVc, animated: animated, completion: completion)
             }
         } else if let presentedVc = topVc.presentedViewController {
             // 如果视图控制器是通过 present 呈现的，执行 dismiss 操作
-            presentedVc.dismiss(animated: animated, completion: nil)
+            presentedVc.dismiss(animated: animated) {
+                completion?()
+            }
         } else if(topVc != rootViewController()) {
             // 没有导航控制器或呈现控制器，可能是根视图控制器
-            topVc.dismiss(animated: animated, completion: nil)
+            topVc.dismiss(animated: animated, completion: completion)
         } else {
             print("This view controller cannot be dismissed or popped")
+            completion?()
         }
     }
+    
 
-    private static func handleParentNavigationControllerPop(for navigationController: UINavigationController, topVc: UIViewController, animated: Bool) {
+    private static func handleParentNavigationControllerPop(for navigationController: UINavigationController, 
+                                                            topVc: UIViewController, 
+                                                            animated: Bool,
+                                                            completion: (() -> Void)?
+    ) {
         if let parentVc = navigationController.parent {
             if let parentNavi = parentVc as? UINavigationController {
                 if parentNavi.viewControllers.count > 1 {
                     parentNavi.popViewController(animated: animated)
+                    completion?()
                 } else {
-                    parentVc.dismiss(animated: animated)
+                    parentVc.dismiss(animated: animated, completion: completion)
                 }
             } else if let presentedVc = navigationController.presentedViewController {
-                presentedVc.dismiss(animated: animated, completion: nil)
+                presentedVc.dismiss(animated: animated, completion: completion)
             } else if let parentNavi = parentVc.navigationController {
                 if let presentedVc = parentNavi.presentedViewController {
-                    presentedVc.dismiss(animated: animated)
+                    presentedVc.dismiss(animated: animated, completion: completion)
                 } else {
                     if parentNavi.viewControllers.count > 1 {
                         parentNavi.popViewController(animated: animated)
+                        completion?()
                     } else {
-                        parentVc.dismiss(animated: animated)
+                        parentVc.dismiss(animated: animated, completion: completion)
                     }
                 }
             } else {
-                topVc.dismiss(animated: animated)
+                topVc.dismiss(animated: animated, completion: completion)
             }
         } else {
             if let rootNavi = rootNavigationController() {
                 if (rootNavi != navigationController) {
-                    navigationController.dismiss(animated: animated)
+                    navigationController.dismiss(animated: animated, completion: completion)
                 } else {
                     rootNavi.popViewController(animated: animated)
-
+                    completion?()
                 }
             } else if let presentedVc = navigationController.presentedViewController {
-                presentedVc.dismiss(animated: animated, completion: nil)
+                presentedVc.dismiss(animated: animated, completion: completion)
             }
         }
     }
@@ -105,56 +118,74 @@ public class MeteorNativeNavigator: NSObject {
         topVc.dismiss(animated: animated, completion: nil)
     }
     
-    static public func popUntil(untilPage: UIViewController, animated: Bool = true) {
+    static public func popUntil(untilPage: UIViewController, animated: Bool = true, completion: (() -> Void)? = nil) {
         let topVc = topViewController()
         if topVc == untilPage {
             print("CurentviewController is self, no need to popUntil")
+            completion?()
         } else {
             
             func traversePop(currrentVc: UIViewController? ){
-                if currrentVc == untilPage {
-                    untilPage.navigationController?.popToViewController(untilPage, animated: animated)
+            
+                guard let currrentVc = currrentVc else {
+                    completion?()
                     return
                 }
-                if let naviController = currrentVc as? UINavigationController ?? currrentVc?.navigationController {
-                    if naviController != untilPage.navigationController {
-                        if naviController.presentedViewController != nil {
-                            naviController.dismiss(animated: false) {
-                                traversePop(currrentVc: topViewController())
-                            }
-                        } else if let parent =  naviController.parent {
-                            if let parentNavi = parent as? UINavigationController ?? parent.navigationController {
-                                if let parentNaviPresentVC = parentNavi.presentedViewController {
-                                    parentNaviPresentVC.dismiss(animated: false) {
-                                        traversePop(currrentVc: topViewController())
-                                    }
-                                } else {
-                                    naviController.popToRootViewController(animated: animated)
-                                    traversePop(currrentVc: parent)
-                                }
-                            
-                            } else {
-                                traversePop(currrentVc: parent)
-                            }
-                        } else {
-                            pop(animated: animated)
-                        }
+                if currrentVc == untilPage {
+                    completion?()
+                    return
+                }
+                
+                if let tabBarVc = currrentVc.tabBarController,
+                    tabBarVc == untilPage {
+                    if let selectedNavigationController = tabBarVc.selectedViewController as? UINavigationController {
+                        selectedNavigationController.popToRootViewController(animated: animated)
+                        completion?()
+                    }
+
+                } else if let tabBarVc = currrentVc.tabBarController {
+                    let contains = tabBarVc.viewControllers?.contains(untilPage) ?? false
+                    if contains {
+                        tabBarVc.selectedViewController = untilPage
+                        completion?()
                     } else {
-                        untilPage.navigationController?.popToViewController(untilPage, animated: animated)
+                        if let navigationController = untilPage.navigationController,
+                            tabBarVc.viewControllers?.contains(navigationController) ?? false {
+                            navigationController.popToViewController(untilPage, animated: animated)
+                            completion?()
+                        } else {
+                            traversePop(currrentVc: tabBarVc)
+                        }
                     }
                 } else {
-                    currrentVc?.dismiss(animated: false) {
-                        traversePop(currrentVc: topViewController())
+                    if let presentVc = currrentVc.presentedViewController {
+                        presentVc.dismiss(animated: false) {
+                            traversePop(currrentVc: topViewController())
+                        }
+                    } else if let navigationController = currrentVc.navigationController {
+                        if navigationController.viewControllers.contains(untilPage) {
+                            navigationController.popToViewController(untilPage, animated: animated)
+                            completion?()
+                        } else {
+                            navigationController.dismiss(animated: false) {
+                                traversePop(currrentVc: topViewController())
+                            }
+                        }
+                    } else {
+                        currrentVc.dismiss(animated: false, completion: {
+                            traversePop(currrentVc: topViewController())
+                        })
                     }
                 }
             }
             
-            if topVc?.navigationController != untilPage.navigationController { //如果untilPage的页面不在当前栈里面
+             if topVc?.navigationController != untilPage.navigationController { //如果untilPage的页面不在当前栈里面
                 traversePop(currrentVc: topVc)
             } else if let navigationController = untilPage.navigationController {
                 navigationController.popToViewController(untilPage, animated: animated)
+                completion?()
             } else {
-                untilPage.dismiss(animated: animated)
+                untilPage.dismiss(animated: animated, completion: completion)
             }
         }
     }
@@ -196,18 +227,8 @@ public class MeteorNativeNavigator: NSObject {
             print("=====Error: Cannot push a UINavigationController, please check your router config")
             return
         }
-        let topVc = topViewController()
-        if let navigationController = topVc?.navigationController {
-            if (navigationController.viewControllers.count > 0) {
-                navigationController.popViewController(animated: false)
-                navigationController.pushViewController(toPage, animated: animated)
-            } else {
-                navigationController.pushViewController(toPage, animated: animated)
-            }
-        } else {
-            topVc?.dismiss(animated: false, completion: {
-                topViewController()?.navigationController?.pushViewController(toPage, animated: animated)
-            })
+        pop(animated: false) { //
+            push(toPage: toPage, animated: animated)
         }
     }
     
@@ -237,10 +258,13 @@ public class MeteorNativeNavigator: NSObject {
                     topSuperView?.addSubview(topView)
                 }
             } else {
-                popUntil(untilPage: untilPage!, animated: false)
+                popUntil(untilPage: untilPage!, animated: false) {
+                    push(toPage: toPage, animated: animated)
+                }
             }
+        } else {
+            push(toPage: toPage, animated: animated)
         }
-        push(toPage: toPage, animated: true)
     }
     
     static public func pushToAndRemoveUntilRoot(toPage: UIViewController, animated: Bool = true) {

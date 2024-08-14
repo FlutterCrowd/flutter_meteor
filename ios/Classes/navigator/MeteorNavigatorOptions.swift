@@ -30,6 +30,17 @@ public struct MeteorPushOptions {
         self.withNewEngine = withNewEngine
         self.animated = animated
     }
+    
+    public func toJson() -> [String: Any?]{
+        return [
+            "withNewEngine": withNewEngine,
+            "isOpaque": isOpaque,
+            "present": present,
+            "animated": animated,
+            "arguments": arguments,
+            "callBack": callBack,
+        ]
+    }
 }
 
 public struct MeteorPopOptions {
@@ -44,5 +55,14 @@ public struct MeteorPopOptions {
                 callBack: MeteorNavigatorCallBack? = nil) {
         self.result = result
         self.callBack = callBack
+    }
+    
+    public func toJson() -> [String: Any?]{
+        return [
+            "canDismiss": canDismiss,
+            "animated": animated,
+            "result": result,
+            "callBack": callBack,
+        ]
     }
 }
