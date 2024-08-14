@@ -74,6 +74,22 @@ internal object ActivityInjector {
         }
     }
 
+    fun popTop(){
+        currentActivity?.finish()
+        activityList.removeLast()
+        EngineInjector.removeLast()
+    }
+
+    fun remove(activity: Activity){
+        activityList.forEachIndexed { index, weakReference ->
+            if (activity.hashCode() == weakReference.avtivity.get().hashCode()) {
+                weakReference.avtivity.get()?.finish()
+                activityList.removeAt(index)
+                return
+            }
+        }
+    }
+
     private class ActivityLifecycle : Application.ActivityLifecycleCallbacks {
 
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
@@ -82,7 +98,7 @@ internal object ActivityInjector {
             val initialRoute = intent.getStringExtra("initialRoute")
             val isRoot = initialRoute != null
             val rootName = name ?: (initialRoute ?: "")
-            Log.e("FlutterMeteor","onActivityCreated------$name<---<----$initialRoute---->-->${activity.hashCode()}")
+            Log.e("FlutterMeteor","onActivityCreated------$name<---<----$initialRoute---->-->${activity}")
             activityList.add(ActivityInfo(WeakReference(activity),isRoot,rootName,null,activity.hashCode()))
         }
 

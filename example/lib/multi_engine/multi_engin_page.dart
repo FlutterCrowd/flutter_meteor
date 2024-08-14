@@ -92,6 +92,19 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           const SizedBox(
             height: 20,
           ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.pushReplacementNamed('standardPageRoute_top',withNewEngine: true);
+              },
+              child: const Text(
+                'push并替换当前页面',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
         ],
         // 创建Flutter引擎实例
       ),
