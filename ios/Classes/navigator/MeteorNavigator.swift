@@ -225,9 +225,10 @@ public class MeteorNavigator {
             }
         } else {
             print("ViewController is not a FlutterViewController")
-            options?.callBack?(nil)
         }
         MeteorNativeNavigator.popToRoot(animated: options?.animated ?? true)
+        options?.callBack?(nil)
+
 
     }
    

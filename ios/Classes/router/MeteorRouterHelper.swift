@@ -137,32 +137,60 @@ public class MeteorRouterHelper: NSObject {
         guard let rootViewController = self.rootViewController() else {
             return []
         }
-        return allViewControllers(from: rootViewController)
+        return _allViewControllers(from: rootViewController)
     }
 
     // 递归遍历视图控制器层次结构
-    private static func allViewControllers(from rootViewController: UIViewController) -> [UIViewController] {
-        var viewControllers = [rootViewController]
+    private static func _allViewControllers(from rootViewController: UIViewController) -> [UIViewController] {
+        var vcStack: [UIViewController] = []
         
-        if let navigationController = rootViewController as? UINavigationController {
-            for viewController in navigationController.viewControllers {
-                viewControllers.append(contentsOf: allViewControllers(from: viewController))
+        // 定义一个闭包，用于添加视图控制器到 vcStack
+            let addViewControllerIfNeeded: (UIViewController) -> Void = { viewController in
+                if !vcStack.contains(where: { $0 === viewController }) {
+                    vcStack.append(viewController)
+                }
             }
-        } else if let tabBarController = rootViewController as? UITabBarController {
-            for viewController in tabBarController.viewControllers ?? [] {
-                viewControllers.append(contentsOf: allViewControllers(from: viewController))
+        
+        // 递归查找视图控制器
+        func traverse(_ viewController: UIViewController) {
+            
+            if let navController = viewController as? UINavigationController  {// 如果当前是一个导航控制器啊，且其视图栈不为空
+                addViewControllerIfNeeded(navController)
+
+                for childViewController in navController.viewControllers {// 添加所有视图控制器
+                    addViewControllerIfNeeded(childViewController)
+                }
+            
+                if let topViewController = navController.topViewController { // 递归找到最上层视图控制器
+                    traverse(topViewController)
+                }
+                         
+            } else {
+                addViewControllerIfNeeded(viewController)
+                if let tabBarVc = viewController as? UITabBarController,
+                   let selectedVc = tabBarVc.selectedViewController {  // 如果是UITabBarController，且有选中的VC
+                    traverse(selectedVc)
+                    
+                } else {
+                    if !viewController.children.isEmpty { // 普通VC遍历所有子VC
+                        for childViewController in viewController.children {
+                            addViewControllerIfNeeded(childViewController)
+                        }
+                        /*
+                         WARNING: 这段代码逻辑需要优化
+                         注意：这里获取最后一个VC比较简单粗暴。
+                         */
+                        traverse(viewController.children.last!) // 递归最后一个VC
+                    }
+                }
             }
-        } else {
-            for childViewController in rootViewController.children {
-                viewControllers.append(contentsOf: allViewControllers(from: childViewController))
+            if let presentedViewController = viewController.presentedViewController { // 处理模态出来的视图控制器
+                traverse(presentedViewController)
             }
         }
-        
-        if let presentedViewController = rootViewController.presentedViewController {
-            viewControllers.append(contentsOf: allViewControllers(from: presentedViewController))
-        }
-        
-        return viewControllers
+
+        traverse(rootViewController)
+        return vcStack
     }
     
 }

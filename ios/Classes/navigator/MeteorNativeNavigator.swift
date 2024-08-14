@@ -63,11 +63,23 @@ public class MeteorNativeNavigator: NSObject {
     private static func handleParentNavigationControllerPop(for navigationController: UINavigationController, topVc: UIViewController, animated: Bool) {
         if let parentVc = navigationController.parent {
             if let parentNavi = parentVc as? UINavigationController {
-                parentNavi.popViewController(animated: animated)
-            } else if let parentNavi = parentVc.navigationController {
-                parentNavi.popViewController(animated: animated)
+                if parentNavi.viewControllers.count > 1 {
+                    parentNavi.popViewController(animated: animated)
+                } else {
+                    parentVc.dismiss(animated: animated)
+                }
             } else if let presentedVc = navigationController.presentedViewController {
                 presentedVc.dismiss(animated: animated, completion: nil)
+            } else if let parentNavi = parentVc.navigationController {
+                if let presentedVc = parentNavi.presentedViewController {
+                    presentedVc.dismiss(animated: animated)
+                } else {
+                    if parentNavi.viewControllers.count > 1 {
+                        parentNavi.popViewController(animated: animated)
+                    } else {
+                        parentVc.dismiss(animated: animated)
+                    }
+                }
             } else {
                 topVc.dismiss(animated: animated)
             }
@@ -98,7 +110,7 @@ public class MeteorNativeNavigator: NSObject {
         if topVc == untilPage {
             print("CurentviewController is self, no need to popUntil")
         } else {
-
+            
             func traversePop(currrentVc: UIViewController? ){
                 if currrentVc == untilPage {
                     return
@@ -124,32 +136,49 @@ public class MeteorNativeNavigator: NSObject {
                 }
             }
             
-            if topVc?.navigationController != untilPage.navigationController { //如果要返回的页面不在当前栈里面
-                
+            if topVc?.navigationController != untilPage.navigationController { //如果untilPage的页面不在当前栈里面
                 traversePop(currrentVc: topVc)
-
             } else if let navigationController = untilPage.navigationController {
                 navigationController.popToViewController(untilPage, animated: animated)
             } else {
                 untilPage.dismiss(animated: animated)
             }
-
         }
-   
     }
     
     static public func popToRoot(animated: Bool = true) {
+        guard let rootVC = rootNavigationController()?.viewControllers.first else { return }
+        let topVC = topViewController()
         
-        if rootViewController()?.presentedViewController == nil {
-            rootNavigationController()?.popToRootViewController(animated: animated)
-        } else {
-            topViewController()?.dismiss(animated: false, completion: {
+        if topVC == rootVC {
+            return
+        }
+        
+        if let tabBarVC = rootVC as? UITabBarController {
+            if let selectedNavVC = tabBarVC.selectedViewController as? UINavigationController {
+                if selectedNavVC.topViewController != selectedNavVC.viewControllers.first {
+                    selectedNavVC.popToRootViewController(animated: animated)
+                    popToRoot(animated: animated)
+                    return
+                }
+            } else if let selectedVC = tabBarVC.selectedViewController, selectedVC == topVC {
+//                popToRoot(animated: animated)
+                return
+            }
+        }
+        
+        if let presentedVC = rootViewController()?.presentedViewController {
+            presentedVC.dismiss(animated: false) {
                 popToRoot(animated: animated)
-            })
+            }
+        } else {
+            rootNavigationController()?.popToRootViewController(animated: animated)
         }
     }
+
     
     static public func pushToReplacement(toPage: UIViewController, animated: Bool = true) {
+       
         if toPage is UINavigationController  {
             print("=====Error: Cannot push a UINavigationController, please check your router config")
             return
@@ -170,7 +199,7 @@ public class MeteorNativeNavigator: NSObject {
     }
     
     static public func pushToAndRemoveUntil(toPage: UIViewController, untilPage: UIViewController?, animated: Bool = true) {
-        
+
         if toPage is UINavigationController  {
             print("=====Error: Cannot push a UINavigationController, please check your router config")
             return
