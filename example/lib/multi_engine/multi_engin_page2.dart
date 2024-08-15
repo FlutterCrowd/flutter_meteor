@@ -203,10 +203,10 @@ class _MultiEnginPageState extends State<MultiEnginPage2> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushReplacementNamed('multiEnginePage2');
+                MeteorNavigator.pushReplacementNamed('multiEnginePage2', withNewEngine: true);
               },
               child: const Text(
-                'pushReplacementNamed',
+                'pushReplacementNamed multiEnginePage2',
                 style: TextStyle(
                   backgroundColor: Colors.yellow,
                 ),

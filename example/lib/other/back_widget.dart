@@ -93,12 +93,13 @@ class _MultiEnginPageState extends State<BackPage> {
             child: GestureDetector(
               onTap: () {
                 MeteorNavigator.pushNamedAndRemoveUntil(
+                  'cupertinoPageRoute',
                   'multiEnginePage2',
-                  'null',
+                  withNewEngine: true,
                 );
               },
               child: const Text(
-                'pushNamedAndRemoveUntil multiEnginePage2 null',
+                'pushNamedAndRemoveUntil cupertinoPageRoute multiEnginePage2',
                 style: TextStyle(
                   backgroundColor: Colors.green,
                 ),
@@ -263,11 +264,9 @@ class _MultiEnginPageState extends State<BackPage> {
           Center(
             child: GestureDetector(
               onTap: () async {
-                debugPrint(
-                    '旧栈: ${await MeteorNavigator.routeNameStack()}');
-                MeteorNavigator.pushReplacementNamed('standardPageRoute_top',withNewEngine: true);
-                debugPrint(
-                    '新栈: ${await MeteorNavigator.routeNameStack()}');
+                debugPrint('旧栈: ${await MeteorNavigator.routeNameStack()}');
+                MeteorNavigator.pushReplacementNamed('standardPageRoute_top', withNewEngine: true);
+                debugPrint('新栈: ${await MeteorNavigator.routeNameStack()}');
               },
               child: const Text(
                 'push并替换当前页面',
@@ -283,11 +282,9 @@ class _MultiEnginPageState extends State<BackPage> {
           Center(
             child: GestureDetector(
               onTap: () async {
-                debugPrint(
-                    '旧栈: ${await MeteorNavigator.routeNameStack()}');
-                MeteorNavigator.pushNamedAndRemoveUntil('standardPageRoute_top','push_native');
-                debugPrint(
-                    '新栈: ${await MeteorNavigator.routeNameStack()}');
+                debugPrint('旧栈: ${await MeteorNavigator.routeNameStack()}');
+                MeteorNavigator.pushNamedAndRemoveUntil('standardPageRoute_top', 'push_native');
+                debugPrint('新栈: ${await MeteorNavigator.routeNameStack()}');
               },
               child: const Text(
                 'push到指定页面并替换当前页面',
