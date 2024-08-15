@@ -16,6 +16,7 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
     var methodChannel: FlutterMethodChannel?
     var popCallBack: FlutterMeteorPopCallBack?
     
+    var canFlutterPop: Bool = false
 
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -81,7 +82,7 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.white
-
+        self.setupNavigatorObserverChannel()
         let channelProvider = FlutterMeteorPlugin.channelProvider(with: self.pluginRegistry())
         var _methodChannel: FlutterMethodChannel? = channelProvider?.navigatorChannel
         if (_methodChannel == nil) {
@@ -113,15 +114,39 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
         MeteorNavigator.popUntil(untilRouteName: untilRouteName, options: options)
     }
     
+    func setupNavigatorObserverChannel() -> Void {
+
+        let methodChannel = FlutterBasicMessageChannel(name: "itbox.meteor.navigatorObserver", binaryMessenger: self.binaryMessenger, codec: FlutterStandardMessageCodec.sharedInstance())
+        methodChannel.setMessageHandler { arguments, reply in
+            if let map = arguments as? [String:Any] {
+                if map["event"] as! String == "canPop" {
+                    self.canFlutterPop = map["data"] as? Bool ?? false
+                    if self.canFlutterPop {
+                        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+                    } else {
+                        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+                    }
+                }
+            }
+        }
+    }
     
-//    public override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {
-////            reportMemory()
-//            print("Memory info: \(report_memory().toJson())")
-//        }
-//    }
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if self.canFlutterPop {
+            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        } else {
+            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        }
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
+
 }
+
 
 
 //
