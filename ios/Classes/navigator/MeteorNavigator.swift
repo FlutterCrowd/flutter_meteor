@@ -119,19 +119,19 @@ public class MeteorNavigator {
         routeName: String,
         untilRouteName: String?,
         untilPage: UIViewController?,
-        options: MeteorPushOptions? = nil) {
+        options: MeteorPushOptions? = nil
+    ) {
             
             func doPushToAndRemoveUntil(flutterVc: FlutterViewController,
                                         toPage: UIViewController,
                                         untilRouteName: String?,
                                         options: MeteorPushOptions?) {
-                
                 flutterVc.flutterRouteNameStack { routeStack in
                     if let routeStack = routeStack, routeStack.count > 1 {
                         MeteorNativeNavigator.push(toPage: toPage, animated: options?.animated ?? true)
                         flutterVc.flutterPopUntil(untilRouteName: untilRouteName, options: nil)
                     } else {
-                        MeteorNativeNavigator.pushToAndRemoveUntil(toPage: flutterVc, untilPage: untilPage, animated: options?.animated ?? true)
+                        MeteorNativeNavigator.pushToAndRemoveUntil(toPage: toPage, untilPage: untilPage, animated: options?.animated ?? true)
                     }
                     options?.callBack?(nil)
                 }
