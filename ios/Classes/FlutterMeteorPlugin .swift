@@ -31,7 +31,7 @@ public class FlutterMeteorChannelProvider: NSObject {
         super.init()
         _routerChannel = FlutterMethodChannel(name: FMRouterMethodChannelName, binaryMessenger: registrar.messenger())
         _navigatorChannel = FlutterMethodChannel(name: FMNavigatorMethodChannelName, binaryMessenger: registrar.messenger())
-        _eventBusChannel = FlutterBasicMessageChannel.init(name: FMEventBusMessageChannelName, binaryMessenger: registrar.messenger(), codec: FlutterStandardMessageCodec.sharedInstance())
+        _eventBusChannel = FlutterBasicMessageChannel(name: FMEventBusMessageChannelName, binaryMessenger: registrar.messenger(), codec: FlutterStandardMessageCodec.sharedInstance())
 
 
     }
