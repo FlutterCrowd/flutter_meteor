@@ -251,16 +251,15 @@ public class MeteorNativeNavigator: NSObject {
                 // 这里临时将顶层视图覆盖到要返回的视图，避免闪屏
                 let  topSuperView = topView.superview
                 untilPage?.view .addSubview(topView)
-                popUntil(untilPage: untilPage!, animated: false)
+//                popUntil(untilPage: untilPage!, animated: false)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     // 在push动画完成后恢复原样
                     topView.removeFromSuperview()
                     topSuperView?.addSubview(topView)
                 }
-            } else {
-                popUntil(untilPage: untilPage!, animated: false) {
-                    push(toPage: toPage, animated: animated)
-                }
+            }
+            popUntil(untilPage: untilPage!, animated: false) {
+                push(toPage: toPage, animated: animated)
             }
         } else {
             push(toPage: toPage, animated: animated)
