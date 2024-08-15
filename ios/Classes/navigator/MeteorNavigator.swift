@@ -17,12 +17,17 @@ public class MeteorNavigator {
         return  MeteorRouterManager.getViewController(routeName: routeName, arguments: arguments)
     }
     
+    /* push新页面
+     *
+     * @param routeName 页面路由名称
+     * @param options MeteorPushOptions
+     */
     public static func push(routeName: String, options: MeteorPushOptions? = nil) {
 #if DEBUG
-        print("MeteorNavigator push to routeName: \(routeName), opptions: \(String(describing: options?.toJson()))")
+        print("MeteorNavigator push to routeName: \(routeName), opptions: \(options?.toJson() ?? ["":nil])")
 #endif
-        if let vc = viewController(routeName: routeName, arguments: options?.arguments) {
-           MeteorNativeNavigator.push(toPage: vc, animated: options?.animated ?? true)
+        if let toPage = viewController(routeName: routeName, arguments: options?.arguments) {
+           MeteorNativeNavigator.push(toPage: toPage, animated: options?.animated ?? true)
            options?.callBack?(nil)
         } else if(options?.withNewEngine ?? false) {
            let flutterVc = createFlutterVc(routeName: routeName, options: options)
@@ -35,10 +40,15 @@ public class MeteorNavigator {
         }
     }
     
+    /* present新页面
+     *
+     * @param routeName 页面路由名称
+     * @param options MeteorPushOptions
+     */
     public static func present(routeName: String, options: MeteorPushOptions? = nil) {
        
 #if DEBUG
-        print("MeteorNavigator present to routeName: \(routeName), opptions: \(String(describing: options?.toJson()))")
+        print("MeteorNavigator present to routeName: \(routeName), opptions: \(options?.toJson() ?? ["":nil])")
 #endif
         func setNoOpaque(vc: UIViewController) {
             vc.view.backgroundColor = UIColor.clear
@@ -59,41 +69,40 @@ public class MeteorNavigator {
                     navi.navigationBar.isHidden = true
                     setNoOpaque(vc: navi)
                     MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
-//                    MeteorNativeNavigator.present(toPage: vc, animated: options?.animated ?? true)
-
                 }
             } else {
                 let navi = UINavigationController.init(rootViewController: vc)
                 navi.navigationBar.isHidden = true
                 MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
-                
-//                MeteorNativeNavigator.present(toPage: vc, animated: options?.animated ?? true)
-
             }
            options?.callBack?(nil)
         } else if(options?.withNewEngine ?? false) {
-           let flutterVc = createFlutterVc(routeName: routeName, options: options)
-//            MeteorNativeNavigator.present(toPage: flutterVc, animated: options?.animated ?? true)
-
+            let flutterVc = createFlutterVc(routeName: routeName, options: options)
             let navi = UINavigationController.init(rootViewController: flutterVc)
             navi.navigationBar.isHidden = true
-           if options?.isOpaque == false {
+            if options?.isOpaque == false {
                setNoOpaque(vc: navi)
                MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
-           } else {
+            } else {
                MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
-           }
-           options?.callBack?(nil)
+            }
+            options?.callBack?(nil)
         } else if(FlutterMeteor.customRouterDelegate != nil) {
-           FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
+            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
         } else {
-           options?.callBack?(nil)
+            options?.callBack?(nil)
         }
    }
     
+    /* 打开新页面并且移除导航栈到指定页面
+     *
+     * @param untilRouteName 指定移除截止页面
+     * @param routeName 页面路由名称
+     * @param options MeteorPushOptions
+     */
     public static func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: MeteorPushOptions? = nil) {
 #if DEBUG
-        print("MeteorNavigator pushToAndRemoveUntil to routeName: \(routeName), removeUntilRouteName: \(String(describing: untilRouteName)), opptions: \(String(describing: options?.toJson()))")
+        print("MeteorNavigator pushToAndRemoveUntil to routeName: \(routeName), removeUntilRouteName: \(untilRouteName ?? "nil"),opptions: \(options?.toJson() ?? ["":nil])")
 #endif
         if  untilRouteName != nil {
             searchRoute(routeName: untilRouteName!) { viewController in
@@ -156,9 +165,14 @@ public class MeteorNavigator {
             }
     }
     
+    /* 打开新页面并且移除导航栈到根页面
+     *
+     * @param routeName 页面路由名称
+     * @param options MeteorPushOptions
+     */
     public static func pushNamedAndRemoveUntilRoot(routeName: String, options: MeteorPushOptions? = nil) {
 #if DEBUG
-        print("MeteorNavigator pushNamedAndRemoveUntilRoot to routeName: \(routeName), opptions: \(String(describing: options?.toJson()))")
+        print("MeteorNavigator pushNamedAndRemoveUntilRoot to routeName: \(routeName), opptions: \(options?.toJson() ?? ["":nil])")
 #endif
         func flutterPopRoot(){
             let rootVc = MeteorRouterHelper.rootViewController()
@@ -186,10 +200,14 @@ public class MeteorNavigator {
         }
     }
 
-   
+    /* 打开新页面并且替换当前栈顶页面
+     *
+     * @param routeName 页面路由名称
+     * @param options MeteorPushOptions
+     */
     public static func pushToReplacement(routeName: String, options: MeteorPushOptions? = nil) {
 #if DEBUG
-        print("MeteorNavigator pushToReplacement to routeName: \(routeName), opptions: \(String(describing: options?.toJson()))")
+        print("MeteorNavigator pushToReplacement to routeName: \(routeName), opptions: \(options?.toJson() ?? ["":nil])")
 #endif
         
         func pushToReplaceWithFLutterVC(flutterVc: FlutterViewController,
@@ -244,9 +262,14 @@ public class MeteorNavigator {
         options?.callBack?(nil)
    }
     
+    /* 出栈到指定页面
+     *
+     * @param untilRouteName 截止页面
+     * @param options MeteorPushOptions
+     */
     public static func popUntil(untilRouteName: String?, options: MeteorPopOptions? = nil) {
 #if DEBUG
-        print("MeteorNavigator popUntil: \(String(describing: untilRouteName)), opptions: \(String(describing: options?.toJson()))")
+        print("MeteorNavigator popUntil: \(untilRouteName ?? "nil"), opptions: \(options?.toJson() ?? ["":nil])")
 #endif
         if untilRouteName != nil {
             searchRoute(routeName: untilRouteName!) { viewController in
@@ -271,9 +294,13 @@ public class MeteorNavigator {
         }
     }
    
+    /* 出栈到根页面
+     *
+     * @param options MeteorPushOptions
+     */
     public static func popToRoot(options: MeteorPopOptions? = nil) {
 #if DEBUG
-        print("MeteorNavigator popToRoot, opptions: \(String(describing: options?.toJson()))")
+        print("MeteorNavigator popToRoot, opptions: \(options?.toJson() ?? ["":nil])")
 #endif
         let rootVc = MeteorRouterHelper.rootViewController()
         if let flutterVc = rootVc as? FlutterViewController {
@@ -293,7 +320,7 @@ public class MeteorNavigator {
    
     public static func dismiss(options: MeteorPopOptions? = nil) {
 #if DEBUG
-        print("MeteorNavigator dismiss, opptions: \(String(describing: options?.toJson()))")
+        print("MeteorNavigator dismiss, opptions: \(options?.toJson() ?? ["":nil])")
 #endif
         MeteorNativeNavigator.dismiss(animated: options?.animated ?? true)
         options?.callBack?(nil)
@@ -326,7 +353,6 @@ public class MeteorNavigator {
 extension MeteorNavigator {
     
     /*------------------------router method start--------------------------*/
-    
     public static func searchRoute(routeName: String, result: @escaping MeteorNavigatorSearchBlock) {
     
         let vcStack = MeteorRouterHelper.viewControllerStack.reversed() // 反转数组，从顶层向下层搜索
@@ -384,31 +410,38 @@ extension MeteorNavigator {
         search(in: Array(vcStack), index: 0)
     }
     
-    public static func routeExists(routeName:String, result: @escaping FlutterResult) {
-        print("原生开始调用searchRoute")
+    /* 检查导航栈中是否有对应的页面
+     *
+     * @param routeName 页面路由名称
+     * @param result 检查结果回调
+     */
+    public static func routeExists(routeName:String, result: @escaping ((Bool) -> Void)) {
         searchRoute(routeName: routeName) { viewController in
             let exists = viewController != nil// 没有对应的ViewCOntroller则可以认为没有这个路由
             result(exists)
-            print("原生结束调用searchRoute")
         }
     }
     
-    
-    public static func isRoot(routeName:String, result: @escaping FlutterResult) {
+    /* 检查页面是否是导航栈的根页面
+     *
+     * @param routeName 页面路由名称
+     * @param result 检查结果回调
+     */
+    public static func isRoot(routeName:String, result: @escaping ((Bool) -> Void)) {
         rootRouteName { rootName in
-            if(rootName is String) {
-                if(routeName == rootName as! String) {
-                    result(true)
-                } else {
-                    result(false)
-                }
+            if(rootName == routeName) {
+                result(true)
             } else {
                 result(false)
             }
         }
     }
     
-    public static func rootRouteName(result: @escaping FlutterResult) {
+    /* 获取导航栈的根页面
+     *
+     * @param result 结果回调
+     */
+    public static func rootRouteName(result: @escaping ((String?) -> Void)) {
         
         let rootVc = MeteorRouterHelper.rootViewController()
         if let flutterVc = rootVc as? FlutterViewController {
@@ -430,7 +463,11 @@ extension MeteorNavigator {
         }
     }
     
-    public static func topRouteName(result: @escaping FlutterResult) {
+    /* 获取导航栈的栈顶页面
+     *
+     * @param result 结果回调
+     */
+    public static func topRouteName(result: @escaping ((String?) -> Void)) {
         
         let topVc = MeteorRouterHelper.topViewController()
         if let flutterVc = topVc as? FlutterViewController {
@@ -442,7 +479,11 @@ extension MeteorNavigator {
         }
     }
     
-    public static func routeNameStack(result: @escaping FlutterResult) {
+    /* 获取导航栈
+     *
+     * @param result 结果回调
+     */
+    public static func routeNameStack(result: @escaping (([String]?) -> Void)) {
         
         let vcStack = MeteorRouterHelper.viewControllerStack
         let dispatchGroup = DispatchGroup() // DispatchGroup 用于管理并发任务
@@ -479,9 +520,11 @@ extension MeteorNavigator {
         }
     }
     
-    
-    
-    public static func topRouteIsNative(result: @escaping FlutterResult) {
+    /* 判断当前导航栈栈顶是原生还是Flutter
+     *
+     * @param result 结果回调, true-表示原生， false-表示flutter
+     */
+    public static func topRouteIsNative(result: @escaping ((Bool) -> Void)) {
         let vc = MeteorRouterHelper.topViewController()
         let topVc = MeteorRouterHelper.getTopVC(withCurrentVC: vc)
         if topVc is FlutterViewController {
