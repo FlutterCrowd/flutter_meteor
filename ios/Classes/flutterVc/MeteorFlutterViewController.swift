@@ -12,7 +12,6 @@ public typealias FlutterMeteorPopCallBack = (_ response: Dictionary<String, Any>
 
 public class MeteorFlutterViewController: FlutterViewController, MeteorNavigatorDelegate  {
     
-    
     var methodChannel: FlutterMethodChannel?
     var popCallBack: FlutterMeteorPopCallBack?
     
@@ -71,7 +70,6 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
          self.popCallBack = popCallBack
      }
     
-    
     func createMethodChannel() -> FlutterMethodChannel {
         let channel = FlutterMethodChannel(name: FMNavigatorMethodChannelName, binaryMessenger: self.binaryMessenger)
         channel.setMethodCallHandler {[weak self] call, result in
@@ -95,7 +93,6 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
         methodChannel = _methodChannel
     }
     
-
     deinit {
         FlutterMeteor.pluginRegistryDelegate.unRegister(pluginRegistry: self.pluginRegistry())
     }
@@ -144,7 +141,7 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
         super.viewWillDisappear(animated)
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
-
+    
 }
 
 

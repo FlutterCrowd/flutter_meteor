@@ -268,42 +268,63 @@ extension FlutterViewController {
 }
 
 extension FlutterViewController {
-    public func flutterRouteExists(routeName:String, result: @escaping FlutterResult) {
+    
+    public func flutterRouteExists(routeName:String, result: @escaping ((Bool) -> Void)) {
         let arguments = ["routeName": routeName]
         if let channel = navigatorChannel() {
-            channel.save_invoke(method: FMRouteExists, arguments: arguments, result: result)
-        } else {
-            result(nil)
-        }
-    }
-
-
-    public func flutterIsRoot(routeName:String, result: @escaping FlutterResult) {
-        if let channel = navigatorChannel() {
-            channel.save_invoke(method:FMIsRoot, arguments: nil, result: result)
+            channel.save_invoke(method: FMRouteExists, arguments: arguments) { ret in
+                if let exists = ret as? Bool, exists {
+                   result(true)
+                } else {
+                    result(false)
+                }
+            }
         } else {
             result(false)
         }
     }
 
-    public func flutterRootRouteName(result: @escaping FlutterResult) {
+
+    public func flutterIsRoot(routeName:String, result: @escaping ((Bool) -> Void)) {
         if let channel = navigatorChannel() {
-            channel.save_invoke(method:FMRootRouteName, result: result)
+            channel.save_invoke(method:FMIsRoot, arguments: nil) { ret in
+                
+            }
+        } else {
+            result(false)
+        }
+    }
+
+    public func flutterRootRouteName(result: @escaping ((String?) -> Void)) {
+        if let channel = navigatorChannel() {
+            channel.save_invoke(method:FMRootRouteName) { rootRouteName in
+                if let rootRouteName = rootRouteName as? String {
+                    result(rootRouteName)
+                } else {
+                    result(nil)
+                }
+            }
         } else {
             result(routeName)
         }
     }
 
-    public func flutterTopRouteName(result: @escaping FlutterResult) {
+    public func flutterTopRouteName(result: @escaping ((String?) -> Void)) {
         
         if let channel = navigatorChannel() {
-            channel.save_invoke(method: FMTopRouteName, result: result)
+            channel.save_invoke(method: FMTopRouteName) { topRouteName in
+                if let topRouteName = topRouteName as? String {
+                    result(topRouteName)
+                } else {
+                    result(nil)
+                }
+            }
         } else {
             result(routeName)
         }
     }
 
-    public func flutterRouteNameStack(result: @escaping FlutterResult) {
+    public func flutterRouteNameStack(result: @escaping (([String]?) -> Void)) {
         if let channel = navigatorChannel() {
             channel.save_invoke(method: FMRouteNameStack) { ret in
                 if let retArray = ret as? [String] {

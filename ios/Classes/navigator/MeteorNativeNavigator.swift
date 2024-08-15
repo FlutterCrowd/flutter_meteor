@@ -207,6 +207,7 @@ public class MeteorNativeNavigator: NSObject {
 
     
     static public func popToRoot(animated: Bool = true,  completion: (() -> Void)? = nil) {
+        
         guard let rootVC = rootNavigationController()?.viewControllers.first else { return }
         let topVC = topViewController()
         
@@ -214,7 +215,11 @@ public class MeteorNativeNavigator: NSObject {
             completion?()
             return
         }
-        
+        if topVC?.navigationController == rootNavigationController() {
+            topVC?.navigationController?.popToRootViewController(animated: animated)
+            completion?()
+            return
+        }
         if let tabBarVC = rootVC as? UITabBarController {
             if let selectedNavVC = tabBarVC.selectedViewController as? UINavigationController {
                 if selectedNavVC.topViewController != selectedNavVC.viewControllers.first {
@@ -279,8 +284,7 @@ public class MeteorNativeNavigator: NSObject {
                 // 这里临时将顶层视图覆盖到要返回的视图，避免闪屏
                 let  topSuperView = topView.superview
                 untilPage?.view .addSubview(topView)
-//                popUntil(untilPage: untilPage!, animated: false)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                     // 在push动画完成后恢复原样
                     topView.removeFromSuperview()
                     topSuperView?.addSubview(topView)
@@ -302,25 +306,25 @@ public class MeteorNativeNavigator: NSObject {
         }
         
         var rootVc = rootViewController()
+        let topVc = topViewController()
+        
         if let rootNavi = rootVc as? UINavigationController {
             rootVc = rootNavi.viewControllers.first
         }
-        let topVc = topViewController()
+
         if let topView = topVc?.view, rootVc != nil {
             // 这里临时将顶层视图覆盖到要返回的视图，避免闪屏
             let  topSuperView = topView.superview
             rootVc?.view .addSubview(topView)
-            popToRoot(animated: false)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
                 // 在push动画完成后恢复原样
                 topView.removeFromSuperview()
                 topSuperView?.addSubview(topView)
             }
-        } else {
-            popToRoot(animated: false)
         }
-        rootNavigationController()?.pushViewController(toPage, animated: animated)
-//        push(toPage: toPage, animated: animated)
+        popToRoot(animated: false) {
+            rootNavigationController()?.pushViewController(toPage, animated: animated)
+        }
     }
     
     /// 获取顶部控制器

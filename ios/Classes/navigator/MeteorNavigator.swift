@@ -111,27 +111,49 @@ public class MeteorNavigator {
         untilRouteName: String?,
         untilPage: UIViewController?,
         options: MeteorPushOptions? = nil) {
-        if let toPage = viewController(routeName: routeName, arguments: options?.arguments) {
-            MeteorNativeNavigator.pushToAndRemoveUntil(toPage: toPage, untilPage: untilPage, animated: options?.animated ?? true)
-            if let flutterVc =  untilPage as? FlutterViewController {
-                flutterVc.flutterPopUntil(untilRouteName: untilRouteName, options: nil)
+            
+            func doPushToAndRemoveUntil(flutterVc: FlutterViewController,
+                                        toPage: UIViewController,
+                                        untilRouteName: String?,
+                                        options: MeteorPushOptions?) {
+                
+                flutterVc.flutterRouteNameStack { routeStack in
+                    if let routeStack = routeStack, routeStack.count > 1 {
+                        MeteorNativeNavigator.push(toPage: toPage, animated: options?.animated ?? true)
+                        flutterVc.flutterPopUntil(untilRouteName: untilRouteName, options: nil)
+                    } else {
+                        MeteorNativeNavigator.pushToAndRemoveUntil(toPage: flutterVc, untilPage: untilPage, animated: options?.animated ?? true)
+                    }
+                    options?.callBack?(nil)
+                }
             }
-            options?.callBack?(nil)
-
-        } else if(options?.withNewEngine ?? false) {
-            let flutterVc = createFlutterVc(routeName: routeName, options: options)
-            MeteorNativeNavigator.pushToAndRemoveUntil(toPage: flutterVc, untilPage: untilPage, animated: options?.animated ?? true)
-            options?.callBack?(nil)
-        } else if(FlutterMeteor.customRouterDelegate != nil) {
-            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
-        } else {
-            let currentVc = MeteorRouterHelper.topViewController()
-            if let flutterVc = currentVc as? FlutterViewController {
-                flutterVc.flutterPushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
+            
+            if let toPage = viewController(routeName: routeName, arguments: options?.arguments) {
+                if let flutterVc =  untilPage as? FlutterViewController {
+                    doPushToAndRemoveUntil(flutterVc: flutterVc, toPage: toPage, untilRouteName: untilRouteName, options: options)
+                } else {
+                    MeteorNativeNavigator.pushToAndRemoveUntil(toPage: toPage, untilPage: untilPage, animated: options?.animated ?? true)
+                    options?.callBack?(nil)
+                }
+            } else if(options?.withNewEngine ?? false) {
+                let newEngineVc = createFlutterVc(routeName: routeName, options: options)
+                if let flutterVc =  untilPage as? FlutterViewController {
+                    doPushToAndRemoveUntil(flutterVc: flutterVc, toPage: newEngineVc, untilRouteName: untilRouteName, options: options)
+                } else {
+                    MeteorNativeNavigator.pushToAndRemoveUntil(toPage: newEngineVc, untilPage: untilPage, animated: options?.animated ?? true)
+                    options?.callBack?(nil)
+                }
+                
+            } else if(FlutterMeteor.customRouterDelegate != nil) {
+                FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
             } else {
-                options?.callBack?(nil)
+                let currentVc = MeteorRouterHelper.topViewController()
+                if let flutterVc = currentVc as? FlutterViewController {
+                    flutterVc.flutterPushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
+                } else {
+                    options?.callBack?(nil)
+                }
             }
-        }
     }
     
     public static func pushNamedAndRemoveUntilRoot(routeName: String, options: MeteorPushOptions? = nil) {
@@ -169,25 +191,39 @@ public class MeteorNavigator {
 #if DEBUG
         print("MeteorNavigator pushToReplacement to routeName: \(routeName), opptions: \(String(describing: options?.toJson()))")
 #endif
-       if let vc = viewController(routeName: routeName, arguments: options?.arguments) {
+        
+        func pushToReplaceWithFLutterVC(flutterVc: FlutterViewController,
+                                        topPage: UIViewController,
+                                        options: MeteorPushOptions?) {
+            
+            flutterVc.flutterRouteNameStack() { response in
+                if let routeStack = response,
+                     routeStack.count > 1 { // 如果当前flutter页面大于一个，则调用flutter的pop
+                    MeteorNativeNavigator.push(toPage: topPage, animated: options?.animated ?? true)
+                    flutterVc.flutterPop()
+                } else {
+                    MeteorNativeNavigator.pushToReplacement(toPage: topPage, animated: options?.animated ?? true)
+                }
+                options?.callBack?(nil)
+            }
+        }
+        
+       if let toVc = viewController(routeName: routeName, arguments: options?.arguments) {
            if let flutterVc = MeteorRouterHelper.topViewController() as? FlutterViewController {
-               flutterVc.flutterRouteNameStack() { response in
-                   if let routeStack = response as? [String],
-                        routeStack.count > 1 { // 如果当前flutter页面大于一个，则调用flutter的pop
-                       MeteorNativeNavigator.push(toPage: vc, animated: options?.animated ?? true)
-                       flutterVc.flutterPop()
-                   } else {
-                       MeteorNativeNavigator.pushToReplacement(toPage: vc, animated: options?.animated ?? true)
-                   }
-               }
+               pushToReplaceWithFLutterVC(flutterVc: flutterVc, topPage: toVc, options: options)
            } else {
-               MeteorNativeNavigator.pushToReplacement(toPage: vc, animated: options?.animated ?? true)
+               MeteorNativeNavigator.pushToReplacement(toPage: toVc, animated: options?.animated ?? true)
                options?.callBack?(nil)
            }
        } else if (options?.withNewEngine ?? false) {
-           let flutterVc = createFlutterVc(routeName: routeName, options: options)
-           MeteorNativeNavigator.pushToReplacement(toPage: flutterVc, animated: options?.animated ?? true)
-           options?.callBack?(nil)
+           let newEngineVc = createFlutterVc(routeName: routeName, options: options)
+           if let flutterVc = MeteorRouterHelper.topViewController() as? FlutterViewController {
+               pushToReplaceWithFLutterVC(flutterVc: flutterVc, topPage: newEngineVc, options: options)
+           } else {
+               MeteorNativeNavigator.pushToReplacement(toPage: newEngineVc, animated: options?.animated ?? true)
+               options?.callBack?(nil)
+           }
+           
        } else if (FlutterMeteor.customRouterDelegate != nil) {
            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
        } else {
@@ -291,12 +327,6 @@ extension MeteorNavigator {
     
     /*------------------------router method start--------------------------*/
     
-    public static func routerChannel(flutterVc: FlutterViewController) -> FlutterMethodChannel? {
-        
-        let channelProvider = FlutterMeteorPlugin.channelProvider(with: flutterVc.pluginRegistry())
-        return channelProvider?.navigatorChannel
-    }
-    
     public static func searchRoute(routeName: String, result: @escaping MeteorNavigatorSearchBlock) {
     
         let vcStack = MeteorRouterHelper.viewControllerStack.reversed() // 反转数组，从顶层向下层搜索
@@ -322,22 +352,19 @@ extension MeteorNavigator {
             }
             
             serialQueue.addTask { finish in
-                if let flutterVc = vc as? FlutterViewController,
-                   let channel = routerChannel(flutterVc: flutterVc) {
-                    let arguments = ["routeName": routeName]
-           
-                    channel.save_invoke(method: FMRouteExists, arguments: arguments) { ret in
+                if let flutterVc = vc as? FlutterViewController {
+                    flutterVc.flutterRouteExists(routeName: routeName, result: { exists in
                         defer {
                             finish()
                         }
-                        if let exists = ret as? Bool, exists {
+                        if exists {
                             // 找到匹配的路由，调用结果回调
                             callBack(viewController: vc)
                         } else {
                             // 继续搜索下一个
                             continueSearch()
                         }
-                    }
+                    })
                 } else {
                     defer {
                         finish()
@@ -382,23 +409,18 @@ extension MeteorNavigator {
     }
     
     public static func rootRouteName(result: @escaping FlutterResult) {
-        func getFlutterRootRoute(flutterVc: FlutterViewController, result: @escaping FlutterResult){
-            if let channel = routerChannel(flutterVc: flutterVc) {
-                channel.save_invoke(method:FMRootRouteName, arguments: nil) { response in
-                    result(response)
-                }
-            } else {
-                result(flutterVc.routeName)
-            }
-        }
         
         let rootVc = MeteorRouterHelper.rootViewController()
         if let flutterVc = rootVc as? FlutterViewController {
-            getFlutterRootRoute(flutterVc: flutterVc, result: result)
+            flutterVc.flutterRootRouteName { response in
+                result(response)
+            }
         } else if let naviVc = rootVc as? UINavigationController {
             let vc = naviVc.viewControllers.first
             if let flutterVc = vc as? FlutterViewController {
-                getFlutterRootRoute(flutterVc: flutterVc, result: result)
+                flutterVc.flutterRootRouteName { response in
+                    result(response)
+                }
             } else {
                 result(rootVc?.routeName)
             }
@@ -412,14 +434,11 @@ extension MeteorNavigator {
         
         let topVc = MeteorRouterHelper.topViewController()
         if let flutterVc = topVc as? FlutterViewController {
-            if let channel = routerChannel(flutterVc: flutterVc) {
-                channel.save_invoke(method: FMTopRouteName, arguments: nil, result: result)
-            } else {
-                result(topVc?.routeName)
+            flutterVc.flutterTopRouteName{ response in
+                result(response)
             }
         } else {
             result(topVc?.routeName)
-
         }
     }
     
@@ -432,16 +451,15 @@ extension MeteorNavigator {
 //        print("原生开始调用routeNameStack")
         vcStack.forEach { vc in
             dispatchGroup.enter()
-            if let flutterVc = vc as? FlutterViewController,
-               let channel = routerChannel(flutterVc: flutterVc) {
-                channel.save_invoke(method: FMRouteNameStack, arguments: nil) { ret in
+            if let flutterVc = vc as? FlutterViewController {
+                flutterVc.flutterRouteNameStack { routeStack in
                     defer {
                         dispatchGroup.leave()
                     }
-                    if let retArray = ret as? [String] {
-                        vcMap[vc] = retArray
-                    } else {
+                    if routeStack?.isEmpty ?? true {
                         vcMap[vc] = [vc.routeName ?? "\(type(of: vc))"]
+                    } else {
+                        vcMap[vc] = routeStack
                     }
                 }
             } else {
@@ -468,7 +486,6 @@ extension MeteorNavigator {
         let topVc = MeteorRouterHelper.getTopVC(withCurrentVC: vc)
         if topVc is FlutterViewController {
             result(false)
-
         } else {
             result(true)
         }
