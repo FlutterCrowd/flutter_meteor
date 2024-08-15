@@ -8,14 +8,13 @@
 import UIKit
 import flutter_meteor
 
-class TabBarViewController: UITabBarController {
+class TabBarViewController: UITabBarController, UIGestureRecognizerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
-      self.addChild(TestViewController1.init())
-      self.addChild(TestViewController2.init())
+//        self.addChild(TestViewController1.init())
+//        self.addChild(TestViewController2.init())
         // 创建视图控制器
         let homeVC = createNavController(vc: HomeViewController(), title: "首页", imageName: "home")
         homeVC.routeName = "首页"
@@ -26,6 +25,11 @@ class TabBarViewController: UITabBarController {
         let profileVC = createNavController(vc: ProfileViewController(), title: "我的", imageName: "profile")
         profileVC.routeName = "我的"
 
+        
+        // 禁用滑动返回手势但保留返回按钮
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        
         // 将视图控制器添加到 TabBar
         viewControllers = [homeVC, recommendVC, liveVC, profileVC]
     }
@@ -36,10 +40,33 @@ class TabBarViewController: UITabBarController {
         navController.tabBarItem.image = UIImage(named: imageName)
         vc.navigationItem.title = title
         vc.routeName = title
+//        vc.hidesBottomBarWhenPushed = true
+//        navController.interactivePopGestureRecognizer?.isEnabled = true
         navController.isNavigationBarHidden = true
         return navController
     }
     
+    // 实现 UIGestureRecognizerDelegate 方法
+    @objc func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+       // 如果当前控制器是根视图控制器，则禁用手势返回
+       return true//self.navigationController?.viewControllers.count ?? 0 > 1
+   }
+    
+//    
+    
+    
+    
+//    public override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+//
+//    }
+//    
+//    public override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+//    }
+//    
 //    public override func viewDidAppear(_ animated: Bool) {
 //        super.viewDidAppear(animated)
 //        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) {

@@ -329,4 +329,22 @@ class TestViewController: UIViewController {
         print("present tabBar")
         MeteorNavigator.present(routeName: "push_native")
     }
+    
+    
+//    public override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        self.tabBarController?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false;
+//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+//    }
+//    
+//    public override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        self.tabBarController?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false;
+//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+//    }
+//    
+//    public override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+////        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+//    }
 }

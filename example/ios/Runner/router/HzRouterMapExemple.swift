@@ -49,6 +49,7 @@ class HzRouterMapExemple  {
         
         MeteorRouterManager.insertRouter(routeName: "routeName") { arguments in
             let testVc = TestViewController.init()
+            testVc.hidesBottomBarWhenPushed = true
             return testVc
         }
         
@@ -61,6 +62,7 @@ class HzRouterMapExemple  {
                 initialRoute: "multiEnginePage2",
                 entrypointArgs: arg)
             let testVc = MeteorFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)
+            testVc.hidesBottomBarWhenPushed = true
             return testVc
         }
         
@@ -73,6 +75,7 @@ class HzRouterMapExemple  {
                 initialRoute: "multiEnginePage",
                 entrypointArgs: arg)
             let testVc = MeteorFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)
+            testVc.hidesBottomBarWhenPushed = true
             return testVc
         }
     }
