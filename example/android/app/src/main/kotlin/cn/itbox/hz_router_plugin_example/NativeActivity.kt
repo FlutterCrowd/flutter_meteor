@@ -5,10 +5,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import cn.itbox.fluttermeteor.core.FlutterMeteor
 import cn.itbox.fluttermeteor.core.FlutterMeteorRouteOptions
+import cn.itbox.fluttermeteor.navigator.FMPushOptions
+import cn.itbox.fluttermeteor.navigator.FMPopOptions
+import cn.itbox.fluttermeteor.navigator.FlutterMeteorRouterCallBack
 
 class NativeActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -34,6 +38,80 @@ class NativeActivity : AppCompatActivity() {
         val test = findViewById<View>(R.id.test)
         test.setOnClickListener {
             startActivity("test")
+        }
+
+        val newPush = findViewById<View>(R.id.newPush)
+        newPush.setOnClickListener {
+            val option = FMPushOptions(
+                withNewEngine = true,
+                isOpaque = false,
+                openNative = false,
+                arguments = null,
+            )
+            option.callBack = object :FlutterMeteorRouterCallBack{
+                override fun invoke(response: Any?) {
+                    Log.e("OnMethodCall","-------> $response")
+                }
+            }
+            cn.itbox.fluttermeteor.navigator.FlutterMeteorNavigator.push(
+                routeName = "multiEnginePage",
+                option
+            )
+        }
+
+        val newPop = findViewById<View>(R.id.newPop)
+        newPop.setOnClickListener {
+            val option = FMPopOptions(
+                arguments = null,
+            )
+            option.callBack = object : FlutterMeteorRouterCallBack {
+                override fun invoke(response: Any?) {
+                    Log.e("OnMethodCall","-------> $response")
+                }
+            }
+            cn.itbox.fluttermeteor.navigator.FlutterMeteorNavigator.pop(option)
+        }
+
+        val newPopUntil = findViewById<View>(R.id.newPopUntil)
+        newPopUntil.setOnClickListener {
+            cn.itbox.fluttermeteor.navigator.FlutterMeteorNavigator.popUntil("rootPage")
+        }
+
+        val newPopToRoot = findViewById<View>(R.id.newPopToRoot)
+        newPopToRoot.setOnClickListener {
+            cn.itbox.fluttermeteor.navigator.FlutterMeteorNavigator.popToRoot()
+        }
+
+        val newPushReplace = findViewById<View>(R.id.newPushReplace)
+        newPushReplace.setOnClickListener {
+            val option = FMPushOptions(
+                withNewEngine = true,
+                isOpaque = false,
+                openNative = false,
+                arguments = null,
+            )
+            option.callBack = object :FlutterMeteorRouterCallBack{
+                override fun invoke(response: Any?) {
+                    Log.e("OnMethodCall","-------> $response")
+                }
+            }
+            cn.itbox.fluttermeteor.navigator.FlutterMeteorNavigator.pushToReplacement("test",option)
+        }
+
+        val newPushRemoveUntil = findViewById<View>(R.id.newPushRemoveUntil)
+        newPushRemoveUntil.setOnClickListener {
+            val option = FMPushOptions(
+                withNewEngine = true,
+                isOpaque = false,
+                openNative = false,
+                arguments = null,
+            )
+            option.callBack = object :FlutterMeteorRouterCallBack{
+                override fun invoke(response: Any?) {
+                    Log.e("OnMethodCall","-------> $response")
+                }
+            }
+            cn.itbox.fluttermeteor.navigator.FlutterMeteorNavigator.pushToAndRemoveUntil("test","rootPage",option)
         }
     }
 

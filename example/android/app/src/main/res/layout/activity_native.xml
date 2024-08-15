@@ -27,6 +27,59 @@
         android:id="@+id/test"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:text="Test" />
+
+    <Button
+        android:id="@+id/newPush"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="push页面"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/newPop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pop页面"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/newPopUntil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="popUntil页面"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/newPopToRoot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="popToRoot页面"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/newPushReplace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pushReplace页面"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/newPushRemoveUntil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pushRemoveUntil页面"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/newPushRemoveRoot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="pushRemoveRoot页面"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </LinearLayout>
