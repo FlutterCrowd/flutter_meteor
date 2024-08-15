@@ -19,6 +19,7 @@ data class ActivityInfo(
 )
 
 internal object ActivityInjector {
+    private val TAG = "ActivityInjector"
 
     private val activityList = mutableListOf<ActivityInfo>()
 
@@ -98,7 +99,7 @@ internal object ActivityInjector {
             val initialRoute = intent.getStringExtra("initialRoute")
             val isRoot = initialRoute != null
             val rootName = name ?: (initialRoute ?: "")
-            Log.e("FlutterMeteor","onActivityCreated------$name<---<----$initialRoute---->-->${activity}")
+            Log.e(TAG,"onActivityCreated------$name<---<----$initialRoute---->-->${activity}")
             activityList.add(ActivityInfo(WeakReference(activity),isRoot,rootName,null,activity.hashCode()))
         }
 
@@ -118,6 +119,7 @@ internal object ActivityInjector {
         }
 
         override fun onActivityDestroyed(activity: Activity) {
+            Log.e(TAG,"onActivityDestroyed-------->${activity}")
             activityList.removeAll {
                 val activityObject = it.avtivity.get()
                 activityObject == null || activityObject == activity

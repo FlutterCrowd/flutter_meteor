@@ -2,11 +2,12 @@ package cn.itbox.fluttermeteor
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import cn.itbox.fluttermeteor.cache.MeteorCacheApi
+import cn.itbox.fluttermeteor.cache.MeteorMemoryChache
 
 import cn.itbox.fluttermeteor.engine.EngineInjector
 import cn.itbox.fluttermeteor.event_bus.MeteorEventBus
 import cn.itbox.fluttermeteor.navigator.NavigatorMethodHandler
-import cn.itbox.hz_cache_plugin.MeteorMemoryChache
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
