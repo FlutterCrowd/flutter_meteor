@@ -269,7 +269,7 @@ extension FlutterViewController {
 
 extension FlutterViewController {
     
-    public func flutterRouteExists(routeName:String, result: @escaping ((Bool) -> Void)) {
+    public func flutterRouteExists(routeName:String, result: @escaping ((_ exists: Bool) -> Void)) {
         let arguments = ["routeName": routeName]
         if let channel = navigatorChannel() {
             channel.save_invoke(method: FMRouteExists, arguments: arguments) { ret in
@@ -285,17 +285,21 @@ extension FlutterViewController {
     }
 
 
-    public func flutterIsRoot(routeName:String, result: @escaping ((Bool) -> Void)) {
+    public func flutterIsRoot(routeName:String, result: @escaping ((_ isRoot: Bool) -> Void)) {
         if let channel = navigatorChannel() {
             channel.save_invoke(method:FMIsRoot, arguments: nil) { ret in
-                
+                if let isRoot = ret as? Bool {
+                    result(isRoot)
+                } else {
+                    result(false)
+                }
             }
         } else {
             result(false)
         }
     }
 
-    public func flutterRootRouteName(result: @escaping ((String?) -> Void)) {
+    public func flutterRootRouteName(result: @escaping ((_ rootRouteName: String?) -> Void)) {
         if let channel = navigatorChannel() {
             channel.save_invoke(method:FMRootRouteName) { rootRouteName in
                 if let rootRouteName = rootRouteName as? String {
@@ -309,7 +313,7 @@ extension FlutterViewController {
         }
     }
 
-    public func flutterTopRouteName(result: @escaping ((String?) -> Void)) {
+    public func flutterTopRouteName(result: @escaping ((_ topRouteName: String?) -> Void)) {
         
         if let channel = navigatorChannel() {
             channel.save_invoke(method: FMTopRouteName) { topRouteName in
@@ -324,7 +328,7 @@ extension FlutterViewController {
         }
     }
 
-    public func flutterRouteNameStack(result: @escaping (([String]?) -> Void)) {
+    public func flutterRouteNameStack(result: @escaping ((_ routeStack: [String]?) -> Void)) {
         if let channel = navigatorChannel() {
             channel.save_invoke(method: FMRouteNameStack) { ret in
                 if let retArray = ret as? [String] {
