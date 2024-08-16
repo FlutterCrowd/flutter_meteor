@@ -239,11 +239,13 @@ extension FlutterViewController {
    }
     
     public func flutterPopUntil(untilRouteName: String?,
+                                isFarthest: Bool = false,
                                 options: MeteorPopOptions? = nil) {
         
         if let channel = navigatorChannel() {
             var arguments: Dictionary<String, Any?> = [:]
             arguments["routeName"] = untilRouteName
+            arguments["isFarthest"] = isFarthest
             channel.save_invoke(method: FMPopUntilMethod, arguments: arguments) { ret in
                 options?.callBack?(ret)
             }

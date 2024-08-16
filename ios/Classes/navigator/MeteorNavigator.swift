@@ -313,14 +313,15 @@ public class MeteorNavigator {
      * @param options MeteorPushOptions
      */
     public static func popUntil(untilRouteName: String?, 
+                                isFarthest: Bool = false,
                                 options: MeteorPopOptions? = nil) {
 #if DEBUG
         print("MeteorNavigator popUntil: \(untilRouteName ?? "nil"), opptions: \(options?.toJson() ?? ["":nil])")
 #endif
         
         if untilRouteName != nil {
-            searchRoute(routeName: untilRouteName!) { viewController in
-                _popUntil(untilRouteName: untilRouteName!, untilPage: viewController, options: options)
+            searchRoute(routeName: untilRouteName!, isReversed: !isFarthest) { viewController in
+                _popUntil(untilRouteName: untilRouteName!, isFarthest: isFarthest, untilPage: viewController, options: options)
             }
         } else {
             print("No valid untilRouteName")
@@ -329,6 +330,7 @@ public class MeteorNavigator {
     }
     
     private static func _popUntil(untilRouteName: String, 
+                                  isFarthest: Bool = false,
                                   untilPage: UIViewController?,
                                   options: MeteorPopOptions?) {
         // 1、先查询untilRouteName所在的viewController
@@ -336,7 +338,7 @@ public class MeteorNavigator {
             MeteorNativeNavigator.popUntil(untilPage: untilPage!, animated: options?.animated ?? true)
             if let flutterVc = untilPage as? FlutterViewController {
                 // 3、如果是FlutterViewController则通过Channel通道在flutter端popUntil
-                flutterVc.flutterPopUntil(untilRouteName: untilRouteName, options: options)
+                flutterVc.flutterPopUntil(untilRouteName: untilRouteName, isFarthest: isFarthest, options: options)
             }
         } else { //如果untilPage不存在则返回上一页
             print("pop until 查无此路由：\(untilRouteName)")

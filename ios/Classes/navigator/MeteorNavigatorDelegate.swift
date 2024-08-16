@@ -40,8 +40,10 @@ private struct MeteorPushParams {
 private struct MeteorPopParams {
     
     public var untilRouteName: String?
+    public var isFarthest: Bool = false
     public var options: MeteorPopOptions?
-    public init(untilRouteName: String? = nil, options: MeteorPopOptions? = nil) {
+    public init(untilRouteName: String? = nil, isFarthest: Bool = false, options: MeteorPopOptions? = nil) {
+        self.isFarthest = isFarthest
         self.untilRouteName = untilRouteName
         self.options = options
     }
@@ -72,7 +74,7 @@ protocol MeteorNavigatorDelegate {
     // pop
     func pop(options: MeteorPopOptions?)
     
-    func popUntil(untilRouteName: String?, options: MeteorPopOptions?)
+    func popUntil(untilRouteName: String?, isFarthest: Bool, options: MeteorPopOptions?)
      
     func popToRoot(options: MeteorPopOptions?)
      
@@ -127,7 +129,7 @@ extension MeteorNavigatorDelegate {
             break
         case FMPopUntilMethod:
             let params = getPopParams(call, result: result)
-            popUntil(untilRouteName: params.untilRouteName, options: params.options)
+            popUntil(untilRouteName: params.untilRouteName, isFarthest: params.isFarthest, options: params.options)
             break
         case FMPopToRootMethod:
             let params = getPopParams(call, result: result)
@@ -184,6 +186,7 @@ extension MeteorNavigatorDelegate {
         var params = MeteorPopParams.init()
         if let methodArguments = call.arguments as? Dictionary<String, Any> {
             params.untilRouteName = methodArguments["routeName"] as? String
+            params.isFarthest = methodArguments["isFarthest"] as? Bool ?? false
             var options = MeteorPopOptions()
             options.animated = methodArguments["animated"] as? Bool ?? true
             options.canDismiss = methodArguments["canDismiss"] as? Bool ?? true
@@ -260,8 +263,8 @@ extension MeteorNavigatorDelegate {
         MeteorNavigator.pop(options: options)
     }
     
-    func popUntil(untilRouteName: String?, options: MeteorPopOptions?) {
-        MeteorNavigator.popUntil(untilRouteName: untilRouteName, options: options)
+    func popUntil(untilRouteName: String?, isFarthest: Bool = false, options: MeteorPopOptions?) {
+        MeteorNavigator.popUntil(untilRouteName: untilRouteName, isFarthest: isFarthest, options: options)
     }
      
     func popToRoot(options: MeteorPopOptions?) {
