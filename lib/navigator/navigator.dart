@@ -166,12 +166,13 @@ class MeteorNavigator {
 
   /// pop 到指定页面并替换当前页面
   ///
-  /// @parma routeName 要pod到的页面
-  static void popUntil(String routeName) async {
-    if (routerObserver.routeExists(routeName)) {
-      _flutterNavigator.popUntil(routeName);
+  /// @param routeName 要pod到的页面，如果对应routeName的路由不存在会pop到上一个页面
+  /// @param isFarthest 是否pop到最远端的routeName，默认isFarthest = false表示最近的，isFarthest = true表示最远的
+  static void popUntil(String routeName, {bool isFarthest = false}) async {
+    if (routerObserver.routeExists(routeName) && !isFarthest) {
+      _flutterNavigator.popUntil(routeName, isFarthest: isFarthest);
     } else {
-      _nativeNavigator.popUntil(routeName);
+      _nativeNavigator.popUntil(routeName, isFarthest: isFarthest);
     }
   }
 

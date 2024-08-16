@@ -61,6 +61,24 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
+                MeteorNavigator.popUntil('multiEnginePage2', isFarthest: true);
+              },
+              child: Container(
+                child: const Text(
+                  '返回最远的一个multiEnginePage2',
+                  style: TextStyle(
+                    backgroundColor: Colors.green,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
                 MeteorNavigator.popToRoot();
               },
               child: Container(
@@ -95,7 +113,7 @@ class _MultiEnginPageState extends State<MultiEnginPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushReplacementNamed('standardPageRoute_top',withNewEngine: true);
+                MeteorNavigator.pushReplacementNamed('standardPageRoute_top', withNewEngine: true);
               },
               child: const Text(
                 'push并替换当前页面',

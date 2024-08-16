@@ -64,19 +64,22 @@ class MeteorMethodChannel {
 
   /// ***********Native to flutter*************/
   Future<dynamic> flutterPop({Map<String, dynamic>? arguments}) async {
-    return await _flutterNavigator.pop(null);
+    return _flutterNavigator.pop(null);
   }
 
   Future<dynamic> flutterPopUntil({Map<String, dynamic>? arguments}) async {
-    // Map<String, dynamic> arg = {};
-    // if (arguments != null) {
-    //   arg.addAll(arguments);
-    // }
     String? routeName = arguments?["routeName"];
     if (routeName != null) {
-      return await _flutterNavigator.popUntil(routeName);
+      bool isFarthest = false;
+      if (arguments?["result"] != null && arguments?["result"] is Map) {
+        final Map result = arguments?["result"] as Map;
+        if (result['isFarthest'] != null && result['isFarthest'] is bool) {
+          isFarthest = result['isFarthest'];
+        }
+      }
+      return _flutterNavigator.popUntil(routeName, isFarthest: isFarthest);
     } else {
-      return await _flutterNavigator.pop();
+      return _flutterNavigator.pop();
     }
   }
 

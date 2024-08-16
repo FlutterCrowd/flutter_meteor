@@ -112,8 +112,14 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   }
 
   @override
-  void popUntil<T extends Object?>(String routeName, [T? result]) async {
-    await methodChannel.invokeMethod<T>(FMNavigatorMethod.popUntilMethod, {'routeName': routeName});
+  void popUntil<T extends Object?>(String routeName, {bool isFarthest = false}) async {
+    await methodChannel.invokeMethod<T>(
+      FMNavigatorMethod.popUntilMethod,
+      {
+        'routeName': routeName,
+        'result': {'isFarthest': isFarthest}
+      },
+    );
   }
 
   @override

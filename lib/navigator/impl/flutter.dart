@@ -17,7 +17,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   }
 
   @override
-  Future<T?> pop<T extends Object?>([T? result]) async {
+  void pop<T extends Object?>([T? result]) async {
     HzLog.t('MeteorFlutterNavigator pop rootContext:$rootContext');
     if (Navigator.canPop(rootContext)) {
       Navigator.pop<T>(rootContext, result);
@@ -36,15 +36,24 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   }
 
   @override
-  Future<T?> popUntil<T extends Object?>(String routeName) async {
+  void popUntil<T extends Object?>(String routeName, {bool isFarthest = false}) async {
     HzLog.t('MeteorFlutterNavigator popUntil routeName:$routeName');
     if (routerObserver.routeExists(routeName) && rootContext.mounted) {
-      Navigator.popUntil(
-        rootContext,
-        ModalRoute.withName(
-          routeName,
-        ),
-      );
+      if (isFarthest) {
+        for (Route<dynamic> route in routerObserver.routeStack) {
+          if (route.settings.name == routeName) {
+            Navigator.of(rootContext).popUntil((r) => r == route);
+            break;
+          }
+        }
+      } else {
+        Navigator.popUntil(
+          rootContext,
+          ModalRoute.withName(
+            routeName,
+          ),
+        );
+      }
     } else {
       HzLog.w('MeteorFlutterNavigator routeName:$routeName is not exist in navigator routeStack');
       pop();

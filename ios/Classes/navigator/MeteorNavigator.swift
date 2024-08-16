@@ -317,6 +317,7 @@ public class MeteorNavigator {
 #if DEBUG
         print("MeteorNavigator popUntil: \(untilRouteName ?? "nil"), opptions: \(options?.toJson() ?? ["":nil])")
 #endif
+        
         if untilRouteName != nil {
             searchRoute(routeName: untilRouteName!) { viewController in
                 _popUntil(untilRouteName: untilRouteName!, untilPage: viewController, options: options)
@@ -381,9 +382,13 @@ extension MeteorNavigator {
     
     /*------------------------router method start--------------------------*/
     public static func searchRoute(routeName: String, 
+                                   isReversed: Bool = true,
                                    result: @escaping MeteorNavigatorSearchBlock) {
     
-        let vcStack = MeteorNavigatorHelper.viewControllerStack.reversed() // 反转数组，从顶层向下层搜索
+        var vcStack = MeteorNavigatorHelper.viewControllerStack // 反转数组，从顶层向下层搜索
+        if isReversed {
+            vcStack = vcStack.reversed()
+        }
         let serialQueue = MeteorSerialTaskQueue(label: "cn.itbox.serialTaskQueue.routeSearch")
 
         func callBack(viewController: UIViewController?){
