@@ -26,10 +26,10 @@ class MixinRouteContainer {
     } else if (routeType == FMStandardRouteType.bottomSheet) {
       addBottomSheetPageRoute(name, builder);
     } else if (routeType == FMStandardRouteType.native) {
-      if (Platform.isAndroid) {
-        addMaterialPageRoute(name, builder);
-      } else {
+      if (Platform.isIOS) {
         addCupertinoPageRoute(name, builder);
+      } else {
+        addMaterialPageRoute(name, builder);
       }
     } else {
       print('Unknown routeType: $routeType');

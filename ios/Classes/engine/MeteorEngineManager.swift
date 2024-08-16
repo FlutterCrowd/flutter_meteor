@@ -35,8 +35,6 @@ class MeteorEngineManager: NSObject {
     // FlutterEngineGroup 用于管理所有引擎
     private static let flutterEngineGroup = FlutterEngineGroup(name: "itbox.meteor.flutterEnginGroup", project: nil)
     
-//    public static  var engineCache:MeteorWeakDictionary = MeteorWeakDictionary<FlutterBinaryMessenger, FlutterEngine>()
-
     public static func createFlutterEngine(options: MeteorEngineGroupOptions? = nil) -> FlutterEngine  {
       
         var arguments: Dictionary<String, Any> = Dictionary<String, Any>.init()

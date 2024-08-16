@@ -3,14 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 import 'package:hz_router_plugin_example/router/router_center.dart';
 
+import 'life_cycle_observer.dart';
+
 final GlobalKey<NavigatorState> rootKey = GlobalKey<NavigatorState>();
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding.instance.addObserver(AppLifecycleObserver());
   runApp(const MyApp());
 }
 
 @pragma("vm:entry-point")
 void childEntry(List<String> args) {
-  print('这是传递过来的参数：$args');
+  if (kDebugMode) {
+    print('这是传递过来的参数：$args');
+  }
+  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding.instance.addObserver(AppLifecycleObserver());
   if (args.isNotEmpty) {
     EntryArguments arguments = MeteorEngine.parseEntryArgs(args);
     String? initialRoute = arguments.initialRoute;

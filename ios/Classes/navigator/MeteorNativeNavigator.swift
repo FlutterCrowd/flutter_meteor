@@ -8,6 +8,7 @@
 import UIKit
 
 
+let MeteorNavigatorAnimationDuration: Double  = 0.35;
 
 public class MeteorNativeNavigator: NSObject {
         
@@ -296,7 +297,7 @@ public class MeteorNativeNavigator: NSObject {
                 // 这里临时将顶层视图覆盖到要返回的视图，避免闪屏
                 let topSuperView = topView.superview
                 untilPage?.view .addSubview(topView)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + MeteorNavigatorAnimationDuration) {
                     // 在push动画完成后恢复原样
                     topView.removeFromSuperview()
                     topSuperView?.addSubview(topView)
@@ -331,7 +332,7 @@ public class MeteorNativeNavigator: NSObject {
                 // 这里临时将顶层视图覆盖到要返回的视图，避免闪屏
                 let topSuperView = topView.superview
                 untilPage?.view .addSubview(topView)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + MeteorNavigatorAnimationDuration) {
                     // 在push动画完成后恢复原样
                     topView.removeFromSuperview()
                     topSuperView?.addSubview(topView)
@@ -390,7 +391,7 @@ public class MeteorNativeNavigator: NSObject {
             // 这里临时将顶层视图覆盖到要返回的视图，避免闪屏
             let  topSuperView = topView.superview
             rootVc?.view .addSubview(topView)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + MeteorNavigatorAnimationDuration) {
                 // 在push动画完成后恢复原样
                 topView.removeFromSuperview()
                 topSuperView?.addSubview(topView)
