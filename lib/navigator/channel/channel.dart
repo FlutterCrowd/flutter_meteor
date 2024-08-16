@@ -71,11 +71,8 @@ class MeteorMethodChannel {
     String? routeName = arguments?["routeName"];
     if (routeName != null) {
       bool isFarthest = false;
-      if (arguments?["result"] != null && arguments?["result"] is Map) {
-        final Map result = arguments?["result"] as Map;
-        if (result['isFarthest'] != null && result['isFarthest'] is bool) {
-          isFarthest = result['isFarthest'];
-        }
+      if (arguments?['isFarthest'] != null && arguments?['isFarthest'] is bool) {
+        isFarthest = arguments!['isFarthest'];
       }
       return _flutterNavigator.popUntil(routeName, isFarthest: isFarthest);
     } else {

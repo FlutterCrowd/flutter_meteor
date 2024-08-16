@@ -117,7 +117,7 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
       FMNavigatorMethod.popUntilMethod,
       {
         'routeName': routeName,
-        'result': {'isFarthest': isFarthest}
+        'isFarthest': isFarthest,
       },
     );
   }
