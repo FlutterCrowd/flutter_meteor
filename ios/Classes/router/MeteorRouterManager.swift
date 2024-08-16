@@ -1,5 +1,5 @@
 //
-//  FlutterMeteorRouterManager.swift
+//  MeteorRouterManager.swift
 //  flutter_meteor
 //
 //  Created by itbox_djx on 2024/7/12.
@@ -9,7 +9,7 @@ import UIKit
 import Flutter
 
 /// UIViewController构造器
-public typealias FMViewControllerBuilder = (_ arguments: Dictionary<String, Any>?) -> UIViewController
+public typealias MeteorViewControllerBuilder = (_ arguments: Dictionary<String, Any>?) -> UIViewController
 
 /// UIViewController构造器
 public class MeteorRouterManager: NSObject {
@@ -19,15 +19,15 @@ public class MeteorRouterManager: NSObject {
     
     private let queue = DispatchQueue(label: "com.example.MemoryCacheQueue", attributes: .concurrent)
 
-    private var routes = Dictionary<String, FMViewControllerBuilder>()
+    private var routes = Dictionary<String, MeteorViewControllerBuilder>()
     
     
     public static func insertRouter(routeName:String,
-                                    routerBuilder: @escaping FMViewControllerBuilder) {
+                                    routerBuilder: @escaping MeteorViewControllerBuilder) {
         shared.routes[routeName] = routerBuilder
     }
     
-    public static func routerBuilder(routeName:String) -> FMViewControllerBuilder? {
+    public static func routerBuilder(routeName:String) -> MeteorViewControllerBuilder? {
         return shared.routes[routeName]
     }
     
@@ -36,7 +36,7 @@ public class MeteorRouterManager: NSObject {
         if(routeName == nil) {
             return nil
         }
-        let vcBuilder: FMViewControllerBuilder? = shared.routes[routeName!]
+        let vcBuilder: MeteorViewControllerBuilder? = shared.routes[routeName!]
         let vc: UIViewController? = vcBuilder?(arguments)
         if let naviVC = vc as? UINavigationController,
            let visibleVc = naviVC.visibleViewController {
@@ -53,7 +53,7 @@ public class MeteorRouterManager: NSObject {
         if(routeName == nil) {
             return nil
         }
-        let vcBuilder: FMViewControllerBuilder? = shared.routes[routeName!]
+        let vcBuilder: MeteorViewControllerBuilder? = shared.routes[routeName!]
         let vc: UIViewController? = vcBuilder?(options?.arguments)
         
         if options?.isOpaque == false {
