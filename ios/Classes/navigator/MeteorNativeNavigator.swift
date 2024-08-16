@@ -403,17 +403,17 @@ public class MeteorNativeNavigator: NSObject {
     
     /// 获取顶部控制器
     public static func topViewController() -> UIViewController? {
-        return MeteorRouterHelper.topViewController()
+        return MeteorNavigatorHelper.topViewController()
     }
     
     /// 获取根控制器
     public static func rootViewController() -> UIViewController? {
-        return MeteorRouterHelper.rootViewController()
+        return MeteorNavigatorHelper.rootViewController()
     }
 
     /// 获取根控制器
     public static func rootNavigationController() -> UINavigationController? {
-        return MeteorRouterHelper.rootNavigationController()
+        return MeteorNavigatorHelper.rootNavigationController()
         
     }
 }

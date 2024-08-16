@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hz_tools/hz_tools.dart';
@@ -81,6 +83,9 @@ class MeteorRouteObserver extends NavigatorObserver {
 
   void sendNavigatorStackChanged() {
     // final stackDepth = navigator?.canPop() == true ? 2 : 1;
-    methodChannel.send({"event": "canPop", "data": navigator?.canPop() ?? false});
+    if (Platform.isIOS) {
+      /// iOS需要监听flutter端是否可以继续pop以便控制popGesture手势
+      methodChannel.send({"event": "canPop", "data": navigator?.canPop() ?? false});
+    }
   }
 }

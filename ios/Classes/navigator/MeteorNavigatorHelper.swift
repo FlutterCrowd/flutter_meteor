@@ -7,7 +7,7 @@
 
 import UIKit
 
-public class MeteorRouterHelper: NSObject {
+public class MeteorNavigatorHelper: NSObject {
     
     public static var viewControllerStack: [UIViewController] {
         get{
