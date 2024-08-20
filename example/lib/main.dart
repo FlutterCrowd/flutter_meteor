@@ -135,7 +135,7 @@ class _MyAppState extends State<MyApp> {
 
       navigatorKey: rootKey,
       navigatorObservers: [
-        MeteorNavigator.routerObserver,
+        MeteorNavigator.navigatorObserver,
         RouterCenter.routeObserver,
       ],
       // initialRoute: "home",

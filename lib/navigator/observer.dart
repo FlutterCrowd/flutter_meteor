@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hz_tools/hz_tools.dart';
 
-class MeteorRouteObserver extends NavigatorObserver {
+class MeteorNavigatorObserver extends NavigatorObserver {
   final BasicMessageChannel methodChannel =
       const BasicMessageChannel('itbox.meteor.navigatorObserver', StandardMessageCodec());
 

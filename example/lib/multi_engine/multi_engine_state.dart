@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 
-class GlobalStateService extends ChangeNotifier {
+class GlobalStateService extends ChangeNotifier with GlobalSharedStateMixin {
   String eventName = 'GlobalStateChanged';
   GlobalStateService() {
     fetchState();
@@ -19,14 +19,14 @@ class GlobalStateService extends ChangeNotifier {
 
   // Fetch state from native platform
   Future<void> fetchState() async {
-    final String? state = await SharedCache.getString('state');
+    final String? state = await getString('state');
     _updateCurrentEngineState(state ?? 'Initial State');
   }
 
   // Update state on both Flutter and native platform
   Future<void> updateState(String newState) async {
     // _updateCurrentEngineState(newState);
-    await SharedCache.setString('state', newState);
+    await setString('state', newState);
     MeteorEventBus.commit(eventName: eventName, data: newState);
   }
 

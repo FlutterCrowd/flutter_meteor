@@ -10,7 +10,7 @@ class MeteorNavigator {
   static final MeteorNativeNavigator _nativeNavigator = MeteorNativeNavigator();
   static final MeteorFlutterNavigator _flutterNavigator = MeteorFlutterNavigator();
 
-  static MeteorRouteObserver routerObserver = MeteorFlutterNavigator.routerObserver;
+  static MeteorNavigatorObserver navigatorObserver = MeteorFlutterNavigator.navigatorObserver;
 
   static void init({
     required GlobalKey<NavigatorState> rootKey,
@@ -68,7 +68,7 @@ class MeteorNavigator {
     Map<String, dynamic>? arguments,
   }) async {
     /// 当前引擎路由栈大于一个页面的时候直接在flutter端替换
-    final routeStack = routerObserver.routeNameStack;
+    final routeStack = navigatorObserver.routeNameStack;
     if (routeStack.length > 1 && !openNative && !withNewEngine) {
       return await _flutterNavigator.pushReplacementNamed<T, TO>(
         routeName,
@@ -101,7 +101,7 @@ class MeteorNavigator {
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    if (routerObserver.routeExists(untilRouteName) && !openNative && !withNewEngine) {
+    if (navigatorObserver.routeExists(untilRouteName) && !openNative && !withNewEngine) {
       return await _flutterNavigator.pushNamedAndRemoveUntil<T>(
         routeName,
         untilRouteName,
@@ -169,7 +169,7 @@ class MeteorNavigator {
   /// @param routeName 要pod到的页面，如果对应routeName的路由不存在会pop到上一个页面
   /// @param isFarthest 是否pop到最远端的routeName，默认isFarthest = false表示最近的，isFarthest = true表示最远的
   static void popUntil(String routeName, {bool isFarthest = false}) async {
-    if (routerObserver.routeExists(routeName) && !isFarthest) {
+    if (navigatorObserver.routeExists(routeName) && !isFarthest) {
       _flutterNavigator.popUntil(routeName, isFarthest: isFarthest);
     } else {
       _nativeNavigator.popUntil(routeName, isFarthest: isFarthest);
@@ -198,7 +198,7 @@ class MeteorNavigator {
 
   /// 判断路由routeName是否存在
   static Future<bool> routeExists(String routeName) async {
-    bool exists = routerObserver.routeExists(routeName);
+    bool exists = navigatorObserver.routeExists(routeName);
     if (exists) {
       return exists;
     }

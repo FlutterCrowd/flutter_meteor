@@ -7,7 +7,7 @@ import '../navigator_api.dart';
 /// 实现flutter层页面路由
 class MeteorFlutterNavigator extends MeteorNavigatorApi {
   static GlobalKey<NavigatorState>? rootKey;
-  static MeteorRouteObserver routerObserver = MeteorRouteObserver();
+  static MeteorNavigatorObserver navigatorObserver = MeteorNavigatorObserver();
 
   static BuildContext get rootContext {
     if (rootKey?.currentContext == null) {
@@ -38,9 +38,9 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   @override
   void popUntil<T extends Object?>(String routeName, {bool isFarthest = false}) async {
     HzLog.t('MeteorFlutterNavigator popUntil routeName:$routeName');
-    if (routerObserver.routeExists(routeName) && rootContext.mounted) {
+    if (navigatorObserver.routeExists(routeName) && rootContext.mounted) {
       if (isFarthest) {
-        for (Route<dynamic> route in routerObserver.routeStack) {
+        for (Route<dynamic> route in navigatorObserver.routeStack) {
           if (route.settings.name == routeName) {
             Navigator.of(rootContext).popUntil((r) => r == route);
             break;
@@ -100,7 +100,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   }) async {
     HzLog.t(
         'MeteorFlutterNavigator pushReplacementNamed newRouteName:$routeName, untilRouteName:$untilRouteName, arguments:$arguments');
-    if (routerObserver.routeExists(untilRouteName) && rootContext.mounted) {
+    if (navigatorObserver.routeExists(untilRouteName) && rootContext.mounted) {
       return await Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
         routeName,
         ModalRoute.withName(untilRouteName),
@@ -166,26 +166,26 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
 
   @override
   Future<bool> isRoot(String routeName) async {
-    return routerObserver.isRootRoute(routeName);
+    return navigatorObserver.isRootRoute(routeName);
   }
 
   @override
   Future<bool> routeExists(String routeName) async {
-    return routerObserver.routeExists(routeName);
+    return navigatorObserver.routeExists(routeName);
   }
 
   @override
   Future<List<String>> routeNameStack() async {
-    return routerObserver.routeNameStack;
+    return navigatorObserver.routeNameStack;
   }
 
   @override
   Future<String?> rootRouteName() async {
-    return routerObserver.rootRouteName;
+    return navigatorObserver.rootRouteName;
   }
 
   @override
   Future<String?> topRouteName() async {
-    return routerObserver.topRouteName;
+    return navigatorObserver.topRouteName;
   }
 }

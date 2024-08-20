@@ -96,7 +96,14 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
     
     deinit {
         FlutterMeteor.pluginRegistryDelegate.unRegister(pluginRegistry: self.pluginRegistry())
+        removeAllSubviews()
     }
+    
+    func removeAllSubviews() {
+            // Remove all subviews from the FlutterViewController's view
+        self.view.subviews.forEach { $0.removeFromSuperview() }
+    }
+    
     
     public func pop(options: MeteorPopOptions?) {
         MeteorNavigator.pop()
@@ -114,42 +121,34 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
     
     func setupNavigatorObserverChannel() -> Void {
 
-        let methodChannel = FlutterBasicMessageChannel(name: "itbox.meteor.navigatorObserver", binaryMessenger: self.binaryMessenger, codec: FlutterStandardMessageCodec.sharedInstance())
-        methodChannel.setMessageHandler { arguments, reply in
-            if let map = arguments as? [String:Any] {
-                if map["event"] as! String == "canPop" {
-                    self.canFlutterPop = map["data"] as? Bool ?? false
-                    if self.canFlutterPop {
-                        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-                    } else {
-                        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-                    }
-                }
-            }
-        }
+//        let methodChannel = FlutterBasicMessageChannel(name: "itbox.meteor.navigatorObserver", binaryMessenger: self.binaryMessenger, codec: FlutterStandardMessageCodec.sharedInstance())
+//        methodChannel.setMessageHandler { arguments, reply in
+//            if let map = arguments as? [String:Any] {
+//                if map["event"] as! String == "canPop" {
+//                    self.canFlutterPop = map["data"] as? Bool ?? false
+//                    if self.canFlutterPop {
+//                        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+//                    } else {
+//                        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+//                    }
+//                }
+//            }
+//        }
     }
     
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if self.canFlutterPop {
-            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-        } else {
-            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        }
-    }
-    
-    public override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+3) {
-            print(MeteorNavigatorHelper.viewControllerStack)
-            print(MeteorNavigatorHelper.currentRouteStack())
-            MeteorNavigator.routeNameStack(result: { routeStack in
-                print(routeStack ?? [])
-            })
-        }
-    }
+//    public override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        if self.canFlutterPop {
+//            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+//        } else {
+//            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+//        }
+//    }
+//    
+//    public override func viewWillDisappear(_ animated: Bool) {
+//        super.viewWillDisappear(animated)
+//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+//    }
     
 }
 

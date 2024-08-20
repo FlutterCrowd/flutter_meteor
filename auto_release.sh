@@ -1,7 +1,8 @@
 #!/bin/bash
 
-
+git pull
 file=pubspec.yaml
+ios_pudspec=ios/flutter_meteor.podspec
 
 # 读取文件中的版本号
 version_line=$(grep 'version:' $file)
@@ -26,6 +27,16 @@ fi
 new_version="${head_version}.${mid_version}.${last_version}"
 # 替换文件中的版本号
 sed -i '' "s/version: $current_version/version: $new_version/" $file
+
+# 替换iOS 的版本号
+sed -i "" "s/s.version *= *'[^']*'/s.version = '${new_version}'/" "$ios_pudspec"
+
+# 检查替换结果
+if grep -q "s.version = '${new_version}'" "$ios_pudspec"; then
+  echo "iOS版本号已成功更新为 ${new_version}"
+else
+  echo "iOS版本号更新失败"
+fi
 
 # 升级版本号
 echo "升级版本号： $new_version"
