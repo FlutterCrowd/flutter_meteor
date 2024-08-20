@@ -54,5 +54,13 @@ if [ $? -eq 0 ]; then
   git tag $new_version
   git push origin $new_version
 else
+  # 替换文件中的版本号
+  sed -i '' "s/version:$new_version/version: $current_version/" $file
+
+  # 替换iOS 的版本号
+  sed -i "" "s/s.version *= *'[^']*'/s.version = '$current_version'/" "$ios_pudspec"
+  echo "回退版本： $current_version"
+  git add .
+  git commit -m "feat: 回退版本"
   echo "Git push 失败"
 fi

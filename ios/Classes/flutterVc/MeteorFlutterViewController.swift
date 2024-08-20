@@ -121,34 +121,28 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
     
     func setupNavigatorObserverChannel() -> Void {
 
-//        let methodChannel = FlutterBasicMessageChannel(name: "itbox.meteor.navigatorObserver", binaryMessenger: self.binaryMessenger, codec: FlutterStandardMessageCodec.sharedInstance())
-//        methodChannel.setMessageHandler { arguments, reply in
-//            if let map = arguments as? [String:Any] {
-//                if map["event"] as! String == "canPop" {
-//                    self.canFlutterPop = map["data"] as? Bool ?? false
-//                    if self.canFlutterPop {
-//                        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-//                    } else {
-//                        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-//                    }
-//                }
-//            }
-//        }
+        let methodChannel = FlutterBasicMessageChannel(name: "itbox.meteor.navigatorObserver", binaryMessenger: self.binaryMessenger, codec: FlutterStandardMessageCodec.sharedInstance())
+        methodChannel.setMessageHandler {[weak self] arguments, reply in
+            if let map = arguments as? [String:Any] {
+                if map["event"] as! String == "canPop" { /// 当FLutter端可以pop时，禁用原生PopGesture手势，当FLutter不可以pop时，开启PopGesture手势以支持原生右滑退出页面
+                    let canPop: Bool = map["data"] as? Bool ?? false
+                    self?.canFlutterPop = canPop
+                    if canPop {
+                        self?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+                    } else {
+                        self?.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+                    }
+                }
+            }
+        }
     }
     
-//    public override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        if self.canFlutterPop {
-//            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-//        } else {
-//            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-//        }
-//    }
-//    
-//    public override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-//    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        /// 当页面消失时默认支持右滑退出页面
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
     
 }
 
