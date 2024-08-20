@@ -117,7 +117,7 @@ class NativeActivity : AppCompatActivity() {
         }
 
         MeteorEventBus.addListener("eventName",null, listener = object :MeteorEventBusListener{
-            override fun invoke(p1: Map<String, Any?>?) {
+            override fun invoke(p1: Any?) {
                 println("得到了结果---》$p1")
             }
 

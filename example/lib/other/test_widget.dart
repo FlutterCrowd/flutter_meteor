@@ -26,7 +26,7 @@ class _MultiEnginPageState extends State<TestPage> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                       SharedCachePlugin.setString('stringKey', 'Hello');
+                      SharedMemoryCache.setString('stringKey', 'Hello');
                     },
                     child: Container(
                       padding: const EdgeInsets.all(5),
@@ -38,7 +38,7 @@ class _MultiEnginPageState extends State<TestPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      SharedCachePlugin.setBool('boolKey', true);
+                      SharedMemoryCache.setBool('boolKey', true);
                     },
                     child: Container(
                       padding: const EdgeInsets.all(5),
@@ -50,7 +50,7 @@ class _MultiEnginPageState extends State<TestPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      SharedCachePlugin.setInt('intKey', 10086);
+                      SharedMemoryCache.setInt('intKey', 10086);
                     },
                     child: Container(
                       padding: const EdgeInsets.all(5),
@@ -62,7 +62,7 @@ class _MultiEnginPageState extends State<TestPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      SharedCachePlugin.setDouble('doubleKey', 10.01);
+                      SharedMemoryCache.setDouble('doubleKey', 10.01);
                     },
                     child: Container(
                       padding: const EdgeInsets.all(5),
@@ -74,7 +74,7 @@ class _MultiEnginPageState extends State<TestPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      SharedCachePlugin.setList('listKey',[1,2,3,4,5]);
+                      SharedMemoryCache.setList('listKey', [1, 2, 3, 4, 5]);
                     },
                     child: Container(
                       padding: const EdgeInsets.all(5),
@@ -86,7 +86,8 @@ class _MultiEnginPageState extends State<TestPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      SharedCachePlugin.setMap('mapKey',{"1":"1","2":"11","3":"111","4":"1111"});
+                      SharedMemoryCache.setMap(
+                          'mapKey', {"1": "1", "2": "11", "3": "111", "4": "1111"});
                     },
                     child: Container(
                       padding: const EdgeInsets.all(5),
@@ -104,8 +105,8 @@ class _MultiEnginPageState extends State<TestPage> {
                 runSpacing: 10.0,
                 children: [
                   GestureDetector(
-                    onTap: () async{
-                      String? test = await SharedCachePlugin.getString('stringKey');
+                    onTap: () async {
+                      String? test = await SharedMemoryCache.getString('stringKey');
                       print("取出:---> $test");
                     },
                     child: Container(
@@ -118,7 +119,7 @@ class _MultiEnginPageState extends State<TestPage> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      bool? test = await SharedCachePlugin.getBool('boolKey');
+                      bool? test = await SharedMemoryCache.getBool('boolKey');
                       print("取出:---> $test");
                     },
                     child: Container(
@@ -130,8 +131,8 @@ class _MultiEnginPageState extends State<TestPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: ()async {
-                      int? test = await SharedCachePlugin.getInt('intKey');
+                    onTap: () async {
+                      int? test = await SharedMemoryCache.getInt('intKey');
                       print("取出:---> $test");
                     },
                     child: Container(
@@ -143,8 +144,8 @@ class _MultiEnginPageState extends State<TestPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () async{
-                      double? test = await SharedCachePlugin.getDouble('doubleKey');
+                    onTap: () async {
+                      double? test = await SharedMemoryCache.getDouble('doubleKey');
                       print("取出:---> $test");
                     },
                     child: Container(
@@ -157,7 +158,7 @@ class _MultiEnginPageState extends State<TestPage> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      List? test = await SharedCachePlugin.getList('listKey');
+                      List? test = await SharedMemoryCache.getList('listKey');
                       print("取出:---> $test");
                     },
                     child: Container(
@@ -169,8 +170,8 @@ class _MultiEnginPageState extends State<TestPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () async{
-                      Map<String,dynamic>? test = await SharedCachePlugin.getMap('mapKey');
+                    onTap: () async {
+                      Map<String, dynamic>? test = await SharedMemoryCache.getMap('mapKey');
                       print("取出:---> $test");
                     },
                     child: Container(
@@ -186,8 +187,7 @@ class _MultiEnginPageState extends State<TestPage> {
               const Divider(),
               GestureDetector(
                 onTap: () {
-                  MeteorNavigator.pushNamed("multiEnginePage2",
-                      withNewEngine: true);
+                  MeteorNavigator.pushNamed("multiEnginePage2", withNewEngine: true);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(5),

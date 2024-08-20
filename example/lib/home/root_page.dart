@@ -224,11 +224,11 @@ class RootPage extends StatelessWidget {
         GestureDetector(
           onTap: () {
             MeteorNavigator.pushNamed(
-              "shareState2",
+              "testPage",
             );
           },
           child: const Center(
-            child: Text('测试多引擎共享状态2'),
+            child: Text('测试共享内存'),
           ),
         ),
         const SizedBox(
