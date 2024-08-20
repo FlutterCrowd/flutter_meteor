@@ -2,6 +2,8 @@
 // See also: https://pub.dev/packages/pigeon
 @file:Suppress("UNCHECKED_CAST", "ArrayInDataClass")
 
+package cn.itbox.fluttermeteor.cache
+
 
 import android.util.Log
 import io.flutter.plugin.common.BasicMessageChannel

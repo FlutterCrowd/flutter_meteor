@@ -1,9 +1,8 @@
 package cn.itbox.fluttermeteor.cache
 
-import MeteorCacheApi
 import kotlin.collections.HashMap
 
-object MeteorMemoryChache: MeteorCacheApi {
+object MeteorMemoryCache: MeteorCacheApi {
     private val storage = HashMap<String, Any?>()
 
     @Synchronized

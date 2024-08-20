@@ -202,6 +202,22 @@ class _MultiEnginPageState extends State<BackPage> {
           Center(
             child: GestureDetector(
               onTap: () {
+                MeteorNavigator.pushNamed('testPage');
+              },
+              child: const Text(
+                'toTestPage',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
                 MeteorNavigator.pushReplacementNamed('test', openNative: true);
               },
               child: const Text(

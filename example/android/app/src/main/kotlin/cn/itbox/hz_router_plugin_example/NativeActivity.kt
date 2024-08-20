@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.Toast
 import cn.itbox.fluttermeteor.core.FlutterMeteor
 import cn.itbox.fluttermeteor.core.FlutterMeteorRouteOptions
+import cn.itbox.fluttermeteor.event_bus.MeteorEventBus
+import cn.itbox.fluttermeteor.event_bus.MeteorEventBusListener
 import cn.itbox.fluttermeteor.navigator.FMPushOptions
 import cn.itbox.fluttermeteor.navigator.FMPopOptions
 import cn.itbox.fluttermeteor.navigator.FlutterMeteorRouterCallBack
@@ -113,6 +115,13 @@ class NativeActivity : AppCompatActivity() {
             }
             cn.itbox.fluttermeteor.navigator.FlutterMeteorNavigator.pushToAndRemoveUntil("test","rootPage",option)
         }
+
+        MeteorEventBus.addListener("eventName",null, listener = object :MeteorEventBusListener{
+            override fun invoke(p1: Map<String, Any?>?) {
+                println("得到了结果---》$p1")
+            }
+
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

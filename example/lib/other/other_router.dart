@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 import 'package:hz_router_plugin_example/other/pop_window.dart';
+import 'package:hz_router_plugin_example/other/test_widget.dart';
 import 'package:hz_router_plugin_example/other/webview_page.dart';
 import 'package:hz_router_plugin_example/router/common.dart';
 import 'package:hz_router_plugin_example/router/router_container.dart';
@@ -28,8 +29,13 @@ mixin OtherRouter on MixinRouteContainer {
       (arguments) => const BottomSheetPage(),
     );
     addRoute(
+      'testPage',
+      (arguments) => TestPage(),
+    );
+
+    addRoute(
       'backPage',
-      (arguments) => BackPage(),
+          (arguments) => BackPage(),
     );
 
     addMaterialPageRoute(
