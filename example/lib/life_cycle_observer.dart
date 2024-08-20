@@ -20,10 +20,12 @@ class AppLifecycleObserver with WidgetsBindingObserver {
 
   void onBackground() async {
     _isForeground = false;
+    // Provider.of<GlobalStateService>(rootKey.currentContext!).reloadData();
   }
 
   void onForeground() async {
     _isForeground = true;
+    // Provider.of<GlobalStateService>(rootKey.currentContext!).reloadData();
   }
 
   @override

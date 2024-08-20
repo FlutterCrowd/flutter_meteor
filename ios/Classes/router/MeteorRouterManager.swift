@@ -76,7 +76,7 @@ public class MeteorRouterManager: NSObject {
     
     
     public static func getDefaultFlutterViewController(routeName: String,
-                                                       entrypoint: String? = "childEntry",
+                                                       entrypoint: String? = "main",
                                                         options: MeteorPushOptions?) -> MeteorFlutterViewController {
         let isOpaque: Bool = options?.isOpaque ?? true
         

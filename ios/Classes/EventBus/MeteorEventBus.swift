@@ -2,7 +2,8 @@ import UIKit
 import Flutter
 
 // 定义事件监听器的别名
-typealias MeteorEventBusListener = ([String: Any?]?) -> Void
+// data 限定为Int、String、bool、double、List、dictionary，二进制文件、而且List和dictionary的元素页只能Int、String、bool、double
+typealias MeteorEventBusListener = (_ data: Any?) -> Void
 
 // 事件监听器条目，包含监听器 ID 和监听器函数
 private struct MeteorEventBusListenerItem {
@@ -42,7 +43,8 @@ class MeteorEventBus: NSObject {
     }
 
     // 触发事件
-    static func commit(eventName: String, data: [String: Any?]?) {
+    // data 限定为Int、String、bool、double、List、dictionary，二进制文件、而且List和dictionary的元素页只能Int、String、bool、double
+    static func commit(eventName: String, data: Any?) {
         listeners[eventName]?.forEach { $0.listener(data) }
 
         let message: [String: Any?] = [
@@ -60,7 +62,7 @@ class MeteorEventBus: NSObject {
         guard let map = message as? [String: Any?],
               let eventName = map["eventName"] as? String else { return }
         
-        commit(eventName: eventName, data: map["data"] as? [String: Any?])
+        commit(eventName: eventName, data: map["data"] ?? nil)
     }
 }
 

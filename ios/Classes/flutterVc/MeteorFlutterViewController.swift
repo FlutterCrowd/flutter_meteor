@@ -7,6 +7,7 @@
 
 import Flutter
 
+
 public typealias FlutterMeteorPopCallBack = (_ response: Dictionary<String, Any>?) -> Void
 
 
@@ -140,6 +141,14 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+3) {
+            print(MeteorNavigatorHelper.viewControllerStack)
+            print(MeteorNavigatorHelper.currentRouteStack())
+            MeteorNavigator.routeNameStack(result: { routeStack in
+                print(routeStack ?? [])
+            })
+        }
     }
     
 }

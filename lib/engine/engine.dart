@@ -9,18 +9,15 @@ class MeteorEngine {
   static bool _isMain = true;
   static get isMain => _isMain;
 
-  static String? engineId = 'mainEngine';
-
   static EntryArguments parseEntryArgs(List<String>? args) {
     HzLog.d('EntryArguments parseEntryArgs args:$args');
     _isMain = false;
     if (args == null || args.isEmpty) {
       HzLog.w('EntryArguments is null');
-      return EntryArguments('/', null);
+      return EntryArguments(null, null);
     }
     final jsonObject = args.isNotEmpty ? jsonDecode(args.first) : {};
-    String initialRoute = jsonObject['initialRoute'] ?? '/';
-    engineId = jsonObject['engineId'];
+    String? initialRoute = jsonObject['initialRoute'];
     Map<String, dynamic>? routeArguments = jsonObject['routeArguments'];
     HzLog.t(
         'EntryArguments parseEntryArgs initialRoute:$initialRoute, routeArguments:$routeArguments');

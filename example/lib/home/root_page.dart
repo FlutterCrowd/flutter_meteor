@@ -205,6 +205,32 @@ class RootPage extends StatelessWidget {
             child: Text('Unknown page'),
           ),
         ),
+        const SizedBox(
+          height: 20,
+        ),
+        GestureDetector(
+          onTap: () {
+            MeteorNavigator.pushNamed(
+              "shareState1",
+            );
+          },
+          child: const Center(
+            child: Text('测试多引擎共享状态1'),
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        GestureDetector(
+          onTap: () {
+            MeteorNavigator.pushNamed(
+              "shareState2",
+            );
+          },
+          child: const Center(
+            child: Text('测试多引擎共享状态2'),
+          ),
+        ),
       ],
     );
     return Scaffold(
