@@ -58,7 +58,7 @@ class HzRouterMapExemple  {
             arg["1"] = 1
             arg["2"] = "2"
             let engineGroupOptions = MeteorEngineGroupOptions.init(
-                entrypoint: "childEntry",
+                entrypoint: "main",
                 initialRoute: "multiEnginePage2",
                 entrypointArgs: arg)
             let testVc = MeteorFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)
@@ -71,7 +71,7 @@ class HzRouterMapExemple  {
             arg["1"] = 1
             arg["2"] = "2"
             let engineGroupOptions = MeteorEngineGroupOptions.init(
-                entrypoint: "childEntry",
+                entrypoint: "main",
                 initialRoute: "multiEnginePage",
                 entrypointArgs: arg)
             let testVc = MeteorFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)

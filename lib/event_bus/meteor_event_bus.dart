@@ -125,7 +125,7 @@ class MeteorEventBus {
   }
 
   static void receiveEvent(dynamic event) {
-    if (event is Map<String, dynamic>) {
+    if (event is Map) {
       final eventMap = event;
       final eventName = event['eventName'];
       HzLog.t('MeteorEventBus isMain:${MeteorEngine.isMain} allListeners:${instance._listenerMap}');

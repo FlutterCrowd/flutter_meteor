@@ -1,6 +1,6 @@
 import 'shared_cache_api.dart';
 
-class SharedCachePlugin {
+class SharedCache {
   static final _cacheApi = SharedCacheApi();
   static Future<void> setString(String key, String? value) async {
     await _cacheApi.setString(key, value);
