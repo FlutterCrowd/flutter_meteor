@@ -90,6 +90,8 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
                 }
             }
             FlutterMeteorNavigator.pop(option)
+        }else{
+            FlutterMeteorNavigator.pop(null)
         }
     }
 

@@ -71,15 +71,24 @@ object FlutterMeteorNavigator {
                 if (arguments == null) Activity.RESULT_CANCELED else Activity.RESULT_OK,
                 data
             )
-            ActivityInjector.currentActivity?.finish()
         }
+        ActivityInjector.currentActivity?.finish()
     }
 
     @JvmStatic
     fun popUntil(untilRouteName: String?, options: FMPopOptions? = null) {
         if(untilRouteName != null){
             CoroutineScope(Dispatchers.Main).launch {
-                popUntil(untilRouteName)
+                handlePopUntil(untilRouteName)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun popUntilFirst(untilRouteName: String?) {
+        if(untilRouteName != null){
+            CoroutineScope(Dispatchers.Main).launch {
+                handlePopUntilFirst(untilRouteName)
             }
         }
     }
@@ -91,7 +100,11 @@ object FlutterMeteorNavigator {
 
     @JvmStatic
     fun pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: FMPushOptions? = null) {
-        popUntil(untilRouteName)
+        if (untilRouteName != null) {
+            CoroutineScope(Dispatchers.Main).launch {
+                handlePopUntil(untilRouteName)
+            }
+        }
         push(routeName, options)
     }
 
@@ -246,9 +259,56 @@ object FlutterMeteorNavigator {
     }
 
     /**
+     * 出栈到最靠前的某个相同路由
+     */
+    private suspend fun handlePopUntilFirst(routeName: String) {
+        val activityInfoStack = ActivityInjector.activityInfoStack.reversed()
+        var firstInfo: ActivityInfo? = null
+
+        if (activityInfoStack.isEmpty()) {
+            return
+        }
+
+        for (activityInfo in activityInfoStack) {
+            val provider = activityInfo.channelProvider
+            if (provider != null) {
+                val channel = provider.navigatorChannel
+                val routeStack: List<String>? =
+                    callMethodSynchronously(channel, "routeNameStack") as? List<String>
+                Log.e(TAG,"popUntil-search:----> $routeStack")
+                if (!routeStack.isNullOrEmpty()) {
+                    if (routeStack.contains(routeName)) {
+                        firstInfo = activityInfo
+                        return
+                    }
+                }
+            } else {
+                if (routeName == activityInfo.routeName) {
+                    firstInfo = activityInfo
+                    return
+                }
+            }
+        }
+        if(firstInfo != null){
+            val index = ActivityInjector.activityInfoStack.indexOf(firstInfo)
+
+            val elementsAfterFirstInfo = ActivityInjector.activityInfoStack.subList(index + 1, activityInfoStack.size)
+
+            for (info in elementsAfterFirstInfo) {
+                ActivityInjector.remove(info.avtivity.get()!!)
+            }
+            val provider = firstInfo.channelProvider
+            if(provider != null){
+                val channel = provider.navigatorChannel
+                channel.invokeMethod("popUntil", mutableMapOf<String, Any>("routeName" to routeName))
+            }
+        }
+    }
+
+    /**
      * 出栈到指定路由
      */
-    private suspend fun popUntil(routeName: String) {
+    private suspend fun handlePopUntil(routeName: String) {
         val activityInfoStack = ActivityInjector.activityInfoStack
         val tempList = mutableListOf<ActivityInfo>()
 
