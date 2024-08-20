@@ -1,4 +1,4 @@
-package cn.itbox.hz_cache_plugin
+package cn.itbox.fluttermeteor.cache
 
 import MeteorCacheApi
 import kotlin.collections.HashMap

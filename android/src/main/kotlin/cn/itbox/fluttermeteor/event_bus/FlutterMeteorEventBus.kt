@@ -1,7 +1,7 @@
 package cn.itbox.fluttermeteor.event_bus
 import cn.itbox.fluttermeteor.engine.EngineInjector
 
-typealias MeteorEventBusListener = (Map<String, Any?>?) -> Unit
+typealias MeteorEventBusListener = (Any?) -> Unit
 
 private data class MeteorEventBusListenerItem(
     val listenerId: String?,
@@ -26,7 +26,7 @@ object MeteorEventBus {
         }
     }
 
-    fun commit(eventName: String, data: Map<String, Any?>?) {
+    fun commit(eventName: String, data: Any?) {
         // Notify native listeners
         listeners[eventName]?.forEach { it.listener(data) }
 
@@ -45,7 +45,7 @@ object MeteorEventBus {
     fun receiveMessageFromFlutter(message: Any?) {
         (message as? Map<String, Any?>)?.let { map ->
             map["eventName"]?.let { eventName ->
-                commit(eventName as String, map["data"] as? Map<String, Any?>)
+                commit(eventName as String, map["data"])
             }
         }
     }

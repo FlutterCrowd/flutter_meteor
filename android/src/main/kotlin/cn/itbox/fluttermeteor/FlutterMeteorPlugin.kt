@@ -2,7 +2,6 @@ package cn.itbox.fluttermeteor
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import cn.itbox.fluttermeteor.cache.MeteorCacheApi
 import cn.itbox.fluttermeteor.cache.MeteorMemoryChache
 
 import cn.itbox.fluttermeteor.engine.EngineInjector
