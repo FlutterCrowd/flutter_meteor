@@ -1,4 +1,4 @@
-import 'shared_cache_api.dart';
+import '../cache/shared_cache_api.dart';
 
 mixin GlobalSharedStateMixin {
   final _cacheApi = SharedCacheApi();
@@ -67,6 +67,4 @@ mixin GlobalSharedStateMixin {
   Future<List<int>?> getBytes(String key) async {
     return await _cacheApi.getBytes(key) as List<int>?;
   }
-
-  getPlatformVersion() {}
 }

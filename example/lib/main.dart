@@ -8,6 +8,44 @@ import 'life_cycle_observer.dart';
 import 'multi_engine/multi_engine_state.dart';
 
 final GlobalKey<NavigatorState> rootKey = GlobalKey<NavigatorState>();
+
+class UserInfo extends MeteorModel {
+  UserInfo({
+    this.name = 'name',
+    this.phone = '18501125114',
+    this.gender = 1,
+  });
+  String? name = 'name';
+  String? phone = '18501125114';
+  int? gender = 1;
+
+  @override
+  void setupFromJson(Map<String, dynamic>? json) {
+    if (json != null) {
+      name = json['name'];
+      gender = json['gender'];
+      phone = json['phone'];
+    }
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'gender': gender,
+      'phone': phone,
+    };
+  }
+
+  UserInfo copy(Map<String, dynamic> json) {
+    // TODO: implement copyWithJson
+    Map<String, dynamic> modelJson = super.copyWithJson(json);
+    UserInfo userInfo = UserInfo();
+    userInfo.setupFromJson(modelJson);
+    return userInfo;
+  }
+}
+
 void main(List<String> args) {
   // WidgetsFlutterBinding.ensureInitialized();
   // WidgetsBinding.instance.addObserver(AppLifecycleObserver());
@@ -33,6 +71,14 @@ void main(List<String> args) {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => GlobalStateService()),
+        ChangeNotifierProvider(create: (_) => MeteorStringProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorBoolProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorIntProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorDoubleProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorListProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorMapProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorBytesProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorModelProvider<UserInfo>(model: UserInfo())),
       ],
       child: MyApp(
         initialRoute: initialRoute,

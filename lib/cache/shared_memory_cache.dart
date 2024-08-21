@@ -68,5 +68,13 @@ class SharedMemoryCache {
     return await _cacheApi.getBytes(key) as List<int>?;
   }
 
+  // static Future<void> setValue(String key, dynamic value) async {
+  //   await _cacheApi.set(key, value);
+  // }
+  //
+  // static Future<dynamic> getValue(String key) async {
+  //   return await _cacheApi.ge(key);
+  // }
+
   getPlatformVersion() {}
 }
