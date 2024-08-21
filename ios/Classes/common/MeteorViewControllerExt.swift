@@ -11,7 +11,7 @@ private var FMAssociatedObjectHandle: UInt8 = 0
 
 extension UIViewController {
     
-    public var routeName: String? {
+    public var fmRouteName: String? {
         get {
             return objc_getAssociatedObject(self, &FMAssociatedObjectHandle) as? String
         }

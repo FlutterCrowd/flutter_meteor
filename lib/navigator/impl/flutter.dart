@@ -26,17 +26,16 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   }
 
   @override
-  Future<T?> popToRoot<T extends Object?>() async {
-    HzLog.w('This method:popToRoot need to be implemented by native');
+  void popToRoot() async {
+    HzLog.t('MeteorFlutterNavigator popToRoot');
     Navigator.popUntil(
       rootContext,
       (route) => route.isFirst,
     );
-    return null;
   }
 
   @override
-  void popUntil<T extends Object?>(String routeName, {bool isFarthest = false}) async {
+  void popUntil(String routeName, {bool isFarthest = false}) async {
     HzLog.t('MeteorFlutterNavigator popUntil routeName:$routeName');
     if (navigatorObserver.routeExists(routeName) && rootContext.mounted) {
       if (isFarthest) {

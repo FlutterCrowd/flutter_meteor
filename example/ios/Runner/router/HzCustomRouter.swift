@@ -13,7 +13,7 @@ import flutter_meteor
      func push(routeName: String, options: MeteorPushOptions?) {
         if (routeName == "push_native") {
             let vc:TestViewController  = TestViewController.init()
-            vc.routeName = routeName
+            vc.fmRouteName = routeName
             MeteorNativeNavigator.push(toPage: vc);
              options?.callBack?(nil)
         } else if (routeName == "present_native") {
@@ -29,7 +29,7 @@ import flutter_meteor
             }
             
             flutterVc.isViewOpaque = options?.isOpaque ?? true
-            flutterVc.routeName = routeName
+            flutterVc.fmRouteName = routeName
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
             let naviVc = UINavigationController.init(rootViewController: flutterVc)
@@ -48,7 +48,7 @@ import flutter_meteor
                 let flutterVc = MeteorFlutterViewController.init(options: engineGroupOptions) { response in
                      options?.callBack?(nil)
                 }
-                flutterVc.routeName = routeName
+                flutterVc.fmRouteName = routeName
                 flutterVc.isViewOpaque = options?.isOpaque ?? true
                 flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
                 flutterVc.view.backgroundColor = UIColor.clear
@@ -74,7 +74,7 @@ import flutter_meteor
             let flutterVc = MeteorFlutterViewController.init(options: engineGroupOptions) { response in
                  options?.callBack?(nil)
             }
-            flutterVc.routeName = routeName
+            flutterVc.fmRouteName = routeName
             flutterVc.isViewOpaque = isOpaque
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear
@@ -101,7 +101,7 @@ import flutter_meteor
             let flutterVc = MeteorFlutterViewController.init(options: engineGroupOptions) { response in
                  options?.callBack?(nil)
             }
-            flutterVc.routeName = routeName
+            flutterVc.fmRouteName = routeName
             flutterVc.isViewOpaque = options?.isOpaque ?? true
             flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
             flutterVc.view.backgroundColor = UIColor.clear

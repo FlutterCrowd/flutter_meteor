@@ -17,13 +17,13 @@ class TabBarViewController: UITabBarController, UIGestureRecognizerDelegate {
 //        self.addChild(TestViewController2.init())
         // 创建视图控制器
         let homeVC = createNavController(vc: HomeViewController(), title: "首页", imageName: "home")
-        homeVC.routeName = "首页"
+        homeVC.fmRouteName = "首页"
         let recommendVC = createNavController(vc: RecommendViewController(), title: "推荐", imageName: "recommend")
-        recommendVC.routeName = "推荐"
+        recommendVC.fmRouteName = "推荐"
         let liveVC = createNavController(vc: LiveViewController(), title: "实时", imageName: "live")
-        liveVC.routeName = "实时"
+        liveVC.fmRouteName = "实时"
         let profileVC = createNavController(vc: ProfileViewController(), title: "我的", imageName: "profile")
-        profileVC.routeName = "我的"
+        profileVC.fmRouteName = "我的"
 
         
         // 禁用滑动返回手势但保留返回按钮
@@ -39,7 +39,7 @@ class TabBarViewController: UITabBarController, UIGestureRecognizerDelegate {
         navController.tabBarItem.title = title
         navController.tabBarItem.image = UIImage(named: imageName)
         vc.navigationItem.title = title
-        vc.routeName = title
+        vc.fmRouteName = title
 //        vc.hidesBottomBarWhenPushed = true
 //        navController.interactivePopGestureRecognizer?.isEnabled = true
         navController.isNavigationBarHidden = true
@@ -61,7 +61,7 @@ class TabBarViewController: UITabBarController, UIGestureRecognizerDelegate {
 //        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
 //
 //    }
-//    
+////    
 //    public override func viewWillDisappear(_ animated: Bool) {
 //        super.viewWillDisappear(animated)
 //        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true

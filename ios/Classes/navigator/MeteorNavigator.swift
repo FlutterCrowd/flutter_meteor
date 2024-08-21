@@ -462,7 +462,7 @@ extension MeteorNavigator {
                     defer {
                         finish()
                     }
-                    if routeName == vc.routeName {
+                    if routeName == vc.fmRouteName {
                        // 找到匹配的路由，调用结果回调
                         callBack(viewController: vc)
                    } else {
@@ -524,10 +524,10 @@ extension MeteorNavigator {
                     result(rootRouteName)
                 }
             } else {
-                result(rootVc?.routeName)
+                result(rootVc?.fmRouteName)
             }
         } else {
-            result(rootVc?.routeName)
+            result(rootVc?.fmRouteName)
 
         }
     }
@@ -544,7 +544,7 @@ extension MeteorNavigator {
                 result(response)
             }
         } else {
-            result(topVc?.routeName)
+            result(topVc?.fmRouteName)
         }
     }
     
@@ -567,7 +567,7 @@ extension MeteorNavigator {
                         dispatchGroup.leave()
                     }
                     if routeStack?.isEmpty ?? true {
-                        vcMap[vc] = [vc.routeName ?? "\(type(of: vc))"]
+                        vcMap[vc] = [vc.fmRouteName ?? "\(type(of: vc))"]
                     } else {
                         vcMap[vc] = routeStack
                     }
@@ -576,13 +576,13 @@ extension MeteorNavigator {
                 defer {
                     dispatchGroup.leave()
                 }
-                vcMap[vc] = [vc.routeName ?? "\(type(of: vc))"]
+                vcMap[vc] = [vc.fmRouteName ?? "\(type(of: vc))"]
             }
         }
 
         dispatchGroup.notify(queue: .main) {
             vcStack.forEach { vc in
-                routeStack.append(contentsOf: vcMap[vc] ?? [vc.routeName ?? "\(type(of: vc))"])
+                routeStack.append(contentsOf: vcMap[vc] ?? [vc.fmRouteName ?? "\(type(of: vc))"])
             }
             result(routeStack)
 //            print("原生结束调用routeNameStack")

@@ -15,10 +15,10 @@ class MeteorEventBus {
   final BasicMessageChannel methodChannel =
       const BasicMessageChannel('itbox.meteor.multiEnginEventChannel', StandardMessageCodec());
 
-  // 工厂方法构造函数 - 通过UserModel()获取对象
+  // 工厂方法构造函数 - 通过MeteorEventBus()获取对象
   factory MeteorEventBus() => _getInstance();
 
-  // instance的getter方法 - 通过UserModel.instance获取对象2
+  // instance的getter方法 - 通过MeteorEventBus.instance获取对象2
   static MeteorEventBus get instance => _getInstance();
 
   // 静态变量_instance，存储唯一对象

@@ -69,7 +69,7 @@ class MeteorNavigator {
   }) async {
     /// 当前引擎路由栈大于一个页面的时候直接在flutter端替换
     final routeStack = navigatorObserver.routeNameStack;
-    if (routeStack.length > 1 && !openNative && !withNewEngine) {
+    if (routeStack.isNotEmpty && !openNative && !withNewEngine) {
       return await _flutterNavigator.pushReplacementNamed<T, TO>(
         routeName,
         arguments: arguments,
@@ -147,9 +147,9 @@ class MeteorNavigator {
   /// @parma result 接受回调，T是个泛型，可以指定要返回的数据类型
   static void pop<T extends Object?>([T? result]) async {
     if (Navigator.canPop(MeteorFlutterNavigator.rootContext)) {
-      _flutterNavigator.pop(result);
+      _flutterNavigator.pop<T>(result);
     } else {
-      _nativeNavigator.pop(result);
+      _nativeNavigator.pop<T>(result);
     }
   }
 
@@ -157,11 +157,11 @@ class MeteorNavigator {
   ///
   /// @parma result 接受回调，T是个泛型，可以指定要返回的数据类型
   static void dismiss<T extends Object?>() async {
-    _nativeNavigator.dismiss();
+    _nativeNavigator.dismiss<T>();
   }
 
   static void popUntilLastNative<T extends Object?>() async {
-    _nativeNavigator.pop();
+    _nativeNavigator.pop<T>();
   }
 
   /// pop 到指定页面并替换当前页面

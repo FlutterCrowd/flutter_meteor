@@ -117,6 +117,9 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
     
     public func popUntil(untilRouteName: String?, options: MeteorPopOptions?) {
         MeteorNavigator.popUntil(untilRouteName: untilRouteName, options: options)
+        if untilRouteName == self.fmRouteName {
+            popCallBack?(options?.result)
+        }
     }
     
     func setupNavigatorObserverChannel() -> Void {

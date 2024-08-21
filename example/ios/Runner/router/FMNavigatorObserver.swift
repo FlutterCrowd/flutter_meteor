@@ -99,7 +99,7 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
     func printCurrentViewControllerStack() {
 //        let routeStack = viewControllerStack.map { $0.routeName ?? "\(type(of: $0))" }
 //        print("Current View Controllers Stack: \(routeStack)")
-        let routeStack1 = MeteorNavigatorHelper.viewControllerStack.map { "\(type(of: $0))_\($0.routeName )"}// ??
+        let routeStack1 = MeteorNavigatorHelper.viewControllerStack.map { "\(type(of: $0))_\($0.fmRouteName )"}// ??
         print("-----Current View Controllers Stack1: \(routeStack1)")
 //        FlutterMeteorRouter.routeNameStack { ret in
 //            print("Current View routeNameStack: \(String(describing: ret))")

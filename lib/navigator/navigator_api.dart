@@ -74,7 +74,7 @@ abstract class MeteorNavigatorApi {
   ///
   /// @param routeName 要pod到的页面，如果对应routeName的路由不存在会pop到上一个页面
   /// @param isFarthest 是否pop到最远端的routeName，默认isFarthest = false表示最近的，isFarthest = true表示最远的
-  void popUntil<T extends Object?>(String routeName, {bool isFarthest = false});
+  void popUntil(String routeName, {bool isFarthest = false});
 
   /// pop 到最近的一个原生页面
   ///
@@ -82,7 +82,7 @@ abstract class MeteorNavigatorApi {
   void popUntilLastNative<T extends Object?>();
 
   /// pop 到根页面
-  void popToRoot<T extends Object?>();
+  void popToRoot();
 
   /// 返回原生模态出的视图
   void dismiss<T extends Object?>();

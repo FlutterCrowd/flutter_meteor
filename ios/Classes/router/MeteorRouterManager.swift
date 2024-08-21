@@ -40,11 +40,11 @@ public class MeteorRouterManager: NSObject {
         let vc: UIViewController? = vcBuilder?(arguments)
         if let naviVC = vc as? UINavigationController,
            let visibleVc = naviVC.visibleViewController {
-            if visibleVc.routeName == nil {
-                visibleVc.routeName = routeName
+            if visibleVc.fmRouteName == nil {
+                visibleVc.fmRouteName = routeName
             }
         }
-        vc?.routeName = routeName
+        vc?.fmRouteName = routeName
         return vc
     }
     
@@ -66,18 +66,18 @@ public class MeteorRouterManager: NSObject {
                 visibleVc.view.backgroundColor = UIColor.clear
                 visibleVc.view.isOpaque = false
             }
-            if visibleVc.routeName == nil {
-                visibleVc.routeName = routeName
+            if visibleVc.fmRouteName == nil {
+                visibleVc.fmRouteName = routeName
             }
         }
-        vc?.routeName = routeName
+        vc?.fmRouteName = routeName
         return vc
     }
     
     
     public static func getDefaultFlutterViewController(routeName: String,
                                                        entrypoint: String? = "main",
-                                                        options: MeteorPushOptions?) -> MeteorFlutterViewController {
+                                                       options: MeteorPushOptions?) -> MeteorFlutterViewController {
         let isOpaque: Bool = options?.isOpaque ?? true
         
         let engineGroupOptions = MeteorEngineGroupOptions(
@@ -88,7 +88,7 @@ public class MeteorRouterManager: NSObject {
         let flutterVc = MeteorFlutterViewController.init(options: engineGroupOptions) { response in
             options?.callBack?(nil)
         }
-        flutterVc.routeName = routeName
+        flutterVc.fmRouteName = routeName
         flutterVc.isViewOpaque = isOpaque
         flutterVc.modalPresentationStyle = .overFullScreen
         if(!isOpaque) {

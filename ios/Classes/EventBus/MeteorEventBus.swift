@@ -52,7 +52,7 @@ class MeteorEventBus: NSObject {
             "data": data
         ]
         
-        FlutterMeteorPlugin.channelHolderMap.allObjects()?.forEach { provider in
+        MeteorEngineManager.allEngineChannelProvider().forEach { provider in
             provider.eventBusChannel.sendMessage(message)
         }
     }

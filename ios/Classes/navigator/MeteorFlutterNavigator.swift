@@ -311,7 +311,7 @@ extension FlutterViewController {
                 }
             }
         } else {
-            result(routeName)
+            result(fmRouteName)
         }
     }
 
@@ -326,7 +326,7 @@ extension FlutterViewController {
                 }
             }
         } else {
-            result(routeName)
+            result(fmRouteName)
         }
     }
 
@@ -336,11 +336,11 @@ extension FlutterViewController {
                 if let retArray = ret as? [String] {
                     result(retArray)
                 } else {
-                    result([self.routeName ?? "\(type(of: self))"])
+                    result([self.fmRouteName ?? "\(type(of: self))"])
                 }
             }
         } else {
-            result([self.routeName ?? "\(type(of: self))"])
+            result([self.fmRouteName ?? "\(type(of: self))"])
         }
     }
 }
