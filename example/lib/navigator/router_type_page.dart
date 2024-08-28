@@ -23,7 +23,7 @@ class RouteTypePage extends StatelessWidget {
           onPressed: () {
             MeteorNavigator.pushNamed(
               "push_native",
-              openNative: true,
+              pageType: MeteorPageType.native,
             );
           },
           child: const Center(
@@ -37,7 +37,7 @@ class RouteTypePage extends StatelessWidget {
           onPressed: () {
             MeteorNavigator.pushNamed(
               "multiEnginePage",
-              withNewEngine: true,
+              pageType: MeteorPageType.newEngine,
             );
           },
           child: const Center(
@@ -52,7 +52,7 @@ class RouteTypePage extends StatelessWidget {
             MeteorNavigator.pushNamed(
               "popWindowPage",
               isOpaque: false,
-              withNewEngine: true,
+              pageType: MeteorPageType.newEngine,
               present: true,
             );
           },
@@ -81,7 +81,7 @@ class RouteTypePage extends StatelessWidget {
           onPressed: () {
             MeteorNavigator.pushNamed(
               "bottomSheetPage",
-              withNewEngine: true,
+              pageType: MeteorPageType.newEngine,
               isOpaque: false,
               present: true,
             );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_meteor/navigator/navigator.dart';
+import 'package:flutter_meteor/flutter_meteor.dart';
 import 'package:provider/provider.dart';
 
 import 'multi_engine_state.dart';
@@ -29,7 +29,7 @@ class ShareStatePage2 extends StatelessWidget {
               onPressed: () {
                 MeteorNavigator.pushNamed(
                   "shareStatePage1",
-                  withNewEngine: true,
+                  pageType: MeteorPageType.newEngine,
                 );
               },
               child: Text("打开新引擎"),

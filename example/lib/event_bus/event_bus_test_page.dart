@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
+import 'package:flutter_meteor/navigator/navigator_api.dart';
 
 class EventBusTestPage extends StatefulWidget {
   const EventBusTestPage({super.key});
@@ -77,7 +78,10 @@ class _EventBusTestPageState extends State<EventBusTestPage> {
           ),
           ElevatedButton(
             onPressed: () {
-              MeteorNavigator.pushNamed('eventBusTestPage', withNewEngine: true);
+              MeteorNavigator.pushNamed(
+                'eventBusTestPage',
+                pageType: MeteorPageType.newEngine,
+              );
             },
             child: const Text('打开新引擎'),
           ),

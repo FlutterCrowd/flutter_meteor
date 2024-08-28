@@ -31,7 +31,7 @@ public class MeteorNavigator {
         if let toPage = viewController(routeName: routeName, arguments: options?.arguments) {
            MeteorNativeNavigator.push(toPage: toPage, animated: options?.animated ?? true)
            options?.callBack?(nil)
-        } else if(options?.withNewEngine ?? false) {
+        } else if(options?.pageType == .newEngine) {
             let flutterVc = MeteorRouterManager.getDefaultFlutterViewController(routeName: routeName, options: options)
            MeteorNativeNavigator.push(toPage: flutterVc, animated: options?.animated ?? true)
            options?.callBack?(nil)
@@ -79,7 +79,7 @@ public class MeteorNavigator {
                 MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
             }
            options?.callBack?(nil)
-        } else if(options?.withNewEngine ?? false) {
+        } else if(options?.pageType == .newEngine) {
             let flutterVc = MeteorRouterManager.getDefaultFlutterViewController(routeName: routeName, options: options)
             let navi = UINavigationController.init(rootViewController: flutterVc)
             navi.navigationBar.isHidden = true
@@ -160,7 +160,7 @@ public class MeteorNavigator {
                 MeteorNativeNavigator.pushToAndRemoveUntil(toPage: toPage, untilPage: untilPage, animated: options?.animated ?? true)
                 options?.callBack?(nil)
             }
-        } else if(options?.withNewEngine ?? false) {
+        } else if(options?.pageType == .newEngine) {
             let newEngineVc = MeteorRouterManager.getDefaultFlutterViewController(routeName: routeName, options: options)
             if let flutterVc =  untilPage as? FlutterViewController {
                 doPushToAndRemoveUntil(flutterVc: flutterVc, toPage: newEngineVc, untilRouteName: untilRouteName, options: options)
@@ -229,7 +229,7 @@ public class MeteorNavigator {
             MeteorNativeNavigator.pushToAndRemoveUntilRoot(toPage: toPage, animated: options?.animated ?? true)
             flutterPopRoot()
             options?.callBack?(nil)
-        } else if(options?.withNewEngine ?? false) {
+        } else if(options?.pageType == .newEngine) {
             let flutterVc = MeteorRouterManager.getDefaultFlutterViewController(routeName: routeName, options: options)
             MeteorNativeNavigator.pushToAndRemoveUntilRoot(toPage: flutterVc, animated: options?.animated ?? true)
             flutterPopRoot()
@@ -289,7 +289,7 @@ public class MeteorNavigator {
                MeteorNativeNavigator.pushToReplacement(toPage: toVc, animated: options?.animated ?? true)
                options?.callBack?(nil)
            }
-       } else if (options?.withNewEngine ?? false) {
+       } else if (options?.pageType == .newEngine) {
            let newEngineVc = MeteorRouterManager.getDefaultFlutterViewController(routeName: routeName, options: options)
            if let flutterVc = MeteorNavigatorHelper.topViewController() as? FlutterViewController {
                pushToReplaceWithFLutterVC(flutterVc: flutterVc, topPage: newEngineVc, options: options)

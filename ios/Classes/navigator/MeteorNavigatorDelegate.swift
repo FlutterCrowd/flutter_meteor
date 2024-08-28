@@ -208,7 +208,8 @@ extension MeteorNavigatorDelegate {
                 var options = MeteorPushOptions()
                 options.isOpaque = (methodArguments["isOpaque"] != nil) && methodArguments["isOpaque"] as! Bool == true
                 options.animated = methodArguments["animated"] as? Bool ?? true
-                options.withNewEngine = methodArguments["withNewEngine"] as? Bool ?? false
+                let pageType: Int = methodArguments["pageType"] as? Int ?? 1
+                options.pageType = MeteorPageType.init(fromType: pageType)
                 options.present = methodArguments["present"] as? Bool ?? false
                 options.callBack = {response in
                     result(response)

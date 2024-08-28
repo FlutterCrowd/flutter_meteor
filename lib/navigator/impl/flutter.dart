@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/navigator/observer.dart';
+import 'package:flutter_meteor/navigator/page_type.dart';
 import 'package:hz_tools/hz_tools.dart';
 
 import '../navigator_api.dart';
@@ -71,15 +72,14 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushNamed<T extends Object?>(
     String routeName, {
-    bool withNewEngine = false,
+    MeteorPageType pageType = MeteorPageType.flutter,
     bool isOpaque = true,
-    bool openNative = false,
-    bool present = false,
     bool animated = true,
+    bool present = false,
     Map<String, dynamic>? arguments,
   }) async {
     HzLog.t(
-        'MeteorFlutterNavigator pushNamed:$routeName, arguments:$arguments, withNewEngine:$withNewEngine, openNative:$openNative');
+        'MeteorFlutterNavigator pushNamed:$routeName, arguments:$arguments, pageType:$pageType');
     return await Navigator.pushNamed<T?>(
       rootContext,
       routeName,
@@ -91,9 +91,8 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
     String routeName,
     String untilRouteName, {
-    bool withNewEngine = false,
+    MeteorPageType pageType = MeteorPageType.flutter,
     bool isOpaque = true,
-    bool openNative = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
@@ -118,9 +117,8 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
     String routeName, {
-    bool withNewEngine = false,
+    MeteorPageType pageType = MeteorPageType.flutter,
     bool isOpaque = true,
-    bool openNative = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
@@ -136,9 +134,8 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
-    bool withNewEngine = false,
+    MeteorPageType pageType = MeteorPageType.flutter,
     bool isOpaque = true,
-    bool openNative = false,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {

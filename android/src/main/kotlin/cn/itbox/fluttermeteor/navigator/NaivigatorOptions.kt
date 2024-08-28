@@ -7,11 +7,23 @@ open class BaseOptions(
     open var callBack: FlutterMeteorRouterCallBack? = null
 )
 
+enum class MeteorPageType(val type: Int) {
+    FLUTTER(0),
+    NATIVE(1),
+    NEW_ENGINE(2),
+    WEB(3);
+
+    companion object {
+        fun fromType(type: Int): MeteorPageType {
+            return values().firstOrNull { it.type == type } ?: FLUTTER
+        }
+    }
+}
+
 // FMPushOptions data class
 class FMPushOptions(
-    var withNewEngine: Boolean = false,
+    var pageType: MeteorPageType = MeteorPageType.NATIVE,
     var isOpaque: Boolean = false,
-    var openNative: Boolean = false,
     var present: Boolean = false,
     var animated: Boolean = true,
     var arguments: Any? = null
@@ -26,14 +38,3 @@ class FMPopOptions(
 ) : BaseOptions()
 
 // FMPushParams data class
-class FMPushParams(
-    var routeName: String,
-    var untilRouteName: String? = null,
-    var options: FMPushOptions? = null
-) : BaseOptions()
-
-// FMPopParams data class
-class FMPopParams(
-    var untilRouteName: String? = null,
-    var options: FMPopOptions? = null
-) : BaseOptions()

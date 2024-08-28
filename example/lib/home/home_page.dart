@@ -13,10 +13,18 @@ class HomePage extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () async {
+            MeteorNavigator.pushNamed("multiEnginePage");
+          },
+          child: const Center(
+            child: Text('多引擎导航测试'),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () async {
             MeteorNavigator.pushNamed("routeTypePage");
           },
           child: const Center(
-            child: Text('导航测试'),
+            child: Text('路由测试'),
           ),
         ),
         const SizedBox(
@@ -24,7 +32,10 @@ class HomePage extends StatelessWidget {
         ),
         ElevatedButton(
           onPressed: () {
-            MeteorNavigator.pushNamed('eventBusTestPage', withNewEngine: true);
+            MeteorNavigator.pushNamed(
+              'eventBusTestPage',
+              pageType: MeteorPageType.newEngine,
+            );
           },
           child: const Center(
             child: Text('测试EventBus'),

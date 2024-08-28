@@ -1,6 +1,5 @@
 package cn.itbox.fluttermeteor.navigator
 
-import android.util.Log
 import kotlinx.coroutines.*
 
 import io.flutter.plugin.common.MethodCall
@@ -52,15 +51,13 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
     private fun handlePushNamed(call: MethodCall, result: MethodChannel.Result) {
         val arguments = call.arguments
         if (arguments is Map<*, *>) {
-            val withNewEngine = arguments["withNewEngine"] == true
+            val pageTypeInt = arguments["pageType"] as? Int ?: 1
             val isOpaque = arguments["isOpaque"] == true
-            val openNative = arguments["openNative"] == true
             val routeName = arguments["routeName"]?.toString() ?: ""
             val routeArguments = arguments["arguments"]
             val option = FMPushOptions(
-                withNewEngine = withNewEngine,
+                pageType = MeteorPageType.fromType(pageTypeInt),
                 isOpaque = isOpaque,
-                openNative = openNative,
                 arguments = routeArguments,
             )
             option.callBack = object : FlutterMeteorRouterCallBack {
@@ -117,15 +114,13 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
     private fun pushReplacementNamed(call: MethodCall, result: MethodChannel.Result) {
         val arguments = call.arguments
         if (arguments is Map<*, *>) {
-            val withNewEngine = arguments["withNewEngine"] == true
+            val pageTypeInt = arguments["pageType"] as? Int ?: 1
             val isOpaque = arguments["isOpaque"] == true
-            val openNative = arguments["openNative"] == true
             val routeName = arguments["routeName"]?.toString() ?: ""
             val routeArguments = arguments["arguments"]
             val option = FMPushOptions(
-                withNewEngine = withNewEngine,
+                pageType = MeteorPageType.fromType(pageTypeInt),
                 isOpaque = isOpaque,
-                openNative = openNative,
                 arguments = routeArguments,
             )
             option.callBack = object : FlutterMeteorRouterCallBack {
@@ -145,15 +140,13 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
     private fun pushNamedAndRemoveUntilRoot(call: MethodCall, result: MethodChannel.Result) {
         val arguments = call.arguments
         if (arguments is Map<*, *>) {
-            val withNewEngine = arguments["withNewEngine"] == true
+            val pageTypeInt = arguments["pageType"] as? Int ?: 1
             val isOpaque = arguments["isOpaque"] == true
-            val openNative = arguments["openNative"] == true
             val routeName = arguments["routeName"]?.toString() ?: ""
             val routeArguments = arguments["arguments"]
             val option = FMPushOptions(
-                withNewEngine = withNewEngine,
+                pageType = MeteorPageType.fromType(pageTypeInt),
                 isOpaque = isOpaque,
-                openNative = openNative,
                 arguments = routeArguments,
             )
             option.callBack = object : FlutterMeteorRouterCallBack {
@@ -170,15 +163,13 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
         if (untilName != null) {
             val arguments = call.arguments
             if (arguments is Map<*, *>) {
-                val withNewEngine = arguments["withNewEngine"] == true
+                val pageTypeInt = arguments["pageType"] as? Int ?: 1
                 val isOpaque = arguments["isOpaque"] == true
-                val openNative = arguments["openNative"] == true
                 val routeName = arguments["routeName"]?.toString() ?: ""
                 val routeArguments = arguments["arguments"]
                 val option = FMPushOptions(
-                    withNewEngine = withNewEngine,
+                    pageType = MeteorPageType.fromType(pageTypeInt),
                     isOpaque = isOpaque,
-                    openNative = openNative,
                     arguments = routeArguments,
                 )
                 option.callBack = object : FlutterMeteorRouterCallBack {

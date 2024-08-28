@@ -22,11 +22,10 @@ object FlutterMeteorNavigator {
     @JvmStatic
     fun push(routeName: String, options: FMPushOptions? = null) {
         if(options != null){
-            val withNewEngine = options.withNewEngine
+            val pageType = options.pageType
             val isOpaque = options.isOpaque
-            val openNative = options.openNative
             val routeArguments = options.arguments
-            if (withNewEngine) {
+            if (pageType == MeteorPageType.NEW_ENGINE) {
                 val argumentsMap = if (routeArguments is Map<*, *>) routeArguments else null
                 ActivityInjector.currentActivity?.also { theActivity ->
                     val args = argumentsMap?.filter { it.value != null }
@@ -39,7 +38,7 @@ object FlutterMeteorNavigator {
                     FlutterMeteor.delegate?.onPushFlutterPage(theActivity, builder.build())
                     handleCallback(options,true)
                 }
-            } else if (openNative) {
+            } else if (pageType == MeteorPageType.NATIVE) {
                 FlutterMeteor.delegate?.onPushNativePage(routeName, routeArguments)
                 handleCallback(options,true)
             }else{

@@ -9,11 +9,28 @@ import Foundation
 
 public typealias MeteorNavigatorCallBack = (_ response: Any?) -> Void
 
+public enum MeteorPageType: Int {
+    case flutter = 0
+    case native = 1
+    case newEngine = 2
+    case web = 3
+
+    // 初始化方法，根据类型值返回对应的枚举实例
+    init(fromType type: Int) {
+        self = MeteorPageType(rawValue: type) ?? .flutter
+    }
+}
+
+// 使用示例
+let pageType = MeteorPageType(fromType: 1) // 返回 .native
+
+
 public struct MeteorPushOptions {
-    public var withNewEngine: Bool = false
+    public var pageType: MeteorPageType = .native
     public var isOpaque: Bool = true
-    public var present: Bool = false
     public var animated: Bool = true
+    
+    public var present: Bool = false
     public var arguments: Dictionary<String, Any>?
     public var callBack: MeteorNavigatorCallBack?
     public init(arguments: Dictionary<String, Any>? = nil,
@@ -21,19 +38,19 @@ public struct MeteorPushOptions {
                 isOpaque: Bool = true,
                 present: Bool = false,
                 animated: Bool = true,
-                withNewEngine: Bool = false
+                pageType: MeteorPageType = .native
     ) {
         self.arguments = arguments
         self.callBack = callBack
         self.isOpaque = isOpaque
         self.present = present
-        self.withNewEngine = withNewEngine
+        self.pageType = pageType
         self.animated = animated
     }
     
     public func toJson() -> [String: Any?]{
         return [
-            "withNewEngine": withNewEngine,
+            "pageType": pageType,
             "isOpaque": isOpaque,
             "present": present,
             "animated": animated,

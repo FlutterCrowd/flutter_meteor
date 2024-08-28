@@ -39,7 +39,7 @@ import flutter_meteor
             
         } else if (routeName == "popWindowPage") {
             
-            if(options?.withNewEngine ?? false) {
+            if(options?.pageType == .newEngine) {
                 let engineGroupOptions = MeteorEngineGroupOptions.init(
                     entrypoint: "main",
                     initialRoute: routeName,
