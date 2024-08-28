@@ -15,6 +15,7 @@ import cn.itbox.fluttermeteor.event_bus.MeteorEventBusListener
 import cn.itbox.fluttermeteor.navigator.FMPushOptions
 import cn.itbox.fluttermeteor.navigator.FMPopOptions
 import cn.itbox.fluttermeteor.navigator.FlutterMeteorRouterCallBack
+import cn.itbox.fluttermeteor.navigator.MeteorPageType
 
 class NativeActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
@@ -45,9 +46,8 @@ class NativeActivity : AppCompatActivity() {
         val newPush = findViewById<View>(R.id.newPush)
         newPush.setOnClickListener {
             val option = FMPushOptions(
-                withNewEngine = true,
+                pageType = MeteorPageType.NEW_ENGINE,
                 isOpaque = false,
-                openNative = false,
                 arguments = null,
             )
             option.callBack = object :FlutterMeteorRouterCallBack{
@@ -87,9 +87,8 @@ class NativeActivity : AppCompatActivity() {
         val newPushReplace = findViewById<View>(R.id.newPushReplace)
         newPushReplace.setOnClickListener {
             val option = FMPushOptions(
-                withNewEngine = true,
+                pageType = MeteorPageType.NEW_ENGINE,
                 isOpaque = false,
-                openNative = false,
                 arguments = null,
             )
             option.callBack = object :FlutterMeteorRouterCallBack{
@@ -103,9 +102,8 @@ class NativeActivity : AppCompatActivity() {
         val newPushRemoveUntil = findViewById<View>(R.id.newPushRemoveUntil)
         newPushRemoveUntil.setOnClickListener {
             val option = FMPushOptions(
-                withNewEngine = true,
+                pageType = MeteorPageType.NEW_ENGINE,
                 isOpaque = false,
-                openNative = false,
                 arguments = null,
             )
             option.callBack = object :FlutterMeteorRouterCallBack{
