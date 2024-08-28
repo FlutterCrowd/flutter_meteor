@@ -81,7 +81,7 @@ import flutter_meteor
             MeteorNativeNavigator.push(toPage: flutterVc)
              options?.callBack?(nil)
             
-        } else  if (routeName  == "test4"){
+        } else  if (routeName  == "native_page4"){
             let engineGroupOptions = MeteorEngineGroupOptions.init(
                 entrypoint: "main",
                 initialRoute: routeName,

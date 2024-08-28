@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 
-class TestPage extends StatefulWidget {
-  const TestPage({super.key});
+class SharedCacheTestPage extends StatefulWidget {
+  const SharedCacheTestPage({super.key});
 
   @override
   State<StatefulWidget> createState() {
@@ -10,7 +10,7 @@ class TestPage extends StatefulWidget {
   }
 }
 
-class _MultiEnginPageState extends State<TestPage> {
+class _MultiEnginPageState extends State<SharedCacheTestPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

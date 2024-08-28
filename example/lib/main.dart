@@ -2,19 +2,20 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 import 'package:hz_router_plugin_example/router/router_center.dart';
+import 'package:hz_router_plugin_example/shared_state/global_singleton_object.dart';
 import 'package:provider/provider.dart';
 
 import 'life_cycle_observer.dart';
-import 'multi_engine/multi_engine_state.dart';
+import 'shared_state/multi_engine_state.dart';
 
 final GlobalKey<NavigatorState> rootKey = GlobalKey<NavigatorState>();
 
-class UserInfo extends MeteorModel {
+class UserInfo extends MeteorSharedObject {
   UserInfo({
     this.name = 'name',
     this.phone = '18501125114',
     this.gender = 1,
-  });
+  }) : super(initialFromCache: false);
   String? name = 'name';
   String? phone = '18501125114';
   int? gender = 1;
@@ -39,51 +40,34 @@ class UserInfo extends MeteorModel {
 
   UserInfo copy(Map<String, dynamic> json) {
     // TODO: implement copyWithJson
-    Map<String, dynamic> modelJson = super.copyWithJson(json);
+    // Map<String, dynamic> modelJson = super.copyWithJson(json);
     UserInfo userInfo = UserInfo();
-    userInfo.setupFromJson(modelJson);
+    // userInfo.setupFromJson(modelJson);
     return userInfo;
   }
 }
 
-void main(List<String> args) {
-  // WidgetsFlutterBinding.ensureInitialized();
-  // WidgetsBinding.instance.addObserver(AppLifecycleObserver());
-  //
-  // runApp(
-  //   MultiProvider(
-  //     providers: [
-  //       ChangeNotifierProvider(create: (_) => GlobalStateService()),
-  //     ],
-  //     child: const MyApp(),
-  //   ),
-  // );
-
+void main(List<String> args) async {
   if (kDebugMode) {
     print('这是传递过来的参数：$args');
   }
   WidgetsFlutterBinding.ensureInitialized();
+  // await GlobalUserStateManager().setupFromSharedCache();
+  // await MeteorSharedObject.create(() => GlobalUserStateManager());
+
+  await MeteorSharedObjectManager.registerGlobalInstances([
+    GlobalUserStateManager(),
+    GlobalAppStateManager(),
+  ]);
+
   WidgetsBinding.instance.addObserver(AppLifecycleObserver());
   EntryArguments arguments = MeteorEngine.parseEntryArgs(args);
   String? initialRoute = arguments.initialRoute;
   Map<String, dynamic>? routeArguments = arguments.routeArguments;
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => GlobalStateService()),
-        ChangeNotifierProvider(create: (_) => MeteorStringProvider()),
-        ChangeNotifierProvider(create: (_) => MeteorBoolProvider()),
-        ChangeNotifierProvider(create: (_) => MeteorIntProvider()),
-        ChangeNotifierProvider(create: (_) => MeteorDoubleProvider()),
-        ChangeNotifierProvider(create: (_) => MeteorListProvider()),
-        ChangeNotifierProvider(create: (_) => MeteorMapProvider()),
-        ChangeNotifierProvider(create: (_) => MeteorBytesProvider()),
-        ChangeNotifierProvider(create: (_) => MeteorModelProvider<UserInfo>(model: UserInfo())),
-      ],
-      child: MyApp(
-        initialRoute: initialRoute,
-        routeArguments: routeArguments,
-      ),
+    MyApp(
+      initialRoute: initialRoute,
+      routeArguments: routeArguments,
     ),
   );
 }
@@ -100,24 +84,14 @@ void childEntry(List<String> args) {
     String? initialRoute = arguments.initialRoute;
     Map<String, dynamic>? routeArguments = arguments.routeArguments;
     runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => GlobalStateService()),
-        ],
-        child: MyApp(
-          initialRoute: initialRoute,
-          routeArguments: routeArguments,
-        ),
+      MyApp(
+        initialRoute: initialRoute,
+        routeArguments: routeArguments,
       ),
     );
   } else {
     runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => GlobalStateService()),
-        ],
-        child: const MyApp(),
-      ),
+      const MyApp(),
     );
   }
 }
@@ -169,42 +143,50 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    initialRoute = widget.initialRoute ?? 'rootPage';
-    RouterCenter.setup();
+    initialRoute = widget.initialRoute ?? 'homePage';
+    AppRouterCenter.setup();
     MeteorNavigator.init(rootKey: rootKey);
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      onGenerateRoute: RouterCenter.generateRoute,
-
-      navigatorKey: rootKey,
-      navigatorObservers: [
-        MeteorNavigator.navigatorObserver,
-        RouterCenter.routeObserver,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => GlobalStateService()),
+        ChangeNotifierProvider(create: (_) => MeteorStringProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorBoolProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorIntProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorDoubleProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorListProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorMapProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorBytesProvider()),
+        ChangeNotifierProvider(create: (_) => MeteorSharedProvider<UserInfo>(model: UserInfo())),
       ],
-      // initialRoute: "home",
-      theme: ThemeData.light(),
-      // home: HomePage(),
-      // home: const RootPage(
-      //   key: Key('RootPage'),
-      // ),
-      initialRoute: initialRoute,
-      debugShowCheckedModeBanner: false,
-      onGenerateInitialRoutes: (String initialRoute) {
-        if (kDebugMode) {
-          print('initialRoute: $initialRoute');
-        }
-        // MeteorNavigator.rootRoute = initialRoute;
-        var route = RouterCenter.generateRoute(
-          RouteSettings(name: initialRoute, arguments: widget.routeArguments),
-        );
-        route ??= RouterCenter.generateRoute(
-          const RouteSettings(name: "homePage", arguments: null),
-        );
-        return [route!];
-      },
+      child: MaterialApp(
+        onGenerateRoute: AppRouterCenter.generateRoute,
+        navigatorKey: rootKey,
+        navigatorObservers: [
+          MeteorNavigator.navigatorObserver,
+          AppRouterCenter.routeObserver,
+        ],
+        // initialRoute: "home",
+        theme: ThemeData.light(),
+        initialRoute: initialRoute,
+        debugShowCheckedModeBanner: false,
+        onGenerateInitialRoutes: (String initialRoute) {
+          if (kDebugMode) {
+            print('initialRoute: $initialRoute');
+          }
+          // MeteorNavigator.rootRoute = initialRoute;
+          var route = AppRouterCenter.generateRoute(
+            RouteSettings(name: initialRoute, arguments: widget.routeArguments),
+          );
+          route ??= AppRouterCenter.generateRoute(
+            const RouteSettings(name: "homePage", arguments: null),
+          );
+          return [route!];
+        },
+      ),
     );
   }
 }

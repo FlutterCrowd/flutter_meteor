@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'multi_engine_state.dart';
 
-class SecondScreen extends StatelessWidget {
+class ShareStatePage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final globalStateService = Provider.of<GlobalStateService>(context);
@@ -28,11 +28,11 @@ class SecondScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 MeteorNavigator.pushNamed(
-                  "shareState1",
+                  "shareStatePage1",
                   withNewEngine: true,
                 );
               },
-              child: Text("打开新引擎shareState1"),
+              child: Text("打开新引擎"),
             ),
             ElevatedButton(
               onPressed: () {

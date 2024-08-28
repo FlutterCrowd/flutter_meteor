@@ -1,42 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 
-class RootPage extends StatelessWidget {
-  const RootPage({super.key});
+class RouteTypePage extends StatelessWidget {
+  const RouteTypePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final widget = ListView(
       children: [
-        GestureDetector(
-          onTap: () async {
-            MeteorNavigator.pushNamed("multiEnginePage2");
+        ElevatedButton(
+          onPressed: () async {
+            MeteorNavigator.pushNamed("multiEnginePage");
           },
           child: const Center(
-            child: Text('下一flutter页面'),
+            child: Text('打开flutter页面'),
           ),
         ),
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed(
               "push_native",
               openNative: true,
             );
           },
           child: const Center(
-            child: Text('下一个原生页面'),
+            child: Text('打开原生页面'),
           ),
         ),
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed(
-              "multiEnginePage2",
+              "multiEnginePage",
               withNewEngine: true,
             );
           },
@@ -47,8 +47,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed(
               "popWindowPage",
               isOpaque: false,
@@ -63,8 +63,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed(
               "dialogWindowPage",
               isOpaque: false,
@@ -77,8 +77,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed(
               "bottomSheetPage",
               withNewEngine: true,
@@ -93,8 +93,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed('materialPageRoute');
           },
           child: const Center(
@@ -104,8 +104,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed('cupertinoPageRoute');
           },
           child: const Center(
@@ -115,8 +115,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed("customPageRoute");
           },
           child: const Center(
@@ -126,8 +126,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed("standardPageRoute_ltr");
           },
           child: const Center(
@@ -137,8 +137,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed("standardPageRoute_rtl");
           },
           child: const Center(
@@ -148,8 +148,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed("standardPageRoute_top");
           },
           child: const Center(
@@ -159,8 +159,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed("standardPageRoute_bottom");
           },
           child: const Center(
@@ -170,8 +170,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed("standardPageRoute_fadeIn");
           },
           child: const Center(
@@ -181,8 +181,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed(
               "webViewPage",
               arguments: {'url': 'https://www.baidu.com'},
@@ -195,8 +195,8 @@ class RootPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        GestureDetector(
-          onTap: () {
+        ElevatedButton(
+          onPressed: () {
             MeteorNavigator.pushNamed(
               "UnknownPage",
             );
@@ -206,39 +206,13 @@ class RootPage extends StatelessWidget {
           ),
         ),
         const SizedBox(
-          height: 20,
-        ),
-        GestureDetector(
-          onTap: () {
-            MeteorNavigator.pushNamed(
-              "shareState1",
-            );
-          },
-          child: const Center(
-            child: Text('测试多引擎共享状态1'),
-          ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-        GestureDetector(
-          onTap: () {
-            MeteorNavigator.pushNamed(
-              "testPage",
-            );
-          },
-          child: const Center(
-            child: Text('测试共享内存'),
-          ),
-        ),
-        const SizedBox(
           height: 50,
         ),
       ],
     );
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ROOT'),
+        title: const Text('导航测试'),
       ),
       body: Stack(
         children: [

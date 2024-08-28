@@ -69,6 +69,8 @@ interface MeteorCacheApi {
   fun getMap(key: String): Map<String, Any?>?
   fun setBytes(key: String, value: List<Long>?)
   fun getBytes(key: String): List<Long>?
+  fun setValue(key: String, value: Any?)
+  fun getValue(key: String): Any?
 
   companion object {
     /** The codec used by CacheApi. */
@@ -322,6 +324,42 @@ interface MeteorCacheApi {
             val keyArg = args[0] as String
             val wrapped: List<Any?> = try {
               listOf(api.getBytes(keyArg))
+            } catch (exception: Throwable) {
+              wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.setValue$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val keyArg = args[0] as String
+            val valueArg = args[1]
+            val wrapped: List<Any?> = try {
+              api.setValue(keyArg, valueArg)
+              listOf(null)
+            } catch (exception: Throwable) {
+              wrapError(exception)
+            }
+            reply.reply(wrapped)
+          }
+        } else {
+          channel.setMessageHandler(null)
+        }
+      }
+      run {
+        val channel = BasicMessageChannel<Any?>(binaryMessenger, "cn.itbox.flutter_meteor.CacheApi.getValue$separatedMessageChannelSuffix", codec)
+        if (api != null) {
+          channel.setMessageHandler { message, reply ->
+            val args = message as List<Any?>
+            val keyArg = args[0] as String
+            val wrapped: List<Any?> = try {
+              listOf(api.getValue(keyArg))
             } catch (exception: Throwable) {
               wrapError(exception)
             }

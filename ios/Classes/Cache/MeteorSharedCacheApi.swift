@@ -99,6 +99,8 @@ protocol MeteorSharedCacheApi {
   func getMap(key: String) throws -> [String: Any?]?
   func setBytes(key: String, value: [Int64]?) throws
   func getBytes(key: String) throws -> [Int64]?
+  func setValue(key: String, value: Any?) throws
+  func getValue(key: String) throws -> Any?
 }
 
 /// Generated setup class from Pigeon to handle messages through the `binaryMessenger`.
@@ -324,5 +326,37 @@ class MeteorCacheApiSetup {
     } else {
       getBytesChannel.setMessageHandler(nil)
     }
+      
+    let setValueChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.setValue\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+     if let api = api {
+       setValueChannel.setMessageHandler { message, reply in
+         let args = message as! [Any?]
+         let keyArg = args[0] as! String
+         let valueArg: Any? = args[1]
+         do {
+           try api.setValue(key: keyArg, value: valueArg)
+           reply(wrapResult(nil))
+         } catch {
+           reply(wrapError(error))
+         }
+       }
+     } else {
+       setValueChannel.setMessageHandler(nil)
+     }
+     let getValueChannel = FlutterBasicMessageChannel(name: "cn.itbox.flutter_meteor.CacheApi.getValue\(channelSuffix)", binaryMessenger: binaryMessenger, codec: codec)
+     if let api = api {
+       getValueChannel.setMessageHandler { message, reply in
+         let args = message as! [Any?]
+         let keyArg = args[0] as! String
+         do {
+           let result = try api.getValue(key: keyArg)
+           reply(wrapResult(result))
+         } catch {
+           reply(wrapError(error))
+         }
+       }
+     } else {
+       getValueChannel.setMessageHandler(nil)
+     }
   }
 }

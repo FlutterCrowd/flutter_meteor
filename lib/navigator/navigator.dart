@@ -160,8 +160,8 @@ class MeteorNavigator {
     _nativeNavigator.dismiss<T>();
   }
 
-  static void popUntilLastNative<T extends Object?>() async {
-    _nativeNavigator.pop<T>();
+  static void popUntilLastNative<T extends Object?>([result]) async {
+    _nativeNavigator.pop<T>(result);
   }
 
   /// pop 到指定页面并替换当前页面

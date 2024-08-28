@@ -11,31 +11,38 @@ import flutter_meteor
 class HzRouterMapExemple  {
     
     static func setUp() -> Void {
-        MeteorRouterManager.insertRouter(routeName: "test") { arguments in
+        MeteorRouterManager.insertRouter(routeName: "native_page") { arguments in
             let testVc = TestViewController.init()
             testVc.hidesBottomBarWhenPushed = true
-            testVc.title = "test"
+            testVc.title = "native_page"
 //            let navi = UINavigationController.init(rootViewController: testVc)
             return testVc
         }
         
-        MeteorRouterManager.insertRouter(routeName: "test1") { arguments in
+        MeteorRouterManager.insertRouter(routeName: "native_page1") { arguments in
             let testVc = TestViewController1.init()
-            testVc.title = "test1"
+            testVc.title = "native_page1"
             testVc.hidesBottomBarWhenPushed = true
             return testVc
         }
         
-        MeteorRouterManager.insertRouter(routeName: "test2") { arguments in
+        MeteorRouterManager.insertRouter(routeName: "native_page2") { arguments in
             let testVc = TestViewController2.init()
             testVc.hidesBottomBarWhenPushed = true
-            testVc.title = "test2"
+            testVc.title = "native_page2"
             return testVc
         }
         
-        MeteorRouterManager.insertRouter(routeName: "test3") { arguments in
+        MeteorRouterManager.insertRouter(routeName: "native_page3") { arguments in
             let testVc = TestViewController3.init()
-            testVc.title = "test3"
+            testVc.title = "native_page3"
+            testVc.hidesBottomBarWhenPushed = true
+            return testVc
+        }
+        
+        MeteorRouterManager.insertRouter(routeName: "native_page4") { arguments in
+            let testVc = TestViewController3.init()
+            testVc.title = "native_page4"
             testVc.hidesBottomBarWhenPushed = true
             return testVc
         }

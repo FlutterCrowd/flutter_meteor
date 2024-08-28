@@ -280,13 +280,13 @@ class TestViewController2: UIViewController {
   
     // 按钮点击时调用的方,
     @objc func buttonTapped(_ sender: UIButton) {
-//        FMNavigator.push(routeName: "test")
+//        FMNavigator.push(routeName: "native_page")
         self.openDouyin(urlScheme: "snssdk11281://" )
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped2(_ sender: UIButton) {
-//        FMNavigator.push(routeName: "test1")
+//        FMNavigator.push(routeName: "native_page1")
         
         self.openDouyin(urlScheme: "snssdk2329://" )
     }
@@ -294,7 +294,7 @@ class TestViewController2: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped3(_ sender: UIButton) {
         print("pushNamedAndRemoveUntilRoot test2")
-        MeteorNavigator.pushNamedAndRemoveUntilRoot(routeName: "test2")
+        MeteorNavigator.pushNamedAndRemoveUntilRoot(routeName: "native_page2")
     }
     
     // 按钮点击时调用的方法
@@ -312,19 +312,19 @@ class TestViewController2: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped6(_ sender: UIButton) {
         print("pop until")
-        MeteorNavigator.popUntil(untilRouteName: "test")//test
+        MeteorNavigator.popUntil(untilRouteName: "native_page")//test
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped7(_ sender: UIButton) {
         print("push and replace")
-        MeteorNavigator.pushToReplacement(routeName: "test1")
+        MeteorNavigator.pushToReplacement(routeName: "native_page1")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped8(_ sender: UIButton) {
         print("push and remove until multiEnginePage2")
-        MeteorNavigator.pushToAndRemoveUntil(routeName: "test1", untilRouteName: "multiEnginePage2")
+        MeteorNavigator.pushToAndRemoveUntil(routeName: "native_page1", untilRouteName: "multiEnginePage2")
     }
     
     // 按钮点击时调用的方法

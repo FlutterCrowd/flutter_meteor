@@ -138,6 +138,17 @@ public class MeteorMemoryCache: MeteorSharedCacheApi {
         }
     }
     
+    func setValue(key: String, value: Any?) throws {
+        queue.async(flags: .barrier) {
+            self.cache[key] = value
+        }
+    }
+    func getValue(key: String) throws -> Any? {
+        return queue.sync {
+            return self.cache[key]
+        }
+    }
+    
     public func clear() {
         queue.async(flags: .barrier) {
             self.cache.removeAll()

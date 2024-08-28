@@ -74,4 +74,13 @@ object MeteorMemoryCache: MeteorCacheApi {
     override fun getBytes(key: String): List<Long>? {
         return storage[key] as? List<Long>
     }
+
+    @Synchronized
+    fun setValue(key: String, value: Any?) {
+        storage[key] = value
+    }
+    @Synchronized
+    fun getValue(key: String): Any? {
+        return storage[key]
+    }
 }

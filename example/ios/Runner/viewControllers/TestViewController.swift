@@ -274,18 +274,18 @@ class TestViewController: UIViewController {
     @objc func buttonTapped(_ sender: UIButton) {
         let options = MeteorPushOptions(isOpaque: false, present: true)
 
-        MeteorNavigator.present(routeName: "test", options: options)
+        MeteorNavigator.present(routeName: "native_page", options: options)
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped2(_ sender: UIButton) {
-        MeteorNavigator.push(routeName: "test1")
+        MeteorNavigator.push(routeName: "native_page1")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped3(_ sender: UIButton) {
-        print("pushNamedAndRemoveUntilRoot test2")
-        MeteorNavigator.pushNamedAndRemoveUntilRoot(routeName: "test2")
+        print("pushNamedAndRemoveUntilRoot")
+        MeteorNavigator.pushNamedAndRemoveUntilRoot(routeName: "native_page2")
     }
     
     // 按钮点击时调用的方法
@@ -303,19 +303,19 @@ class TestViewController: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped6(_ sender: UIButton) {
         print("pop until")
-        MeteorNavigator.popUntil(untilRouteName: "test")//test
+        MeteorNavigator.popUntil(untilRouteName: "native_page")//test
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped7(_ sender: UIButton) {
         print("push and replace")
-        MeteorNavigator.pushToReplacement(routeName: "test1")
+        MeteorNavigator.pushToReplacement(routeName: "native_page1")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped8(_ sender: UIButton) {
         print("push and remove until multiEnginePage2")
-        MeteorNavigator.pushToAndRemoveUntil(routeName: "test1", untilRouteName: "multiEnginePage2")
+        MeteorNavigator.pushToAndRemoveUntil(routeName: "native_page1", untilRouteName: "multiEnginePage2")
     }
     
     // 按钮点击时调用的方法

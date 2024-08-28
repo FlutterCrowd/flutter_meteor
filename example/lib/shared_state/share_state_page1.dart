@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 
 import 'multi_engine_state.dart';
 
-class FirstScreen extends StatelessWidget {
+class ShareStatePage1 extends StatelessWidget {
+  const ShareStatePage1({super.key});
+
   @override
   Widget build(BuildContext context) {
     final globalStateService = Provider.of<GlobalStateService>(context);
@@ -15,8 +17,8 @@ class FirstScreen extends StatelessWidget {
     final MeteorIntProvider intProvider = Provider.of<MeteorIntProvider>(context);
     final MeteorListProvider listProvider = Provider.of<MeteorListProvider>(context);
     final MeteorMapProvider mapProvider = Provider.of<MeteorMapProvider>(context);
-    final MeteorModelProvider<UserInfo> modelProvider =
-        Provider.of<MeteorModelProvider<UserInfo>>(context);
+    final MeteorSharedProvider<UserInfo> modelProvider =
+        Provider.of<MeteorSharedProvider<UserInfo>>(context);
     final MeteorBytesProvider bytesProvider = Provider.of<MeteorBytesProvider>(context);
 
     return Scaffold(
@@ -38,11 +40,11 @@ class FirstScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 MeteorNavigator.pushNamed(
-                  "shareState2",
+                  "shareStatePage2",
                   withNewEngine: true,
                 );
               },
-              child: Text("打开新引擎shareState2"),
+              child: Text("打开新引擎"),
             ),
             ElevatedButton(
               onPressed: () {
@@ -88,11 +90,17 @@ class FirstScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                modelProvider.updateWithModel(UserInfo(
+                modelProvider.model = UserInfo(
                   name: 'name1',
                   phone: '18123248832',
                   gender: 2,
-                ));
+                );
+
+                // modelProvider.updateWithJson({
+                //   'name': 'name1',
+                //   'phone': '18123248832',
+                //   'gender': 2,
+                // });
               },
               child: Text("点击更新多引擎共享Map：${modelProvider.model.toJson()}"),
             ),

@@ -1,3 +1,7 @@
+import 'dart:ffi';
+
+import 'package:flutter_meteor/shared_state/shared_object.dart';
+
 import 'shared_cache_api.dart';
 
 class SharedMemoryCache {
@@ -68,13 +72,44 @@ class SharedMemoryCache {
     return await _cacheApi.getBytes(key) as List<int>?;
   }
 
-  // static Future<void> setValue(String key, dynamic value) async {
-  //   await _cacheApi.set(key, value);
-  // }
-  //
-  // static Future<dynamic> getValue(String key) async {
-  //   return await _cacheApi.ge(key);
-  // }
+  /// value 只能是String、int、double、bool、null(移除)、List<String、int、double、bool>、Map<String, (String、int、double、bool)>或者实现MeteorModelApi的对象
+  static Future<void> setValue(String key, dynamic value) async {
+    if (canSave(value)) {
+      await _cacheApi.setValue(key, value);
+    } else {
+      throw ArgumentError('Cannot be saved for invalid data type: ${value.runtimeType}');
+    }
+  }
 
-  getPlatformVersion() {}
+  static Future<dynamic> getValue(String key) async {
+    return await _cacheApi.getValue(key);
+  }
+
+  static bool canSave(dynamic value) {
+    if (value == null) {
+      return true;
+    }
+    bool ret = false;
+    if (value is String ||
+        value is Int ||
+        value is double ||
+        value is bool ||
+        value is List ||
+        value is Map<String, dynamic>) {
+      ret = true;
+    }
+    return ret;
+  }
+
+  static Future<void> setObject<T extends MeteorSharedObject>(String key, T value) async {
+    await setMap(key, value.toJson());
+  }
+
+  static Future<T> getObject<T extends MeteorSharedObject>(
+      String key, T Function() constructor) async {
+    T instance = constructor();
+    Map<String, dynamic>? json = await getMap(key);
+    instance.setupFromJson(json);
+    return instance;
+  }
 }
