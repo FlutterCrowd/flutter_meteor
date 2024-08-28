@@ -76,11 +76,11 @@ object MeteorMemoryCache: MeteorCacheApi {
     }
 
     @Synchronized
-    fun setValue(key: String, value: Any?) {
+    override fun setValue(key: String, value: Any?) {
         storage[key] = value
     }
     @Synchronized
-    fun getValue(key: String): Any? {
+    override fun getValue(key: String): Any? {
         return storage[key]
     }
 }
