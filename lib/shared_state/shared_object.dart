@@ -1,6 +1,7 @@
 import 'package:flutter_meteor/cache/shared_memory_cache.dart';
 
-/// 共享对象通用接口，需要实现多引擎共享的对象实现
+/// 共享对象基类，需要多引擎共享的对象可以通过实现这个接口方便实现共享
+///
 abstract class MeteorSharedObject {
   bool? initialFromCache = true;
   String? _sharedUniqueKey;

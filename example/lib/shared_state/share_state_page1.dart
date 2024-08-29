@@ -17,8 +17,8 @@ class ShareStatePage1 extends StatelessWidget {
     final MeteorIntProvider intProvider = Provider.of<MeteorIntProvider>(context);
     final MeteorListProvider listProvider = Provider.of<MeteorListProvider>(context);
     final MeteorMapProvider mapProvider = Provider.of<MeteorMapProvider>(context);
-    final MeteorSharedProvider<UserInfo> modelProvider =
-        Provider.of<MeteorSharedProvider<UserInfo>>(context);
+    final MeteorSharedObjectProvider<UserInfo> modelProvider =
+        Provider.of<MeteorSharedObjectProvider<UserInfo>>(context);
     final MeteorBytesProvider bytesProvider = Provider.of<MeteorBytesProvider>(context);
 
     return Scaffold(

@@ -2,6 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_meteor/cache/shared_cache_api.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 
+/// A basic shared provider for Flutter Meteor
+///
+/// It is a wrapper of [ChangeNotifier] and [SharedPreferences]
+///
+/// It can be used to share data between Flutter and native platform
+///
+/// It can be used to share data between Flutter and native platform
 abstract class MeteorBasicSharedProvider<T> extends ChangeNotifier {
   MeteorBasicSharedProvider({String? stateKey, T? initialValue}) {
     print('当前类：$runtimeType');

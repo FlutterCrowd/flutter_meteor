@@ -160,7 +160,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => MeteorListProvider()),
         ChangeNotifierProvider(create: (_) => MeteorMapProvider()),
         ChangeNotifierProvider(create: (_) => MeteorBytesProvider()),
-        ChangeNotifierProvider(create: (_) => MeteorSharedProvider<UserInfo>(model: UserInfo())),
+        ChangeNotifierProvider(
+            create: (_) => MeteorSharedObjectProvider<UserInfo>(model: UserInfo())),
       ],
       child: MaterialApp(
         onGenerateRoute: AppRouterCenter.generateRoute,

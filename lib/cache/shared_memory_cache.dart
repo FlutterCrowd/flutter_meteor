@@ -72,7 +72,9 @@ class SharedMemoryCache {
     return await _cacheApi.getBytes(key) as List<int>?;
   }
 
-  /// value 只能是String、int、double、bool、null(移除)、List<String、int、double、bool>、Map<String, (String、int、double、bool)>或者实现MeteorModelApi的对象
+  /// value 只能是String、int、double、bool、null(移除)、
+  /// List<String、int、double、bool>
+  /// Map<String, (String、int、double、bool)>
   static Future<void> setValue(String key, dynamic value) async {
     if (canSave(value)) {
       await _cacheApi.setValue(key, value);
@@ -101,11 +103,15 @@ class SharedMemoryCache {
     return ret;
   }
 
-  static Future<void> setObject<T extends MeteorSharedObject>(String key, T value) async {
-    await setMap(key, value.toJson());
+  /// 缓存对象
+  /// T 是继承自MeteorSharedObject类的的对象
+  static Future<void> setObject<T extends MeteorSharedObject>(String key, T? value) async {
+    await setMap(key, value?.toJson());
   }
 
-  static Future<T> getObject<T extends MeteorSharedObject>(
+  /// 获取缓存对象
+  /// T 是继承自MeteorSharedObject类的的对象
+  static Future<T?> getObject<T extends MeteorSharedObject>(
       String key, T Function() constructor) async {
     T instance = constructor();
     Map<String, dynamic>? json = await getMap(key);

@@ -7,6 +7,16 @@ import 'impl/native.dart';
 import 'observer.dart';
 
 /// MeteorNavigator
+///
+/// MeteorNavigator是Meteor框架的导航器，用于页面跳转，页面栈管理，页面返回等操作
+///
+/// MeteorNavigator支持两种引擎，Flutter引擎和Native引擎，Flutter引擎用于Flutter页面跳转，Native引擎用于原生页面跳转
+///
+/// MeteorNavigator支持两种页面类型，Flutter页面和Native页面，Flutter页面由Flutter引擎渲染，Native页面由Native引擎渲染
+///
+/// MeteorNavigator支持两种页面跳转方式，push和pushReplacement，push表示从当前页面跳转到指定页面
+///
+
 class MeteorNavigator {
   static final MeteorNativeNavigator _nativeNavigator = MeteorNativeNavigator();
   static final MeteorFlutterNavigator _flutterNavigator = MeteorFlutterNavigator();
@@ -156,11 +166,14 @@ class MeteorNavigator {
 
   /// dismiss当前页面，针对原生模态出来的页面
   ///
-  /// @parma result 接受回调，T是个泛型，可以指定要返回的数据类型
+  /// @parma result 返回结果，T是个泛型，可以指定要返回的数据类型
   static void dismiss<T extends Object?>() async {
     _nativeNavigator.dismiss<T>();
   }
 
+  /// pop 到最近的一个原生页面
+  ///
+  /// @param result 返回结果
   static void popUntilLastNative<T extends Object?>([result]) async {
     _nativeNavigator.pop<T>(result);
   }
@@ -178,6 +191,7 @@ class MeteorNavigator {
   }
 
   /// pop 到根页面
+  ///
   static void popToRoot() async {
     _nativeNavigator.popToRoot();
   }

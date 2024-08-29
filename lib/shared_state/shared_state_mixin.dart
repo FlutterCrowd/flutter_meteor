@@ -65,11 +65,15 @@ mixin GlobalSharedStateMixin {
     return await SharedMemoryCache.getValue(key);
   }
 
-  Future<void> setObject<T extends MeteorSharedObject>(String key, T value) async {
-    await SharedMemoryCache.setMap(key, value.toJson());
+  /// 缓存对象
+  /// T 是继承自MeteorSharedObject类的的对象
+  Future<void> setObject<T extends MeteorSharedObject>(String key, T? value) async {
+    await SharedMemoryCache.setMap(key, value?.toJson());
   }
 
-  Future<T> getObject<T extends MeteorSharedObject>(String key, T Function() constructor) async {
+  /// 获取缓存对象
+  /// T 是继承自MeteorSharedObject类的的对象
+  Future<T?> getObject<T extends MeteorSharedObject>(String key, T Function() constructor) async {
     return await SharedMemoryCache.getObject<T>(key, constructor);
   }
 }

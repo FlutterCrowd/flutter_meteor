@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 
 /// 多引擎共享状态类基类，可以实现跨引擎共享状态，不管在哪个引擎上更新状态都能同步到其他引擎
-
-class MeteorSharedProvider<T extends MeteorSharedObject> with ChangeNotifier {
-  MeteorSharedProvider({required T model}) {
+/// 可以通过provider实现跨引擎页面状态同步
+class MeteorSharedObjectProvider<T extends MeteorSharedObject> with ChangeNotifier {
+  MeteorSharedObjectProvider({required T model}) {
     _model = model;
     MeteorEventBus.addListener(
       eventName: _eventName,
