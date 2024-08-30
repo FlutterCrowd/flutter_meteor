@@ -92,65 +92,14 @@ public class MeteorNativeNavigator: NSObject {
                 // 从父视图控制器中移除 ViewControllerA
                 curentVc.removeFromParent()
                 completion?()
-               
             } else {
                 print("This view controller cannot be dismissed or popped")
                 completion?()
             }
-
         }
-
         recursivePopOrDismiss(viewController: topVc, completion: completion)
     }
     
-
-//    private static func handleParentNavigationControllerPop(for navigationController: UINavigationController, 
-//                                                            topVc: UIViewController, 
-//                                                            animated: Bool,
-//                                                            completion: (() -> Void)?
-//    ) {
-//        if let parentVc = navigationController.parent {
-//            if let parentNavi = parentVc as? UINavigationController {
-//                if parentNavi.viewControllers.count > 1 {
-//                    parentNavi.popViewController(animated: animated)
-//                    completion?()
-//                } else {
-//                    parentVc.dismiss(animated: animated, completion: completion)
-//                }
-//            } else if let presentedVc = navigationController.presentedViewController {
-//                presentedVc.dismiss(animated: animated, completion: completion)
-//            } else if let parentNavi = parentVc.navigationController {
-//                if let presentedVc = parentNavi.presentedViewController {
-//                    presentedVc.dismiss(animated: animated, completion: completion)
-//                } else {
-//                    if parentNavi.viewControllers.count > 1 {
-//                        parentNavi.popViewController(animated: animated)
-//                        completion?()
-//                    } else {
-//                        if parentNavi == rootNavigationController() {
-//                            completion?()
-//                        } else {
-//                            parentVc.dismiss(animated: animated, completion: completion)
-//                        }
-//                    }
-//                }
-//            } else {
-//                topVc.dismiss(animated: animated, completion: completion)
-//            }
-//        } else {
-//            if let rootNavi = rootNavigationController() {
-//                if (rootNavi != navigationController) {
-//                    navigationController.dismiss(animated: animated, completion: completion)
-//                } else {
-//                    rootNavi.popViewController(animated: animated)
-//                    completion?()
-//                }
-//            } else if let presentedVc = navigationController.presentedViewController {
-//                presentedVc.dismiss(animated: animated, completion: completion)
-//            }
-//        }
-//    }
-
     static public func dismiss(animated: Bool = true, 
                                completion: (() -> Void)? = nil) {
         guard let topVc = topViewController() else {
@@ -397,6 +346,5 @@ public class MeteorNativeNavigator: NSObject {
     /// 获取根控制器
     public static func rootNavigationController() -> UINavigationController? {
         return MeteorNavigatorHelper.rootNavigationController()
-        
     }
 }

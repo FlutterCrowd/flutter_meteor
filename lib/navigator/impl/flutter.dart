@@ -155,12 +155,6 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   }
 
   @override
-  Future<T?> dismiss<T extends Object?>() async {
-    HzLog.w('This method:dismiss need to be implemented by native');
-    return null;
-  }
-
-  @override
   Future<bool> isRoot(String routeName) async {
     return navigatorObserver.isRootRoute(routeName);
   }

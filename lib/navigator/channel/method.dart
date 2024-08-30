@@ -6,7 +6,6 @@ class FMNavigatorMethod {
   static const String popMethod = 'pop';
   static const String popUntilMethod = 'popUntil';
   static const String popToRootMethod = 'popToRoot';
-  static const String dismissMethod = 'dismiss';
 
   static const String routeExists = 'routeExists';
   static const String isRoot = 'isRoot';

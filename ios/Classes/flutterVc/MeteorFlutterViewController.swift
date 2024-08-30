@@ -104,20 +104,14 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
         self.view.subviews.forEach { $0.removeFromSuperview() }
     }
     
-    
     public func pop(options: MeteorPopOptions?) {
         MeteorNavigator.pop()
         popCallBack?(options?.result)
     }
     
-    public func dismiss(options: MeteorPopOptions?) {
-        MeteorNavigator.dismiss()
-        popCallBack?(options?.result)
-    }
-    
     public func popUntil(untilRouteName: String?, options: MeteorPopOptions?) {
         MeteorNavigator.popUntil(untilRouteName: untilRouteName, options: options)
-        if untilRouteName == self.fmRouteName {
+        if untilRouteName == self.routeName {
             popCallBack?(options?.result)
         }
     }
@@ -140,66 +134,9 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
         }
     }
     
-    
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         /// 当页面消失时默认支持右滑退出页面
         self.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
-    
 }
-
-
-
-//
-//var last_resident_size: mach_vm_size_t = 0
-//
-//
-//public func report_memory()->ApplicationMemoryCurrentUsage {
-//    var info = mach_task_basic_info()
-//    var count = mach_msg_type_number_t(MemoryLayout<mach_task_basic_info>.size)/4
-//    
-//    let kerr: kern_return_t = withUnsafeMutablePointer(to: &info) {
-//        $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
-//            task_info(mach_task_self_,
-//                      task_flavor_t(MACH_TASK_BASIC_INFO),
-//                      $0,
-//                      &count)
-//        }
-//    }
-//    
-//    if kerr == KERN_SUCCESS {
-//        
-//        print("Memory in use (in bytes) last: \(last_resident_size)")
-//
-//        print("Memory in use (in bytes) current: \(info.resident_size)")
-//        
-//        print("Memory in use (in bytes) change: \(info.resident_size - last_resident_size), =>\(Double((info.resident_size - last_resident_size))/(1024.0 * 1024.0))MB")
-//        last_resident_size = info.resident_size
-//        let usage = info.resident_size / (1024 * 1024)
-//        let total = ProcessInfo.processInfo.physicalMemory / (1024 * 1024)
-//        let ratio = Double(info.virtual_size) / Double(ProcessInfo.processInfo.physicalMemory)
-//        return ApplicationMemoryCurrentUsage(usage: Double(usage), total: Double(total), ratio: Double(ratio))
-//    }
-//    else {
-//        print("Error with task_info(): " +
-//              (String(cString: mach_error_string(kerr), encoding: String.Encoding.ascii) ?? "unknown error"))
-//        return ApplicationMemoryCurrentUsage()
-//    }
-//}
-//    
-//public struct ApplicationMemoryCurrentUsage{
-//    
-//    var usage : Double = 0.0
-//    var total : Double = 0.0
-//    var ratio : Double = 0.0
-//    
-//    public func toJson() -> [String:Any] {
-//        return [
-//            "usage": usage,
-//            "total": total,
-//            "ratio": ratio,
-//        ]
-//    }
-//    
-//}

@@ -17,43 +17,42 @@ public class MeteorRouterManager: NSObject {
     public static let shared = MeteorRouterManager()
     private override init() {}
     
-    private let queue = DispatchQueue(label: "com.example.MemoryCacheQueue", attributes: .concurrent)
-
-    private var routes = Dictionary<String, MeteorViewControllerBuilder>()
-    
-    
+    // 路由表
+    private var routeMaps = Dictionary<String, MeteorViewControllerBuilder>()
+    // 注册路由
     public static func insertRouter(routeName:String,
                                     routerBuilder: @escaping MeteorViewControllerBuilder) {
-        shared.routes[routeName] = routerBuilder
+        shared.routeMaps[routeName] = routerBuilder
     }
-    
+    // 路由构造器
     public static func routerBuilder(routeName:String) -> MeteorViewControllerBuilder? {
-        return shared.routes[routeName]
+        return shared.routeMaps[routeName]
     }
     
-    public static func getViewController(routeName: String?,
-                                         arguments: Dictionary<String, Any>?) -> UIViewController? {
-        if(routeName == nil) {
-            return nil
-        }
-        let vcBuilder: MeteorViewControllerBuilder? = shared.routes[routeName!]
-        let vc: UIViewController? = vcBuilder?(arguments)
-        if let naviVC = vc as? UINavigationController,
-           let visibleVc = naviVC.visibleViewController {
-            if visibleVc.fmRouteName == nil {
-                visibleVc.fmRouteName = routeName
-            }
-        }
-        vc?.fmRouteName = routeName
-        return vc
-    }
+//    // 从路由构造器中创建ViewController
+//    public static func getViewController(routeName: String?,
+//                                         arguments: Dictionary<String, Any>?) -> UIViewController? {
+//        if(routeName == nil) {
+//            return nil
+//        }
+//        let vcBuilder: MeteorViewControllerBuilder? = shared.routeMaps[routeName!]
+//        let vc: UIViewController? = vcBuilder?(arguments)
+//        if let naviVC = vc as? UINavigationController,
+//           let visibleVc = naviVC.visibleViewController {
+//            if visibleVc.fmRouteName == nil {
+//                visibleVc.fmRouteName = routeName
+//            }
+//        }
+//        vc?.fmRouteName = routeName
+//        return vc
+//    }
     
     public static func getViewController(routeName: String?,
                                          options: MeteorPushOptions?) -> UIViewController? {
         if(routeName == nil) {
             return nil
         }
-        let vcBuilder: MeteorViewControllerBuilder? = shared.routes[routeName!]
+        let vcBuilder: MeteorViewControllerBuilder? = shared.routeMaps[routeName!]
         let vc: UIViewController? = vcBuilder?(options?.arguments)
         
         if options?.isOpaque == false {
@@ -66,20 +65,18 @@ public class MeteorRouterManager: NSObject {
                 visibleVc.view.backgroundColor = UIColor.clear
                 visibleVc.view.isOpaque = false
             }
-            if visibleVc.fmRouteName == nil {
-                visibleVc.fmRouteName = routeName
+            if visibleVc.routeName == nil {
+                visibleVc.routeName = routeName
             }
         }
-        vc?.fmRouteName = routeName
+        vc?.routeName = routeName
         return vc
     }
-    
     
     public static func getDefaultFlutterViewController(routeName: String,
                                                        entrypoint: String? = "main",
                                                        options: MeteorPushOptions?) -> MeteorFlutterViewController {
         let isOpaque: Bool = options?.isOpaque ?? true
-        
         let engineGroupOptions = MeteorEngineGroupOptions(
             entrypoint: entrypoint,
             initialRoute: routeName,
@@ -88,7 +85,7 @@ public class MeteorRouterManager: NSObject {
         let flutterVc = MeteorFlutterViewController.init(options: engineGroupOptions) { response in
             options?.callBack?(nil)
         }
-        flutterVc.fmRouteName = routeName
+        flutterVc.routeName = routeName
         flutterVc.isViewOpaque = isOpaque
         flutterVc.modalPresentationStyle = .overFullScreen
         if(!isOpaque) {

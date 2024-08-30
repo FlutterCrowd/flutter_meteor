@@ -164,13 +164,6 @@ class MeteorNavigator {
     }
   }
 
-  /// dismiss当前页面，针对原生模态出来的页面
-  ///
-  /// @parma result 返回结果，T是个泛型，可以指定要返回的数据类型
-  static void dismiss<T extends Object?>() async {
-    _nativeNavigator.dismiss<T>();
-  }
-
   /// pop 到最近的一个原生页面
   ///
   /// @param result 返回结果

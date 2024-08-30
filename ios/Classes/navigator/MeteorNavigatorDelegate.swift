@@ -16,7 +16,7 @@ public let FMPushNamedAndRemoveUntilRootMethod: String = "pushNamedAndRemoveUnti
 public let FMPopMethod: String = "pop"
 public let FMPopUntilMethod: String = "popUntil"
 public let FMPopToRootMethod: String = "popToRoot"
-public let FMDismissMethod: String = "dismiss"
+//public let FMDismissMethod: String = "dismiss"
 
 public let FMRouteExists: String  = "routeExists";
 public let FMIsRoot: String  = "isRoot";
@@ -77,9 +77,6 @@ protocol MeteorNavigatorDelegate {
     func popUntil(untilRouteName: String?, isFarthest: Bool, options: MeteorPopOptions?)
      
     func popToRoot(options: MeteorPopOptions?)
-     
-    func dismiss(options: MeteorPopOptions?)
-    
 }
 
 
@@ -134,10 +131,6 @@ extension MeteorNavigatorDelegate {
         case FMPopToRootMethod:
             let params = getPopParams(call, result: result)
             popToRoot(options: params.options)
-            break
-        case FMDismissMethod:
-            let params = getPopParams(call, result: result)
-            dismiss(options: params.options)
             break
         case FMRouteExists:
             if let methodArguments = call.arguments as? Dictionary<String, Any> {
@@ -271,9 +264,4 @@ extension MeteorNavigatorDelegate {
     func popToRoot(options: MeteorPopOptions?) {
         MeteorNavigator.popToRoot(options: options)
     }
-     
-    func dismiss(options: MeteorPopOptions?) {
-        MeteorNavigator.dismiss(options: options)
-    }
-    
 }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 import 'package:hz_tools/hz_tools.dart';
@@ -119,16 +117,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   void popUntilLastNative<T extends Object?>() async {
     HzLog.t('MeteorNativeNavigator popUntilLastNative');
     await methodChannel.invokeMethod<T>(FMNavigatorMethod.popMethod);
-  }
-
-  @override
-  void dismiss<T extends Object?>() async {
-    HzLog.t('MeteorNativeNavigator dismiss');
-    if (Platform.isIOS) {
-      await methodChannel.invokeMethod<T>(FMNavigatorMethod.dismissMethod);
-    } else {
-      await methodChannel.invokeMethod<T>(FMNavigatorMethod.popMethod);
-    }
   }
 
   @override

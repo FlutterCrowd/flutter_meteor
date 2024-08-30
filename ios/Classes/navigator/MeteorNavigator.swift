@@ -14,8 +14,8 @@ public typealias MeteorNavigatorSearchBlock = (_ viewController: UIViewControlle
 public class MeteorNavigator {
     
     public static func viewController(routeName: String?, 
-                                      arguments: Dictionary<String, Any>?) -> UIViewController? {
-        return  MeteorRouterManager.getViewController(routeName: routeName, arguments: arguments)
+                                      options: MeteorPushOptions?) -> UIViewController? {
+        return  MeteorRouterManager.getViewController(routeName: routeName, options: options)
     }
     
     /* push新页面
@@ -28,7 +28,7 @@ public class MeteorNavigator {
 #if DEBUG
         print("MeteorNavigator push to routeName: \(routeName), opptions: \(options?.toJson() ?? ["":nil])")
 #endif
-        if let toPage = viewController(routeName: routeName, arguments: options?.arguments) {
+        if let toPage = viewController(routeName: routeName, options: options) {
            MeteorNativeNavigator.push(toPage: toPage, animated: options?.animated ?? true)
            options?.callBack?(nil)
         } else if(options?.pageType == .newEngine) {
@@ -59,7 +59,7 @@ public class MeteorNavigator {
             vc.view.isOpaque = false
         }
         
-        if let vc = viewController(routeName: routeName, arguments: options?.arguments) {
+        if let vc = viewController(routeName: routeName, options: options) {
             if options?.isOpaque == false {
                 setNoOpaque(vc: vc)
                 if let navi = vc as? UINavigationController {
@@ -156,7 +156,7 @@ public class MeteorNavigator {
             }
         }
             
-        if let toPage = viewController(routeName: routeName, arguments: options?.arguments) {
+        if let toPage = viewController(routeName: routeName, options: options) {
             if let flutterVc =  untilPage as? FlutterViewController {
                 doPushToAndRemoveUntil(flutterVc: flutterVc, toPage: toPage, untilRouteName: untilRouteName, options: options)
             } else {
@@ -230,7 +230,7 @@ public class MeteorNavigator {
             }
         }
         
-        if let toPage = viewController(routeName: routeName, arguments: options?.arguments)  {
+        if let toPage = viewController(routeName: routeName, options: options)  {
             MeteorNativeNavigator.pushToAndRemoveUntilRoot(toPage: toPage, animated: options?.animated ?? true)
             flutterPopRoot()
             options?.callBack?(nil)
@@ -289,7 +289,7 @@ public class MeteorNavigator {
             }
         }
         
-       if let toVc = viewController(routeName: routeName, arguments: options?.arguments) {
+       if let toVc = viewController(routeName: routeName, options: options) {
            if let flutterVc = MeteorNavigatorHelper.topViewController() as? FlutterViewController {
                pushToReplaceWithFlutterVC(flutterVc: flutterVc, topPage: toVc, options: options)
            } else {
@@ -401,16 +401,6 @@ public class MeteorNavigator {
         }
         MeteorNativeNavigator.popToRoot(animated: options?.animated ?? true)
         options?.callBack?(nil)
-
-
-    }
-   
-    public static func dismiss(options: MeteorPopOptions? = nil) {
-#if DEBUG
-        print("MeteorNavigator dismiss, opptions: \(options?.toJson() ?? ["":nil])")
-#endif
-        MeteorNativeNavigator.dismiss(animated: options?.animated ?? true)
-        options?.callBack?(nil)
     }
 }
 
@@ -466,7 +456,7 @@ extension MeteorNavigator {
                     defer {
                         finish()
                     }
-                    if routeName == vc.fmRouteName {
+                    if routeName == vc.routeName {
                        // 找到匹配的路由，调用结果回调
                         callBack(viewController: vc)
                    } else {
@@ -528,10 +518,10 @@ extension MeteorNavigator {
                     result(rootRouteName)
                 }
             } else {
-                result(rootVc?.fmRouteName)
+                result(rootVc?.routeName)
             }
         } else {
-            result(rootVc?.fmRouteName)
+            result(rootVc?.routeName)
 
         }
     }
@@ -548,7 +538,7 @@ extension MeteorNavigator {
                 result(response)
             }
         } else {
-            result(topVc?.fmRouteName)
+            result(topVc?.routeName)
         }
     }
     
@@ -571,7 +561,7 @@ extension MeteorNavigator {
                         dispatchGroup.leave()
                     }
                     if routeStack?.isEmpty ?? true {
-                        vcMap[vc] = [vc.fmRouteName ?? "\(type(of: vc))"]
+                        vcMap[vc] = [vc.routeName ?? "\(type(of: vc))"]
                     } else {
                         vcMap[vc] = routeStack
                     }
@@ -580,13 +570,13 @@ extension MeteorNavigator {
                 defer {
                     dispatchGroup.leave()
                 }
-                vcMap[vc] = [vc.fmRouteName ?? "\(type(of: vc))"]
+                vcMap[vc] = [vc.routeName ?? "\(type(of: vc))"]
             }
         }
 
         dispatchGroup.notify(queue: .main) {
             vcStack.forEach { vc in
-                routeStack.append(contentsOf: vcMap[vc] ?? [vc.fmRouteName ?? "\(type(of: vc))"])
+                routeStack.append(contentsOf: vcMap[vc] ?? [vc.routeName ?? "\(type(of: vc))"])
             }
             result(routeStack)
 //            print("原生结束调用routeNameStack")

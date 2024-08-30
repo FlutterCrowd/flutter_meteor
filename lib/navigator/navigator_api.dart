@@ -86,9 +86,6 @@ abstract class MeteorNavigatorApi {
   /// pop 到根页面
   void popToRoot();
 
-  /// 返回原生模态出的视图
-  void dismiss<T extends Object?>();
-
   /// 当前路由名栈
   Future<List<String>> routeNameStack();
 
