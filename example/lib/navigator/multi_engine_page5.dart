@@ -27,6 +27,19 @@ class _MultiEnginePageState extends State<MultiEnginePage5> {
           Center(
             child: ElevatedButton(
               onPressed: () {
+                MeteorNavigator.pop({'name1': 'I' 'm bob, I from Flutter, 哈哈'});
+              },
+              child: const Text(
+                '返回上一个页面',
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
                 MeteorNavigator.pushNamed(
                   'multiEnginePage2',
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
@@ -61,7 +74,7 @@ class _MultiEnginePageState extends State<MultiEnginePage5> {
             child: ElevatedButton(
               onPressed: () {
                 MeteorNavigator.pushNamed(
-                  'native_page1',
+                  'push_native',
                   pageType: MeteorPageType.native,
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
                 );
@@ -145,7 +158,7 @@ class _MultiEnginePageState extends State<MultiEnginePage5> {
             child: ElevatedButton(
               onPressed: () {
                 MeteorNavigator.pushReplacementNamed(
-                  'multiEnginePage2',
+                  'native_page1',
                   arguments: {},
                   pageType: MeteorPageType.native,
                 );
@@ -291,19 +304,6 @@ class _MultiEnginePageState extends State<MultiEnginePage5> {
               },
               child: const Text(
                 '打开Native并移除跟视图之前的所有页面',
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pop({'name1': 'I' 'm bob, I from Flutter, 哈哈'});
-              },
-              child: const Text(
-                '返回上一个页面',
               ),
             ),
           ),

@@ -291,7 +291,7 @@ class TestViewController: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped4(_ sender: UIButton) {
         print("打开新引擎")
-        MeteorNavigator.push(routeName: "multiEnginePage2")
+        MeteorNavigator.push(routeName: "multiEnginePage")
     }
     
     // 按钮点击时调用的方法
@@ -315,13 +315,13 @@ class TestViewController: UIViewController {
     // 按钮点击时调用的方法
     @objc func buttonTapped8(_ sender: UIButton) {
         print("push and remove until multiEnginePage2")
-        MeteorNavigator.pushToAndRemoveUntil(routeName: "native_page1", untilRouteName: "multiEnginePage2")
+        MeteorNavigator.pushToAndRemoveUntil(routeName: "native_page1", untilRouteName: "multiEnginePage")
     }
     
     // 按钮点击时调用的方法
     @objc func buttonTapped9(_ sender: UIButton) {
         print("返回multiEnginePage2")
-        MeteorNavigator.popUntil(untilRouteName: "multiEnginePage2")
+        MeteorNavigator.popUntil(untilRouteName: "multiEnginePage")
     }
     
     // 按钮点击时调用的方法

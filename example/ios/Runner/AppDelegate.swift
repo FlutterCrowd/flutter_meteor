@@ -26,12 +26,12 @@ import flutter_meteor
       // 在第一次使用FMFlutterViewController之前调用
       FlutterMeteor.setUp(pluginRegistryDelegate: self)
       UIViewController.fmInitializeSwizzling
-//      let vc: FMFlutterViewController =  FMFlutterViewController.init()
 //      vc.routeName = "RootPage"
-      let vc: UIViewController =  MeteorFlutterViewController.init()//MeteorFlutterViewController.init()//self.window.rootViewController ?? //TabBarViewController.init()//
+      let vc: UIViewController =  TabBarViewController.init()//MeteorFlutterViewController.init()//self.window.rootViewController ?? //TabBarViewController.init()//
 
       let navi: UINavigationController = UINavigationController.init(rootViewController: vc)
       navi.navigationBar.isHidden = true
+//      navi.navigationBar.tintColor = UIColor.darkGray
       navi.title = "首页导航"
       self.window.rootViewController = navi
  

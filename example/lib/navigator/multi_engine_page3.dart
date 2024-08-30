@@ -27,6 +27,19 @@ class _MultiEnginePageState extends State<MultiEnginePage3> {
           Center(
             child: ElevatedButton(
               onPressed: () {
+                MeteorNavigator.pop({'name1': 'I' 'm bob, I from Flutter, 哈哈'});
+              },
+              child: const Text(
+                '返回上一个页面',
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
                 MeteorNavigator.pushNamed(
                   'multiEnginePage4',
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
@@ -145,7 +158,7 @@ class _MultiEnginePageState extends State<MultiEnginePage3> {
             child: ElevatedButton(
               onPressed: () {
                 MeteorNavigator.pushReplacementNamed(
-                  'multiEnginePage4',
+                  'native_page3',
                   arguments: {},
                   pageType: MeteorPageType.native,
                 );
@@ -291,19 +304,6 @@ class _MultiEnginePageState extends State<MultiEnginePage3> {
               },
               child: const Text(
                 '打开Native并移除跟视图之前的所有页面',
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pop({'name1': 'I' 'm bob, I from Flutter, 哈哈'});
-              },
-              child: const Text(
-                '返回上一个页面',
               ),
             ),
           ),

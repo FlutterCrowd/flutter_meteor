@@ -27,6 +27,19 @@ class _MultiEnginePageState extends State<MultiEnginePage4> {
           Center(
             child: ElevatedButton(
               onPressed: () {
+                MeteorNavigator.popToRoot();
+              },
+              child: const Text(
+                '返回根页面',
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: () {
                 MeteorNavigator.pushNamed(
                   'multiEnginePage5',
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
@@ -145,7 +158,7 @@ class _MultiEnginePageState extends State<MultiEnginePage4> {
             child: ElevatedButton(
               onPressed: () {
                 MeteorNavigator.pushReplacementNamed(
-                  'multiEnginePage5',
+                  'native_page4',
                   arguments: {},
                   pageType: MeteorPageType.native,
                 );
@@ -356,19 +369,6 @@ class _MultiEnginePageState extends State<MultiEnginePage4> {
               },
               child: const Text(
                 '返回指定的最远的同名Native页面',
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Center(
-            child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.popToRoot();
-              },
-              child: const Text(
-                '返回根页面',
               ),
             ),
           ),

@@ -129,6 +129,10 @@ public class MeteorNavigator {
                                                  untilPage: UIViewController?,
                                                  options: MeteorPushOptions? = nil
     ) {
+        
+        
+        
+        
             
         func doPushToAndRemoveUntil(flutterVc: FlutterViewController,
                                     toPage: UIViewController,
@@ -145,7 +149,6 @@ public class MeteorNavigator {
                     } else {
                         flutterVc.flutterPopUntil(untilRouteName: untilRouteName, options: nil)
                     }
-//                    flutterVc.flutterPopUntil(untilRouteName: untilRouteName, options: nil)
                 } else {
                     MeteorNativeNavigator.pushToAndRemoveUntil(toPage: toPage, untilPage: untilPage, animated: options?.animated ?? true)
                 }
@@ -181,18 +184,20 @@ public class MeteorNavigator {
                         } else {
                             flutterVc.flutterPopUntil(untilRouteName: untilRouteName, options: nil)
                         }
-//                        flutterVc.flutterPopUntil(untilRouteName: untilRouteName, options: nil)
                     } else {
-                        MeteorNativeNavigator.beforePushToRemoveUntil(untilPage: untilPage, animated: options?.animated ?? true) {
+                        MeteorNativeNavigator.popUntil(untilPage: untilPage!, animated: false) {
                             FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
                         }
                     }
                     options?.callBack?(nil)
                 }
-            } else {
-                MeteorNativeNavigator.beforePushToRemoveUntil(untilPage: untilPage, animated: options?.animated ?? true) {
+            } else if let untilPage = untilPage {
+                MeteorNativeNavigator.popUntil(untilPage: untilPage, animated: false) {
                     FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
                 }
+            } else {
+                FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
+
             }
        } else {
            if let flutterVc = MeteorNavigatorHelper.topViewController() as? FlutterViewController {
@@ -235,7 +240,7 @@ public class MeteorNavigator {
             flutterPopRoot()
             options?.callBack?(nil)
         } else if let delegate = FlutterMeteor.customRouterDelegate  {
-            MeteorNativeNavigator.beforePushToAndRemoveUntilRoot(animated: options?.animated ?? true) {
+            MeteorNativeNavigator.popToRoot(animated: false) {
                 delegate.push(routeName: routeName, options: options)
                 flutterPopRoot()
             }
@@ -259,22 +264,24 @@ public class MeteorNavigator {
         print("MeteorNavigator pushToReplacement to routeName: \(routeName), opptions: \(options?.toJson() ?? ["":nil])")
 #endif
         
-        func pushToReplaceWithFLutterVC(flutterVc: FlutterViewController,
+        func pushToReplaceWithFlutterVC(flutterVc: FlutterViewController,
                                         topPage: UIViewController,
                                         options: MeteorPushOptions?) {
             
             flutterVc.flutterRouteNameStack() { response in
                 if let routeStack = response,
                      routeStack.count > 1 { // 如果当前flutter页面大于一个，则调用flutter的pop
-                    let animated = options?.animated ?? true
-                    MeteorNativeNavigator.push(toPage: topPage, animated: animated)
-                    if animated { // 如果有动画先push原生再pop flutter页面避免闪屏
-                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + MeteorNavigatorAnimationDuration) {
-                            flutterVc.flutterPop()
-                        }
-                    } else {
-                        flutterVc.flutterPop()
-                    }
+                    MeteorNativeNavigator.push(toPage: topPage, animated: options?.animated ?? true)
+//                    let animated = options?.animated ?? true
+//                    if animated { // 如果有动画先push原生再pop flutter页面避免闪屏
+//                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + MeteorNavigatorAnimationDuration) {
+//                            flutterVc.flutterPop()
+//                        }
+//                    } else {
+//                        flutterVc.flutterPop()
+//                    }
+                    flutterVc.flutterPop()
+
                 } else {
                     MeteorNativeNavigator.pushToReplacement(toPage: topPage, animated: options?.animated ?? true)
                 }
@@ -284,7 +291,7 @@ public class MeteorNavigator {
         
        if let toVc = viewController(routeName: routeName, arguments: options?.arguments) {
            if let flutterVc = MeteorNavigatorHelper.topViewController() as? FlutterViewController {
-               pushToReplaceWithFLutterVC(flutterVc: flutterVc, topPage: toVc, options: options)
+               pushToReplaceWithFlutterVC(flutterVc: flutterVc, topPage: toVc, options: options)
            } else {
                MeteorNativeNavigator.pushToReplacement(toPage: toVc, animated: options?.animated ?? true)
                options?.callBack?(nil)
@@ -292,7 +299,7 @@ public class MeteorNavigator {
        } else if (options?.pageType == .newEngine) {
            let newEngineVc = MeteorRouterManager.getDefaultFlutterViewController(routeName: routeName, options: options)
            if let flutterVc = MeteorNavigatorHelper.topViewController() as? FlutterViewController {
-               pushToReplaceWithFLutterVC(flutterVc: flutterVc, topPage: newEngineVc, options: options)
+               pushToReplaceWithFlutterVC(flutterVc: flutterVc, topPage: newEngineVc, options: options)
            } else {
                MeteorNativeNavigator.pushToReplacement(toPage: newEngineVc, animated: options?.animated ?? true)
                options?.callBack?(nil)
@@ -303,22 +310,25 @@ public class MeteorNavigator {
                   if let routeStack = routeStack,
                        routeStack.count > 1 { // 如果当前flutter页面大于一个，则调用flutter的pop
                       FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
-                      let animated = options?.animated ?? true
-                      if animated { // 如果有动画先push原生再pop flutter页面避免闪屏
-                          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + MeteorNavigatorAnimationDuration) {
-                              flutterVc.flutterPop()
-                          }
-                      } else {
-                          flutterVc.flutterPop()
-                      }
+                      flutterVc.flutterPop()
+
+//                      let animated = options?.animated ?? true
+//                      if animated { // 如果有动画先push原生再pop flutter页面避免闪屏
+//                          DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + MeteorNavigatorAnimationDuration) {
+//                              flutterVc.flutterPop()
+//                          }
+//                      } else {
+//                          flutterVc.flutterPop()
+//                      }
+
                   } else {
-                      MeteorNativeNavigator.beforePushToReplacement {
+                      MeteorNativeNavigator.pop(animated: false) {
                           FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
                       }
                   }
               }
           } else {
-              MeteorNativeNavigator.beforePushToReplacement {
+              MeteorNativeNavigator.pop(animated: false) {
                   FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
               }
           }
@@ -352,30 +362,24 @@ public class MeteorNavigator {
 #endif
         
         if untilRouteName != nil {
-            searchRoute(routeName: untilRouteName!, isReversed: !isFarthest) { viewController in
-                _popUntil(untilRouteName: untilRouteName!, isFarthest: isFarthest, untilPage: viewController, options: options)
+            searchRoute(routeName: untilRouteName!, isReversed: !isFarthest) { untilPage in
+                // 1、先查询untilRouteName所在的viewController
+                if (untilPage != nil) {
+                    MeteorNativeNavigator.popUntil(untilPage: untilPage!, animated: options?.animated ?? true)
+                    if let flutterVc = untilPage as? FlutterViewController {
+                        // 3、如果是FlutterViewController则通过Channel通道在flutter端popUntil
+                        flutterVc.flutterPopUntil(untilRouteName: untilRouteName, isFarthest: isFarthest, options: options)
+                    }
+                } else { //如果untilPage不存在则返回上一页
+                    print("No viewcontroller route name：\(untilRouteName)")
+                }
             }
         } else {
-            print("No valid untilRouteName")
+            print("popUntil untilRouteName is nil")
         }
    
     }
     
-    private static func _popUntil(untilRouteName: String, 
-                                  isFarthest: Bool = false,
-                                  untilPage: UIViewController?,
-                                  options: MeteorPopOptions?) {
-        // 1、先查询untilRouteName所在的viewController
-        if (untilPage != nil) {
-            MeteorNativeNavigator.popUntil(untilPage: untilPage!, animated: options?.animated ?? true)
-            if let flutterVc = untilPage as? FlutterViewController {
-                // 3、如果是FlutterViewController则通过Channel通道在flutter端popUntil
-                flutterVc.flutterPopUntil(untilRouteName: untilRouteName, isFarthest: isFarthest, options: options)
-            }
-        } else { //如果untilPage不存在则返回上一页
-            print("pop until 查无此路由：\(untilRouteName)")
-        }
-    }
    
     /* 出栈到根页面
      *
