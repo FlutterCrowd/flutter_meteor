@@ -25,7 +25,6 @@ public class FlutterMeteorPlugin : NSObject, FlutterPlugin {
         MeteorCacheApiSetup.setUp(binaryMessenger: registrar.messenger(), api: MeteorMemoryCache.shared)
     }
     
-    
     public static func channelProvider(with registry: FlutterPluginRegistry) -> FlutterMeteorChannelProvider? {
         return registry.valuePublished(byPlugin: "FlutterMeteorPlugin") as? FlutterMeteorChannelProvider
     }
