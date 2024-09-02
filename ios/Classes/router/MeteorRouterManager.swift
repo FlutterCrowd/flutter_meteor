@@ -29,23 +29,6 @@ public class MeteorRouterManager: NSObject {
         return shared.routeMaps[routeName]
     }
     
-//    // 从路由构造器中创建ViewController
-//    public static func getViewController(routeName: String?,
-//                                         arguments: Dictionary<String, Any>?) -> UIViewController? {
-//        if(routeName == nil) {
-//            return nil
-//        }
-//        let vcBuilder: MeteorViewControllerBuilder? = shared.routeMaps[routeName!]
-//        let vc: UIViewController? = vcBuilder?(arguments)
-//        if let naviVC = vc as? UINavigationController,
-//           let visibleVc = naviVC.visibleViewController {
-//            if visibleVc.fmRouteName == nil {
-//                visibleVc.fmRouteName = routeName
-//            }
-//        }
-//        vc?.fmRouteName = routeName
-//        return vc
-//    }
     
     public static func getViewController(routeName: String?,
                                          options: MeteorPushOptions?) -> UIViewController? {
