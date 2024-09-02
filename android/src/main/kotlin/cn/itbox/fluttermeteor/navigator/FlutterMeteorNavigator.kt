@@ -7,6 +7,7 @@ import cn.itbox.fluttermeteor.core.ActivityInfo
 import cn.itbox.fluttermeteor.core.ActivityInjector
 import cn.itbox.fluttermeteor.core.FlutterMeteor
 import cn.itbox.fluttermeteor.core.FlutterMeteorRouteOptions
+import cn.itbox.fluttermeteor.engine.EngineInjector
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.plugin.common.MethodChannel
 import kotlinx.coroutines.CompletableDeferred
@@ -94,7 +95,10 @@ object FlutterMeteorNavigator {
 
     @JvmStatic
     fun popToRoot() {
-        FlutterMeteor.popToRoot()
+//        FlutterMeteor.popToRoot()
+        ActivityInjector.finishToRoot()
+        val provider =  EngineInjector.firstChannelProvider()
+        provider?.navigatorChannel?.invokeMethod("popToRoot", null)
     }
 
     @JvmStatic

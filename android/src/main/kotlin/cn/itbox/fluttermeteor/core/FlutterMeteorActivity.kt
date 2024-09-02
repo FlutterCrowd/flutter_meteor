@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import cn.itbox.fluttermeteor.engine.EngineBindings
 import cn.itbox.fluttermeteor.engine.EngineInjector
-import cn.itbox.fluttermeteor.core.ActivityInjector
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.engine.FlutterEngine
@@ -13,26 +12,15 @@ open class FlutterMeteorActivity : FlutterActivity() {
 
     private val engineBindings by lazy {
         val initialRoute = intent.getStringExtra("initialRoute")
+        val entryPoint = intent.getStringExtra("entryPoint") ?: "main"
         val routeArgs = intent.getStringExtra("routeArgs")
-        val isMainEntry = isMainEntry
-        val entryPoint = if (isMainEntry) "main" else "childEntry"
-        val theArgs = if (isMainEntry) null else listOf(routeArgs)
-        EngineBindings(this,  initialRoute, entryPoint, theArgs, 0)
-    }
-
-    val isMainEntry: Boolean get() {
-        val routeArgs = intent.getStringExtra("routeArgs")
-        return routeArgs.isNullOrEmpty()
+        val args = if (routeArgs.isNullOrEmpty()) null else listOf(routeArgs)
+        EngineBindings(this,  initialRoute, entryPoint, args, 0)
     }
 
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
         engineBindings.attach()
-        if (isMainEntry) {
-            println("是主引擎")
-            EngineInjector.setMainEngine(engineBindings.engine)
-        }
-
 //        val backgroundMode = intent.getStringExtra("backgroundMode")
         println("backgroundMode: $backgroundMode")
         if (backgroundMode == FlutterActivityLaunchConfigs.BackgroundMode.transparent) {

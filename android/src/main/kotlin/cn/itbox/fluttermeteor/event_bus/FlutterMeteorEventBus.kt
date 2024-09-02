@@ -1,5 +1,6 @@
 package cn.itbox.fluttermeteor.event_bus
 import cn.itbox.fluttermeteor.engine.EngineInjector
+import java.lang.ref.WeakReference
 
 typealias MeteorEventBusListener = (Any?) -> Unit
 
@@ -37,7 +38,7 @@ object MeteorEventBus {
         )
 
         EngineInjector.allChannelProviders().forEach { provider ->
-            provider?.eventBusChannel?.send(message)
+            provider.eventBusChannel.send(message)
         }
     }
 
