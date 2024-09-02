@@ -12,8 +12,8 @@ import cn.itbox.fluttermeteor.core.FlutterMeteor
 import cn.itbox.fluttermeteor.core.FlutterMeteorRouteOptions
 import cn.itbox.fluttermeteor.event_bus.MeteorEventBus
 import cn.itbox.fluttermeteor.event_bus.MeteorEventBusListener
-import cn.itbox.fluttermeteor.navigator.FMPushOptions
-import cn.itbox.fluttermeteor.navigator.FMPopOptions
+import cn.itbox.fluttermeteor.navigator.MeteorPushOptions
+import cn.itbox.fluttermeteor.navigator.MeteorPopOptions
 import cn.itbox.fluttermeteor.navigator.FlutterMeteorRouterCallBack
 import cn.itbox.fluttermeteor.navigator.MeteorPageType
 
@@ -45,7 +45,7 @@ class NativeActivity : AppCompatActivity() {
 
         val newPush = findViewById<View>(R.id.newPush)
         newPush.setOnClickListener {
-            val option = FMPushOptions(
+            val option = MeteorPushOptions(
                 pageType = MeteorPageType.NEW_ENGINE,
                 isOpaque = false,
                 arguments = null,
@@ -63,7 +63,7 @@ class NativeActivity : AppCompatActivity() {
 
         val newPop = findViewById<View>(R.id.newPop)
         newPop.setOnClickListener {
-            val option = FMPopOptions(
+            val option = MeteorPopOptions(
                 arguments = null,
             )
             option.callBack = object : FlutterMeteorRouterCallBack {
@@ -86,7 +86,7 @@ class NativeActivity : AppCompatActivity() {
 
         val newPushReplace = findViewById<View>(R.id.newPushReplace)
         newPushReplace.setOnClickListener {
-            val option = FMPushOptions(
+            val option = MeteorPushOptions(
                 pageType = MeteorPageType.NEW_ENGINE,
                 isOpaque = false,
                 arguments = null,
@@ -101,7 +101,7 @@ class NativeActivity : AppCompatActivity() {
 
         val newPushRemoveUntil = findViewById<View>(R.id.newPushRemoveUntil)
         newPushRemoveUntil.setOnClickListener {
-            val option = FMPushOptions(
+            val option = MeteorPushOptions(
                 pageType = MeteorPageType.NEW_ENGINE,
                 isOpaque = false,
                 arguments = null,

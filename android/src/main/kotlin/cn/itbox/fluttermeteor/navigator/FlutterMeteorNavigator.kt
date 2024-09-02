@@ -20,7 +20,7 @@ object FlutterMeteorNavigator {
     private val TAG = "FlutterMeteorNavigator"
 
     @JvmStatic
-    fun push(routeName: String, options: FMPushOptions? = null) {
+    fun push(routeName: String, options: MeteorPushOptions? = null) {
         if(options != null){
             val pageType = options.pageType
             val isOpaque = options.isOpaque
@@ -49,7 +49,7 @@ object FlutterMeteorNavigator {
     }
 
     @JvmStatic
-    fun pop(options: FMPopOptions? = null) {
+    fun pop(options: MeteorPopOptions? = null) {
         if(options != null){
             val arguments = options.arguments
             val data = Intent()
@@ -75,7 +75,7 @@ object FlutterMeteorNavigator {
     }
 
     @JvmStatic
-    fun popUntil(untilRouteName: String?, options: FMPopOptions? = null) {
+    fun popUntil(untilRouteName: String?, options: MeteorPopOptions? = null) {
         if(untilRouteName != null){
             CoroutineScope(Dispatchers.Main).launch {
                 handlePopUntil(untilRouteName)
@@ -98,7 +98,7 @@ object FlutterMeteorNavigator {
     }
 
     @JvmStatic
-    fun pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: FMPushOptions? = null) {
+    fun pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: MeteorPushOptions? = null) {
         if (untilRouteName != null) {
             CoroutineScope(Dispatchers.Main).launch {
                 handlePopUntil(untilRouteName)
@@ -108,13 +108,13 @@ object FlutterMeteorNavigator {
     }
 
     @JvmStatic
-    fun pushNamedAndRemoveUntilRoot(routeName: String, options: FMPushOptions? = null) {
+    fun pushNamedAndRemoveUntilRoot(routeName: String, options: MeteorPushOptions? = null) {
         FlutterMeteor.popToRoot()
         push(routeName, options)
     }
 
     @JvmStatic
-    fun pushToReplacement(routeName: String, options: FMPushOptions? = null) {
+    fun pushToReplacement(routeName: String, options: MeteorPushOptions? = null) {
         val activityInfoStack: List<ActivityInfo> = ActivityInjector.activityInfoStack
         CoroutineScope(Dispatchers.Main).launch {
             if (activityInfoStack.first().channelProvider != null) {
@@ -141,7 +141,7 @@ object FlutterMeteorNavigator {
     }
 
     @JvmStatic
-    fun dismiss(options: FMPopOptions? = null) {
+    fun dismiss(options: MeteorPopOptions? = null) {
     }
 
     /*------------------------router method start--------------------------*/

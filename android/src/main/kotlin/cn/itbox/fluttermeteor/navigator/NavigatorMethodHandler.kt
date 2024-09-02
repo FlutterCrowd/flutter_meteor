@@ -1,7 +1,5 @@
 package cn.itbox.fluttermeteor.navigator
 
-import kotlinx.coroutines.*
-
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
@@ -55,7 +53,7 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
             val isOpaque = arguments["isOpaque"] == true
             val routeName = arguments["routeName"]?.toString() ?: ""
             val routeArguments = arguments["arguments"]
-            val option = FMPushOptions(
+            val option = MeteorPushOptions(
                 pageType = MeteorPageType.fromType(pageTypeInt),
                 isOpaque = isOpaque,
                 arguments = routeArguments,
@@ -78,7 +76,7 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
         val arguments = call.arguments
         if (arguments is Map<*, *>) {
             val routeArguments = arguments["arguments"]
-            val option = FMPopOptions(
+            val option = MeteorPopOptions(
                 arguments = routeArguments,
             )
             option.callBack = object : FlutterMeteorRouterCallBack {
@@ -118,7 +116,7 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
             val isOpaque = arguments["isOpaque"] == true
             val routeName = arguments["routeName"]?.toString() ?: ""
             val routeArguments = arguments["arguments"]
-            val option = FMPushOptions(
+            val option = MeteorPushOptions(
                 pageType = MeteorPageType.fromType(pageTypeInt),
                 isOpaque = isOpaque,
                 arguments = routeArguments,
@@ -144,7 +142,7 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
             val isOpaque = arguments["isOpaque"] == true
             val routeName = arguments["routeName"]?.toString() ?: ""
             val routeArguments = arguments["arguments"]
-            val option = FMPushOptions(
+            val option = MeteorPushOptions(
                 pageType = MeteorPageType.fromType(pageTypeInt),
                 isOpaque = isOpaque,
                 arguments = routeArguments,
@@ -167,7 +165,7 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
                 val isOpaque = arguments["isOpaque"] == true
                 val routeName = arguments["routeName"]?.toString() ?: ""
                 val routeArguments = arguments["arguments"]
-                val option = FMPushOptions(
+                val option = MeteorPushOptions(
                     pageType = MeteorPageType.fromType(pageTypeInt),
                     isOpaque = isOpaque,
                     arguments = routeArguments,

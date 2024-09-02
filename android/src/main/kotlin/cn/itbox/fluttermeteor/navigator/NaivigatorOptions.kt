@@ -21,7 +21,7 @@ enum class MeteorPageType(val type: Int) {
 }
 
 // FMPushOptions data class
-class FMPushOptions(
+class MeteorPushOptions(
     var pageType: MeteorPageType = MeteorPageType.NATIVE,
     var isOpaque: Boolean = false,
     var present: Boolean = false,
@@ -30,7 +30,7 @@ class FMPushOptions(
 ) : BaseOptions()
 
 // FMPopOptions data class
-class FMPopOptions(
+class MeteorPopOptions(
     var animated: Boolean = true,
     var canDismiss: Boolean = true,
     var arguments: Any? = null,
