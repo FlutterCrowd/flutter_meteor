@@ -6,7 +6,6 @@ import 'method.dart';
 
 class MeteorMethodChannel {
   static final MeteorFlutterNavigator _flutterNavigator = MeteorFlutterNavigator();
-
   MeteorMethodChannel() {
     methodChannel.setMethodCallHandler(
       (call) async {

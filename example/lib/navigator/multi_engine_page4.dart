@@ -27,10 +27,10 @@ class _MultiEnginePageState extends State<MultiEnginePage4> {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                MeteorNavigator.popToRoot();
+                MeteorNavigator.pop();
               },
               child: const Text(
-                '返回根页面',
+                '返回上一页',
               ),
             ),
           ),
@@ -313,10 +313,10 @@ class _MultiEnginePageState extends State<MultiEnginePage4> {
           Center(
             child: ElevatedButton(
               onPressed: () {
-                MeteorNavigator.pop({'name1': 'I' 'm bob, I from Flutter, 哈哈'});
+                MeteorNavigator.popToRoot();
               },
               child: const Text(
-                '返回上一个页面',
+                '返回根页面',
               ),
             ),
           ),
