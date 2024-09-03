@@ -52,32 +52,17 @@ class WeakReferenceList<T> {
 
 object EngineInjector {
 
-//    private var mainEngine: WeakReference<FlutterEngine>? = null
-
     // 创建一个 WeakHashMap 实例
     private val weakMap = WeakHashMap<FlutterEngine, FlutterMeteorChannelProvider?>()
 
     private val channelProviders = WeakReferenceList<FlutterMeteorChannelProvider>()
-
-//    fun setMainEngine(engine: FlutterEngine) {
-//        mainEngine = WeakReference(engine)
-//    }
-
     fun put(engine: FlutterEngine, channelProvider: FlutterMeteorChannelProvider) {
         weakMap[engine] = channelProvider
         channelProviders.add(channelProvider)
     }
 
     fun getChannelProvider(engine: FlutterEngine) = weakMap[engine]
-
-//    fun getMainChannelProvider(): FlutterMeteorChannelProvider? {
-//        val main = mainEngine?.get()
-//        if (main != null) {
-//            return getChannelProvider(main)
-//        }
-//        return null
-//    }
-
+    
     fun remove(engine: FlutterEngine) {
         val channelProvider = weakMap[engine]
         weakMap.remove(engine)
@@ -94,13 +79,13 @@ object EngineInjector {
 
     fun firstChannelProvider() = channelProviders.getFirst()//weakMap.values.toList().first()
 
-    fun removeLast(){
-        if (weakMap.isEmpty()) {
-            return
+    fun removeLast() {
+        lastChannelProvider()?.let { provider ->
+            channelProviders.remove(provider)
+            weakMap.entries.find { it.value == provider }?.key?.let {
+                weakMap.remove(it)
+            }
         }
-        val engine = weakMap.entries.last().key
-        weakMap.remove(engine)
-        lastChannelProvider()?.let { channelProviders.remove(it) }
     }
 }
 
