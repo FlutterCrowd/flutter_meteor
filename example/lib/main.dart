@@ -54,13 +54,12 @@ void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   // await GlobalUserStateManager().setupFromSharedCache();
   // await MeteorSharedObject.create(() => GlobalUserStateManager());
-
+  WidgetsBinding.instance.addObserver(AppLifecycleObserver());
   await MeteorSharedObjectManager.registerGlobalInstances([
     GlobalUserStateManager(),
     GlobalAppStateManager(),
   ]);
 
-  WidgetsBinding.instance.addObserver(AppLifecycleObserver());
   EntryArguments arguments = MeteorEngine.parseEntryArgs(args);
   String? initialRoute = arguments.initialRoute;
   Map<String, dynamic>? routeArguments = arguments.routeArguments;

@@ -318,13 +318,13 @@ public class MeteorNavigator {
 //                      }
 
                   } else {
-                      MeteorNativeNavigator.pop(animated: false) {
+                      MeteorNativeNavigator.pop(animated: false) { popViewController in
                           FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
                       }
                   }
               }
           } else {
-              MeteorNativeNavigator.pop(animated: false) {
+              MeteorNativeNavigator.pop(animated: false) { popViewController in
                   FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
               }
           }
@@ -341,8 +341,10 @@ public class MeteorNavigator {
 #if DEBUG
         print("MeteorNavigator pop")
 #endif
-        MeteorNativeNavigator.pop()
-        options?.callBack?(nil)
+        MeteorNativeNavigator.pop(animated: options?.animated ?? true) { popViewController in
+            popViewController?.popCallBack?(options?.result)
+            options?.callBack?(nil)
+        }
    }
     
     /* 出栈到指定页面

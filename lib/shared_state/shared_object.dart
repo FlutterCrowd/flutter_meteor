@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_meteor/cache/shared_memory_cache.dart';
+
+import 'life_cycle_observer.dart';
 
 /// 共享对象基类，需要多引擎共享的对象可以通过实现这个接口方便实现共享
 ///
@@ -46,7 +49,25 @@ abstract class MeteorSharedObject {
 
 /// 共享对象管理类，用于注册共享对象，在多引擎中实现单利效果
 class MeteorSharedObjectManager {
+  // 私有构造函数，确保外部无法直接实例化这个类
+  MeteorSharedObjectManager._internal() {
+    WidgetsBinding.instance.addObserver(MeteorLifecycleObserver());
+  }
+
+  // 保存类的单例实例
+  static final MeteorSharedObjectManager _instance = MeteorSharedObjectManager._internal();
+
+  // 工厂构造函数，返回单例实例
+  factory MeteorSharedObjectManager() {
+    return _instance;
+  }
+
+  final List<MeteorSharedObject> _allInstances = [];
+
+  static List<MeteorSharedObject> get allInstances => _instance._allInstances;
+
   static Future<void> registerGlobalInstances(List<MeteorSharedObject> instances) async {
+    allInstances.addAll(instances);
     for (var instance in instances) {
       if (instance.initialFromCache ?? true) {
         await instance.setupFromSharedCache();

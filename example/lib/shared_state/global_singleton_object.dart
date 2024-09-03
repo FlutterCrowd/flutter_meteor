@@ -46,7 +46,7 @@ class GlobalUserStateManager extends MeteorSharedObject {
   bool? _isOnline;
   set isOnline(bool value) {
     _isOnline = value;
-    saveToSharedCache();
+    // saveToSharedCache();
   }
 
   bool get isOnline => _isOnline ?? false;
@@ -85,14 +85,14 @@ class GlobalAppStateManager extends MeteorSharedObject {
   bool? _didShowAlert;
   set didShowProtocolPage(bool value) {
     _didShowProtocolPage = value;
-    saveToSharedCache();
+    // saveToSharedCache();
   }
 
   bool get didShowProtocolPage => _didShowProtocolPage ?? false;
 
   set didShowAlert(bool value) {
     _didShowAlert = value;
-    saveToSharedCache();
+    // saveToSharedCache();
   }
 
   bool get didShowAlert => _didShowAlert ?? false;

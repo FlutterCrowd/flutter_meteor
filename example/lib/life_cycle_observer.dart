@@ -15,7 +15,7 @@ class AppLifecycleObserver with WidgetsBindingObserver {
       /// 应用程序进入后台
       onBackground();
     }
-    print('didChangeAppLifecycleState: $state');
+    // print('didChangeAppLifecycleState: $state');
   }
 
   void onBackground() async {

@@ -8,13 +8,13 @@
 import Flutter
 
 
-public typealias FlutterMeteorPopCallBack = (_ response: Dictionary<String, Any>?) -> Void
+//public typealias FlutterMeteorPopCallBack = (_ response: Dictionary<String, Any>?) -> Void
 
 
 public class MeteorFlutterViewController: FlutterViewController, MeteorNavigatorDelegate  {
     
     var methodChannel: FlutterMethodChannel?
-    var popCallBack: FlutterMeteorPopCallBack?
+//    var popCallBack: FlutterMeteorPopCallBack?
     
     var canFlutterPop: Bool = false
 
@@ -104,17 +104,17 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
         self.view.subviews.forEach { $0.removeFromSuperview() }
     }
     
-    public func pop(options: MeteorPopOptions?) {
-        MeteorNavigator.pop()
-        popCallBack?(options?.result)
-    }
-    
-    public func popUntil(untilRouteName: String?, options: MeteorPopOptions?) {
-        MeteorNavigator.popUntil(untilRouteName: untilRouteName, options: options)
-        if untilRouteName == self.routeName {
-            popCallBack?(options?.result)
-        }
-    }
+//    public func pop(options: MeteorPopOptions?) {
+//        MeteorNavigator.pop()
+//        popCallBack?(options?.result)
+//    }
+////    
+//    public func popUntil(untilRouteName: String?, options: MeteorPopOptions?) {
+//        MeteorNavigator.popUntil(untilRouteName: untilRouteName, options: options)
+//        if untilRouteName == self.routeName {
+//            popCallBack?(options?.result)
+//        }
+//    }
     
     func setupNavigatorObserverChannel() -> Void {
 

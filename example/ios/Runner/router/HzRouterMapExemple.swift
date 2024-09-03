@@ -15,6 +15,9 @@ class HzRouterMapExemple  {
             let testVc = TestViewController.init()
             testVc.hidesBottomBarWhenPushed = true
             testVc.title = "native_page"
+            testVc.popCallBack = { result in
+                print("TestViewController native_page pop result:\(result)")
+            }
 //            let navi = UINavigationController.init(rootViewController: testVc)
             return testVc
         }
@@ -23,6 +26,9 @@ class HzRouterMapExemple  {
             let testVc = TestViewController1.init()
             testVc.title = "native_page1"
             testVc.hidesBottomBarWhenPushed = true
+            testVc.popCallBack = { result in
+                print("TestViewController native_page pop result:\(result)")
+            }
             return testVc
         }
         
@@ -30,6 +36,9 @@ class HzRouterMapExemple  {
             let testVc = TestViewController2.init()
             testVc.hidesBottomBarWhenPushed = true
             testVc.title = "native_page2"
+            testVc.popCallBack = { result in
+                print("TestViewController native_page pop result:\(result)")
+            }
             return testVc
         }
         
@@ -37,6 +46,9 @@ class HzRouterMapExemple  {
             let testVc = TestViewController3.init()
             testVc.title = "native_page3"
             testVc.hidesBottomBarWhenPushed = true
+            testVc.popCallBack = { result in
+                print("TestViewController native_page pop result:\(result)")
+            }
             return testVc
         }
         
@@ -44,6 +56,9 @@ class HzRouterMapExemple  {
             let testVc = TestViewController3.init()
             testVc.title = "native_page4"
             testVc.hidesBottomBarWhenPushed = true
+            testVc.popCallBack = { result in
+                print("TestViewController native_page pop result:\(result)")
+            }
             return testVc
         }
         
@@ -51,12 +66,18 @@ class HzRouterMapExemple  {
             let testVc = TabBarViewController.init()
             testVc.title = "push_native"
             testVc.hidesBottomBarWhenPushed = true
+            testVc.popCallBack = { result in
+                print("TestViewController native_page pop result:\(result)")
+            }
             return testVc
         }
         
         MeteorRouterManager.insertRouter(routeName: "routeName") { arguments in
             let testVc = TestViewController.init()
             testVc.hidesBottomBarWhenPushed = true
+            testVc.popCallBack = { result in
+                print("TestViewController native_page pop result:\(result)")
+            }
             return testVc
         }
         
@@ -70,6 +91,9 @@ class HzRouterMapExemple  {
                 entrypointArgs: arg)
             let testVc = MeteorFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)
             testVc.hidesBottomBarWhenPushed = true
+            testVc.popCallBack = { result in
+                print("MeteorFlutterViewController multiEnginePage2 pop result:\(result)")
+            }
             return testVc
         }
         
@@ -83,6 +107,9 @@ class HzRouterMapExemple  {
                 entrypointArgs: arg)
             let testVc = MeteorFlutterViewController.init(options: engineGroupOptions, popCallBack: nil)
             testVc.hidesBottomBarWhenPushed = true
+            testVc.popCallBack = { result in
+                print("MeteorFlutterViewController multiEnginePage pop result:\(result)")
+            }
             return testVc
         }
     }

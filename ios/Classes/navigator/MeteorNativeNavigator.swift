@@ -40,27 +40,27 @@ public class MeteorNativeNavigator: NSObject {
     
 
     static public func pop(animated: Bool = true, 
-                           completion: (() -> Void)? = nil) {
+                           completion: ((_ popViewController: UIViewController?) -> Void)? = nil) {
         
         guard let topVc = topViewController() else {
             print("No top view controller found")
-            completion?()
+            completion?(nil)
             return
         }
         
-        func recursivePopOrDismiss(viewController: UIViewController?, completion: (() -> Void)? = nil) {
+        func recursivePopOrDismiss(viewController: UIViewController?, completion: ((_ popViewController: UIViewController?) -> Void)? = nil) {
             guard let viewController = viewController else {
-                completion?()
+                completion?(viewController)
                 return
             }
             if let navigationController = viewController.navigationController {
                 if navigationController.viewControllers.count > 1 {
                     // 当前导航控制器中的 ViewController 大于 1，执行 pop
                     navigationController.popViewController(animated: animated)
-                    completion?()
+                    completion?(viewController)
                 } else {
                     if viewController == rootViewController() || navigationController == rootViewController() {
-                        completion?()
+                        completion?(viewController)
                     } else {
                         recursivePopOrDismiss(viewController: navigationController, completion: completion)
                     }
@@ -68,7 +68,7 @@ public class MeteorNativeNavigator: NSObject {
             } else if viewController.presentingViewController != nil {
                 // 如果视图控制器是通过 present 呈现的，执行 dismiss 操作
                 viewController.dismiss(animated: animated) {
-                    completion?()
+                    completion?(viewController)
                 }
             } else if let tabBarController = viewController.tabBarController {
                 if viewController == tabBarController.selectedViewController ||
@@ -80,7 +80,7 @@ public class MeteorNativeNavigator: NSObject {
             } else if let parentVc = viewController.parent {
                 
                 guard let curentVc = parentVc.children.last(where: { $0 == viewController }) else {
-                    completion?()
+                    completion?(viewController)
                         return
                     }
                 // 通知 ViewControllerA 它即将被移除
@@ -91,10 +91,10 @@ public class MeteorNativeNavigator: NSObject {
                 
                 // 从父视图控制器中移除 ViewControllerA
                 curentVc.removeFromParent()
-                completion?()
+                completion?(viewController)
             } else {
                 print("This view controller cannot be dismissed or popped")
-                completion?()
+                completion?(viewController)
             }
         }
         recursivePopOrDismiss(viewController: topVc, completion: completion)
@@ -166,7 +166,7 @@ public class MeteorNativeNavigator: NSObject {
                 } else if let parent = navigationController.parent {
                     traversePop(currentVc: parent)
                 } else {
-                    pop(animated: false) {
+                    pop(animated: false) { popViewController in
                         traversePop(currentVc: topViewController())
                     }
                 }
@@ -192,7 +192,7 @@ public class MeteorNativeNavigator: NSObject {
                 return
             }
             
-            pop(animated: false) {
+            pop(animated: false) { popViewController in
                 traversePop(currentVc: topViewController())
             }
         }
@@ -262,7 +262,7 @@ public class MeteorNativeNavigator: NSObject {
             }
             topNavi.setViewControllers([toPage], animated: animated)
         } else {
-            pop(animated: false) { //
+            pop(animated: false) { popViewController in 
                 push(toPage: toPage, animated: animated)
             }
         }
