@@ -6,21 +6,21 @@ class MeteorLifecycleObserver with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       /// 应用程序进入前台
-      onForeground();
-    } else if (state == AppLifecycleState.paused) {
+      setupSharedObject();
+    } else {
       /// 应用程序进入后台
-      onBackground();
+      saveSharedObject();
     }
-    print('didChangeAppLifecycleState: $state');
+    // print('didChangeAppLifecycleState: $state');
   }
 
-  void onBackground() async {
+  void saveSharedObject() async {
     for (var element in MeteorSharedObjectManager.allInstances) {
       await element.saveToSharedCache();
     }
   }
 
-  void onForeground() async {
+  void setupSharedObject() async {
     for (var element in MeteorSharedObjectManager.allInstances) {
       await element.setupFromSharedCache();
     }
