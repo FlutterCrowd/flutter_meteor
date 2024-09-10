@@ -187,7 +187,7 @@ class _MultiEnginPageState extends State<SharedCacheTestPage> {
               const Divider(),
               GestureDetector(
                 onTap: () {
-                  MeteorNavigator.pushNamed("multiEnginePage2", pageType: MeteorPageType.newEngine);
+                  MeteorNavigator.pushNamed("multiEnginePage2", withNewEngine: true);
                 },
                 child: Container(
                   padding: const EdgeInsets.all(5),

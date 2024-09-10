@@ -13,7 +13,6 @@ public enum MeteorPageType: Int {
     case flutter = 0
     case native = 1
     case newEngine = 2
-    case web = 3
 
     // 初始化方法，根据类型值返回对应的枚举实例
     init(fromType type: Int) {

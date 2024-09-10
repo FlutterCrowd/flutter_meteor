@@ -59,7 +59,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 MeteorNavigator.pushNamed(
                   'multiEnginePage2',
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
-                  pageType: MeteorPageType.newEngine,
+                  withNewEngine: true,
                 );
               },
               child: const Text(
@@ -75,7 +75,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
               onPressed: () {
                 MeteorNavigator.pushNamed(
                   'native_page1',
-                  pageType: MeteorPageType.native,
+                  openNative: true,
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
                 );
               },
@@ -93,10 +93,10 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 MeteorNavigator.pushNamed(
                   "native_page1",
                   isOpaque: false,
-                  pageType: MeteorPageType.newEngine,
+                  withNewEngine: true,
                   present: true,
                 );
-                // MeteorNavigator.pushNamed("test", pageType: MeteorPageType.native,, present: true, isOpaque: false);
+                // MeteorNavigator.pushNamed("test", openNative: true,, present: true, isOpaque: false);
               },
               child: const Text(
                 '模态方式打开一个原生页面',
@@ -112,10 +112,10 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 MeteorNavigator.pushNamed(
                   "multiEnginePage2",
                   isOpaque: false,
-                  pageType: MeteorPageType.newEngine,
+                  withNewEngine: true,
                   present: true,
                 );
-                // MeteorNavigator.pushNamed("test", pageType: MeteorPageType.native,, present: true, isOpaque: false);
+                // MeteorNavigator.pushNamed("test", openNative: true,, present: true, isOpaque: false);
               },
               child: const Text(
                 '模态方式打开一个新引擎',
@@ -143,7 +143,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
               onPressed: () {
                 MeteorNavigator.pushReplacementNamed(
                   'multiEnginePage2',
-                  pageType: MeteorPageType.newEngine,
+                  withNewEngine: true,
                 );
               },
               child: const Text(
@@ -160,7 +160,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 MeteorNavigator.pushReplacementNamed(
                   'native_page1',
                   arguments: {},
-                  pageType: MeteorPageType.native,
+                  openNative: true,
                 );
               },
               child: const Text(
@@ -195,7 +195,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                   'multiEnginePage2',
                   'multiEnginePage',
                   arguments: {},
-                  pageType: MeteorPageType.newEngine,
+                  withNewEngine: true,
                 );
               },
               child: const Text(
@@ -213,7 +213,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                   'multiEnginePage2',
                   'native_page1',
                   arguments: {},
-                  pageType: MeteorPageType.native,
+                  openNative: true,
                 );
               },
               child: const Text(
@@ -231,7 +231,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                   'native_page2',
                   'multiEnginePage',
                   arguments: {},
-                  pageType: MeteorPageType.native,
+                  openNative: true,
                 );
               },
               child: const Text(
@@ -249,7 +249,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                   'native_page2',
                   'native_page1',
                   arguments: {},
-                  pageType: MeteorPageType.native,
+                  openNative: true,
                 );
               },
               child: const Text(
@@ -282,7 +282,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 MeteorNavigator.pushNamedAndRemoveUntilRoot(
                   'multiEnginePage2',
                   arguments: {},
-                  pageType: MeteorPageType.newEngine,
+                  withNewEngine: true,
                 );
               },
               child: const Text(
@@ -299,7 +299,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 MeteorNavigator.pushNamedAndRemoveUntilRoot(
                   'native_page1',
                   arguments: {},
-                  pageType: MeteorPageType.native,
+                  openNative: true,
                 );
               },
               child: const Text(

@@ -27,7 +27,7 @@ import flutter_meteor
       FlutterMeteor.setUp(pluginRegistryDelegate: self)
       UIViewController.fmInitializeSwizzling
 //      vc.routeName = "RootPage"
-      let vc: UIViewController =  MeteorFlutterViewController.init()//MeteorFlutterViewController.init()//self.window.rootViewController ?? //TabBarViewController.init()//
+      let vc: UIViewController =  MeteorFlutterViewController.init(isMainEngine: true)//MeteorFlutterViewController.init()//self.window.rootViewController ?? //TabBarViewController.init()//
 
       let navi: UINavigationController = UINavigationController.init(rootViewController: vc)
       navi.navigationBar.isHidden = true

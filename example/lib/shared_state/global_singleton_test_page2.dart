@@ -60,8 +60,7 @@ class _GlobalSingletonState extends State<GlobalSingletonStatePage2> {
             ),
             ElevatedButton(
               onPressed: () {
-                MeteorNavigator.pushNamed('globalSingletonStatePage',
-                    pageType: MeteorPageType.newEngine);
+                MeteorNavigator.pushNamed('globalSingletonStatePage', withNewEngine: true);
               },
               child: const Text('打开新引擎'),
             ),

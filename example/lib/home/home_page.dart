@@ -34,7 +34,7 @@ class HomePage extends StatelessWidget {
           onPressed: () {
             MeteorNavigator.pushNamed(
               'eventBusTestPage',
-              pageType: MeteorPageType.newEngine,
+              withNewEngine: true,
             );
           },
           child: const Center(

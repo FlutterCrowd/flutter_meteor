@@ -6,7 +6,7 @@ import 'package:hz_tools/hz_tools.dart';
 class MeteorEngine {
   MeteorEngine._();
 
-  static bool _isMain = true;
+  static bool _isMain = false;
   static get isMain => _isMain;
 
   static EntryArguments parseEntryArgs(List<String>? args) {
@@ -19,6 +19,7 @@ class MeteorEngine {
     final jsonObject = args.isNotEmpty ? jsonDecode(args.first) : {};
     String? initialRoute = jsonObject['initialRoute'];
     Map<String, dynamic>? routeArguments = jsonObject['routeArguments'];
+    _isMain = jsonObject['isMain'] as bool? ?? false;
     HzLog.t(
         'EntryArguments parseEntryArgs initialRoute:$initialRoute, routeArguments:$routeArguments');
     return EntryArguments(initialRoute, routeArguments);

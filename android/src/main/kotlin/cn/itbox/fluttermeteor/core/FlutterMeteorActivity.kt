@@ -7,17 +7,34 @@ import cn.itbox.fluttermeteor.engine.EngineInjector
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.android.FlutterActivityLaunchConfigs
 import io.flutter.embedding.engine.FlutterEngine
+import org.json.JSONObject
 
 open class FlutterMeteorActivity : FlutterActivity() {
 
     private val engineBindings by lazy {
         val initialRoute = intent.getStringExtra("initialRoute")
         val entryPoint = intent.getStringExtra("entryPoint") ?: "main"
-        val routeArgs = intent.getStringExtra("routeArgs")
-        val args = if (routeArgs.isNullOrEmpty()) null else listOf(routeArgs)
+        val routeArgsString = intent.getStringExtra("routeArgs")
+        var routeArgs: String? = null
+        if (routeArgsString != null) {
+            // 解析 JSON 字符串为 JSONObject
+            val jsonObject = JSONObject(routeArgsString)
+            jsonObject.put("isMain", isMainEntry)
+            routeArgs = jsonObject.toString()
+        } else {
+            val map = mapOf(
+                "isMain" to isMainEntry
+            )
+            val jsonObject = JSONObject(map)
+            routeArgs = jsonObject.toString()
+        }
+        val args = if (routeArgs.isNullOrEmpty()) emptyList() else listOf(routeArgs)
         EngineBindings(this,  initialRoute, entryPoint, args, 0)
     }
-
+    private val isMainEntry: Boolean get() {
+        val routeArgs = intent.getStringExtra("routeArgs")
+        return routeArgs.isNullOrEmpty()
+    }
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)
         engineBindings.attach()

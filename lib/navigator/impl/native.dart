@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_meteor/flutter_meteor.dart';
 import 'package:hz_tools/hz_tools.dart';
 
 import '../channel/channel.dart';
@@ -15,7 +14,8 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushNamed<T extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    bool withNewEngine = false,
+    bool openNative = false,
     bool isOpaque = true,
     bool animated = true,
     bool present = false,
@@ -23,7 +23,11 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   }) async {
     Map<String, dynamic> params = {};
     params["routeName"] = routeName;
-    params["pageType"] = pageType.type;
+    params["pageType"] = withNewEngine
+        ? 2
+        : openNative
+            ? 1
+            : 0;
     params["isOpaque"] = isOpaque;
     params["present"] = present;
     params["arguments"] = arguments;
@@ -36,7 +40,8 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
     String routeName,
     String untilRouteName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    bool withNewEngine = false,
+    bool openNative = false,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,
@@ -44,7 +49,11 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
     Map<String, dynamic> params = {};
     params["routeName"] = routeName;
     params["untilRouteName"] = untilRouteName;
-    params["pageType"] = pageType.type;
+    params["pageType"] = withNewEngine
+        ? 2
+        : openNative
+            ? 1
+            : 0;
     params["isOpaque"] = isOpaque;
     params["arguments"] = arguments;
     params["animated"] = animated;
@@ -56,14 +65,19 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    bool withNewEngine = false,
+    bool openNative = false,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
     Map<String, dynamic> params = {};
     params["routeName"] = routeName;
-    params["pageType"] = pageType.type;
+    params["pageType"] = withNewEngine
+        ? 2
+        : openNative
+            ? 1
+            : 0;
     params["isOpaque"] = isOpaque;
     params["arguments"] = arguments;
     params["animated"] = animated;
@@ -74,14 +88,19 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    bool withNewEngine = false,
+    bool openNative = false,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
     Map<String, dynamic> params = {};
     params["routeName"] = routeName;
-    params["pageType"] = pageType.type;
+    params["pageType"] = withNewEngine
+        ? 2
+        : openNative
+            ? 1
+            : 0;
     params["isOpaque"] = isOpaque;
     params["arguments"] = arguments;
     params["animated"] = animated;
