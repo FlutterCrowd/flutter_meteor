@@ -11,7 +11,6 @@ import 'package:flutter_meteor/flutter_meteor.dart';
 /// It can be used to share data between Flutter and native platform
 abstract class MeteorBasicSharedProvider<T> extends ChangeNotifier {
   MeteorBasicSharedProvider({String? stateKey, T? initialValue}) {
-    print('当前类：$runtimeType');
     _sharedState = initialValue;
     _stateKey = stateKey ?? runtimeType.toString();
     MeteorEventBus.addListener(
@@ -24,7 +23,6 @@ abstract class MeteorBasicSharedProvider<T> extends ChangeNotifier {
     );
     _setupState();
   }
-
   final _cacheApi = SharedCacheApi();
   String? _stateKey;
   String get stateKey => _stateKey ?? runtimeType.toString();
@@ -32,7 +30,6 @@ abstract class MeteorBasicSharedProvider<T> extends ChangeNotifier {
 
   T? _sharedState;
   T? get sharedState => _sharedState;
-
   void _setupState() async {
     T? state = await fetchState();
     _updateCurrentEngineState(state);
