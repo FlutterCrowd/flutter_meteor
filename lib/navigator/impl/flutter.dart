@@ -72,7 +72,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushNamed<T extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    PageType pageType = PageType.flutter,
     bool isOpaque = true,
     bool animated = true,
     bool present = false,
@@ -91,7 +91,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
     String routeName,
     String untilRouteName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    PageType pageType = PageType.flutter,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,
@@ -117,7 +117,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    PageType pageType = PageType.flutter,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,
@@ -134,7 +134,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    PageType pageType = PageType.flutter,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,

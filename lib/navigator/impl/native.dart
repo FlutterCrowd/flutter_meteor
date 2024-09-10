@@ -1,10 +1,10 @@
 import 'package:flutter/services.dart';
-import 'package:flutter_meteor/flutter_meteor.dart';
 import 'package:hz_tools/hz_tools.dart';
 
 import '../channel/channel.dart';
 import '../channel/method.dart';
 import '../navigator_api.dart';
+import '../page_type.dart';
 
 /// 实现Native层页面路由
 class MeteorNativeNavigator extends MeteorNavigatorApi {
@@ -15,7 +15,7 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushNamed<T extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    PageType pageType = PageType.flutter,
     bool isOpaque = true,
     bool animated = true,
     bool present = false,
@@ -36,7 +36,7 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
     String routeName,
     String untilRouteName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    PageType pageType = PageType.flutter,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,
@@ -56,7 +56,7 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    PageType pageType = PageType.flutter,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,
@@ -74,7 +74,7 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   @override
   Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    PageType pageType = PageType.flutter,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,

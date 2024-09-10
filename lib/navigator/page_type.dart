@@ -1,5 +1,5 @@
 /// 页面类型枚举
-enum MeteorPageType {
+enum PageType {
   ///flutter页面
   flutter(0),
 
@@ -7,18 +7,15 @@ enum MeteorPageType {
   native(1),
 
   ///通用新引擎打开flutter页面
-  newEngine(2),
+  newEngine(2);
 
-  ///web页面
-  web(3);
-
-  const MeteorPageType(this.type);
+  const PageType(this.type);
   final int type;
 
-  static MeteorPageType fromType(dynamic type) {
-    return MeteorPageType.values.firstWhere(
+  static PageType fromType(dynamic type) {
+    return PageType.values.firstWhere(
       (element) => element.type == type,
-      orElse: () => MeteorPageType.flutter,
+      orElse: () => PageType.flutter,
     );
   }
 }
