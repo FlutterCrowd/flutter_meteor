@@ -20,7 +20,7 @@ abstract class RouteRegistry {
   }) {
     if (routeType == FMStandardRouteType.material) {
       addMaterialPageRoute(name, builder);
-    } else if (routeType == FMStandardRouteType.material) {
+    } else if (routeType == FMStandardRouteType.cupertino) {
       addCupertinoPageRoute(name, builder);
     } else if (routeType == FMStandardRouteType.dialog) {
       addDialogPageRoute(name, builder);
