@@ -33,7 +33,7 @@ class MeteorNavigator {
   ///
   /// @param routeName 要跳转的页面
   /// @param withNewEngine 是否使用新引擎，默认-false 使用新引擎
-  /// @param openNative 是否使用原生，默认-false 使用原生引
+  /// @param openNative 是否使用原生，默认-false 使用原生
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
   /// @param present iOS特有参数，默认false，当present = true时通过iOS的present方法打开新页面
@@ -69,7 +69,7 @@ class MeteorNavigator {
   ///
   /// @param routeName 要跳转的页面
   /// @param withNewEngine 是否使用新引擎，默认-false 使用新引擎
-  /// @param openNative 是否使用原生，默认-false 使用原生引
+  /// @param openNative 是否使用原生，默认-false 使用原生
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
   /// @return T  泛型，用于指定返回类型
@@ -105,7 +105,7 @@ class MeteorNavigator {
   ///
   /// @param routeName 要跳转的页面
   /// @param withNewEngine 是否使用新引擎，默认-false 使用新引擎
-  /// @param openNative 是否使用原生，默认-false 使用原生引
+  /// @param openNative 是否使用原生，默认-false 使用原生
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
   /// @parma untilRouteName 移除截止页面
@@ -142,7 +142,7 @@ class MeteorNavigator {
   ///
   /// @param routeName 要跳转的页面
   /// @param withNewEngine 是否使用新引擎，默认-false 使用新引擎
-  /// @param openNative 是否使用原生，默认-false 使用原生引
+  /// @param openNative 是否使用原生，默认-false 使用原生
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
   /// @return T  泛型，用于指定返回类型
