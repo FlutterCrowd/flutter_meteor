@@ -10,9 +10,7 @@ open class BaseOptions(
 enum class MeteorPageType(val type: Int) {
     FLUTTER(0),
     NATIVE(1),
-    NEW_ENGINE(2),
-    WEB(3);
-
+    NEW_ENGINE(2);
     companion object {
         fun fromType(type: Int): MeteorPageType {
             return values().firstOrNull { it.type == type } ?: FLUTTER

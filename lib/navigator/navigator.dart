@@ -33,31 +33,37 @@ class MeteorNavigator {
   /// push 到一个已经存在路由表的页面
   ///
   /// @param routeName 要跳转的页面
-  /// @param pageType  MeteorPageType页面类型，默认MeteorPageType.flutter
+  /// @param withNewEngine 是否使用新引擎，默认-false 使用新引擎
+  /// @param openNative 是否使用原生，默认-false 使用原生
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
   /// @param present iOS特有参数，默认false，当present = true时通过iOS的present方法打开新页面
   /// @return T  泛型，用于指定返回类型
   static Future<T?> pushNamed<T extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    bool withNewEngine = false,
+    bool openNative = false,
     bool isOpaque = true,
     bool animated = true,
     bool present = false,
     Map<String, dynamic>? arguments,
   }) async {
-    if (pageType == MeteorPageType.flutter) {
-      return await _flutterNavigator.pushNamed<T>(
-        routeName,
-        arguments: arguments,
-      );
-    } else {
+    if (withNewEngine || openNative) {
       return await _nativeNavigator.pushNamed<T>(
         routeName,
-        pageType: pageType,
+        pageType: withNewEngine
+            ? PageType.newEngine
+            : openNative
+                ? PageType.native
+                : PageType.flutter,
         isOpaque: isOpaque,
         animated: animated,
         present: present,
+        arguments: arguments,
+      );
+    } else {
+      return await _flutterNavigator.pushNamed<T>(
+        routeName,
         arguments: arguments,
       );
     }
@@ -66,20 +72,22 @@ class MeteorNavigator {
   /// push 到指定页面并替换当前页面
   ///
   /// @param routeName 要跳转的页面
-  /// @param pageType  MeteorPageType页面类型，默认MeteorPageType.flutter
+  /// @param withNewEngine 是否使用新引擎，默认-false 使用新引擎
+  /// @param openNative 是否使用原生，默认-false 使用原生
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
   /// @return T  泛型，用于指定返回类型
   static Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    bool withNewEngine = false,
+    bool openNative = false,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
     /// 当前引擎路由栈大于一个页面的时候直接在flutter端替换
     final routeStack = navigatorObserver.routeNameStack;
-    if (routeStack.isNotEmpty && pageType == MeteorPageType.flutter) {
+    if (routeStack.isNotEmpty && !withNewEngine && !openNative) {
       return await _flutterNavigator.pushReplacementNamed<T, TO>(
         routeName,
         arguments: arguments,
@@ -88,7 +96,11 @@ class MeteorNavigator {
       /// 当前引擎路由栈只有一个页面时调原生方法
       return await _nativeNavigator.pushReplacementNamed<T, TO>(
         routeName,
-        pageType: pageType,
+        pageType: withNewEngine
+            ? PageType.newEngine
+            : openNative
+                ? PageType.native
+                : PageType.flutter,
         isOpaque: isOpaque,
         animated: animated,
         arguments: arguments,
@@ -99,7 +111,8 @@ class MeteorNavigator {
   /// push 到指定页面，同时会清除从页面pushNamedAndRemoveUntil页面到指定routeName链路上的所有页面
   ///
   /// @param routeName 要跳转的页面
-  /// @param pageType  MeteorPageType页面类型，默认MeteorPageType.flutter
+  /// @param withNewEngine 是否使用新引擎，默认-false 使用新引擎
+  /// @param openNative 是否使用原生，默认-false 使用原生
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
   /// @parma untilRouteName 移除截止页面
@@ -107,12 +120,13 @@ class MeteorNavigator {
   static Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
     String routeName,
     String untilRouteName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    bool withNewEngine = false,
+    bool openNative = false,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    if (navigatorObserver.routeExists(untilRouteName) && pageType == MeteorPageType.flutter) {
+    if (navigatorObserver.routeExists(untilRouteName) && !withNewEngine && !openNative) {
       return await _flutterNavigator.pushNamedAndRemoveUntil<T>(
         routeName,
         untilRouteName,
@@ -122,7 +136,11 @@ class MeteorNavigator {
       return await _nativeNavigator.pushNamedAndRemoveUntil<T>(
         routeName,
         untilRouteName,
-        pageType: pageType,
+        pageType: withNewEngine
+            ? PageType.newEngine
+            : openNative
+                ? PageType.native
+                : PageType.flutter,
         isOpaque: isOpaque,
         animated: animated,
         arguments: arguments,
@@ -133,20 +151,26 @@ class MeteorNavigator {
   /// push 到指定页面，同时会清除从页面跟页面到指定routeName链路上的所有页面
   ///
   /// @param routeName 要跳转的页面
-  /// @param pageType  MeteorPageType页面类型，默认MeteorPageType.flutter
+  /// @param withNewEngine 是否使用新引擎，默认-false 使用新引擎
+  /// @param openNative 是否使用原生，默认-false 使用原生
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
   /// @return T  泛型，用于指定返回类型
   static Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
     String routeName, {
-    MeteorPageType pageType = MeteorPageType.flutter,
+    bool withNewEngine = false,
+    bool openNative = false,
     bool isOpaque = true,
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
     return await _nativeNavigator.pushNamedAndRemoveUntilRoot<T>(
       routeName,
-      pageType: pageType,
+      pageType: withNewEngine
+          ? PageType.newEngine
+          : openNative
+              ? PageType.native
+              : PageType.flutter,
       isOpaque: isOpaque,
       animated: animated,
       arguments: arguments,

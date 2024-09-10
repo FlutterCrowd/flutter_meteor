@@ -41,7 +41,7 @@ class ShareStatePage1 extends StatelessWidget {
               onPressed: () {
                 MeteorNavigator.pushNamed(
                   "shareStatePage2",
-                  pageType: MeteorPageType.newEngine,
+                  withNewEngine: true,
                 );
               },
               child: Text("打开新引擎"),

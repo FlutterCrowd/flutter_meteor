@@ -29,9 +29,10 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
         FlutterMeteor.pluginRegistryDelegate.register(pluginRegistry: self.pluginRegistry())
     }
     
-    public convenience init () {
+    public convenience init (isMainEngine: Bool) {
+         let options: MeteorEngineGroupOptions = MeteorEngineGroupOptions(isMain: isMainEngine)
         // 创建新的引擎
-        let flutterEngine = MeteorEngineManager.createFlutterEngine()
+        let flutterEngine = MeteorEngineManager.createFlutterEngine(options: options)
         // 初始化VC
         self.init(engine: flutterEngine, nibName: nil, bundle: nil)
     }

@@ -19,15 +19,15 @@ import flutter_meteor
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-      //
-      GeneratedPluginRegistrant.register(with: self)
+
+//      GeneratedPluginRegistrant.register(with: self)
       
     
       // 在第一次使用FMFlutterViewController之前调用
       FlutterMeteor.setUp(pluginRegistryDelegate: self)
       UIViewController.fmInitializeSwizzling
 //      vc.routeName = "RootPage"
-      let vc: UIViewController =  MeteorFlutterViewController.init()//MeteorFlutterViewController.init()//self.window.rootViewController ?? //TabBarViewController.init()//
+      let vc: UIViewController =  MeteorFlutterViewController.init(isMainEngine: true)//MeteorFlutterViewController.init()//self.window.rootViewController ?? //TabBarViewController.init()//
 
       let navi: UINavigationController = UINavigationController.init(rootViewController: vc)
       navi.navigationBar.isHidden = true

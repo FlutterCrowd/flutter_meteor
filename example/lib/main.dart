@@ -8,8 +8,6 @@ import 'package:provider/provider.dart';
 import 'life_cycle_observer.dart';
 import 'shared_state/multi_engine_state.dart';
 
-final GlobalKey<NavigatorState> rootKey = GlobalKey<NavigatorState>();
-
 class UserInfo extends MeteorSharedObject {
   UserInfo({
     this.name = 'name',
@@ -47,19 +45,31 @@ class UserInfo extends MeteorSharedObject {
   }
 }
 
+final GlobalKey<NavigatorState> rootKey = GlobalKey<NavigatorState>();
+
 void main(List<String> args) async {
   if (kDebugMode) {
-    print('这是传递过来的参数：$args');
+    print('这是初始化引擎传递过来的参数：$args');
   }
+  // 确保 Flutter 的核心引擎和 Widgets 系统已经初始化。
+  // 在应用启动时执行与平台相关的操作或在访问平台通道时，
+  // 你需要确保 Flutter 的引擎已经启动且 Widgets 系统已经完全初始化。
+  // 否则，可能会出现未初始化的异常。
   WidgetsFlutterBinding.ensureInitialized();
-  // await GlobalUserStateManager().setupFromSharedCache();
-  // await MeteorSharedObject.create(() => GlobalUserStateManager());
-  WidgetsBinding.instance.addObserver(AppLifecycleObserver());
+
+  // 注册共享对象，一些需要跨引擎共享的对象可以在这里注册
+  // 确保这些对象在润runApp的时候能访问到
   await MeteorSharedObjectManager.registerGlobalInstances([
     GlobalUserStateManager(),
     GlobalAppStateManager(),
   ]);
 
+  WidgetsBinding.instance.addObserver(AppLifecycleObserver());
+
+  // 初始化导航器，用于flutter页面导航
+  MeteorNavigator.init(rootKey: rootKey);
+
+  // 解析原生传递过来的初始化参数
   EntryArguments arguments = MeteorEngine.parseEntryArgs(args);
   String? initialRoute = arguments.initialRoute;
   Map<String, dynamic>? routeArguments = arguments.routeArguments;
@@ -72,27 +82,39 @@ void main(List<String> args) async {
 }
 
 @pragma("vm:entry-point")
-void childEntry(List<String> args) {
+void childEntry(List<String> args) async {
   if (kDebugMode) {
-    print('这是传递过来的参数：$args');
+    print('这是初始化引擎传递过来的参数：$args');
   }
+  // 确保 Flutter 的核心引擎和 Widgets 系统已经初始化。
+  // 在应用启动时执行与平台相关的操作或在访问平台通道时，
+  // 你需要确保 Flutter 的引擎已经启动且 Widgets 系统已经完全初始化。
+  // 否则，可能会出现未初始化的异常。
   WidgetsFlutterBinding.ensureInitialized();
+
+  // 注册共享对象，一些需要跨引擎共享的对象可以在这里注册
+  // 确保这些对象在润runApp的时候能访问到
+  await MeteorSharedObjectManager.registerGlobalInstances([
+    GlobalUserStateManager(),
+    GlobalAppStateManager(),
+  ]);
+
   WidgetsBinding.instance.addObserver(AppLifecycleObserver());
-  if (args.isNotEmpty) {
-    EntryArguments arguments = MeteorEngine.parseEntryArgs(args);
-    String? initialRoute = arguments.initialRoute;
-    Map<String, dynamic>? routeArguments = arguments.routeArguments;
-    runApp(
-      MyApp(
-        initialRoute: initialRoute,
-        routeArguments: routeArguments,
-      ),
-    );
-  } else {
-    runApp(
-      const MyApp(),
-    );
-  }
+
+  // 初始化导航器
+  // 初始化导航器，用于flutter页面导航
+  MeteorNavigator.init(rootKey: rootKey);
+
+  // 解析原生传递过来的初始化参数
+  EntryArguments arguments = MeteorEngine.parseEntryArgs(args);
+  String? initialRoute = arguments.initialRoute;
+  Map<String, dynamic>? routeArguments = arguments.routeArguments;
+  runApp(
+    MyApp(
+      initialRoute: initialRoute,
+      routeArguments: routeArguments,
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -144,7 +166,6 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     initialRoute = widget.initialRoute ?? 'homePage';
     AppRouterCenter.setup();
-    MeteorNavigator.init(rootKey: rootKey);
   }
 
   @override
@@ -164,9 +185,9 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         onGenerateRoute: AppRouterCenter.generateRoute,
-        navigatorKey: rootKey,
+        navigatorKey: rootKey, // 1、指定navigatorKey
         navigatorObservers: [
-          MeteorNavigator.navigatorObserver,
+          MeteorNavigator.navigatorObserver, // 2、设置MeteorNavigator的Observer
           AppRouterCenter.routeObserver,
         ],
         // initialRoute: "home",
@@ -177,7 +198,7 @@ class _MyAppState extends State<MyApp> {
           if (kDebugMode) {
             print('initialRoute: $initialRoute');
           }
-          // MeteorNavigator.rootRoute = initialRoute;
+          // 3、动态解析初始路由，默认是首页
           var route = AppRouterCenter.generateRoute(
             RouteSettings(name: initialRoute, arguments: widget.routeArguments),
           );

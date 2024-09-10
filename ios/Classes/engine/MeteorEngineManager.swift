@@ -48,14 +48,19 @@ public class MeteorEngineGroupOptions {
     
     let libraryURI: String?
     
+    var isMain: Bool = false
+    
     public init(entrypoint: String? = "main",
                 initialRoute: String? = nil,
                 entrypointArgs: Dictionary<String, Any>? = nil,
-                libraryURI: String? = nil) {
+                libraryURI: String? = nil,
+                isMain: Bool = false
+    ) {
         self.entrypoint = entrypoint
         self.initialRoute = initialRoute
         self.entrypointArgs = entrypointArgs
         self.libraryURI = libraryURI
+        self.isMain = isMain
     }
 }
 
@@ -76,6 +81,7 @@ class MeteorEngineManager: NSObject {
         if(initialRoute != nil) {
             arguments["initialRoute"] = initialRoute
         }
+        arguments["isMain"] = options?.isMain ?? false
         if(initialRoute != nil) {
             arguments["routeArguments"] = entrypointArgs
         }
