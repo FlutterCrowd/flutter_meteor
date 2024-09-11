@@ -5,27 +5,25 @@
 //  Created by itbox_djx on 2024/7/22.
 //
 
-import UIKit
 import flutter_meteor
+import UIKit
 
 public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
     public static let shared = FMNavigatorObserver()
-    private override init() { super.init() }
-    
+    override private init() { super.init() }
+
     private var viewControllerStack: [UIViewController] = []
-    
+
     public var routeStack: [UIViewController] {
-        get {
-            return viewControllerStack
-        }
+        return viewControllerStack
     }
-    
+
     public func startMonitoring() {
         if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
             setupViewController(rootViewController)
         }
     }
-    
+
     private func setupViewController(_ viewController: UIViewController) {
         if let navigationController = viewController as? UINavigationController {
             navigationController.delegate = self
@@ -34,7 +32,7 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
             viewControllerStack.append(viewController)
 
             if let tabBarVc = viewController as? UITabBarController {
-                if tabBarVc.selectedViewController != nil  {
+                if tabBarVc.selectedViewController != nil {
                     setupViewController(tabBarVc.selectedViewController!)
                 } else {
                     viewController.children.forEach { setupViewController($0) }
@@ -48,11 +46,11 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
             setupViewController(presentedViewController)
         }
     }
-    
-    public func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+
+    public func navigationController(_: UINavigationController, didShow _: UIViewController, animated _: Bool) {
         updateViewControllerStack()
     }
-    
+
     public func updateViewControllerStack() {
         viewControllerStack.removeAll()
         if let rootViewController = UIApplication.shared.windows.first?.rootViewController {
@@ -60,10 +58,8 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
         }
         printCurrentViewControllerStack()
     }
-    
-    
-    private func collectViewControllers(from viewController: UIViewController) {
 
+    private func collectViewControllers(from viewController: UIViewController) {
         if let navigationController = viewController as? UINavigationController {
             navigationController.delegate = self
             for vc in navigationController.viewControllers {
@@ -72,7 +68,7 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
                 }
             }
         } else {
-            viewController.children.forEach { vc in
+            for vc in viewController.children {
                 if let navi = vc as? UINavigationController {
                     navi.delegate = self
                 }
@@ -82,7 +78,7 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
             }
         }
         if let tabBarVc = viewController as? UITabBarController {
-            if tabBarVc.selectedViewController != nil  {
+            if tabBarVc.selectedViewController != nil {
                 collectViewControllers(from: tabBarVc.selectedViewController!)
             } else {
                 viewController.children.forEach { collectViewControllers(from: $0) }
@@ -95,7 +91,7 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
             collectViewControllers(from: presentedViewController)
         }
     }
-    
+
     func printCurrentViewControllerStack() {
 //        let routeStack = viewControllerStack.map { $0.routeName ?? "\(type(of: $0))" }
 //        print("Current View Controllers Stack: \(routeStack)")
@@ -104,14 +100,11 @@ public class FMNavigatorObserver: NSObject, UINavigationControllerDelegate {
 //        FlutterMeteorRouter.routeNameStack { ret in
 //            print("Current View routeNameStack: \(String(describing: ret))")
 //        }
-        
+
 //        print("topViewController: \(FMRouterManager.topViewController() ?? nil)")
 //        print("lastViewController: \(FMNavigatorObserver.shared.routeStack.last)")
-        
+
 //        print("rootViewController: \(FMRouterManager.rootViewController() ?? nil)")
 //        print("firstViewController: \(FMNavigatorObserver.shared.viewControllerStack.first)")
-        
     }
 }
-
-
