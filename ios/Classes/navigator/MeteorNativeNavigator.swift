@@ -312,7 +312,7 @@ public class MeteorNativeNavigator: NSObject {
         }
         
         var rootVc = rootViewController()
-        let topVc = topViewController()
+//        let topVc = topViewController()
         
         if let rootNavi = rootVc as? UINavigationController {
             rootVc = rootNavi.viewControllers.first

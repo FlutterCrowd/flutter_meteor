@@ -29,16 +29,34 @@ public class MeteorNavigator {
         print("MeteorNavigator push to routeName: \(routeName), opptions: \(options?.toJson() ?? ["":nil])")
 #endif
         if let toPage = viewController(routeName: routeName, options: options) {
+            
            MeteorNativeNavigator.push(toPage: toPage, animated: options?.animated ?? true)
            options?.callBack?(nil)
+            
         } else if(options?.pageType == .newEngine) {
+            
             let flutterVc = MeteorRouterManager.getDefaultFlutterViewController(routeName: routeName, options: options)
-           MeteorNativeNavigator.push(toPage: flutterVc, animated: options?.animated ?? true)
-           options?.callBack?(nil)
-        } else if(FlutterMeteor.customRouterDelegate != nil) {
-           FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
+            if FlutterMeteor.customRouterDelegate != nil {
+                FlutterMeteor.customRouterDelegate?.openFlutterPage(flutterViewController: flutterVc, options: options)
+            } else {
+                let flutterVc = MeteorRouterManager.getDefaultFlutterViewController(routeName: routeName, options: options)
+               MeteorNativeNavigator.push(toPage: flutterVc, animated: options?.animated ?? true)
+               options?.callBack?(nil)
+            }
+            
+        } else if(options?.pageType == .native) {
+            if FlutterMeteor.customRouterDelegate != nil {
+                FlutterMeteor.customRouterDelegate?.openNativePage(routeName: routeName, options: options)
+            } else {
+                print("Cannot handle native push because FlutterMeteor.customRouterDelegate is nill")
+            }
         } else {
-           options?.callBack?(nil)
+            if let flutterVc = MeteorNavigatorHelper.topViewController() as? FlutterViewController {
+                flutterVc.flutterPush(routeName: routeName, options: options)
+            } else {
+                options?.callBack?(nil)
+            }
+//           options?.callBack?(nil)
         }
     }
     
@@ -81,17 +99,25 @@ public class MeteorNavigator {
            options?.callBack?(nil)
         } else if(options?.pageType == .newEngine) {
             let flutterVc = MeteorRouterManager.getDefaultFlutterViewController(routeName: routeName, options: options)
-            let navi = UINavigationController.init(rootViewController: flutterVc)
-            navi.navigationBar.isHidden = true
-            if options?.isOpaque == false {
-               setNoOpaque(vc: navi)
-               MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
+            if FlutterMeteor.customRouterDelegate != nil {
+                FlutterMeteor.customRouterDelegate?.openFlutterPage(flutterViewController: flutterVc, options: options)
             } else {
-               MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
+                let navi = UINavigationController.init(rootViewController: flutterVc)
+                navi.navigationBar.isHidden = true
+                if options?.isOpaque == false {
+                   setNoOpaque(vc: navi)
+                   MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
+                } else {
+                   MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
+                }
+                options?.callBack?(nil)
             }
-            options?.callBack?(nil)
-        } else if(FlutterMeteor.customRouterDelegate != nil) {
-            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
+        } else if(options?.pageType == .native) {
+            if FlutterMeteor.customRouterDelegate != nil {
+                FlutterMeteor.customRouterDelegate?.openNativePage(routeName: routeName, options: options)
+            } else {
+                print("Cannot handle native present because FlutterMeteor.customRouterDelegate is nill")
+            }
         } else {
             if let flutterVc = MeteorNavigatorHelper.topViewController() as? FlutterViewController {
                 flutterVc.flutterPush(routeName: routeName, options: options)
@@ -172,7 +198,7 @@ public class MeteorNavigator {
             if let flutterVc =  untilPage as? FlutterViewController {
                 flutterVc.flutterRouteNameStack { routeStack in
                     if let routeStack = routeStack, routeStack.count > 1 {
-                        FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
+                        FlutterMeteor.customRouterDelegate?.openNativePage(routeName: routeName, options: options)
                         if options?.animated ?? true { // 如果有动画先push原生再pop flutter页面避免闪屏
                             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + MeteorNavigatorAnimationDuration) {
                                 flutterVc.flutterPopUntil(untilRouteName: untilRouteName, options: nil)
@@ -182,17 +208,17 @@ public class MeteorNavigator {
                         }
                     } else {
                         MeteorNativeNavigator.popUntil(untilPage: untilPage!, animated: false) {
-                            FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
+                            FlutterMeteor.customRouterDelegate?.openNativePage(routeName: routeName, options: options)
                         }
                     }
                     options?.callBack?(nil)
                 }
             } else if let untilPage = untilPage {
                 MeteorNativeNavigator.popUntil(untilPage: untilPage, animated: false) {
-                    FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
+                    FlutterMeteor.customRouterDelegate?.openNativePage(routeName: routeName, options: options)
                 }
             } else {
-                FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
+                FlutterMeteor.customRouterDelegate?.openNativePage(routeName: routeName, options: options)
 
             }
        } else {
@@ -237,7 +263,7 @@ public class MeteorNavigator {
             options?.callBack?(nil)
         } else if let delegate = FlutterMeteor.customRouterDelegate  {
             MeteorNativeNavigator.popToRoot(animated: false) {
-                delegate.push(routeName: routeName, options: options)
+                delegate.openNativePage(routeName: routeName, options: options)
                 flutterPopRoot()
             }
         } else {
@@ -305,7 +331,7 @@ public class MeteorNavigator {
               flutterVc.flutterRouteNameStack { routeStack in
                   if let routeStack = routeStack,
                        routeStack.count > 1 { // 如果当前flutter页面大于一个，则调用flutter的pop
-                      FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
+                      FlutterMeteor.customRouterDelegate?.openNativePage(routeName: routeName, options: options)
                       flutterVc.flutterPop()
 
 //                      let animated = options?.animated ?? true
@@ -319,13 +345,13 @@ public class MeteorNavigator {
 
                   } else {
                       MeteorNativeNavigator.pop(animated: false) { popViewController in
-                          FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
+                          FlutterMeteor.customRouterDelegate?.openNativePage(routeName: routeName, options: options)
                       }
                   }
               }
           } else {
               MeteorNativeNavigator.pop(animated: false) { popViewController in
-                  FlutterMeteor.customRouterDelegate?.push(routeName: routeName, options: options)
+                  FlutterMeteor.customRouterDelegate?.openNativePage(routeName: routeName, options: options)
               }
           }
        } else {

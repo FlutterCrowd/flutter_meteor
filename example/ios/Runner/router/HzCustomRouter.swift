@@ -11,6 +11,7 @@ import flutter_meteor
 class HzCustomRouter: NSObject, FlutterMeteorCustomDelegate {
     func openNativePage(routeName: String, options: flutter_meteor.MeteorPushOptions?) {
         
+        push(routeName: routeName, options: options)
     }
     
     func openFlutterPage(flutterViewController: flutter_meteor.MeteorFlutterViewController, options: flutter_meteor.MeteorPushOptions?) {

@@ -18,7 +18,9 @@ public protocol MeteorPluginRegistryDelegate {
 
 public protocol FlutterMeteorCustomDelegate {
         
-    func push(routeName: String, options: MeteorPushOptions?)
+//    func push(routeName: String, options: MeteorPushOptions?)
+    func openNativePage(routeName: String, options: MeteorPushOptions?)
+    func openFlutterPage(flutterViewController: MeteorFlutterViewController, options: MeteorPushOptions?)
 }
 
 
