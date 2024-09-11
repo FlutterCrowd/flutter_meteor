@@ -11,7 +11,7 @@ class MeteorLifecycleObserver with WidgetsBindingObserver {
       /// 应用程序进入后台
       saveSharedObject();
     }
-    print('didChangeAppLifecycleState: $state, engine: ${WidgetsBinding.instance.hashCode}');
+    // print('didChangeAppLifecycleState: $state, engine: ${WidgetsBinding.instance.hashCode}');
   }
 
   void saveSharedObject() async {

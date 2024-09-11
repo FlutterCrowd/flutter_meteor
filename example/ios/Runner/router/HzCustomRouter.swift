@@ -10,16 +10,17 @@ import flutter_meteor
 
 class HzCustomRouter: NSObject, FlutterMeteorCustomDelegate {
  
-    func openFlutterPage(flutterViewController: flutter_meteor.MeteorFlutterViewController, options: flutter_meteor.MeteorPushOptions?) {
+    func openFlutterPage(routeName: String, options: flutter_meteor.MeteorPushOptions?) {
         
-        if options?.present == true {
-            let navi = UINavigationController.init(rootViewController: flutterViewController)
-            MeteorNavigatorHelper.topViewController()?.present(navi, animated: options?.animated ?? true)
-        } else {
-            if let navigationController = MeteorNavigatorHelper.topViewController()?.navigationController {
-                navigationController.pushViewController(flutterViewController, animated: options?.animated ?? true)
-            }
-        }
+        openNativePage(routeName: routeName, options: options)
+//        if options?.present == true {
+//            let navi = UINavigationController.init(rootViewController: flutterViewController)
+//            MeteorNavigatorHelper.topViewController()?.present(navi, animated: options?.animated ?? true)
+//        } else {
+//            if let navigationController = MeteorNavigatorHelper.topViewController()?.navigationController {
+//                navigationController.pushViewController(flutterViewController, animated: options?.animated ?? true)
+//            }
+//        }
     }
     
     

@@ -151,11 +151,15 @@ public class MeteorNativeNavigator: NSObject {
                     completion?()
                     return
                 }
-                traversePop(currentVc: tabBarVc)
+                if tabBarVc != currentVc {
+                    traversePop(currentVc: tabBarVc)
+                } else {
+                    traversePop(currentVc: tabBarVc.presentingViewController ?? tabBarVc.navigationController ?? tabBarVc.parent)
+                }
                 return
             }
             
-            if let navigationController = currentVc.navigationController {
+            if let navigationController = currentVc as? UINavigationController ?? currentVc.navigationController {
                 if navigationController.viewControllers.contains(untilPage) {
                     navigationController.popToViewController(untilPage, animated: animated)
                     completion?()
