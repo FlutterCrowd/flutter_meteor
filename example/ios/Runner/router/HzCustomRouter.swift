@@ -8,7 +8,15 @@
 import Foundation
 import flutter_meteor
 
- class HzCustomRouter: NSObject, FlutterMeteorCustomDelegate {
+class HzCustomRouter: NSObject, FlutterMeteorCustomDelegate {
+    func openNativePage(routeName: String, options: flutter_meteor.MeteorPushOptions?) {
+        
+    }
+    
+    func openFlutterPage(flutterViewController: flutter_meteor.MeteorFlutterViewController, options: flutter_meteor.MeteorPushOptions?) {
+        
+    }
+    
     
      func push(routeName: String, options: MeteorPushOptions?) {
         if (routeName == "push_native") {

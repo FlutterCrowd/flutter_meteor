@@ -19,7 +19,7 @@ class AppRouterCenter extends RouteRegistry
 
   static void setup() {
     _instance.install();
-    debugPrint('RouterCenter Install routes:${RouterManager.routes}');
+    // debugPrint('RouterCenter Install routes:${RouterManager.routes}');
   }
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {

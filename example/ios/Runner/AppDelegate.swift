@@ -20,7 +20,7 @@ import flutter_meteor
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
 
-//      GeneratedPluginRegistrant.register(with: self)
+      GeneratedPluginRegistrant.register(with: self)
       
     
       // 在第一次使用FMFlutterViewController之前调用
