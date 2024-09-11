@@ -1,5 +1,5 @@
 //
-//  HzNativeNavigator.swift
+//  MeteorNativeNavigator.swift
 //  hz_router
 //
 //  Created by itbox_djx on 2024/5/10.
@@ -7,47 +7,43 @@
 
 import UIKit
 
-
-let MeteorNavigatorAnimationDuration: Double  = 0.35;
+let MeteorNavigatorAnimationDuration: Double = 0.35
 
 public class MeteorNativeNavigator: NSObject {
-        
-    static public func present(toPage: UIViewController, 
-                               animated: Bool = true) {
+    public static func present(toPage: UIViewController,
+                               animated: Bool = true)
+    {
         guard let topVc = topViewController() else {
             print("No top view controller found")
             return
         }
-        topVc.present(toPage, animated: animated) {
-        }
-        
+        topVc.present(toPage, animated: animated) {}
     }
-    
-    static public func push(toPage: UIViewController, 
-                            animated: Bool = true) {
-        
-        if toPage is UINavigationController  {
+
+    public static func push(toPage: UIViewController,
+                            animated: Bool = true)
+    {
+        if toPage is UINavigationController {
             print("=====Error: Cannot push a UINavigationController, please check your router config")
             return
         }
-        
+
         guard let topNavi = topViewController()?.navigationController else {
             print("No top navigator controller found")
             return
         }
         topNavi.pushViewController(toPage, animated: animated)
     }
-    
 
-    static public func pop(animated: Bool = true, 
-                           completion: ((_ popViewController: UIViewController?) -> Void)? = nil) {
-        
+    public static func pop(animated: Bool = true,
+                           completion: ((_ popViewController: UIViewController?) -> Void)? = nil)
+    {
         guard let topVc = topViewController() else {
             print("No top view controller found")
             completion?(nil)
             return
         }
-        
+
         func recursivePopOrDismiss(viewController: UIViewController?, completion: ((_ popViewController: UIViewController?) -> Void)? = nil) {
             guard let viewController = viewController else {
                 completion?(viewController)
@@ -72,23 +68,23 @@ public class MeteorNativeNavigator: NSObject {
                 }
             } else if let tabBarController = viewController.tabBarController {
                 if viewController == tabBarController.selectedViewController ||
-                    viewController.navigationController == tabBarController.selectedViewController {
+                    viewController.navigationController == tabBarController.selectedViewController
+                {
                     recursivePopOrDismiss(viewController: tabBarController)
                 } else {
                     recursivePopOrDismiss(viewController: tabBarController.selectedViewController)
                 }
             } else if let parentVc = viewController.parent {
-                
                 guard let curentVc = parentVc.children.last(where: { $0 == viewController }) else {
                     completion?(viewController)
-                        return
-                    }
+                    return
+                }
                 // 通知 ViewControllerA 它即将被移除
                 curentVc.willMove(toParent: nil)
-                
+
                 // 从视图层次结构中移除 ViewControllerA 的视图
                 curentVc.view.removeFromSuperview()
-                
+
                 // 从父视图控制器中移除 ViewControllerA
                 curentVc.removeFromParent()
                 completion?(viewController)
@@ -99,9 +95,10 @@ public class MeteorNativeNavigator: NSObject {
         }
         recursivePopOrDismiss(viewController: topVc, completion: completion)
     }
-    
-    static public func dismiss(animated: Bool = true, 
-                               completion: (() -> Void)? = nil) {
+
+    public static func dismiss(animated: Bool = true,
+                               completion: (() -> Void)? = nil)
+    {
         guard let topVc = topViewController() else {
             print("No top view controller found")
             completion?()
@@ -109,34 +106,35 @@ public class MeteorNativeNavigator: NSObject {
         }
         topVc.dismiss(animated: animated, completion: completion)
     }
-    
-    static public func popUntil(untilPage: UIViewController, 
+
+    public static func popUntil(untilPage: UIViewController,
                                 animated: Bool = true,
-                                completion: (() -> Void)? = nil) {
+                                completion: (() -> Void)? = nil)
+    {
         guard let topVc = topViewController(), topVc != untilPage else {
             print("Curent viewController is untilPage, no need to popUntil")
             completion?()
             return
         }
-        
+
         func traversePop(currentVc: UIViewController?) {
             guard let currentVc = currentVc else {
                 completion?()
                 return
             }
-            
+
             if currentVc == untilPage {
                 completion?()
                 return
             }
-            
+
             if let tabBarVc = currentVc as? UITabBarController ?? currentVc.tabBarController {
                 if tabBarVc == untilPage {
                     (tabBarVc.selectedViewController as? UINavigationController)?.popToRootViewController(animated: animated)
                     completion?()
                     return
                 }
-                
+
                 if tabBarVc.viewControllers?.contains(untilPage) == true {
                     if tabBarVc.selectedViewController != untilPage {
                         tabBarVc.selectedViewController = untilPage
@@ -144,9 +142,10 @@ public class MeteorNativeNavigator: NSObject {
                     completion?()
                     return
                 }
-                //untilPage的navigationController是tabBar子ViewController则
+                // untilPage的navigationController是tabBar子ViewController则
                 if let navigationController = untilPage.navigationController,
-                   tabBarVc.viewControllers?.contains(navigationController) == true {
+                   tabBarVc.viewControllers?.contains(navigationController) == true
+                {
                     navigationController.popToViewController(untilPage, animated: animated)
                     completion?()
                     return
@@ -158,7 +157,7 @@ public class MeteorNativeNavigator: NSObject {
                 }
                 return
             }
-            
+
             if let navigationController = currentVc as? UINavigationController ?? currentVc.navigationController {
                 if navigationController.viewControllers.contains(untilPage) {
                     navigationController.popToViewController(untilPage, animated: animated)
@@ -170,18 +169,18 @@ public class MeteorNativeNavigator: NSObject {
                 } else if let parent = navigationController.parent {
                     traversePop(currentVc: parent)
                 } else {
-                    pop(animated: false) { popViewController in
+                    pop(animated: false) { _ in
                         traversePop(currentVc: topViewController())
                     }
                 }
                 return
             }
-            
+
             if currentVc.children.contains(untilPage) {
                 completion?()
                 return
             }
-            
+
             if let presentedVc = currentVc.presentedViewController {
                 presentedVc.dismiss(animated: false) {
                     traversePop(currentVc: topViewController())
@@ -195,13 +194,13 @@ public class MeteorNativeNavigator: NSObject {
                 }
                 return
             }
-            
-            pop(animated: false) { popViewController in
+
+            pop(animated: false) { _ in
                 traversePop(currentVc: topViewController())
             }
         }
-        
-        if let navigationController = untilPage.navigationController,  topVc.navigationController == navigationController {
+
+        if let navigationController = untilPage.navigationController, topVc.navigationController == navigationController {
             navigationController.popToViewController(untilPage, animated: animated)
             completion?()
         } else {
@@ -209,13 +208,12 @@ public class MeteorNativeNavigator: NSObject {
         }
     }
 
-    
-    static public func popToRoot(animated: Bool = true,  
-                                 completion: (() -> Void)? = nil) {
-        
+    public static func popToRoot(animated: Bool = true,
+                                 completion: (() -> Void)? = nil)
+    {
         guard let rootVC = rootNavigationController()?.viewControllers.first else { return }
         let topVC = topViewController()
-        
+
         if topVC == rootVC {
             completion?()
             return
@@ -238,7 +236,7 @@ public class MeteorNativeNavigator: NSObject {
                 return
             }
         }
-        
+
         if let presentedVC = rootViewController()?.presentedViewController {
             presentedVC.dismiss(animated: false) {
                 popToRoot(animated: animated, completion: completion)
@@ -248,40 +246,41 @@ public class MeteorNativeNavigator: NSObject {
             completion?()
         }
     }
-    
-    static public func pushToReplacement(toPage: UIViewController, 
-                                         animated: Bool = true) {
-       
-        if toPage is UINavigationController  {
+
+    public static func pushToReplacement(toPage: UIViewController,
+                                         animated: Bool = true)
+    {
+        if toPage is UINavigationController {
             print("=====Error: Cannot push a UINavigationController, please check your router config")
             return
         }
         let topVc = topViewController()
-        
+
         if let topVc = topVc,
            let topNavi = topVc.navigationController,
-            topNavi.viewControllers.count <= 1  { // 当只有一个元素时无法pop，可以直接替换
+           topNavi.viewControllers.count <= 1
+        { // 当只有一个元素时无法pop，可以直接替换
             if topVc == topVc.tabBarController?.selectedViewController || topNavi == topNavi.tabBarController?.selectedViewController {
                 toPage.hidesBottomBarWhenPushed = false
             }
             topNavi.setViewControllers([toPage], animated: animated)
         } else {
-            pop(animated: false) { popViewController in 
+            pop(animated: false) { _ in
                 push(toPage: toPage, animated: animated)
             }
         }
     }
-    
-    static public func pushToAndRemoveUntil(toPage: UIViewController, 
+
+    public static func pushToAndRemoveUntil(toPage: UIViewController,
                                             untilPage: UIViewController?,
-                                            animated: Bool = true) {
-        
-        if toPage is UINavigationController  {
+                                            animated: Bool = true)
+    {
+        if toPage is UINavigationController {
             print("=====Error: Cannot push a UINavigationController, please check your router config")
             return
         }
-        
-        if (untilPage == nil) {
+
+        if untilPage == nil {
             print("untilPage is nil")
             push(toPage: toPage)
             return
@@ -307,17 +306,17 @@ public class MeteorNativeNavigator: NSObject {
         }
     }
 
-    static public func pushToAndRemoveUntilRoot(toPage: UIViewController, 
-                                                animated: Bool = true) {
-        
-        if toPage is UINavigationController  {
+    public static func pushToAndRemoveUntilRoot(toPage: UIViewController,
+                                                animated: Bool = true)
+    {
+        if toPage is UINavigationController {
             print("=====Error: Cannot push a UINavigationController, please check your router config")
             return
         }
-        
+
         var rootVc = rootViewController()
 //        let topVc = topViewController()
-        
+
         if let rootNavi = rootVc as? UINavigationController {
             rootVc = rootNavi.viewControllers.first
         }
@@ -336,12 +335,12 @@ public class MeteorNativeNavigator: NSObject {
             rootNavigationController()?.pushViewController(toPage, animated: animated)
         }
     }
-    
+
     /// 获取顶部控制器
     public static func topViewController() -> UIViewController? {
         return MeteorNavigatorHelper.topViewController()
     }
-    
+
     /// 获取根控制器
     public static func rootViewController() -> UIViewController? {
         return MeteorNavigatorHelper.rootViewController()

@@ -1,5 +1,5 @@
 //
-//  FMRouterManager.swift
+//  MeteorNavigatorHelper.swift
 //  flutter_meteor
 //
 //  Created by itbox_djx on 2024/7/29.
@@ -8,50 +8,47 @@
 import UIKit
 
 public class MeteorNavigatorHelper: NSObject {
-    
     public static var viewControllerStack: [UIViewController] {
-        get{
-            return currentRouteStack()
-        }
+        return currentRouteStack()
     }
-    
+
     // 获取当前应用中的所有视图控制器
-   static func currentRouteStack() -> [UIViewController] {
-        guard let rootViewController = self.rootViewController() else {
+    static func currentRouteStack() -> [UIViewController] {
+        guard let rootViewController = rootViewController() else {
             return []
         }
         return _currentRouteStack(from: rootViewController)
     }
-    
+
     // 获取当前展示的视图控制器栈
     static func _currentRouteStack(from rootViewController: UIViewController) -> [UIViewController] {
         var vcStack: [UIViewController] = []
-        
+
         // 定义一个闭包，用于添加视图控制器到 vcStack
-            let addViewControllerIfNeeded: (UIViewController) -> Void = { viewController in
-                if !vcStack.contains(where: { $0 === viewController }) {
-                    vcStack.append(viewController)
-                }
+        let addViewControllerIfNeeded: (UIViewController) -> Void = { viewController in
+            if !vcStack.contains(where: { $0 === viewController }) {
+                vcStack.append(viewController)
             }
-        
+        }
+
         // 递归查找视图控制器
         func traverse(_ viewController: UIViewController) {
-            
-            if let navController = viewController as? UINavigationController  {// 如果当前是一个导航控制器啊，且其视图栈不为空
-                for childViewController in navController.viewControllers {// 添加所有视图控制器
+            if let navController = viewController as? UINavigationController { // 如果当前是一个导航控制器啊，且其视图栈不为空
+                for childViewController in navController.viewControllers { // 添加所有视图控制器
                     addViewControllerIfNeeded(childViewController)
                 }
-            
+
                 if let topViewController = navController.topViewController { // 递归找到最上层视图控制器
                     traverse(topViewController)
                 }
-                         
+
             } else {
                 addViewControllerIfNeeded(viewController)
                 if let tabBarVc = viewController as? UITabBarController,
-                   let selectedVc = tabBarVc.selectedViewController {  // 如果是UITabBarController，且有选中的VC
+                   let selectedVc = tabBarVc.selectedViewController
+                { // 如果是UITabBarController，且有选中的VC
                     traverse(selectedVc)
-                    
+
                 } else {
                     if !viewController.children.isEmpty { // 普通VC遍历所有子VC
                         for childViewController in viewController.children {
@@ -73,17 +70,17 @@ public class MeteorNavigatorHelper: NSObject {
         traverse(rootViewController)
         return vcStack
     }
-//    
-    
-    
+
+//
+
     /// 获取顶部控制器
     public static func rootViewController() -> UIViewController? {
         var window = UIApplication.shared.keyWindow
         // 是否为当前显示的window
-        if ((window?.windowLevel.rawValue) != 0) {
+        if (window?.windowLevel.rawValue) != 0 {
             let windows = UIApplication.shared.windows
-            for  windowTemp in windows{
-                if windowTemp.windowLevel.rawValue == 0{
+            for windowTemp in windows {
+                if windowTemp.windowLevel.rawValue == 0 {
                     window = windowTemp
                     break
                 }
@@ -93,27 +90,27 @@ public class MeteorNavigatorHelper: NSObject {
         let vc = window?.rootViewController
         return vc
     }
-    
+
     /// 获取根控制器
     public static func rootNavigationController() -> UINavigationController? {
-        let rootVc = self.rootViewController()
-        if(rootVc is UINavigationController) {
+        let rootVc = rootViewController()
+        if rootVc is UINavigationController {
             return rootVc as? UINavigationController
         }
         return rootVc?.navigationController
     }
-    
+
     /// 获取顶部控制器 无要求
     public static func topViewController() -> UIViewController? {
         let vc = rootViewController()
         return getTopVC(withCurrentVC: vc)
     }
-    
+
     public static func getTopVC(withCurrentVC VC: UIViewController?) -> UIViewController? {
         guard let currentVC = VC else {
             return nil
         }
-        
+
         if let presentedVC = currentVC.presentedViewController {
             // Modal出来的控制器
             return getTopVC(withCurrentVC: presentedVC)
@@ -131,10 +128,10 @@ public class MeteorNavigatorHelper: NSObject {
             return currentVC
         }
     }
-    
+
     // 获取当前应用中的所有视图控制器
-   static func allViewControllers() -> [UIViewController] {
-        guard let rootViewController = self.rootViewController() else {
+    static func allViewControllers() -> [UIViewController] {
+        guard let rootViewController = rootViewController() else {
             return []
         }
         return _allViewControllers(from: rootViewController)
@@ -143,34 +140,34 @@ public class MeteorNavigatorHelper: NSObject {
     // 递归遍历视图控制器层次结构
     private static func _allViewControllers(from rootViewController: UIViewController) -> [UIViewController] {
         var vcStack: [UIViewController] = []
-        
+
         // 定义一个闭包，用于添加视图控制器到 vcStack
-            let addViewControllerIfNeeded: (UIViewController) -> Void = { viewController in
-                if !vcStack.contains(where: { $0 === viewController }) {
-                    vcStack.append(viewController)
-                }
+        let addViewControllerIfNeeded: (UIViewController) -> Void = { viewController in
+            if !vcStack.contains(where: { $0 === viewController }) {
+                vcStack.append(viewController)
             }
-        
+        }
+
         // 递归查找视图控制器
         func traverse(_ viewController: UIViewController) {
-            
-            if let navController = viewController as? UINavigationController  {// 如果当前是一个导航控制器啊，且其视图栈不为空
+            if let navController = viewController as? UINavigationController { // 如果当前是一个导航控制器啊，且其视图栈不为空
                 addViewControllerIfNeeded(navController)
 
-                for childViewController in navController.viewControllers {// 添加所有视图控制器
+                for childViewController in navController.viewControllers { // 添加所有视图控制器
                     addViewControllerIfNeeded(childViewController)
                 }
-            
+
                 if let topViewController = navController.topViewController { // 递归找到最上层视图控制器
                     traverse(topViewController)
                 }
-                         
+
             } else {
                 addViewControllerIfNeeded(viewController)
                 if let tabBarVc = viewController as? UITabBarController,
-                   let selectedVc = tabBarVc.selectedViewController {  // 如果是UITabBarController，且有选中的VC
+                   let selectedVc = tabBarVc.selectedViewController
+                { // 如果是UITabBarController，且有选中的VC
                     traverse(selectedVc)
-                    
+
                 } else {
                     if !viewController.children.isEmpty { // 普通VC遍历所有子VC
                         for childViewController in viewController.children {
@@ -192,5 +189,4 @@ public class MeteorNavigatorHelper: NSObject {
         traverse(rootViewController)
         return vcStack
     }
-    
 }

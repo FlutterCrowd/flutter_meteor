@@ -1,5 +1,5 @@
-import UIKit
 import Flutter
+import UIKit
 
 // 定义事件监听器的别名
 // data 限定为Int、String、bool、double、List、dictionary，二进制文件、而且List和dictionary的元素页只能Int、String、bool、double
@@ -9,7 +9,7 @@ typealias MeteorEventBusListener = (_ data: Any?) -> Void
 private struct MeteorEventBusListenerItem {
     let listenerId: String?
     let listener: MeteorEventBusListener
-    
+
     init(listenerId: String? = nil, listener: @escaping MeteorEventBusListener) {
         self.listenerId = listenerId
         self.listener = listener
@@ -17,7 +17,6 @@ private struct MeteorEventBusListenerItem {
 }
 
 class MeteorEventBus: NSObject {
-
     // 存储事件监听器
     private static var listeners = [String: [MeteorEventBusListenerItem]]()
 
@@ -30,7 +29,7 @@ class MeteorEventBus: NSObject {
     // 移除事件监听器
     static func removeListener(eventName: String, listenerId: String? = nil, listener: MeteorEventBusListener? = nil) {
         guard var items = listeners[eventName] else { return }
-        
+
         if let listenerId = listenerId {
             items.removeAll { $0.listenerId == listenerId }
         } else if let listener = listener {
@@ -49,10 +48,10 @@ class MeteorEventBus: NSObject {
 
         let message: [String: Any?] = [
             "eventName": eventName,
-            "data": data
+            "data": data,
         ]
-        
-        MeteorEngineManager.allEngineChannelProvider().forEach { provider in
+
+        for provider in MeteorEngineManager.allEngineChannelProvider() {
             provider.eventBusChannel.sendMessage(message)
         }
     }
@@ -61,8 +60,7 @@ class MeteorEventBus: NSObject {
     static func receiveMessageFromFlutter(message: Any?) {
         guard let map = message as? [String: Any?],
               let eventName = map["eventName"] as? String else { return }
-        
+
         commit(eventName: eventName, data: map["data"] ?? nil)
     }
 }
-

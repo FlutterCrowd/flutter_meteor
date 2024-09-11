@@ -1,61 +1,51 @@
 //
-//  FMEngineManager.swift
+//  MeteorEngineManager.swift
 //  flutter_meteor
 //
 //  Created by itbox_djx on 2024/8/6.
 //
 
-import Foundation
 import Flutter
+import Foundation
 
-let FMNavigatorMethodChannelName: String  = "itbox.meteor.navigatorChannel";
-let FMEventBusMessageChannelName: String  = "itbox.meteor.multiEnginEventChannel";
+let FMNavigatorMethodChannelName: String = "itbox.meteor.navigatorChannel"
+let FMEventBusMessageChannelName: String = "itbox.meteor.multiEnginEventChannel"
 
 public class FlutterMeteorChannelProvider: NSObject {
-    
-    
     private var _navigatorChannel: FlutterMethodChannel?
     public var navigatorChannel: FlutterMethodChannel {
-        get{
-            return _navigatorChannel!
-        }
+        return _navigatorChannel!
     }
-    
+
     private var _eventBusChannel: FlutterBasicMessageChannel?
     public var eventBusChannel: FlutterBasicMessageChannel {
-        get{
-            return _eventBusChannel!
-        }
+        return _eventBusChannel!
     }
 
     init(registrar: FlutterPluginRegistrar!) {
         super.init()
         _navigatorChannel = FlutterMethodChannel(name: FMNavigatorMethodChannelName, binaryMessenger: registrar.messenger())
         _eventBusChannel = FlutterBasicMessageChannel(name: FMEventBusMessageChannelName, binaryMessenger: registrar.messenger(), codec: FlutterStandardMessageCodec.sharedInstance())
-
-
     }
 }
 
-
 public class MeteorEngineGroupOptions {
-    
     let entrypoint: String?
-    
+
     let initialRoute: String?
-    
-    let entrypointArgs: Dictionary<String, Any>?
-    
+
+    let entrypointArgs: [String: Any]?
+
     let libraryURI: String?
-    
+
     var isMain: Bool = false
-    
+
     public init(entrypoint: String? = "main",
                 initialRoute: String? = nil,
-                entrypointArgs: Dictionary<String, Any>? = nil,
+                entrypointArgs: [String: Any]? = nil,
                 libraryURI: String? = nil,
-                isMain: Bool = false
-    ) {
+                isMain: Bool = false)
+    {
         self.entrypoint = entrypoint
         self.initialRoute = initialRoute
         self.entrypointArgs = entrypointArgs
@@ -64,29 +54,26 @@ public class MeteorEngineGroupOptions {
     }
 }
 
-
 class MeteorEngineManager: NSObject {
-    
     private static let channelProviderList = MeteorWeakArray<FlutterMeteorChannelProvider>()
-    
+
     // FlutterEngineGroup 用于管理所有引擎
     private static let flutterEngineGroup = FlutterEngineGroup(name: "itbox.meteor.flutterEnginGroup", project: nil)
-    
-    public static func createFlutterEngine(options: MeteorEngineGroupOptions? = nil) -> FlutterEngine  {
-      
-        var arguments: Dictionary<String, Any> = Dictionary<String, Any>.init()
+
+    public static func createFlutterEngine(options: MeteorEngineGroupOptions? = nil) -> FlutterEngine {
+        var arguments = [String: Any]()
 
         let initialRoute = options?.initialRoute
         let entrypointArgs = options?.entrypointArgs
-        if(initialRoute != nil) {
+        if initialRoute != nil {
             arguments["initialRoute"] = initialRoute
         }
         arguments["isMain"] = options?.isMain ?? false
-        if(initialRoute != nil) {
+        if initialRoute != nil {
             arguments["routeArguments"] = entrypointArgs
         }
-        
-        var entrypointArgList:Array<String> = Array<String>.init()
+
+        var entrypointArgList = [String]()
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: arguments, options: .prettyPrinted)
             if let jsonString = String(data: jsonData, encoding: .utf8) {
@@ -95,9 +82,9 @@ class MeteorEngineManager: NSObject {
         } catch {
             print("Error converting dictionary to JSON")
         }
-        
+
         // 创建新引擎
-        let engineGroupOptions = FlutterEngineGroupOptions.init()
+        let engineGroupOptions = FlutterEngineGroupOptions()
         engineGroupOptions.entrypoint = options?.entrypoint
         engineGroupOptions.initialRoute = initialRoute
         engineGroupOptions.entrypointArgs = entrypointArgList
@@ -106,22 +93,22 @@ class MeteorEngineManager: NSObject {
 //        engineCache[flutterEngine.binaryMessenger] = flutterEngine
         return flutterEngine
     }
-    
+
     /// 第一个引擎的Channel
     public static func firstEngineChannelProvider() -> FlutterMeteorChannelProvider? {
         return channelProviderList.allObjects.first
     }
-    
+
     /// 最后一个引擎的Channel
     public static func lastEngineChannelProvider() -> FlutterMeteorChannelProvider? {
         return channelProviderList.allObjects.last
     }
-    
+
     /// 所有引擎的Channel
     public static func allEngineChannelProvider() -> [FlutterMeteorChannelProvider] {
         return channelProviderList.allObjects
     }
-    
+
     /// 保存Channel
     public static func saveEngineChannelProvider(provider: FlutterMeteorChannelProvider) {
         if !channelProviderList.contains(provider) {
