@@ -64,6 +64,8 @@ class MeteorNavigator {
     } else {
       return await _flutterNavigator.pushNamed<T>(
         routeName,
+        isOpaque: isOpaque,
+        animated: animated,
         arguments: arguments,
       );
     }
@@ -90,6 +92,8 @@ class MeteorNavigator {
     if (routeStack.isNotEmpty && !withNewEngine && !openNative) {
       return await _flutterNavigator.pushReplacementNamed<T, TO>(
         routeName,
+        isOpaque: isOpaque,
+        animated: animated,
         arguments: arguments,
       );
     } else {
@@ -130,6 +134,8 @@ class MeteorNavigator {
       return await _flutterNavigator.pushNamedAndRemoveUntil<T>(
         routeName,
         untilRouteName,
+        isOpaque: isOpaque,
+        animated: animated,
         arguments: arguments,
       );
     } else {
@@ -164,17 +170,26 @@ class MeteorNavigator {
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    return await _nativeNavigator.pushNamedAndRemoveUntilRoot<T>(
-      routeName,
-      pageType: withNewEngine
-          ? PageType.newEngine
-          : openNative
-              ? PageType.native
-              : PageType.flutter,
-      isOpaque: isOpaque,
-      animated: animated,
-      arguments: arguments,
-    );
+    if (withNewEngine || openNative) {
+      return await _nativeNavigator.pushNamedAndRemoveUntilRoot<T>(
+        routeName,
+        pageType: withNewEngine
+            ? PageType.newEngine
+            : openNative
+                ? PageType.native
+                : PageType.flutter,
+        isOpaque: isOpaque,
+        animated: animated,
+        arguments: arguments,
+      );
+    } else {
+      return await _flutterNavigator.pushNamedAndRemoveUntilRoot(
+        routeName,
+        arguments: arguments,
+        isOpaque: isOpaque,
+        animated: animated,
+      );
+    }
   }
 
   /// pop到上一个页面
