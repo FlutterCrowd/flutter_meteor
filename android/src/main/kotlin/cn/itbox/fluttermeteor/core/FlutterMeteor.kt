@@ -23,9 +23,10 @@ object FlutterMeteor {
     }
 
     fun popToRoot() {
-        println("popToRoot mainChannel: ${EngineInjector.getMainChannel()}")
+        println("popToRoot mainChannel: ${EngineInjector.firstChannelProvider()}")
         ActivityInjector.finishToRoot()
-        EngineInjector.getMainChannel()?.invokeMethod("popToRoot", null)
+        val provider =  EngineInjector.firstChannelProvider()
+        provider?.navigatorChannel?.invokeMethod("popToRoot", null)
     }
 
 }

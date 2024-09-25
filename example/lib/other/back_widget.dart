@@ -20,7 +20,7 @@ class _MultiEnginPageState extends State<BackPage> {
       body: Column(
         children: [
           const SizedBox(
-            height: 50,
+            height: 20,
           ),
           Center(
             child: GestureDetector(
@@ -93,12 +93,13 @@ class _MultiEnginPageState extends State<BackPage> {
             child: GestureDetector(
               onTap: () {
                 MeteorNavigator.pushNamedAndRemoveUntil(
+                  'cupertinoPageRoute',
                   'multiEnginePage2',
-                  'null',
+                  withNewEngine: true,
                 );
               },
               child: const Text(
-                'pushNamedAndRemoveUntil multiEnginePage2 null',
+                'pushNamedAndRemoveUntil cupertinoPageRoute multiEnginePage2',
                 style: TextStyle(
                   backgroundColor: Colors.green,
                 ),
@@ -172,7 +173,7 @@ class _MultiEnginPageState extends State<BackPage> {
                 MeteorNavigator.popUntil('test');
               },
               child: const Text(
-                'popUntil',
+                'popUntil test',
                 style: TextStyle(
                   backgroundColor: Colors.yellow,
                 ),
@@ -185,10 +186,26 @@ class _MultiEnginPageState extends State<BackPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.popUntil('multiEnginePage2');
+                MeteorNavigator.popUntil('push_native');
               },
               child: const Text(
-                'popUntil2',
+                'popUntil multiEnginePage2',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                MeteorNavigator.pushNamed('testPage');
+              },
+              child: const Text(
+                'toTestPage',
                 style: TextStyle(
                   backgroundColor: Colors.yellow,
                 ),
@@ -221,7 +238,7 @@ class _MultiEnginPageState extends State<BackPage> {
                     openNative: true);
               },
               child: const Text(
-                'pushAndRemoveUntil',
+                'pushAndRemoveUntil test2 multiEnginePage2',
                 style: TextStyle(
                   backgroundColor: Colors.yellow,
                 ),
@@ -234,6 +251,7 @@ class _MultiEnginPageState extends State<BackPage> {
           Center(
             child: GestureDetector(
               onTap: () async {
+                debugPrint('开始打印');
                 debugPrint(
                     'MeteorNavigator routeNameStack: ${await MeteorNavigator.routeNameStack()}');
                 debugPrint('MeteorNavigator topRouteName: ${await MeteorNavigator.topRouteName()}');
@@ -246,18 +264,7 @@ class _MultiEnginPageState extends State<BackPage> {
                     'MeteorNavigator routeExists multiEnginePage2:${await MeteorNavigator.routeExists('multiEnginePage2')}');
                 debugPrint(
                     'MeteorNavigator topRouteIsNative:${await MeteorNavigator.topRouteIsNative()}');
-                // debugPrint(
-                //     'MeteorNavigator routeNameStack1: ${MeteorNavigator.navigatorObserver.routeNameStack}');
-                // debugPrint(
-                //     'MeteorNavigator topRouteName1: ${MeteorNavigator.navigatorObserver.topRouteName}');
-                // debugPrint(
-                //     'MeteorNavigator rootRouteName1: ${MeteorNavigator.navigatorObserver.rootRouteName}');
-                // debugPrint(
-                //     'MeteorNavigator isRoot1: ${MeteorNavigator.navigatorObserver.isRootRoute('multiEnginePage2')}');
-                // debugPrint(
-                //     'MeteorNavigator isCurrentRoot1: ${MeteorNavigator.navigatorObserver.isCurrentRoot()}');
-                // debugPrint(
-                //     'MeteorNavigator routeExists1:${MeteorNavigator.navigatorObserver.routeExists('multiEnginePage2')}');
+                debugPrint('结束打印');
               },
               child: const Text(
                 '打印当前路由',
@@ -268,7 +275,40 @@ class _MultiEnginPageState extends State<BackPage> {
             ),
           ),
           const SizedBox(
-            height: 50,
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () async {
+                debugPrint('旧栈: ${await MeteorNavigator.routeNameStack()}');
+                MeteorNavigator.pushReplacementNamed('WebViewPage', withNewEngine: true);
+                debugPrint('新栈: ${await MeteorNavigator.routeNameStack()}');
+              },
+              child: const Text(
+                'push并替换当前页面',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: GestureDetector(
+              onTap: () async {
+                debugPrint('旧栈: ${await MeteorNavigator.routeNameStack()}');
+                MeteorNavigator.pushNamedAndRemoveUntil('standardPageRoute_top', 'push_native');
+                debugPrint('新栈: ${await MeteorNavigator.routeNameStack()}');
+              },
+              child: const Text(
+                'push到指定页面并替换当前页面',
+                style: TextStyle(
+                  backgroundColor: Colors.yellow,
+                ),
+              ),
+            ),
           ),
         ],
         // 创建Flutter引擎实例

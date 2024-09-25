@@ -120,6 +120,17 @@ class _WebViewPageState extends State<WebViewPage> {
           WebViewWidget(
             controller: _webViewController,
           ),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              color: const Color(0xffC5C5C5),
+              child: const SizedBox(
+                height: 0.5,
+              ),
+            ),
+          ),
           if (widget.showProgress)
             ValueListenableBuilder(
               valueListenable: _progressNotifier,

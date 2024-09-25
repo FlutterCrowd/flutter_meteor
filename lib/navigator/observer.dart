@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hz_tools/hz_tools.dart';
 
-class MeteorRouteObserver extends NavigatorObserver {
+class MeteorNavigatorObserver extends NavigatorObserver {
+  final BasicMessageChannel methodChannel =
+      const BasicMessageChannel('itbox.meteor.navigatorObserver', StandardMessageCodec());
+
   final List<Route<dynamic>> _routeStack = [];
 
   List<Route<dynamic>> get routeStack => List.unmodifiable(_routeStack);
@@ -38,18 +44,21 @@ class MeteorRouteObserver extends NavigatorObserver {
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _routeStack.add(route);
     super.didPush(route, previousRoute);
+    sendNavigatorStackChanged();
   }
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _routeStack.remove(route);
     super.didPop(route, previousRoute);
+    sendNavigatorStackChanged();
   }
 
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _routeStack.remove(route);
     super.didRemove(route, previousRoute);
+    sendNavigatorStackChanged();
   }
 
   @override
@@ -59,6 +68,7 @@ class MeteorRouteObserver extends NavigatorObserver {
       _routeStack[index] = newRoute!;
     }
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    sendNavigatorStackChanged();
   }
 
   @override
@@ -69,5 +79,13 @@ class MeteorRouteObserver extends NavigatorObserver {
   @override
   void didStopUserGesture() {
     HzLog.d('MeteorRouteObserver didStopUserGesture');
+  }
+
+  void sendNavigatorStackChanged() {
+    // final stackDepth = navigator?.canPop() == true ? 2 : 1;
+    if (Platform.isIOS) {
+      /// iOS需要监听flutter端是否可以继续pop以便控制popGesture手势
+      methodChannel.send({"event": "canPop", "data": navigator?.canPop() ?? false});
+    }
   }
 }

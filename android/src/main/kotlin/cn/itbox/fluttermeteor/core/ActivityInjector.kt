@@ -5,18 +5,21 @@ import android.app.Application
 import android.os.Bundle
 import android.util.Log
 import cn.itbox.fluttermeteor.engine.EngineInjector
+import cn.itbox.fluttermeteor.FlutterMeteorChannelProvider
 import io.flutter.plugin.common.MethodChannel
 import java.lang.ref.WeakReference
+import java.nio.channels.spi.AsynchronousChannelProvider
 
 data class ActivityInfo(
     var avtivity:WeakReference<Activity>,
     var isRoot:Boolean,
     var routeName: String,
-    var channel: MethodChannel?,
+    var channelProvider: FlutterMeteorChannelProvider?,
     var hashCode: Int,
 )
 
 internal object ActivityInjector {
+    private val TAG = "ActivityInjector"
 
     private val activityList = mutableListOf<ActivityInfo>()
 
@@ -32,10 +35,10 @@ internal object ActivityInjector {
         application.registerActivityLifecycleCallbacks(ActivityLifecycle())
     }
 
-    fun attachChannel(hashCode: Int,channel: MethodChannel){
+    fun attachChannel(hashCode: Int, channelProvider: FlutterMeteorChannelProvider?){
         for(info in activityList){
             if(hashCode == info.hashCode){
-                info.channel = channel
+                info.channelProvider = channelProvider
             }
         }
     }
@@ -72,6 +75,22 @@ internal object ActivityInjector {
         }
     }
 
+    fun popTop(){
+        currentActivity?.finish()
+        activityList.removeLast()
+        EngineInjector.removeLast()
+    }
+
+    fun remove(activity: Activity){
+        activityList.forEachIndexed { index, weakReference ->
+            if (activity.hashCode() == weakReference.avtivity.get().hashCode()) {
+                weakReference.avtivity.get()?.finish()
+                activityList.removeAt(index)
+                return
+            }
+        }
+    }
+
     private class ActivityLifecycle : Application.ActivityLifecycleCallbacks {
 
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
@@ -80,7 +99,7 @@ internal object ActivityInjector {
             val initialRoute = intent.getStringExtra("initialRoute")
             val isRoot = initialRoute != null
             val rootName = name ?: (initialRoute ?: "")
-            Log.e("FlutterMeteor","onActivityCreated------$name<---<----$initialRoute---->-->${activity.hashCode()}")
+            Log.e(TAG,"onActivityCreated------$name<---<----$initialRoute---->-->${activity}")
             activityList.add(ActivityInfo(WeakReference(activity),isRoot,rootName,null,activity.hashCode()))
         }
 
@@ -100,6 +119,7 @@ internal object ActivityInjector {
         }
 
         override fun onActivityDestroyed(activity: Activity) {
+            Log.e(TAG,"onActivityDestroyed-------->${activity}")
             activityList.removeAll {
                 val activityObject = it.avtivity.get()
                 activityObject == null || activityObject == activity

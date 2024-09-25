@@ -1,14 +1,16 @@
-import 'dart:ui';
-
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:hz_router_plugin_example/other/pop_window.dart';
+import 'package:hz_router_plugin_example/other/undefined_route_page.dart';
 import 'package:hz_router_plugin_example/other/webview_page.dart';
 import 'package:hz_router_plugin_example/router/common.dart';
-import 'package:hz_router_plugin_example/router/router_container.dart';
+import 'package:hz_router_plugin_example/router/router_manager.dart';
 
+import '../event_bus/event_bus_test_page.dart';
 import 'back_widget.dart';
 import 'bottom_sheet_page.dart';
 
-mixin OtherRouter on MixinRouteContainer {
+mixin OtherRouter on RouteRegistry {
   @override
   void install() {
     super.install();
@@ -26,9 +28,15 @@ mixin OtherRouter on MixinRouteContainer {
       "bottomSheetPage",
       (arguments) => const BottomSheetPage(),
     );
+
     addRoute(
       'backPage',
       (arguments) => BackPage(),
+    );
+
+    addRoute(
+      'eventBusTestPage',
+      (arguments) => const EventBusTestPage(),
     );
 
     addMaterialPageRoute(
@@ -80,7 +88,14 @@ mixin OtherRouter on MixinRouteContainer {
       'webViewPage',
       (arguments) => WebViewPage(
         url: arguments?['url'],
+        title: '这是一个网页',
       ),
     );
+
+    if (kDebugMode) {
+      setUnknownRoute(
+        (arguments) => const UndefinedRoutePage(),
+      );
+    }
   }
 }

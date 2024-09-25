@@ -7,6 +7,7 @@ import org.json.JSONObject
 data class FlutterMeteorRouteOptions(
     val backgroundMode: BackgroundMode,
     val initialRoute: String,
+    val entryPoint: String = "main",
     val arguments: Map<String, Any>?,
     val requestCode: Int,
     val routeName: String?,
@@ -18,6 +19,7 @@ data class FlutterMeteorRouteOptions(
         val bundle = Bundle()
         bundle.putString("background_mode", backgroundMode.name)
         bundle.putString("initialRoute", initialRoute)
+        bundle.putString("entryPoint", entryPoint)
         val routeArgs = mapOf("initialRoute" to initialRoute, "routeArguments" to arguments)
         bundle.putString("routeArgs", JSONObject(routeArgs).toString())
         bundle.putString("routeName", routeName)
@@ -62,7 +64,7 @@ data class FlutterMeteorRouteOptions(
                 throw IllegalArgumentException("pageName can not be null.")
             }
 
-            return FlutterMeteorRouteOptions(backgroundMode, initialRoute, arguments, requestCode,routeName)
+            return FlutterMeteorRouteOptions(backgroundMode, initialRoute, entryPoint = "main", arguments, requestCode,routeName)
         }
     }
 }
