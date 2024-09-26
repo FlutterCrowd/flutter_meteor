@@ -13,6 +13,7 @@ public typealias MeteorViewControllerBuilder = (_ arguments: [String: Any]?) -> 
 
 /// UIViewController构造器
 public class MeteorRouterManager: NSObject {
+    
     public static let shared = MeteorRouterManager()
     override private init() {}
 

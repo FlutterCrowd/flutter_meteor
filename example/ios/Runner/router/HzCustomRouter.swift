@@ -11,117 +11,90 @@ import Foundation
 class HzCustomRouter: NSObject, FlutterMeteorCustomDelegate {
     func openFlutterPage(routeName: String, options: flutter_meteor.MeteorPushOptions?) {
         openNativePage(routeName: routeName, options: options)
-//        if options?.present == true {
-//            let navi = UINavigationController.init(rootViewController: flutterViewController)
-//            MeteorNavigatorHelper.topViewController()?.present(navi, animated: options?.animated ?? true)
-//        } else {
-//            if let navigationController = MeteorNavigatorHelper.topViewController()?.navigationController {
-//                navigationController.pushViewController(flutterViewController, animated: options?.animated ?? true)
-//            }
-//        }
     }
 
     func openNativePage(routeName: String, options: MeteorPushOptions?) {
-        if routeName == "push_native" {
-            let vc = TestViewController()
-            vc.routeName = routeName
-            MeteorNativeNavigator.push(toPage: vc)
-            options?.callBack?(nil)
-        } else if routeName == "present_native" {
-            //            let isOpaque: Bool =  options?.isOpaque ?? true
-
-            let engineGroupOptions = MeteorEngineGroupOptions(
-                entrypoint: "main",
-                initialRoute: routeName,
-                entrypointArgs: options?.arguments
-            )
-
-            let flutterVc = MeteorFlutterViewController(options: engineGroupOptions) { _ in
-                options?.callBack?(nil)
-            }
-
-            flutterVc.isViewOpaque = options?.isOpaque ?? true
-            flutterVc.routeName = routeName
-            flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-            flutterVc.view.backgroundColor = UIColor.clear
-            let naviVc = UINavigationController(rootViewController: flutterVc)
-            naviVc.navigationBar.isHidden = true
-            MeteorNativeNavigator.present(toPage: naviVc)
-            options?.callBack?(nil)
-
-        } else if routeName == "popWindowPage" {
-            if options?.pageType == .newEngine {
-                let engineGroupOptions = MeteorEngineGroupOptions(
-                    entrypoint: "main",
-                    initialRoute: routeName,
-                    entrypointArgs: options?.arguments
-                )
-
-                let flutterVc = MeteorFlutterViewController(options: engineGroupOptions) { _ in
+        
+        if options?.pageType == .newEngine {
+            let flutterVc = getDefaultFlutterViewController(routeName: routeName, options: options)
+            if options?.present == true {
+                let navi = UINavigationController(rootViewController: flutterVc)
+                navi.navigationBar.isHidden = true
+                navi.view.backgroundColor = UIColor.clear
+                navi.modalPresentationStyle = .overFullScreen
+                navi.view.isOpaque = options?.isOpaque ?? false
+                MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true) {
                     options?.callBack?(nil)
                 }
-                flutterVc.routeName = routeName
-                flutterVc.isViewOpaque = options?.isOpaque ?? true
-                flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-                flutterVc.view.backgroundColor = UIColor.clear
-                MeteorNativeNavigator.present(toPage: flutterVc)
-
             } else {
-                let vc = UIViewController()
+                MeteorNativeNavigator.push(toPage: flutterVc, animated: options?.animated ?? true)
+                options?.callBack?(nil)
+            }
+        } else {
+            
+            var viewController: UIViewController!
+            
+            if routeName == "native_page" {
+                let vc = TestViewController()
+                vc.routeName = routeName
+                viewController = vc
+            } else if routeName == "native_page1" {
+                viewController = TestViewController1()
+            }  else if routeName == "native_page2" {
+                viewController = TestViewController2()
+            } else if routeName == "native_page3" {
+                viewController = TestViewController3()
+            } else if routeName == "native_page4" {
+                viewController = TestViewController4()
+            }else {
+                let vc = TestViewController()
                 vc.view.backgroundColor = UIColor.clear
                 let button = UIButton(frame: CGRect(x: 20, y: 100, width: 200, height: 80))
                 button.setTitle("按钮", for: UIControl.State.normal)
                 button.backgroundColor = UIColor.red
                 vc.view.addSubview(button)
-                MeteorNativeNavigator.present(toPage: vc)
+                MeteorNativeNavigator.present(toPage: vc, animated: options?.animated ?? true) {
+                    options?.callBack?(nil)
+                }
+            }
+            
+            if options?.present == true {
+                let navi = UINavigationController(rootViewController: viewController)
+                navi.navigationBar.isHidden = true
+                navi.view.backgroundColor = UIColor.clear
+                navi.modalPresentationStyle = .overFullScreen
+                navi.view.isOpaque = options?.isOpaque ?? false
+                MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true) {
+                    options?.callBack?(nil)
+                }
+            } else {
+                MeteorNativeNavigator.push(toPage: viewController, animated: options?.animated ?? true)
                 options?.callBack?(nil)
             }
-        } else if routeName == "multiEnginePage2" {
-            let isOpaque: Bool = options?.isOpaque ?? true
-            let engineGroupOptions = MeteorEngineGroupOptions(
-                entrypoint: "main",
-                initialRoute: routeName,
-                entrypointArgs: options?.arguments
-            )
+        }
+    }
+    
+    
+    func getDefaultFlutterViewController(routeName: String,
+                                        entrypoint: String? = "main",
+                                           options: MeteorPushOptions?) -> MeteorFlutterViewController
+    {
+        let isOpaque: Bool = options?.isOpaque ?? true
+        let engineGroupOptions = MeteorEngineGroupOptions(
+            entrypoint: entrypoint,
+            initialRoute: routeName,
+            entrypointArgs: options?.arguments
+        )
 
-            let flutterVc = MeteorFlutterViewController(options: engineGroupOptions) { _ in
-                options?.callBack?(nil)
-            }
-            flutterVc.routeName = routeName
-            flutterVc.isViewOpaque = isOpaque
-            flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-            flutterVc.view.backgroundColor = UIColor.clear
-            MeteorNativeNavigator.push(toPage: flutterVc)
-            options?.callBack?(nil)
-
-        } else if routeName == "native_page4" {
-            let engineGroupOptions = MeteorEngineGroupOptions(
-                entrypoint: "main",
-                initialRoute: routeName,
-                entrypointArgs: options?.arguments
-            )
-
-            let flutterVc = MeteorFlutterViewController(options: engineGroupOptions) { _ in
-                options?.callBack?(nil)
-            }
-            MeteorNativeNavigator.push(toPage: flutterVc)
-            options?.callBack?(nil)
-        } else {
-            let engineGroupOptions = MeteorEngineGroupOptions(
-                entrypoint: "main",
-                initialRoute: routeName,
-                entrypointArgs: options?.arguments
-            )
-
-            let flutterVc = MeteorFlutterViewController(options: engineGroupOptions) { _ in
-                options?.callBack?(nil)
-            }
-            flutterVc.routeName = routeName
-            flutterVc.isViewOpaque = options?.isOpaque ?? true
-            flutterVc.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-            flutterVc.view.backgroundColor = UIColor.clear
-            MeteorNativeNavigator.push(toPage: flutterVc)
+        let flutterVc = MeteorFlutterViewController(options: engineGroupOptions) { _ in
             options?.callBack?(nil)
         }
+        flutterVc.routeName = routeName
+        flutterVc.isViewOpaque = isOpaque
+        flutterVc.modalPresentationStyle = .overFullScreen
+        if !isOpaque {
+            flutterVc.view.backgroundColor = UIColor.clear
+        }
+        return flutterVc
     }
 }

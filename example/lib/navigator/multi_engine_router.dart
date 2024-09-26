@@ -1,4 +1,4 @@
-import 'package:hz_router_plugin_example/navigator/router_type_page.dart';
+import 'package:hz_router_plugin_example/route_demo/router_type_page.dart';
 import 'package:hz_router_plugin_example/router/router_manager.dart';
 
 import 'multi_engine_page.dart';
