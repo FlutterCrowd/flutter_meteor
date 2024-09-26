@@ -30,7 +30,7 @@ class TestViewController2: UIViewController {
     let myButton2: UIButton = {
         let button = UIButton(type: .system)
         // 设置按钮的标题
-        button.setTitle("打开抖音极速版", for: .normal)
+        button.setTitle("打开test1", for: .normal)
         // 设置按钮的背景颜色（可选）
         button.backgroundColor = .cyan
         // 设置按钮的标题颜色（可选）
@@ -281,9 +281,9 @@ class TestViewController2: UIViewController {
 
     // 按钮点击时调用的方法
     @objc func buttonTapped2(_: UIButton) {
-//        FMNavigator.push(routeName: "native_page1")
+        MeteorNavigator.push(routeName: "native_page1")
 
-        openDouyin(urlScheme: "snssdk2329://")
+//        openDouyin(urlScheme: "test2")
     }
 
     // 按钮点击时调用的方法
