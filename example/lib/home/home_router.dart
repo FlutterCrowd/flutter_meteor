@@ -2,7 +2,7 @@ import 'package:hz_router_plugin_example/event_bus/event_bus_test_page.dart';
 import 'package:hz_router_plugin_example/home/home_page.dart';
 import 'package:hz_router_plugin_example/router/router_manager.dart';
 
-import '../navigator/router_type_page.dart';
+import '../route_demo/router_type_page.dart';
 import '../shared_cache/shared_cache_test_widget.dart';
 import '../shared_state/global_singleton_test_page.dart';
 import '../shared_state/global_singleton_test_page2.dart';
