@@ -11,13 +11,14 @@ let MeteorNavigatorAnimationDuration: Double = 0.35
 
 public class MeteorNativeNavigator: NSObject {
     public static func present(toPage: UIViewController,
-                               animated: Bool = true)
+                               animated: Bool = true, 
+                               completion: (() -> Void)? = nil)
     {
         guard let topVc = topViewController() else {
             print("No top view controller found")
             return
         }
-        topVc.present(toPage, animated: animated) {}
+        topVc.present(toPage, animated: animated, completion: completion)
     }
 
     public static func push(toPage: UIViewController,

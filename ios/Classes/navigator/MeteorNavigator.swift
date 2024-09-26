@@ -82,19 +82,24 @@ public class MeteorNavigator {
                     if let visibleVc = navi.visibleViewController {
                         setNoOpaque(vc: visibleVc)
                     }
-                    MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
+                    MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true) {
+                        options?.callBack?(nil)
+                    }
                 } else {
                     let navi = UINavigationController(rootViewController: vc)
                     navi.navigationBar.isHidden = true
                     setNoOpaque(vc: navi)
-                    MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
+                    MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true) {
+                        options?.callBack?(nil)
+                    }
                 }
             } else {
                 let navi = UINavigationController(rootViewController: vc)
                 navi.navigationBar.isHidden = true
-                MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
+                MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true) {
+                    options?.callBack?(nil)
+                }
             }
-            options?.callBack?(nil)
         } else if options?.pageType == .newEngine {
             if let delegate = FlutterMeteor.customRouterDelegate {
                 delegate.openFlutterPage(routeName: routeName, options: options)
@@ -104,11 +109,14 @@ public class MeteorNavigator {
                 navi.navigationBar.isHidden = true
                 if options?.isOpaque == false {
                     setNoOpaque(vc: navi)
-                    MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
+                    MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true) {
+                        options?.callBack?(nil)
+                    }
                 } else {
-                    MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true)
+                    MeteorNativeNavigator.present(toPage: navi, animated: options?.animated ?? true) {
+                        options?.callBack?(nil)
+                    }
                 }
-                options?.callBack?(nil)
             }
         } else if options?.pageType == .native {
             if let delegate = FlutterMeteor.customRouterDelegate {
