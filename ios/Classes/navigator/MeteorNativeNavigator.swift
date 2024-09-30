@@ -354,13 +354,12 @@ public class MeteorNativeNavigator: NSObject {
     
     /// 处理present特殊情况
     static func resolvePresentOverFullScreenProblem(topVc: UIViewController, animated: Bool = true, completion: (() -> Void)? = nil) {
-        let nav = topVc is UINavigationController ? topVc : topVc.navigationController
-        if (nav?.modalPresentationStyle == .overFullScreen) {
+        if (topVc.modalPresentationStyle == .overFullScreen) {
             //这里分为两种情况，由于UIModalPresentationOverFullScreen下，生命周期显示会有问题
             //所以需要手动调用的场景，从而使下面底部的vc调用viewAppear相关逻辑
             
             //这里手动beginAppearanceTransition触发页面生命周期
-            var bottomVC = nav?.presentingViewController
+            var bottomVC = topVc.presentingViewController
             if let nav = bottomVC as? UINavigationController {
                 bottomVC = nav.topViewController
             }
