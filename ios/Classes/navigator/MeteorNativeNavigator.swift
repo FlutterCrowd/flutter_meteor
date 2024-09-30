@@ -64,7 +64,7 @@ public class MeteorNativeNavigator: NSObject {
                 }
             } else if viewController.presentingViewController != nil {
                 // 如果视图控制器是通过 present 呈现的，执行 dismiss 操作
-                viewController.dismiss(animated: animated) {
+                resolvePresentOverFullScreenProblem(topVc: viewController, animated: animated) {
                     completion?(viewController)
                 }
             } else if let tabBarController = viewController.tabBarController {
@@ -105,7 +105,7 @@ public class MeteorNativeNavigator: NSObject {
             completion?()
             return
         }
-        topVc.dismiss(animated: animated, completion: completion)
+        resolvePresentOverFullScreenProblem(topVc: topVc, animated: animated, completion: completion)
     }
 
     public static func popUntil(untilPage: UIViewController,
@@ -350,5 +350,27 @@ public class MeteorNativeNavigator: NSObject {
     /// 获取根控制器
     public static func rootNavigationController() -> UINavigationController? {
         return MeteorNavigatorHelper.rootNavigationController()
+    }
+    
+    /// 处理present特殊情况
+    static func resolvePresentOverFullScreenProblem(topVc: UIViewController, animated: Bool = true, completion: (() -> Void)? = nil) {
+        if (topVc.modalPresentationStyle == .overFullScreen) {
+            //这里分为两种情况，由于UIModalPresentationOverFullScreen下，生命周期显示会有问题
+            //所以需要手动调用的场景，从而使下面底部的vc调用viewAppear相关逻辑
+            
+            //这里手动beginAppearanceTransition触发页面生命周期
+            var bottomVC = topVc.presentingViewController
+            if let nav = bottomVC as? UINavigationController {
+                bottomVC = nav.topViewController
+            }
+            bottomVC?.beginAppearanceTransition(true, animated: false)
+            
+            topVc.dismiss(animated: animated) {
+                bottomVC?.endAppearanceTransition()
+                completion?()
+            }
+        } else {
+            topVc.dismiss(animated: animated, completion: completion)
+        }
     }
 }
