@@ -7,11 +7,8 @@
 
 import Flutter
 
-// public typealias FlutterMeteorPopCallBack = (_ response: Dictionary<String, Any>?) -> Void
-
 public class MeteorFlutterViewController: FlutterViewController, MeteorNavigatorDelegate {
     var methodChannel: FlutterMethodChannel?
-//    var popCallBack: FlutterMeteorPopCallBack?
 
     var canFlutterPop: Bool = false
 
@@ -26,29 +23,6 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
         FlutterMeteor.pluginRegistryDelegate.register(pluginRegistry: pluginRegistry())
     }
 
-    public convenience init(isMainEngine: Bool) {
-        let options = MeteorEngineGroupOptions(isMain: isMainEngine)
-        // 创建新的引擎
-        let flutterEngine = MeteorEngineManager.createFlutterEngine(options: options)
-        // 初始化VC
-        self.init(engine: flutterEngine, nibName: nil, bundle: nil)
-    }
-
-    /***
-     * @ param options FMEngineGroupOptions
-     * @ param popCallBack 退出页面的回调
-     */
-    public convenience init(
-        options: MeteorEngineGroupOptions?,
-        popCallBack: FlutterMeteorPopCallBack?
-    ) {
-        // 创建新的引擎
-        let flutterEngine = MeteorEngineManager.createFlutterEngine(options: options)
-        // 初始化VC
-        self.init(engine: flutterEngine, nibName: nil, bundle: nil)
-        self.popCallBack = popCallBack
-    }
-
     /***
      * @ param options FMEngineGroupOptions
      * @ param nibName
@@ -56,10 +30,10 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
      * @ param popCallBack 退出页面的回调
      */
     public convenience init(
-        options: MeteorEngineGroupOptions?,
-        nibName: String?,
-        bundle: Bundle?,
-        popCallBack: FlutterMeteorPopCallBack?
+        options: MeteorEngineGroupOptions? = nil,
+        popCallBack: FlutterMeteorPopCallBack? = nil,
+        nibName: String? = nil,
+        bundle: Bundle? = nil
     ) {
         // 创建新的引擎
         let flutterEngine = MeteorEngineManager.createFlutterEngine(options: options)
@@ -94,25 +68,12 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
 
     deinit {
         FlutterMeteor.pluginRegistryDelegate.unRegister(pluginRegistry: self.pluginRegistry())
-        removeAllSubviews()
     }
 
-    func removeAllSubviews() {
-        // Remove all subviews from the FlutterViewController's view
-        view.subviews.forEach { $0.removeFromSuperview() }
+    public func pop(options: MeteorPopOptions?) {
+        MeteorNavigator.pop()
+        popCallBack?(options?.result)
     }
-
-//    public func pop(options: MeteorPopOptions?) {
-//        MeteorNavigator.pop()
-//        popCallBack?(options?.result)
-//    }
-    ////
-//    public func popUntil(untilRouteName: String?, options: MeteorPopOptions?) {
-//        MeteorNavigator.popUntil(untilRouteName: untilRouteName, options: options)
-//        if untilRouteName == self.routeName {
-//            popCallBack?(options?.result)
-//        }
-//    }
 
     func setupNavigatorObserverChannel() {
         let methodChannel = FlutterBasicMessageChannel(name: "itbox.meteor.navigatorObserver", binaryMessenger: binaryMessenger, codec: FlutterStandardMessageCodec.sharedInstance())
