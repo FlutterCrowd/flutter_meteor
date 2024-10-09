@@ -15,6 +15,13 @@
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
+		B90282052C5752AE0043E26F /* FMNavigatorObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90282042C5752AE0043E26F /* FMNavigatorObserver.swift */; };
+		B90282072C5754460043E26F /* FMViewControllerExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90282062C5754460043E26F /* FMViewControllerExt.swift */; };
+		B93F51DE2C7C417E00AD7A3B /* TestViewController4.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93F51DD2C7C417E00AD7A3B /* TestViewController4.swift */; };
+		B9415A6C2C4F958F003931E2 /* TestViewController1.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9415A6B2C4F958F003931E2 /* TestViewController1.swift */; };
+		B9415A6E2C4F959B003931E2 /* TestViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9415A6D2C4F959B003931E2 /* TestViewController2.swift */; };
+		B9415A702C4F9FD4003931E2 /* TestViewController3.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9415A6F2C4F9FD4003931E2 /* TestViewController3.swift */; };
+		B9415A722C509853003931E2 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9415A712C509853003931E2 /* TabBarViewController.swift */; };
 		B9EDC2872BEB4159001B5592 /* HzCustomRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDC2862BEB4159001B5592 /* HzCustomRouter.swift */; };
 		B9EDC2AC2BF11D4F001B5592 /* HzRouterMapExemple.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDC2AB2BF11D4F001B5592 /* HzRouterMapExemple.swift */; };
 		B9EDC2AF2BF13112001B5592 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EDC2AE2BF13112001B5592 /* TestViewController.swift */; };
@@ -66,6 +73,13 @@
 		97C146FD1CF9000F007C117D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97C147001CF9000F007C117D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97C147021CF9000F007C117D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B90282042C5752AE0043E26F /* FMNavigatorObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FMNavigatorObserver.swift; sourceTree = "<group>"; };
+		B90282062C5754460043E26F /* FMViewControllerExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FMViewControllerExt.swift; sourceTree = "<group>"; };
+		B93F51DD2C7C417E00AD7A3B /* TestViewController4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController4.swift; sourceTree = "<group>"; };
+		B9415A6B2C4F958F003931E2 /* TestViewController1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController1.swift; sourceTree = "<group>"; };
+		B9415A6D2C4F959B003931E2 /* TestViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController2.swift; sourceTree = "<group>"; };
+		B9415A6F2C4F9FD4003931E2 /* TestViewController3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController3.swift; sourceTree = "<group>"; };
+		B9415A712C509853003931E2 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
 		B9EDC2862BEB4159001B5592 /* HzCustomRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HzCustomRouter.swift; sourceTree = "<group>"; };
 		B9EDC2AB2BF11D4F001B5592 /* HzRouterMapExemple.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HzRouterMapExemple.swift; sourceTree = "<group>"; };
 		B9EDC2AE2BF13112001B5592 /* TestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
@@ -158,7 +172,8 @@
 		97C146F01CF9000F007C117D /* Runner */ = {
 			isa = PBXGroup;
 			children = (
-				B9EDC2AE2BF13112001B5592 /* TestViewController.swift */,
+				B90282092C57547D0043E26F /* viewControllers */,
+				B90282082C57545D0043E26F /* router */,
 				97C146FA1CF9000F007C117D /* Main.storyboard */,
 				97C146FD1CF9000F007C117D /* Assets.xcassets */,
 				97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */,
@@ -167,10 +182,32 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
+			);
+			path = Runner;
+			sourceTree = "<group>";
+		};
+		B90282082C57545D0043E26F /* router */ = {
+			isa = PBXGroup;
+			children = (
+				B90282062C5754460043E26F /* FMViewControllerExt.swift */,
+				B90282042C5752AE0043E26F /* FMNavigatorObserver.swift */,
 				B9EDC2862BEB4159001B5592 /* HzCustomRouter.swift */,
 				B9EDC2AB2BF11D4F001B5592 /* HzRouterMapExemple.swift */,
 			);
-			path = Runner;
+			path = router;
+			sourceTree = "<group>";
+		};
+		B90282092C57547D0043E26F /* viewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				B9EDC2AE2BF13112001B5592 /* TestViewController.swift */,
+				B9415A6B2C4F958F003931E2 /* TestViewController1.swift */,
+				B9415A6D2C4F959B003931E2 /* TestViewController2.swift */,
+				B9415A6F2C4F9FD4003931E2 /* TestViewController3.swift */,
+				B9415A712C509853003931E2 /* TabBarViewController.swift */,
+				B93F51DD2C7C417E00AD7A3B /* TestViewController4.swift */,
+			);
+			path = viewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -224,7 +261,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1510;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					331C8080294A63A400263BE5 = {
@@ -385,11 +422,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9415A6E2C4F959B003931E2 /* TestViewController2.swift in Sources */,
 				B9EDC2AF2BF13112001B5592 /* TestViewController.swift in Sources */,
 				B9EDC2AC2BF11D4F001B5592 /* HzRouterMapExemple.swift in Sources */,
+				B9415A6C2C4F958F003931E2 /* TestViewController1.swift in Sources */,
+				B9415A722C509853003931E2 /* TabBarViewController.swift in Sources */,
 				B9EDC2872BEB4159001B5592 /* HzCustomRouter.swift in Sources */,
+				B90282052C5752AE0043E26F /* FMNavigatorObserver.swift in Sources */,
+				B90282072C5754460043E26F /* FMViewControllerExt.swift in Sources */,
 				74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */,
+				B9415A702C4F9FD4003931E2 /* TestViewController3.swift in Sources */,
 				1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */,
+				B93F51DE2C7C417E00AD7A3B /* TestViewController4.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,7 +523,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3858UNK2Q4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -488,8 +534,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cn.itbox.hzRouterPluginExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -659,7 +707,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3858UNK2Q4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -668,6 +716,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cn.itbox.hzRouterPluginExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -683,7 +732,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3858UNK2Q4;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
@@ -692,6 +741,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = cn.itbox.hzRouterPluginExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

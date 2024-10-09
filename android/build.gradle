@@ -2,14 +2,14 @@ group 'cn.itbox.fluttermeteor'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.7.22'
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.android.tools.build:gradle:8.2.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -24,12 +24,30 @@ allprojects {
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withReader('UTF-8') { reader ->
+        localProperties.load(reader)
+    }
+}
+
+def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
+if (flutterVersionCode == null) {
+    flutterVersionCode = '1'
+}
+
+def flutterVersionName = localProperties.getProperty('flutter.versionName')
+if (flutterVersionName == null) {
+    flutterVersionName = '1.0'
+}
+
 android {
     if (project.android.hasProperty("namespace")) {
         namespace 'cn.itbox.fluttermeteor'
     }
 
-    compileSdkVersion 33
+    compileSdkVersion 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -48,9 +66,15 @@ android {
         minSdkVersion 23
     }
 
+    def flutterRoot = localProperties.getProperty('flutter.sdk')
+
     dependencies {
 //        testImplementation 'org.jetbrains.kotlin:kotlin-test'
 //        testImplementation 'org.mockito:mockito-core:5.0.0'
+        compileOnly files("$flutterRoot/bin/cache/artifacts/engine/android-arm/flutter.jar")
     }
 
+    lintOptions {
+        checkReleaseBuilds false
+    }
 }

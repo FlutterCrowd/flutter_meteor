@@ -1,5 +1,5 @@
 class EntryArguments {
-  final String initialRoute;
+  final String? initialRoute;
   Map<String, dynamic>? routeArguments;
 
   EntryArguments(this.initialRoute, this.routeArguments);

@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:hz_tools/hz_tools.dart';
 
-class MeteorRouteObserver extends NavigatorObserver {
-  static final List<Route<dynamic>> _routeStack = [];
+class MeteorNavigatorObserver extends NavigatorObserver {
+  final BasicMessageChannel methodChannel =
+      const BasicMessageChannel('itbox.meteor.navigatorObserver', StandardMessageCodec());
 
-  static List<Route<dynamic>> get routeStack => List.unmodifiable(_routeStack);
-  static List<String> get routeNameStack {
+  final List<Route<dynamic>> _routeStack = [];
+
+  List<Route<dynamic>> get routeStack => List.unmodifiable(_routeStack);
+  List<String> get routeNameStack {
     List<String> names = <String>[];
     for (var element in routeStack) {
       names.add(element.settings.name ?? '');
@@ -12,39 +19,46 @@ class MeteorRouteObserver extends NavigatorObserver {
     return names;
   }
 
-  static Route<dynamic>? get topRoute => _routeStack.isNotEmpty ? _routeStack.last : null;
-  static Route<dynamic>? get rootRoute => _routeStack.isNotEmpty ? _routeStack.first : null;
-  static String? get topRouteName => topRoute?.settings.name;
-  static String? get rootRouteName => rootRoute?.settings.name;
+  Route<dynamic>? get topRoute => _routeStack.isNotEmpty ? _routeStack.last : null;
+  Route<dynamic>? get rootRoute => _routeStack.isNotEmpty ? _routeStack.first : null;
+  String? get topRouteName => topRoute?.settings.name;
+  String? get rootRouteName => rootRoute?.settings.name;
 
   // static bool? get isRootRoute => _routeStack.isNotEmpty ? _routeStack.first : null;
 
-  static bool isRootRoute(String routeName) {
+  bool isRootRoute(String routeName) {
     return routeName == rootRouteName;
   }
 
-  static bool routeExists(String routeName) {
+  bool routeExists(String routeName) {
     return _routeStack.any(
       (route) => route.settings.name == routeName,
     );
+  }
+
+  bool isCurrentRoot() {
+    return topRouteName != null && rootRouteName != null && rootRouteName == topRouteName;
   }
 
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _routeStack.add(route);
     super.didPush(route, previousRoute);
+    sendNavigatorStackChanged();
   }
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _routeStack.remove(route);
     super.didPop(route, previousRoute);
+    sendNavigatorStackChanged();
   }
 
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _routeStack.remove(route);
     super.didRemove(route, previousRoute);
+    sendNavigatorStackChanged();
   }
 
   @override
@@ -54,5 +68,24 @@ class MeteorRouteObserver extends NavigatorObserver {
       _routeStack[index] = newRoute!;
     }
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    sendNavigatorStackChanged();
+  }
+
+  @override
+  void didStartUserGesture(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    HzLog.d('MeteorRouteObserver didStartUserGesture');
+  }
+
+  @override
+  void didStopUserGesture() {
+    HzLog.d('MeteorRouteObserver didStopUserGesture');
+  }
+
+  void sendNavigatorStackChanged() {
+    // final stackDepth = navigator?.canPop() == true ? 2 : 1;
+    if (Platform.isIOS) {
+      /// iOS需要监听flutter端是否可以继续pop以便控制popGesture手势
+      methodChannel.send({"event": "canPop", "data": navigator?.canPop() ?? false});
+    }
   }
 }
