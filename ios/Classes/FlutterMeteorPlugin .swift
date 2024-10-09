@@ -2,7 +2,8 @@ import Flutter
 import UIKit
 
 public class FlutterMeteorPlugin: NSObject, FlutterPlugin {
-    static var plugin = FlutterMeteorPlugin()
+
+    
     public static func register(with registrar: FlutterPluginRegistrar) {
         // 缓存Channel以供多引擎相互通信
         let channelProvider = FlutterMeteorChannelProvider(registrar: registrar)
