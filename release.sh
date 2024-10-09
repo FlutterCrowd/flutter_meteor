@@ -68,7 +68,7 @@ echo "升级版本号： $NEW_VERSION"
 git add .
 
 # 提交更改并检查返回值
-if git commit -m "feat: 升级版本号"; then
+if git commit -m "feat(t-4957982926): 升级版本号"; then
   echo "提交成功，开始 push 新的提交"
 
   # 执行 git push
