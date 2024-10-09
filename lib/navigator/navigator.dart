@@ -195,37 +195,37 @@ class MeteorNavigator {
   /// pop到上一个页面
   ///
   /// @parma result 接受回调，T是个泛型，可以指定要返回的数据类型
-  static void pop<T extends Object?>([T? result]) async {
+  static Future<void> pop<T extends Object?>([T? result]) async {
     if (Navigator.canPop(MeteorFlutterNavigator.rootContext)) {
-      _flutterNavigator.pop<T>(result);
+      return await _flutterNavigator.pop<T>(result);
     } else {
-      _nativeNavigator.pop<T>(result);
+      return await _nativeNavigator.pop<T>(result);
     }
   }
 
   /// pop 到最近的一个原生页面
   ///
   /// @param result 返回结果
-  static void popUntilLastNative<T extends Object?>([result]) async {
-    _nativeNavigator.pop<T>(result);
+  static Future<void> popUntilLastNative<T extends Object?>([result]) async {
+    return await _nativeNavigator.pop<T>(result);
   }
 
   /// pop 到指定页面并替换当前页面
   ///
   /// @param routeName 要pod到的页面，如果对应routeName的路由不存在会pop到上一个页面
   /// @param isFarthest 是否pop到最远端的routeName，默认isFarthest = false表示最近的，isFarthest = true表示最远的
-  static void popUntil(String routeName, {bool isFarthest = false}) async {
+  static Future<void> popUntil(String routeName, {bool isFarthest = false}) async {
     if (navigatorObserver.routeExists(routeName) && !isFarthest) {
-      _flutterNavigator.popUntil(routeName, isFarthest: isFarthest);
+      return await _flutterNavigator.popUntil(routeName, isFarthest: isFarthest);
     } else {
-      _nativeNavigator.popUntil(routeName, isFarthest: isFarthest);
+      return await _nativeNavigator.popUntil(routeName, isFarthest: isFarthest);
     }
   }
 
   /// pop 到根页面
   ///
-  static void popToRoot() async {
-    _nativeNavigator.popToRoot();
+  static Future<void> popToRoot() async {
+    return await _nativeNavigator.popToRoot();
   }
 
   /// 当前路由名栈

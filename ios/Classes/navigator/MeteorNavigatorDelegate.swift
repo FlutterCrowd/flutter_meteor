@@ -156,38 +156,41 @@ extension MeteorNavigatorDelegate {
 
     private func getPopParams(_ call: FlutterMethodCall, result: @escaping FlutterResult) -> MeteorPopParams {
         var params = MeteorPopParams()
+        var options = MeteorPopOptions()
+        options.callBack = { response in
+            result(response)
+        }
+        params.options = options
+
         if let methodArguments = call.arguments as? [String: Any] {
             params.untilRouteName = methodArguments["routeName"] as? String
             params.isFarthest = methodArguments["isFarthest"] as? Bool ?? false
-            var options = MeteorPopOptions()
             options.animated = methodArguments["animated"] as? Bool ?? true
             options.canDismiss = methodArguments["canDismiss"] as? Bool ?? true
             options.result = methodArguments["result"] as? [String: Any]
-            options.callBack = { response in
-                result(response)
-                params.options = options
-            }
+        
         }
         return params
     }
 
     private func getPushParams(_ call: FlutterMethodCall, result: @escaping FlutterResult) -> MeteorPushParams? {
         var params: MeteorPushParams?
+        var options = MeteorPushOptions()
+        options.callBack = { response in
+            result(response)
+        }
+        params?.options = options
         if let methodArguments = call.arguments as? [String: Any] {
             if let routeName = methodArguments["routeName"] as? String {
                 let untilRouteName = methodArguments["untilRouteName"] as? String
                 params = MeteorPushParams(routeName: routeName, untilRouteName: untilRouteName)
-                var options = MeteorPushOptions()
+    
                 options.isOpaque = (methodArguments["isOpaque"] != nil) && methodArguments["isOpaque"] as! Bool == true
                 options.animated = methodArguments["animated"] as? Bool ?? true
                 let pageType: Int = methodArguments["pageType"] as? Int ?? 1
                 options.pageType = MeteorPageType(fromType: pageType)
                 options.present = methodArguments["present"] as? Bool ?? false
-                options.callBack = { response in
-                    result(response)
-                }
                 options.arguments = methodArguments["arguments"] as? [String: Any]
-                params?.options = options
             } else {
                 print("No valid routeName to push")
             }
