@@ -37,13 +37,13 @@ object FlutterMeteorNavigator {
                     }
                     builder.backgroundMode(if (isOpaque) FlutterActivityLaunchConfigs.BackgroundMode.opaque else FlutterActivityLaunchConfigs.BackgroundMode.transparent)
                     FlutterMeteor.delegate?.onPushFlutterPage(theActivity, builder.build())
-                    handleCallback(options,true)
+                    handleCallback(options)
                 }
             } else if (pageType == MeteorPageType.NATIVE) {
                 FlutterMeteor.delegate?.onPushNativePage(routeName, routeArguments)
-                handleCallback(options,true)
+                handleCallback(options)
             }else{
-                handleCallback(options,false)
+                handleCallback(options)
                 throw Exception("未指定新页面弹出方式")
             }
         }
@@ -51,36 +51,43 @@ object FlutterMeteorNavigator {
 
     @JvmStatic
     fun pop(options: MeteorPopOptions? = null) {
-        if(options != null){
-            val arguments = options.arguments
-            val data = Intent()
-            if (arguments is Map<*, *>) {
-                arguments.forEach {
-                    val key = it.key.toString()
-                    when (val value = it.value) {
-                        is Int -> data.putExtra(key, value)
-                        is Double -> data.putExtra(key, value)
-                        is Boolean -> data.putExtra(key, value)
-                        is String -> data.putExtra(key, value)
-                        is List<*> -> data.putExtra(key, ArrayList(value))
-                        is Map<*, *> -> data.putExtra(key, HashMap(value))
+        try{
+            if(options != null){
+                val arguments = options.arguments
+                val data = Intent()
+                if (arguments is Map<*, *>) {
+                    arguments.forEach {
+                        val key = it.key.toString()
+                        when (val value = it.value) {
+                            is Int -> data.putExtra(key, value)
+                            is Double -> data.putExtra(key, value)
+                            is Boolean -> data.putExtra(key, value)
+                            is String -> data.putExtra(key, value)
+                            is List<*> -> data.putExtra(key, ArrayList(value))
+                            is Map<*, *> -> data.putExtra(key, HashMap(value))
+                        }
                     }
                 }
+                ActivityInjector.currentActivity?.setResult(
+                    if (arguments == null) Activity.RESULT_CANCELED else Activity.RESULT_OK,
+                    data
+                )
             }
-            ActivityInjector.currentActivity?.setResult(
-                if (arguments == null) Activity.RESULT_CANCELED else Activity.RESULT_OK,
-                data
-            )
+            ActivityInjector.currentActivity?.finish()
+            handleCallback(options)
+        }catch (e: Exception){
+            handleCallback(options)
         }
-        ActivityInjector.currentActivity?.finish()
     }
 
     @JvmStatic
     fun popUntil(untilRouteName: String?, options: MeteorPopOptions? = null) {
         if(untilRouteName != null){
             CoroutineScope(Dispatchers.Main).launch {
-                handlePopUntil(untilRouteName)
+                handlePopUntil(untilRouteName,options)
             }
+        }else{
+            handleCallback(options)
         }
     }
 
@@ -94,18 +101,22 @@ object FlutterMeteorNavigator {
     }
 
     @JvmStatic
-    fun popToRoot() {
-//        FlutterMeteor.popToRoot()
-        ActivityInjector.finishToRoot()
-        val provider =  EngineInjector.firstChannelProvider()
-        provider?.navigatorChannel?.invokeMethod("popToRoot", null)
+    fun popToRoot() :Boolean{
+        try{
+            ActivityInjector.finishToRoot()
+            val provider =  EngineInjector.firstChannelProvider()
+            provider?.navigatorChannel?.invokeMethod("popToRoot", null)
+            return true
+        }catch (e:Exception){
+            return false
+        }
     }
 
     @JvmStatic
     fun pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: MeteorPushOptions? = null) {
         if (untilRouteName != null) {
             CoroutineScope(Dispatchers.Main).launch {
-                handlePopUntil(untilRouteName)
+                handlePopUntil(untilRouteName,null)
             }
         }
         push(routeName, options)
@@ -229,8 +240,8 @@ object FlutterMeteorNavigator {
     }
 
     @JvmStatic
-    fun handleCallback(options: BaseOptions, response: Any?) {
-        options.callBack?.invoke(response)
+    fun handleCallback(options: BaseOptions?) {
+        options?.callBack?.invoke(null)
     }
 
     /**
@@ -311,11 +322,12 @@ object FlutterMeteorNavigator {
     /**
      * 出栈到指定路由
      */
-    private suspend fun handlePopUntil(routeName: String) {
+    private suspend fun handlePopUntil(routeName: String,options: MeteorPopOptions?) {
         val activityInfoStack = ActivityInjector.activityInfoStack
         val tempList = mutableListOf<ActivityInfo>()
 
         if (activityInfoStack.isEmpty()) {
+            handleCallback(options)
             return
         }
 
@@ -325,10 +337,10 @@ object FlutterMeteorNavigator {
                 val channel = provider.navigatorChannel
                 val routeStack: List<String>? =
                     callMethodSynchronously(channel, "routeNameStack") as? List<String>
-                Log.e(TAG,"popUntil-search:----> $routeStack")
                 if (!routeStack.isNullOrEmpty()) {
                     if (routeStack.contains(routeName)) {
                         popActivity(tempList, channel, routeName)
+                        handleCallback(options)
                         return
                     } else {
                         tempList.add(activityInfo)
@@ -341,12 +353,14 @@ object FlutterMeteorNavigator {
                     for (info in tempList) {
                         info.avtivity.get()?.finish()
                     }
+                    handleCallback(options)
                     return
                 } else {
                     tempList.add(activityInfo)
                 }
             }
         }
+        handleCallback(options)
     }
 
     /**
