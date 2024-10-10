@@ -433,12 +433,16 @@ public class MeteorNavigator {
                     if let flutterVc = untilPage as? FlutterViewController {
                         // 3、如果是FlutterViewController则通过Channel通道在flutter端popUntil
                         flutterVc.flutterPopUntil(untilRouteName: untilRouteName, isFarthest: isFarthest, options: options)
+                    } else {
+                        options?.callBack?(nil)
                     }
                 } else { // 如果untilPage不存在则返回上一页
+                    options?.callBack?(nil)
                     print("No viewcontroller route name：\(untilRouteName)")
                 }
             }
         } else {
+            options?.callBack?(nil)
             print("popUntil untilRouteName is nil")
         }
     }
@@ -454,15 +458,41 @@ public class MeteorNavigator {
         let rootVc = MeteorNavigatorHelper.rootViewController()
         if let flutterVc = rootVc as? FlutterViewController {
             flutterVc.flutterPopToRoot(options: options)
+            MeteorNativeNavigator.popToRoot(animated: false)
         } else if let naviVc = rootVc as? UINavigationController {
             if let flutterVc = naviVc.viewControllers.first as? FlutterViewController {
                 flutterVc.flutterPopToRoot(options: options)
+                MeteorNativeNavigator.popToRoot(animated: false)
+            } else {
+                MeteorNativeNavigator.popToRoot(animated: options?.animated ?? true) {
+                    options?.callBack?(nil)
+                }
             }
         } else {
+            MeteorNativeNavigator.popToRoot(animated: options?.animated ?? true) {
+                options?.callBack?(nil)
+            }
             print("ViewController is not a FlutterViewController")
         }
-        MeteorNativeNavigator.popToRoot(animated: options?.animated ?? true)
-        options?.callBack?(nil)
+        
+//        MeteorNativeNavigator.popToRoot(animated: options?.animated ?? true) {
+//            options?.callBack?(nil)
+//        }
+        
+//        MeteorNativeNavigator.popToRoot(animated: options?.animated ?? true) {
+//            let rootVc = MeteorNavigatorHelper.rootViewController()
+//            if let flutterVc = rootVc as? FlutterViewController {
+//                flutterVc.flutterPopToRoot(options: options)
+//            } else if let naviVc = rootVc as? UINavigationController {
+//                if let flutterVc = naviVc.viewControllers.first as? FlutterViewController {
+//                    flutterVc.flutterPopToRoot(options: options)
+//                } else {
+//                    options?.callBack?(nil)
+//                }
+//            } else {
+//                options?.callBack?(nil)
+//            }
+//        }
     }
 }
 

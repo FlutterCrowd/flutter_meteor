@@ -1,5 +1,6 @@
 package cn.itbox.fluttermeteor.navigator
 
+import android.util.Log
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
@@ -12,7 +13,7 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
             "pop" -> handlePop(call, result)
             "popUntil" -> {
                 val routeName = call.argument<String>("routeName")
-                handlePopUntil(routeName)
+                handlePopUntil(routeName,result)
             }
             "popToRoot" -> handlePopToRoot(result)
             "pushReplacementNamed" -> pushReplacementNamed(call, result)
@@ -75,9 +76,8 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
     private fun handlePop(call: MethodCall, result: MethodChannel.Result) {
         val arguments = call.arguments
         if (arguments is Map<*, *>) {
-            val routeArguments = arguments["arguments"]
             val option = MeteorPopOptions(
-                arguments = routeArguments,
+                arguments = arguments,
             )
             option.callBack = object : FlutterMeteorRouterCallBack {
                 override fun invoke(response: Any?) {
@@ -93,9 +93,15 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
     /**
      * 回退到指定路由
      */
-    private fun handlePopUntil(routeName: String?) {
+    private fun handlePopUntil(routeName: String?, result: MethodChannel.Result) {
         if (routeName != null) {
-            FlutterMeteorNavigator.popUntil(routeName)
+            val option = MeteorPopOptions()
+            option.callBack = object : FlutterMeteorRouterCallBack {
+                override fun invoke(response: Any?) {
+                    result.success(response)
+                }
+            }
+            FlutterMeteorNavigator.popUntil(routeName,option)
         }
     }
 
@@ -103,7 +109,9 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
      * 回退到根路由
      */
     private fun handlePopToRoot(result: MethodChannel.Result) {
-        result.success(true).also { FlutterMeteorNavigator.popToRoot() }
+        FlutterMeteorNavigator.popToRoot().let {
+            result.success(it)
+        }
     }
 
     /**

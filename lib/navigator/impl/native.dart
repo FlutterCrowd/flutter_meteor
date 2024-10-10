@@ -90,20 +90,23 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   }
 
   @override
-  void pop<T extends Object?>([T? result]) async {
+  Future<void> pop<T extends Object?>([T? result]) async {
     HzLog.t('MeteorNativeNavigator pop');
-    await methodChannel.invokeMethod<T>(FMNavigatorMethod.popMethod, result);
-    return null;
+    Map<String, dynamic> params = {};
+    params["result"] = result;
+    await methodChannel.invokeMethod<T>(FMNavigatorMethod.popMethod, params);
+    return;
   }
 
   @override
-  void popToRoot() async {
+  Future<void> popToRoot() async {
     HzLog.i('MeteorNativeNavigator popToRoot');
     await methodChannel.invokeMethod(FMNavigatorMethod.popToRootMethod);
+    return;
   }
 
   @override
-  void popUntil(String routeName, {bool isFarthest = false}) async {
+  Future<void> popUntil(String routeName, {bool isFarthest = false}) async {
     await methodChannel.invokeMethod(
       FMNavigatorMethod.popUntilMethod,
       {
@@ -111,12 +114,14 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
         'isFarthest': isFarthest,
       },
     );
+    return;
   }
 
   @override
-  void popUntilLastNative<T extends Object?>() async {
+  Future<void> popUntilLastNative<T extends Object?>() async {
     HzLog.t('MeteorNativeNavigator popUntilLastNative');
     await methodChannel.invokeMethod<T>(FMNavigatorMethod.popMethod);
+    return;
   }
 
   @override

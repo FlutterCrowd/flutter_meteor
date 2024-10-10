@@ -63,7 +63,7 @@ class MeteorMethodChannel {
 
   /// ***********Native to flutter*************/
   Future<dynamic> flutterPop({Map<String, dynamic>? arguments}) async {
-    return _flutterNavigator.pop(null);
+    return await _flutterNavigator.pop(null);
   }
 
   Future<dynamic> flutterPopUntil({Map<String, dynamic>? arguments}) async {
@@ -73,15 +73,15 @@ class MeteorMethodChannel {
       if (arguments?['isFarthest'] != null && arguments?['isFarthest'] is bool) {
         isFarthest = arguments!['isFarthest'];
       }
-      return _flutterNavigator.popUntil(routeName, isFarthest: isFarthest);
+      return await _flutterNavigator.popUntil(routeName, isFarthest: isFarthest);
     } else {
-      return _flutterNavigator.pop();
+      return await _flutterNavigator.pop();
     }
   }
 
   Future<dynamic> flutterPopRoRoot({Map<String, dynamic>? arguments}) async {
     HzLog.i('Channel flutterPopRoRoot arguments: $arguments');
-    return _flutterNavigator.popToFirstRoute();
+    return await _flutterNavigator.popToFirstRoute();
   }
 
   Future<dynamic> flutterPushNamed({Map<String, dynamic>? arguments}) async {
@@ -93,6 +93,8 @@ class MeteorMethodChannel {
     HzLog.t('Channel flutterPushNamed arguments: $arguments');
     if (routeName != null) {
       return await _flutterNavigator.pushNamed(routeName);
+    } else {
+      return null;
     }
   }
 
@@ -105,6 +107,8 @@ class MeteorMethodChannel {
     HzLog.t('Channel flutterPushNamed arguments: $arguments');
     if (routeName != null) {
       return await _flutterNavigator.pushReplacementNamed(routeName);
+    } else {
+      return null;
     }
   }
 

@@ -70,21 +70,21 @@ abstract class MeteorNavigatorApi {
   /// pop到上一个页面
   ///
   /// @param result 接受回调，T是个泛型，可以指定要返回的数据类型
-  void pop<T extends Object?>([T? result]);
+  Future<void> pop<T extends Object?>([T? result]);
 
   /// pop 到指定页面并替换当前页面
   ///
   /// @param routeName 要pod到的页面，如果对应routeName的路由不存在会pop到上一个页面
   /// @param isFarthest 是否pop到最远端的routeName，默认isFarthest = false表示最近的，isFarthest = true表示最远的
-  void popUntil(String routeName, {bool isFarthest = false});
+  Future<void> popUntil(String routeName, {bool isFarthest = false});
 
   /// pop 到最近的一个原生页面
   ///
   /// @param routeName 要pod到的页面
-  void popUntilLastNative<T extends Object?>();
+  Future<void> popUntilLastNative<T extends Object?>();
 
   /// pop 到根页面
-  void popToRoot();
+  Future<void> popToRoot();
 
   /// 当前路由名栈
   Future<List<String>> routeNameStack();
