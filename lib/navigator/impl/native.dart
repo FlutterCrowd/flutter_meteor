@@ -92,7 +92,9 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
   @override
   Future<void> pop<T extends Object?>([T? result]) async {
     HzLog.t('MeteorNativeNavigator pop');
-    await methodChannel.invokeMethod<T>(FMNavigatorMethod.popMethod, result);
+    Map<String, dynamic> params = {};
+    params["result"] = result;
+    await methodChannel.invokeMethod<T>(FMNavigatorMethod.popMethod, params);
     return;
   }
 

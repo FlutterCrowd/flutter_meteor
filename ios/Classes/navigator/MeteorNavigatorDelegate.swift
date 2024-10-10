@@ -161,14 +161,13 @@ extension MeteorNavigatorDelegate {
             result(response)
         }
         params.options = options
-
+        
         if let methodArguments = call.arguments as? [String: Any] {
+            options.result = methodArguments
             params.untilRouteName = methodArguments["routeName"] as? String
             params.isFarthest = methodArguments["isFarthest"] as? Bool ?? false
             options.animated = methodArguments["animated"] as? Bool ?? true
             options.canDismiss = methodArguments["canDismiss"] as? Bool ?? true
-            options.result = methodArguments["result"] as? [String: Any]
-        
         }
         return params
     }
