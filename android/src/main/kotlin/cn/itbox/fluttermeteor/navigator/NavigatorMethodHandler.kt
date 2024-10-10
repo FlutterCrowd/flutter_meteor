@@ -1,5 +1,6 @@
 package cn.itbox.fluttermeteor.navigator
 
+import android.util.Log
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
@@ -75,9 +76,8 @@ class NavigatorMethodHandler : MethodChannel.MethodCallHandler {
     private fun handlePop(call: MethodCall, result: MethodChannel.Result) {
         val arguments = call.arguments
         if (arguments is Map<*, *>) {
-            val routeArguments = arguments["arguments"]
             val option = MeteorPopOptions(
-                arguments = routeArguments,
+                arguments = arguments,
             )
             option.callBack = object : FlutterMeteorRouterCallBack {
                 override fun invoke(response: Any?) {
