@@ -38,7 +38,7 @@ class MeteorNavigator {
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
   /// @param present iOS特有参数，默认false，当present = true时通过iOS的present方法打开新页面
-  /// @return T  泛型，用于指定返回类型
+  /// @return T  泛型，用于指定返回类型, 仅支持flutter -> flutter的场景
   static Future<T?> pushNamed<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
@@ -78,7 +78,7 @@ class MeteorNavigator {
   /// @param openNative 是否使用原生，默认-false 使用原生
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
-  /// @return T  泛型，用于指定返回类型
+  /// @return T  泛型，用于指定返回类型, 仅支持flutter -> flutter的场景
   static Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
     String routeName, {
     bool withNewEngine = false,
@@ -120,7 +120,7 @@ class MeteorNavigator {
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
   /// @parma untilRouteName 移除截止页面
-  /// @return T  泛型，用于指定返回类型
+  /// @return T  泛型，用于指定返回类型, 仅支持flutter -> flutter的场景
   static Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
     String routeName,
     String untilRouteName, {
@@ -161,7 +161,7 @@ class MeteorNavigator {
   /// @param openNative 是否使用原生，默认-false 使用原生
   /// @param isOpaque 是否不透明 默认-true 不透明
   /// @param animated 是否开启动画，默认开启
-  /// @return T  泛型，用于指定返回类型
+  /// @return T  泛型，用于指定返回类型, 仅支持flutter -> flutter的场景
   static Future<T?> pushNamedAndRemoveUntilRoot<T extends Object?>(
     String routeName, {
     bool withNewEngine = false,
@@ -183,7 +183,7 @@ class MeteorNavigator {
         arguments: arguments,
       );
     } else {
-      return await _flutterNavigator.pushNamedAndRemoveUntilRoot(
+      return await _flutterNavigator.pushNamedAndRemoveUntilRoot<T>(
         routeName,
         arguments: arguments,
         isOpaque: isOpaque,

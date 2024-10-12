@@ -26,8 +26,8 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pop({'name1': 'I' 'm bob, I from Flutter, 哈哈'});
+              onPressed: () async {
+                await MeteorNavigator.pop({'name1': 'I' 'm bob, I from Flutter, 哈哈'});
               },
               child: const Text(
                 '返回上一个页面',
@@ -39,11 +39,12 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamed(
+              onPressed: () async {
+                Map? result = await MeteorNavigator.pushNamed<Map>(
                   'multiEnginePage2',
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '在当前引擎打开一个flutter页面',
@@ -55,12 +56,13 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamed(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushNamed<int>(
                   'multiEnginePage2',
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
                   withNewEngine: true,
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '在新引擎打开一个flutter页面',
@@ -72,12 +74,13 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamed(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushNamed<int>(
                   'native_page1',
                   openNative: true,
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '打开一个原生页面',
@@ -89,13 +92,14 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamed(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushNamed<int>(
                   "native_page1",
                   isOpaque: false,
                   withNewEngine: true,
                   present: true,
                 );
+                print('返回结果：$result');
                 // MeteorNavigator.pushNamed("test", openNative: true,, present: true, isOpaque: false);
               },
               child: const Text(
@@ -108,13 +112,14 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamed(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushNamed<int>(
                   "multiEnginePage2",
                   isOpaque: false,
                   withNewEngine: true,
                   present: true,
                 );
+                print('返回结果：$result');
                 // MeteorNavigator.pushNamed("test", openNative: true,, present: true, isOpaque: false);
               },
               child: const Text(
@@ -127,8 +132,10 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushReplacementNamed('multiEnginePage2');
+              onPressed: () async {
+                Map? result =
+                    await MeteorNavigator.pushReplacementNamed<Map, int>('multiEnginePage2');
+                print('返回结果：$result');
               },
               child: const Text(
                 '在当前引擎打开flutter并替换当前flutter页面',
@@ -140,8 +147,8 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushReplacementNamed(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushReplacementNamed<int, int>(
                   'multiEnginePage2',
                   withNewEngine: true,
                 );
@@ -156,12 +163,13 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushReplacementNamed(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushReplacementNamed<int, int>(
                   'native_page1',
                   arguments: {},
                   openNative: true,
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '打开Native页面并替换当前flutter页面',
@@ -173,12 +181,13 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamedAndRemoveUntil(
+              onPressed: () async {
+                Map? result = await MeteorNavigator.pushNamedAndRemoveUntil<Map>(
                   'multiEnginePage2',
                   'multiEnginePage',
                   arguments: {},
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '打开Flutter并移除当前栈中指定Flutter页面之前页面（包括Native）',
@@ -190,13 +199,14 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamedAndRemoveUntil(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushNamedAndRemoveUntil<int>(
                   'multiEnginePage2',
                   'multiEnginePage',
                   arguments: {},
                   withNewEngine: true,
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '通过新引擎打开Flutter页面并移除当前栈中指定Flutter页面之前页面（包括Native）',
@@ -208,13 +218,14 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamedAndRemoveUntil(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushNamedAndRemoveUntil<int>(
                   'multiEnginePage2',
                   'native_page1',
                   arguments: {},
                   openNative: true,
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '打开Flutter页面并移除当前栈中到指定Native页面之前页面',
@@ -226,13 +237,14 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamedAndRemoveUntil(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushNamedAndRemoveUntil<int>(
                   'native_page2',
                   'multiEnginePage',
                   arguments: {},
                   openNative: true,
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '打开Native页面并移除当前栈中到指定flutter页面之前页面',
@@ -244,13 +256,14 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamedAndRemoveUntil(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushNamedAndRemoveUntil<int>(
                   'native_page2',
                   'native_page1',
                   arguments: {},
                   openNative: true,
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '打开Native页面并移除当前栈中到指定Native页面之前页面',
@@ -262,11 +275,12 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamedAndRemoveUntilRoot(
+              onPressed: () async {
+                Map? result = await MeteorNavigator.pushNamedAndRemoveUntilRoot<Map>(
                   'multiEnginePage2',
                   arguments: {},
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '打开flutter新页面并移除跟视图之前的所有页面',
@@ -278,12 +292,13 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamedAndRemoveUntilRoot(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushNamedAndRemoveUntilRoot<int>(
                   'multiEnginePage2',
                   arguments: {},
                   withNewEngine: true,
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '通过新引擎打开flutter页面r并移除跟视图之前的所有页面',
@@ -295,12 +310,13 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamedAndRemoveUntilRoot(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushNamedAndRemoveUntilRoot<int>(
                   'native_page1',
                   arguments: {},
                   openNative: true,
                 );
+                print('返回结果：$result');
               },
               child: const Text(
                 '打开Native并移除跟视图之前的所有页面',
@@ -312,8 +328,8 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.popUntil('multiEnginePage');
+              onPressed: () async {
+                await MeteorNavigator.popUntil('multiEnginePage');
               },
               child: const Text(
                 '返回指定的最近的一个同名flutter页面',
@@ -325,8 +341,8 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.popUntil('multiEnginePage', isFarthest: true);
+              onPressed: () async {
+                await MeteorNavigator.popUntil('multiEnginePage', isFarthest: true);
               },
               child: const Text(
                 '返回指定的最远的一个同名flutter页面',
@@ -338,8 +354,8 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.popUntil('native_page1');
+              onPressed: () async {
+                await MeteorNavigator.popUntil('native_page1');
               },
               child: const Text(
                 '返回指定的最近的同名Native页面',
@@ -351,8 +367,8 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.popUntil('native_page1', isFarthest: true);
+              onPressed: () async {
+                await MeteorNavigator.popUntil('native_page1', isFarthest: true);
               },
               child: const Text(
                 '返回指定的最远的同名Native页面',
@@ -364,8 +380,8 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.popToRoot();
+              onPressed: () async {
+                await MeteorNavigator.popToRoot();
               },
               child: const Text(
                 '返回根页面',
@@ -377,7 +393,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 MeteorEventBus.addListener(
                   eventName: 'eventName',
                   listener: (data) {
@@ -395,7 +411,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 MeteorEventBus.commit(eventName: 'eventName', data: {'key': 'value'});
               },
               child: const Text(

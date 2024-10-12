@@ -39,8 +39,8 @@ class _MultiEnginePageState extends State<MultiEnginePage2> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamed(
+              onPressed: () async {
+                MeteorNavigator.pushNamed<int>(
                   'multiEnginePage3',
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
                 );
@@ -55,8 +55,8 @@ class _MultiEnginePageState extends State<MultiEnginePage2> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamed(
+              onPressed: () async {
+                MeteorNavigator.pushNamed<int>(
                   'multiEnginePage3',
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
                   withNewEngine: true,
@@ -72,8 +72,8 @@ class _MultiEnginePageState extends State<MultiEnginePage2> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamed(
+              onPressed: () async {
+                MeteorNavigator.pushNamed<int>(
                   'native_page2',
                   openNative: true,
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
@@ -89,8 +89,8 @@ class _MultiEnginePageState extends State<MultiEnginePage2> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: () {
-                MeteorNavigator.pushNamed(
+              onPressed: () async {
+                int? result = await MeteorNavigator.pushNamed<int>(
                   "native_page2",
                   isOpaque: false,
                   withNewEngine: true,
