@@ -18,6 +18,7 @@ public extension UIViewController {
     @objc var routeName: String? {
         get {
             return objc_getAssociatedObject(self, &FMAssociatedRouteNameHandle) as? String
+                        ?? String(describing: type(of: self))
         }
         set {
             objc_setAssociatedObject(self, &FMAssociatedRouteNameHandle, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)

@@ -293,11 +293,11 @@ public extension FlutterViewController {
 
     func flutterRootRouteName(result: @escaping ((_ rootRouteName: String?) -> Void)) {
         if let channel = navigatorChannel() {
-            channel.save_invoke(method: FMRootRouteName) { rootRouteName in
+            channel.save_invoke(method: FMRootRouteName) { [weak self] rootRouteName in
                 if let rootRouteName = rootRouteName as? String {
                     result(rootRouteName)
                 } else {
-                    result(nil)
+                    result(self?.routeName)
                 }
             }
         } else {
@@ -307,11 +307,11 @@ public extension FlutterViewController {
 
     func flutterTopRouteName(result: @escaping ((_ topRouteName: String?) -> Void)) {
         if let channel = navigatorChannel() {
-            channel.save_invoke(method: FMTopRouteName) { topRouteName in
+            channel.save_invoke(method: FMTopRouteName) { [weak self] topRouteName in
                 if let topRouteName = topRouteName as? String {
                     result(topRouteName)
                 } else {
-                    result(nil)
+                    result(self?.routeName)
                 }
             }
         } else {
@@ -321,11 +321,11 @@ public extension FlutterViewController {
 
     func flutterRouteNameStack(result: @escaping ((_ routeStack: [String]?) -> Void)) {
         if let channel = navigatorChannel() {
-            channel.save_invoke(method: FMRouteNameStack) { ret in
+            channel.save_invoke(method: FMRouteNameStack) { [weak self] ret in
                 if let retArray = ret as? [String] {
                     result(retArray)
                 } else {
-                    result([self.routeName ?? "\(type(of: self))"])
+                    result([self?.routeName ?? "\(type(of: self))"])
                 }
             }
         } else {
