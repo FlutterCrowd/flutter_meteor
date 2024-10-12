@@ -157,11 +157,6 @@ extension MeteorNavigatorDelegate {
     private func getPopParams(_ call: FlutterMethodCall, result: @escaping FlutterResult) -> MeteorPopParams {
         var params = MeteorPopParams()
         var options = MeteorPopOptions()
-        options.callBack = { response in
-            result(response)
-        }
-        params.options = options
-        
         if let methodArguments = call.arguments as? [String: Any] {
             options.result = methodArguments
             params.untilRouteName = methodArguments["routeName"] as? String
@@ -169,16 +164,16 @@ extension MeteorNavigatorDelegate {
             options.animated = methodArguments["animated"] as? Bool ?? true
             options.canDismiss = methodArguments["canDismiss"] as? Bool ?? true
         }
+        options.callBack = { response in
+            result(response)
+        }
+        params.options = options
         return params
     }
 
     private func getPushParams(_ call: FlutterMethodCall, result: @escaping FlutterResult) -> MeteorPushParams? {
         var params: MeteorPushParams?
         var options = MeteorPushOptions()
-        options.callBack = { response in
-            result(response)
-        }
-        params?.options = options
         if let methodArguments = call.arguments as? [String: Any] {
             if let routeName = methodArguments["routeName"] as? String {
                 let untilRouteName = methodArguments["untilRouteName"] as? String
@@ -196,6 +191,10 @@ extension MeteorNavigatorDelegate {
         } else {
             print("Invalid push params")
         }
+        options.callBack = { response in
+            result(response)
+        }
+        params?.options = options
         return params
     }
 }

@@ -80,11 +80,15 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   }) async {
     HzLog.t(
         'MeteorFlutterNavigator pushNamed:$routeName, arguments:$arguments, pageType:$pageType');
-    return await Navigator.pushNamed<T?>(
+    final result = await Navigator.pushNamed(
       rootContext,
       routeName,
       arguments: arguments,
     );
+    if (result is! T) {
+      throw TypeError();
+    }
+    return result;
   }
 
   @override
@@ -98,8 +102,9 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   }) async {
     HzLog.t(
         'MeteorFlutterNavigator pushReplacementNamed newRouteName:$routeName, untilRouteName:$untilRouteName, arguments:$arguments');
+    dynamic result;
     if (navigatorObserver.routeExists(untilRouteName) && rootContext.mounted) {
-      return await Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
+      result = await Navigator.of(rootContext).pushNamedAndRemoveUntil(
         routeName,
         ModalRoute.withName(untilRouteName),
         arguments: arguments,
@@ -107,11 +112,15 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
     } else {
       HzLog.w(
           'MeteorFlutterNavigator untilRouteName:$untilRouteName is not exist in navigator routeStack');
-      return await Navigator.of(rootContext).pushNamed<T>(
+      result = await Navigator.of(rootContext).pushNamed(
         routeName,
         arguments: arguments,
       );
     }
+    if (result is! T) {
+      throw TypeError();
+    }
+    return result;
   }
 
   @override
@@ -124,11 +133,15 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   }) async {
     HzLog.t(
         'MeteorFlutterNavigator pushNamedAndRemoveUntilRoot newRouteName:$routeName, arguments:$arguments');
-    return await Navigator.of(rootContext).pushNamedAndRemoveUntil<T>(
+    final result = await Navigator.of(rootContext).pushNamedAndRemoveUntil(
       routeName,
       (Route<dynamic> route) => route.isFirst,
       arguments: arguments,
     );
+    if (result is! T) {
+      throw TypeError();
+    }
+    return result;
   }
 
   @override
@@ -141,11 +154,15 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
   }) async {
     HzLog.t(
         'MeteorFlutterNavigator pushReplacementNamed routeName:$routeName, arguments:$arguments');
-    return await Navigator.pushReplacementNamed<T, TO>(
+    final result = await Navigator.pushReplacementNamed(
       rootContext,
       routeName,
       arguments: arguments,
     );
+    if (result is! T) {
+      throw TypeError();
+    }
+    return result;
   }
 
   @override
