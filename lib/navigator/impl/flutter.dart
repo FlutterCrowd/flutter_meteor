@@ -85,7 +85,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
       routeName,
       arguments: arguments,
     );
-    if (result is! T) {
+    if (result is! T?) {
       throw TypeError();
     }
     return result;
@@ -117,7 +117,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
         arguments: arguments,
       );
     }
-    if (result is! T) {
+    if (result is! T?) {
       throw TypeError();
     }
     return result;
@@ -138,7 +138,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
       (Route<dynamic> route) => route.isFirst,
       arguments: arguments,
     );
-    if (result is! T) {
+    if (result is! T?) {
       throw TypeError();
     }
     return result;
@@ -159,7 +159,7 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
       routeName,
       arguments: arguments,
     );
-    if (result is! T) {
+    if (result is! T?) {
       throw TypeError();
     }
     return result;
