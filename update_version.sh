@@ -2,7 +2,8 @@
 
 # 文件路径
 FILE="pubspec.yaml"
-IOS_PODSPEC="ios/code_check_plugin.podspec"
+PROJECT_NAME=$(basename "$(pwd)")
+IOS_PODSPEC="ios/$PROJECT_NAME.podspec"
 
 # 读取 pubspec.yaml 中的版本号
 VERSION_LINE=$(grep 'version:' $FILE)
