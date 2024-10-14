@@ -11,9 +11,9 @@ echo "当前版本: $CURRENT_VERSION"
 
 # 打 tag 并推送 tag
 echo "开始打 tag"
-git tag "$NEW_VERSION"
-if git push origin "$NEW_VERSION"; then
-  echo "Tag $NEW_VERSION 推送成功"
+git tag "$CURRENT_VERSION"
+if git push origin "$CURRENT_VERSION"; then
+  echo "Tag $CURRENT_VERSION 推送成功"
 else
   echo "[ERROR] Tag 推送失败"
 fi
