@@ -70,7 +70,7 @@ git add .
 
 # 提交更改并检查返回值
 if git commit -m "feat(t-4957982926): 升级版本号"; then
-  echo "提交成功，开始 push 新的提交"
+  echo "提交成功，开始 arc diff 新的提交"
   arc diff
 else
   echo "[ERROR] git commit 失败，取消 push 并回滚更改"
