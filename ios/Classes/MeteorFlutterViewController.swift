@@ -70,10 +70,10 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
         FlutterMeteor.pluginRegistryDelegate.unRegister(pluginRegistry: self.pluginRegistry())
     }
 
-    public func pop(options: MeteorPopOptions?) {
-        MeteorNavigator.pop()
-        popCallBack?(options?.result)
-    }
+//    public func pop(options: MeteorPopOptions?) {
+//        MeteorNavigator.pop()
+////        popCallBack?(options?.result)
+//    }
 
     func setupNavigatorObserverChannel() {
         let methodChannel = FlutterBasicMessageChannel(name: "itbox.meteor.navigatorObserver", binaryMessenger: binaryMessenger, codec: FlutterStandardMessageCodec.sharedInstance())

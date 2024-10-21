@@ -158,7 +158,7 @@ extension MeteorNavigatorDelegate {
         var params = MeteorPopParams()
         var options = MeteorPopOptions()
         if let methodArguments = call.arguments as? [String: Any] {
-            options.result = methodArguments
+            options.result = methodArguments["result"]
             params.untilRouteName = methodArguments["routeName"] as? String
             params.isFarthest = methodArguments["isFarthest"] as? Bool ?? false
             options.animated = methodArguments["animated"] as? Bool ?? true

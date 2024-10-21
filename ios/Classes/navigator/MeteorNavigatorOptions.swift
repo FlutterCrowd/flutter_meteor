@@ -63,7 +63,7 @@ public struct MeteorPopOptions {
     public var animated: Bool = true
     // 在无法pop的情况下是否支持dismiss
     public var canDismiss: Bool = true
-    public var result: [String: Any]?
+    public var result: Any?
     public var callBack: MeteorNavigatorCallBack?
 
     public init(result: [String: Any]? = nil,

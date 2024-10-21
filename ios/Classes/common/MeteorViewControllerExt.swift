@@ -11,7 +11,7 @@ private var FMAssociatedRouteNameHandle: UInt8 = 0
 
 private var FMAssociatedPopCallBackHandle: UInt8 = 0
 
-public typealias FlutterMeteorPopCallBack = (_ response: [String: Any]?) -> Void
+public typealias FlutterMeteorPopCallBack = (_ response: Any?) -> Void
 
 public extension UIViewController {
     // 页面路由名称
