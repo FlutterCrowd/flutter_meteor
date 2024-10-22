@@ -19,10 +19,7 @@ Add the following configuration to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_meteor:
-    git:
-      url: https://gitlab.hzcxfw.com/terminal/structure/flutter_meteor.git
-      ref: 0.4.21
+  flutter_meteor: ^0.0.1
 ```
 ### 2. Initialize the Plugin
 Initialize in the default main function of your Flutter application:
@@ -108,7 +105,7 @@ MaterialApp(
 ```
 ## Usage Examples
 ### 1. Navigator
-API Documentation
+**API Example**
 
 ```
 Future<T?> pushNamed<T extends Object?>(
@@ -121,7 +118,7 @@ Future<T?> pushNamed<T extends Object?>(
   Map<String, dynamic>? arguments,
 });
 ```
-Usage Example
+**Usage Example**
 ```
 // Navigate to the page shareStatePage1
 MeteorNavigator.pushNamed("shareStatePage1");
@@ -129,7 +126,7 @@ MeteorNavigator.pushNamed("shareStatePage1");
 MeteorNavigator.pop();
 ```
 ### 2. Event Bus
-API Documentation
+**API Example**
 
 ```
 static void addListener({
@@ -138,7 +135,7 @@ static void addListener({
   required MeteorEventBusListener listener,
 });
 ```
-Usage Example
+**Usage Example**
 
 ```
 // Register an event
@@ -157,12 +154,12 @@ MeteorEventBus.addListener(
 MeteorEventBus.commit(eventName: 'eventName', data: 'This is a string');
 ```
 ### 3. Shared Cache
-API Documentation
+**API Example**
 ```
 static Future<void> setString(String key, String? value);
 static Future<String?> getString(String key);
 ```
-Usage Example
+**Usage Example**
 ```
 // Store a boolean value
 SharedMemoryCache.setBool('boolKey', true);
@@ -171,7 +168,7 @@ bool? value = await SharedMemoryCache.getBool('boolKey');
 print("Retrieved:---> $value");
 ```
 ### 4. Shared State
-API Documentation
+**API Example**
 ```
 class GlobalStateService extends MeteorValueProvider<String> {}
 
@@ -179,7 +176,7 @@ class MeteorSharedObjectProvider<T extends MeteorSharedObject> with ChangeNotifi
   // Implementation details...
 }
 ```
-Usage Example
+**Usage Example**
 ```
 Widget build(BuildContext context) {
   return MultiProvider(
