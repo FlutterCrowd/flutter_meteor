@@ -1,14 +1,11 @@
 name: flutter_meteor
 description: "A new Flutter package project."
-version: 0.5.0
-homepage: "https://gitlab.hzcxfw.com/terminal/structure/flutter_meteor"
+version: 1.0.0
+homepage: "https://github.com/FlutterCrowd/flutter_meteor"
 
 environment:
   sdk: '>=3.2.3 <4.0.0'
   flutter: ">=1.17.0"
-
-config:
-  buildNumber: 240909
 
 dependencies:
   flutter:
