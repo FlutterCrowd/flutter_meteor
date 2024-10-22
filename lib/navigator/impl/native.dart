@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:hz_tools/hz_tools.dart';
 
 import '../channel/channel.dart';
 import '../channel/method.dart';
@@ -163,12 +162,9 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
 
   @override
   Future<String?> topRouteName() async {
-    // debugPrint('Flutter开始调用：method:${FMNavigatorMethod.topRouteName}');
-
     final ret = await methodChannel.invokeMethod<String>(
       FMNavigatorMethod.topRouteName,
     );
-    // debugPrint('Flutter结束调用：method:${FMNavigatorMethod.topRouteName}');
     return ret;
   }
 

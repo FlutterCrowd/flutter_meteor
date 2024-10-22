@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:hz_tools/hz_tools.dart';
 
 import '../impl/flutter.dart';
 import 'method.dart';

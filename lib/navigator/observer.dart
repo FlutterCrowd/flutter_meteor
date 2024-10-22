@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hz_tools/hz_tools.dart';
 
 class MeteorNavigatorObserver extends NavigatorObserver {
   final BasicMessageChannel methodChannel =
@@ -73,12 +72,12 @@ class MeteorNavigatorObserver extends NavigatorObserver {
 
   @override
   void didStartUserGesture(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    print('MeteorRouteObserver didStartUserGesture');
+    // print('MeteorRouteObserver didStartUserGesture');
   }
 
   @override
   void didStopUserGesture() {
-    print('MeteorRouteObserver didStopUserGesture');
+    // print('MeteorRouteObserver didStopUserGesture');
   }
 
   void sendNavigatorStackChanged() {

@@ -26,6 +26,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   # 能用UI组件
   fluttertoast: any
+  webview_flutter: any
 
 
 dev_dependencies:

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/navigator/observer.dart';
 import 'package:flutter_meteor/navigator/page_type.dart';
-import 'package:hz_tools/hz_tools.dart';
 
 import '../navigator_api.dart';
 
