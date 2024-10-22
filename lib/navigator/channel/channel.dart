@@ -9,8 +9,6 @@ class MeteorMethodChannel {
   MeteorMethodChannel() {
     methodChannel.setMethodCallHandler(
       (call) async {
-        // HzLog.t(
-        // 'Meteor 原生调用flutter isMain:${MeteorEngine.isMain}  method:${call.method}, methodArguments:${call.arguments}');
         Map<String, dynamic> arguments = <String, dynamic>{};
         if (call.arguments is Map) {
           Map res = call.arguments;
@@ -80,17 +78,11 @@ class MeteorMethodChannel {
   }
 
   Future<dynamic> flutterPopRoRoot({Map<String, dynamic>? arguments}) async {
-    HzLog.i('Channel flutterPopRoRoot arguments: $arguments');
     return await _flutterNavigator.popToFirstRoute();
   }
 
   Future<dynamic> flutterPushNamed({Map<String, dynamic>? arguments}) async {
-    // Map<String, dynamic> arg = {};
-    // if (arguments != null) {
-    //   arg.addAll(arguments);
-    // }
     String? routeName = arguments?["routeName"];
-    HzLog.t('Channel flutterPushNamed arguments: $arguments');
     if (routeName != null) {
       return await _flutterNavigator.pushNamed(routeName);
     } else {
@@ -99,12 +91,7 @@ class MeteorMethodChannel {
   }
 
   Future<dynamic> flutterPushAndReplace({Map<String, dynamic>? arguments}) async {
-    // Map<String, dynamic> arg = {};
-    // if (arguments != null) {
-    //   arg.addAll(arguments);
-    // }
     String? routeName = arguments?["routeName"];
-    HzLog.t('Channel flutterPushNamed arguments: $arguments');
     if (routeName != null) {
       return await _flutterNavigator.pushReplacementNamed(routeName);
     } else {
@@ -113,13 +100,9 @@ class MeteorMethodChannel {
   }
 
   Future<dynamic> flutterPushAndRemoveUntil({Map<String, dynamic>? arguments}) async {
-    // Map<String, dynamic> arg = {};
-    // if (arguments != null) {
-    //   arg.addAll(arguments);
-    // }
+
     String? routeName = arguments?["routeName"];
     String? untilRouteName = arguments?["untilRouteName"];
-    HzLog.t('Channel flutterPushNamed arguments: $arguments');
     if (routeName != null) {
       if (untilRouteName != null) {
         return await _flutterNavigator.pushNamedAndRemoveUntil(routeName, untilRouteName);

@@ -26,7 +26,6 @@ class MeteorNavigator {
   static void init({
     required GlobalKey<NavigatorState> rootKey,
   }) {
-    HzLog.i('MeteorNavigator init with rootKey:$rootKey');
     MeteorFlutterNavigator.rootKey = rootKey;
   }
 

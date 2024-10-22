@@ -19,7 +19,6 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
 
   @override
   Future<void> pop<T extends Object?>([T? result]) async {
-    HzLog.t('MeteorFlutterNavigator pop rootContext:$rootContext');
     if (Navigator.canPop(rootContext)) {
       Navigator.pop<T>(rootContext, result);
     }
@@ -28,7 +27,6 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
 
   @override
   Future<void> popToRoot() async {
-    HzLog.t('MeteorFlutterNavigator popToRoot');
     return Navigator.popUntil(
       rootContext,
       (route) => route.isFirst,
@@ -37,7 +35,6 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
 
   @override
   Future<void> popUntil(String routeName, {bool isFarthest = false}) async {
-    HzLog.t('MeteorFlutterNavigator popUntil routeName:$routeName');
     if (navigatorObserver.routeExists(routeName) && rootContext.mounted) {
       if (isFarthest) {
         for (Route<dynamic> route in navigatorObserver.routeStack) {
@@ -56,13 +53,11 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
         );
       }
     } else {
-      HzLog.w('MeteorFlutterNavigator routeName:$routeName is not exist in navigator routeStack');
       return await pop();
     }
   }
 
   Future<void> popToFirstRoute() async {
-    HzLog.t('MeteorFlutterNavigator popToFirstRoute');
     return Navigator.popUntil(
       rootContext,
       (route) => route.isFirst,
@@ -78,8 +73,6 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
     bool present = false,
     Map<String, dynamic>? arguments,
   }) async {
-    HzLog.t(
-        'MeteorFlutterNavigator pushNamed:$routeName, arguments:$arguments, pageType:$pageType');
     final result = await Navigator.pushNamed(
       rootContext,
       routeName,
@@ -100,8 +93,6 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    HzLog.t(
-        'MeteorFlutterNavigator pushReplacementNamed newRouteName:$routeName, untilRouteName:$untilRouteName, arguments:$arguments');
     dynamic result;
     if (navigatorObserver.routeExists(untilRouteName) && rootContext.mounted) {
       result = await Navigator.of(rootContext).pushNamedAndRemoveUntil(
@@ -110,8 +101,6 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
         arguments: arguments,
       );
     } else {
-      HzLog.w(
-          'MeteorFlutterNavigator untilRouteName:$untilRouteName is not exist in navigator routeStack');
       result = await Navigator.of(rootContext).pushNamed(
         routeName,
         arguments: arguments,
@@ -131,8 +120,6 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    HzLog.t(
-        'MeteorFlutterNavigator pushNamedAndRemoveUntilRoot newRouteName:$routeName, arguments:$arguments');
     final result = await Navigator.of(rootContext).pushNamedAndRemoveUntil(
       routeName,
       (Route<dynamic> route) => route.isFirst,
@@ -152,8 +139,6 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
     bool animated = true,
     Map<String, dynamic>? arguments,
   }) async {
-    HzLog.t(
-        'MeteorFlutterNavigator pushReplacementNamed routeName:$routeName, arguments:$arguments');
     final result = await Navigator.pushReplacementNamed(
       rootContext,
       routeName,
@@ -167,7 +152,6 @@ class MeteorFlutterNavigator extends MeteorNavigatorApi {
 
   @override
   Future<T?> popUntilLastNative<T extends Object?>() async {
-    HzLog.w('This method:popUntilLastNative need to be implemented by native');
     return null;
   }
 

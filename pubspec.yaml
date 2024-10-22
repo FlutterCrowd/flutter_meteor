@@ -1,8 +1,10 @@
 name: flutter_meteor
-description: "A new Flutter package project."
+description: "Flutter Meteor is a plugin that enables multi-engine routing, inter-engine communication, and state synchronization. It addresses challenges in page navigation and state management during interactions between Flutter and native components, allowing developers to implement smooth transitions and effective state sharing between environments."
 version: 1.0.0
 homepage: "https://github.com/FlutterCrowd/flutter_meteor"
-
+repository: "https://github.com/FlutterCrowd/flutter_meteor.git"
+issue_tracker: "https://github.com/FlutterCrowd/flutter_meteor/issues"
+publish_to: 'https://pub.dev'
 environment:
   sdk: '>=3.2.3 <4.0.0'
   flutter: ">=1.17.0"
@@ -11,11 +13,6 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
-  webview_flutter: ^4.8.0
-  hz_tools:
-    git:
-      url: https://gitlab.hzcxfw.com/terminal/structure/hz_tools.git
-      ref: 0.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

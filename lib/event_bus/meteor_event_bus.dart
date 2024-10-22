@@ -36,7 +36,6 @@ class MeteorEventBus {
 
     methodChannel.setMessageHandler(
       (message) async {
-        HzLog.d('收到来自原生的通知message:$message');
         receiveEvent(message);
       },
     );
@@ -50,8 +49,6 @@ class MeteorEventBus {
   /// listener 监听者
   static void addListener(
       {required String eventName, String? listenerId, required MeteorEventBusListener listener}) {
-    // HzLog.t(
-    // 'MeteorEventBus addListener isMain:${MeteorEngine.isMain} eventName:$eventName, listener:$listener');
     var list = instance._listenerMap[eventName];
     list ??= <MeteorEventBusListenerItem>[];
     list.add(MeteorEventBusListenerItem(listenerId, listener));
@@ -64,8 +61,6 @@ class MeteorEventBus {
   ///  备注： 如果listenerId和listener都为空，则移除eventName下的所有监听者
   static void removeListener(
       {required String eventName, String? listenerId, MeteorEventBusListener? listener}) {
-    // HzLog.t(
-    // 'MeteorEventBus removeListener isMain:${MeteorEngine.isMain} eventName:$eventName, listener:$listener');
     var list = instance._listenerMap[eventName];
     if (eventName.isEmpty || list == null) return;
 
@@ -91,8 +86,6 @@ class MeteorEventBus {
   /// withMultiEngine 是否发送多引擎，默认true表示支持多引擎
   /// data 传送的数据
   static void commit({required String eventName, bool? withMultiEngine = true, dynamic data}) {
-    // HzLog.t(
-    // 'MeteorEventBus commit isMain:${MeteorEngine.isMain} eventName:$eventName, data:$data, withMultiEngine:$withMultiEngine');
     if (withMultiEngine == true) {
       /// 多引擎则交给原生处理
       commitToMultiEngine(eventName: eventName, data: data);
@@ -104,8 +97,6 @@ class MeteorEventBus {
 
   static void commitToCurrentEngine({required String eventName, dynamic data}) {
     var list = instance._listenerMap[eventName];
-    // HzLog.t(
-    // 'MeteorEventBus commitToCurrentEngine isMain:${MeteorEngine.isMain} eventName:$eventName, data:$data, listeners:$list');
     if (list == null) return;
     int len = list.length - 1;
     //反向遍历，防止在订阅者在回调中移除自身带来的下标错位
@@ -118,17 +109,11 @@ class MeteorEventBus {
   }
 
   static Future<dynamic> commitToMultiEngine({required String eventName, dynamic data}) async {
-    // HzLog.d(
-    //     'MeteorEventBus commitToMultiEngine isMain:${MeteorEngine.isMain} eventName:$eventName, data:$data');
-
     /// 如果支持多引擎则交给原生处理
     Map<String, dynamic> methodArguments = {};
     methodArguments['eventName'] = eventName;
     methodArguments['data'] = data;
-    // final result = await instance.methodChannel
-    //     .invokeMethod(MeteorChannelMethod.multiEngineEventCallMethod, methodArguments);
     final result = await instance.methodChannel.send(methodArguments);
-    // HzLog.t('MeteorEventBus commitToMultiEngine isMain:${MeteorEngine.isMain} result:$result');
     return result;
   }
 
@@ -136,12 +121,10 @@ class MeteorEventBus {
     if (event is Map) {
       final eventMap = event;
       final eventName = event['eventName'];
-      // HzLog.t('MeteorEventBus isMain:${MeteorEngine.isMain} allListeners:${instance._listenerMap}');
       var list = instance._listenerMap[eventName];
       list?.forEach((listenerItem) {
         listenerItem.listener.call(eventMap['data']);
       });
-      // HzLog.d('MeteorEventBus isMain:${MeteorEngine.isMain} eventName:$eventName, listeners $list');
     }
   }
 }

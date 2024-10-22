@@ -43,7 +43,6 @@ class MeteorNavigatorObserver extends NavigatorObserver {
   @override
   void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _routeStack.add(route);
-    // HzLog.d('MeteorRouteObserver didPush route:${route.settings.name}');
     super.didPush(route, previousRoute);
     sendNavigatorStackChanged();
   }
@@ -51,7 +50,6 @@ class MeteorNavigatorObserver extends NavigatorObserver {
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _routeStack.remove(route);
-    // HzLog.d('MeteorRouteObserver didPop route:${route.settings.name}');
     super.didPop(route, previousRoute);
     sendNavigatorStackChanged();
   }
@@ -59,7 +57,6 @@ class MeteorNavigatorObserver extends NavigatorObserver {
   @override
   void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
     _routeStack.remove(route);
-    // HzLog.d('MeteorRouteObserver didRemove route:${route.settings.name}');
     super.didRemove(route, previousRoute);
     sendNavigatorStackChanged();
   }
@@ -70,20 +67,18 @@ class MeteorNavigatorObserver extends NavigatorObserver {
     if (index != -1) {
       _routeStack[index] = newRoute!;
     }
-    // HzLog.d(
-    //     'MeteorRouteObserver didReplace newRoute:${newRoute?.settings.name}, oldRoute:${oldRoute.settings.name}');
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     sendNavigatorStackChanged();
   }
 
   @override
   void didStartUserGesture(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    HzLog.d('MeteorRouteObserver didStartUserGesture');
+    print('MeteorRouteObserver didStartUserGesture');
   }
 
   @override
   void didStopUserGesture() {
-    HzLog.d('MeteorRouteObserver didStopUserGesture');
+    print('MeteorRouteObserver didStopUserGesture');
   }
 
   void sendNavigatorStackChanged() {

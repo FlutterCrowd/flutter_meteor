@@ -28,7 +28,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
     params["present"] = present;
     params["arguments"] = arguments;
     params["animated"] = animated;
-    HzLog.t('MeteorNativeNavigator pushNamed:$routeName, arguments:$params');
     return await methodChannel.invokeMethod<T>(FMNavigatorMethod.pushNamedMethod, params);
   }
 
@@ -48,7 +47,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
     params["isOpaque"] = isOpaque;
     params["arguments"] = arguments;
     params["animated"] = animated;
-    // HzLog.w('MeteorNativeNavigator pushNamed:$routeName, arguments:$params');
     return await methodChannel.invokeMethod<T>(
         FMNavigatorMethod.pushNamedAndRemoveUntilMethod, params);
   }
@@ -91,7 +89,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
 
   @override
   Future<void> pop<T extends Object?>([T? result]) async {
-    HzLog.t('MeteorNativeNavigator pop');
     Map<String, dynamic> params = {};
     params["result"] = result;
     await methodChannel.invokeMethod<T>(FMNavigatorMethod.popMethod, params);
@@ -100,7 +97,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
 
   @override
   Future<void> popToRoot() async {
-    HzLog.i('MeteorNativeNavigator popToRoot');
     await methodChannel.invokeMethod(FMNavigatorMethod.popToRootMethod);
     return;
   }
@@ -119,7 +115,6 @@ class MeteorNativeNavigator extends MeteorNavigatorApi {
 
   @override
   Future<void> popUntilLastNative<T extends Object?>() async {
-    HzLog.t('MeteorNativeNavigator popUntilLastNative');
     await methodChannel.invokeMethod<T>(FMNavigatorMethod.popMethod);
     return;
   }
