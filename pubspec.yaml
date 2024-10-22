@@ -5,6 +5,8 @@ homepage: "https://github.com/FlutterCrowd/flutter_meteor"
 repository: "https://github.com/FlutterCrowd/flutter_meteor.git"
 issue_tracker: "https://github.com/FlutterCrowd/flutter_meteor/issues"
 publish_to: 'https://pub.dev'
+author: FlutterCrowd <jianxiong20090919@126.com>
+
 environment:
   sdk: '>=3.2.3 <4.0.0'
   flutter: ">=1.17.0"
