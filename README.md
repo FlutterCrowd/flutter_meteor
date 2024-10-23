@@ -1,15 +1,13 @@
 # flutter_meteor
 
 ## Overview
-
-`flutter_meteor` is a multi-engine plugin composed of four primary modules:
-
+`flutter_meteor` is a multi-engine hybrid stack management framework designed for seamless page navigation and state synchronization between native and Flutter. 
+Its core features include:
 - **Navigator Module**
-- **Shared Storage**
+- **Shared Cache**
 - **Event Bus**
 - **Shared State**
-
-This plugin facilitates page navigation management, communication management, and state management for multi-engine scenarios. For further details, refer to the [Multi-Engine Plugin Details](link).
+This plugin simplifies page navigation, communication, and state management in multi-engine environments. For more information, please refer to the Multi-Engine Plugin Details.
 
 ## Integration Steps
 

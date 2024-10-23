@@ -25,9 +25,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   # 能用UI组件
-  fluttertoast: any
-  webview_flutter: any
-
+  fluttertoast: ^8.2.5
+  webview_flutter: ^4.8.0
+  fusion: ^4.7.1
 
 dev_dependencies:
   flutter_test:

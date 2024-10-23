@@ -1,5 +1,5 @@
 name: flutter_meteor
-description: "Flutter Meteor is a plugin that enables multi-engine routing, inter-engine communication, and state synchronization. It addresses challenges in page navigation and state management during interactions between Flutter and native components, allowing developers to implement smooth transitions and effective state sharing between environments."
+description: "flutter_meteor is a multi-engine hybrid stack management framework that enables smooth page navigation and state synchronization between native and Flutter."
 version: 1.0.1
 homepage: "https://github.com/FlutterCrowd/flutter_meteor"
 repository: "https://github.com/FlutterCrowd/flutter_meteor.git"
