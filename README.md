@@ -3,10 +3,11 @@
 ## Overview
 `flutter_meteor` is a multi-engine hybrid stack management framework designed for seamless page navigation and state synchronization between native and Flutter. 
 Its core features include:
-- **Navigator Module**
-- **Shared Cache**
-- **Event Bus**
-- **Shared State**
+ - **Navigator Module**
+ - **Shared Cache**
+ - **Event Bus**
+ - **Shared State**
+
 This plugin simplifies page navigation, communication, and state management in multi-engine environments. For more information, please refer to the Multi-Engine Plugin Details.
 
 ## Integration Steps
@@ -17,7 +18,7 @@ Add the following configuration to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_meteor: ^1.0.0
+  flutter_meteor: ^1.0.2
 ```
 ### 2. Initialize the Plugin
 Initialize in the default main function of your Flutter application:
