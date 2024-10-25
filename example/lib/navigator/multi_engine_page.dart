@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
-import 'package:fusion/fusion.dart';
 
 class MultiEnginePage extends StatefulWidget {
   const MultiEnginePage({super.key});
@@ -97,7 +96,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 int? result = await MeteorNavigator.pushNamed<int>(
                   "native_page1",
                   isOpaque: false,
-                  withNewEngine: true,
+                  openNative: true,
                   present: true,
                 );
                 print('返回结果：$result');

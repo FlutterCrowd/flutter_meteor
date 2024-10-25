@@ -65,6 +65,7 @@ class HzRouterMapExemple {
             let testVc = TabBarViewController()
             testVc.title = "push_native"
             testVc.hidesBottomBarWhenPushed = true
+            testVc.modalPresentationStyle = .overFullScreen
             testVc.popCallBack = { result in
                 print("TestViewController native_page pop result:\(result)")
             }

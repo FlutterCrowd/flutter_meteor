@@ -15,7 +15,7 @@ class HzCustomRouter: NSObject, FlutterMeteorCustomDelegate {
 
     func openNativePage(routeName: String, options: MeteorPushOptions?) {
         
-        if options?.pageType == .newEngine {
+        if options?.pageType == .flutter {
             let flutterVc = getDefaultFlutterViewController(routeName: routeName, options: options)
             if options?.present == true {
                 let navi = UINavigationController(rootViewController: flutterVc)
@@ -46,7 +46,9 @@ class HzCustomRouter: NSObject, FlutterMeteorCustomDelegate {
                 viewController = TestViewController3()
             } else if routeName == "native_page4" {
                 viewController = TestViewController4()
-            }else {
+            } else if routeName == "push_native" {
+                viewController = TabBarViewController()
+            } else {
                 let vc = TestViewController()
                 vc.view.backgroundColor = UIColor.clear
                 let button = UIButton(frame: CGRect(x: 20, y: 100, width: 200, height: 80))

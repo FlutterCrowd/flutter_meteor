@@ -105,6 +105,20 @@ public class MeteorNavigatorHelper: NSObject {
         let vc = rootViewController()
         return getTopVC(withCurrentVC: vc)
     }
+    
+    public static func isRootViewController(viewController: UIViewController) -> Bool {
+        var isRoot = false
+        let rootVc = rootViewController()
+        
+        if viewController == rootVc || viewController == rootVc?.navigationController {
+            isRoot = true
+        } else if let rootNavi = rootVc?.navigationController,
+                  let rootViewController = rootNavi.viewControllers.first,
+                  viewController == rootViewController  {
+            isRoot = true
+        }
+        return isRoot
+    }
 
     public static func getTopVC(withCurrentVC VC: UIViewController?) -> UIViewController? {
         guard let currentVC = VC else {

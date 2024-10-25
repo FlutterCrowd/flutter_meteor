@@ -40,4 +40,9 @@ import UIKit
 
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
+    
+    override func applicationWillTerminate(_ application: UIApplication) {
+        print("App 即将终止")
+            // 在这里处理即将退出的逻辑，保存数据、清理资源等
+    }
 }

@@ -60,7 +60,6 @@ public class MeteorEventBus: NSObject {
     static func receiveMessageFromFlutter(message: Any?) {
         guard let map = message as? [String: Any?],
               let eventName = map["eventName"] as? String else { return }
-
         commit(eventName: eventName, data: map["data"] ?? nil)
     }
 }

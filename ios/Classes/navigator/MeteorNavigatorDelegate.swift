@@ -91,21 +91,21 @@ extension MeteorNavigatorDelegate {
             if let params = getPushParams(call, result: result) {
                 pushToReplacement(routeName: params.routeName, options: params.options)
             } else {
-                print("Invalid PushReplacementNamed params")
+                print("Invalid pushToReplacement params")
                 result(nil)
             }
         case FMPushNamedAndRemoveUntilMethod:
             if let params = getPushParams(call, result: result) {
                 pushToAndRemoveUntil(routeName: params.routeName, untilRouteName: params.untilRouteName, options: params.options)
             } else {
-                print("Invalid PushNamedAndRemoveUntil params")
+                print("Invalid pushToAndRemoveUntil params")
                 result(nil)
             }
         case FMPushNamedAndRemoveUntilRootMethod:
             if let params = getPushParams(call, result: result) {
                 pushNamedAndRemoveUntilRoot(routeName: params.routeName, options: params.options)
             } else {
-                print("Invalid NamedAndRemoveUntilRoot params")
+                print("Invalid pushNamedAndRemoveUntilRoot params")
                 result(nil)
             }
         case FMPopMethod:
@@ -202,19 +202,44 @@ extension MeteorNavigatorDelegate {
 /// 默认实现
 
 extension MeteorNavigatorDelegate {
+    
     func present(routeName: String, options: MeteorPushOptions?) {
-        MeteorNavigator.present(routeName: routeName, options: options)
+
+        if let delegate = FlutterMeteor.customRouterDelegate {
+            if let pageType = options?.pageType, pageType == .flutter {
+                delegate.openFlutterPage(routeName: routeName, options: options)
+            } else {
+                delegate.openNativePage(routeName: routeName, options: options)
+            }
+        } else {
+            MeteorNavigator.present(routeName: routeName, options: options)
+        }
     }
 
     func push(routeName: String, options: MeteorPushOptions?) {
-        MeteorNavigator.push(routeName: routeName, options: options)
+        
+        if let delegate = FlutterMeteor.customRouterDelegate {
+            if let pageType = options?.pageType, pageType == .flutter {
+                delegate.openFlutterPage(routeName: routeName, options: options)
+            } else {
+                delegate.openNativePage(routeName: routeName, options: options)
+            }
+        } else {
+            MeteorNavigator.push(routeName: routeName, options: options)
+        }
     }
 
     /// push 到指定页面并替换当前页面
     ///
-    /// @parma toPage 要跳转的页面，
+    /// @parma routeName 要跳转的页面，
     func pushToReplacement(routeName: String, options: MeteorPushOptions?) {
-        MeteorNavigator.pushToReplacement(routeName: routeName, options: options)
+
+//        MeteorNavigator.pushToReplacement(routeName: routeName, options: options)
+//
+        MeteorNavigator.pop(options: MeteorPopOptions(animated: false, callBack: { response in
+            push(routeName: routeName, options: options)
+        }))
+    
     }
 
     /// push 到指定页面，同时会清除从页面untilRouteName页面到指定routeName链路上的所有页面
@@ -222,11 +247,17 @@ extension MeteorNavigatorDelegate {
     /// @parma routeName 要跳转的页面，
     /// @parma untilRouteName 移除截止页面，默认根页面，
     func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: MeteorPushOptions?) {
-        MeteorNavigator.pushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
+        MeteorNavigator.popUntil(untilRouteName: untilRouteName, options: MeteorPopOptions(animated: false, callBack: { response in
+            push(routeName: routeName, options: options)
+        }))
+//        MeteorNavigator.pushToAndRemoveUntil(routeName: routeName, untilRouteName: untilRouteName, options: options)
     }
 
     func pushNamedAndRemoveUntilRoot(routeName: String, options: MeteorPushOptions?) {
-        MeteorNavigator.pushNamedAndRemoveUntilRoot(routeName: routeName, options: options)
+        MeteorNavigator.popToRoot(options: MeteorPopOptions(animated: false, callBack: { response in
+            push(routeName: routeName, options: options)
+        }))
+//        MeteorNavigator.pushNamedAndRemoveUntilRoot(routeName: routeName, options: options)
     }
 
     // pop

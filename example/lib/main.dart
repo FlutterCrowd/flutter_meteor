@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_meteor/flutter_meteor.dart';
 import 'package:hz_router_plugin_example/router/router_center.dart';
 import 'package:hz_router_plugin_example/shared_state/global_singleton_object.dart';
+import 'package:hz_router_plugin_example/tracker/event_tracker.dart';
 import 'package:provider/provider.dart';
 
 import 'life_cycle_observer.dart';
@@ -101,6 +102,7 @@ void childEntry(List<String> args) async {
 
   WidgetsBinding.instance.addObserver(AppLifecycleObserver());
 
+  EventTracker.initialize();
   // 初始化导航器
   // 初始化导航器，用于flutter页面导航
   MeteorNavigator.init(rootKey: rootKey);
@@ -170,6 +172,51 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    // return GlobalEventListener(
+    //   onEvent: (PointerEvent event) {
+    //     print('GlobalEventListener: ${event.position}');
+    //   },
+    //   child: MultiProvider(
+    //     providers: [
+    //       ChangeNotifierProvider(create: (_) => GlobalStateService()),
+    //       ChangeNotifierProvider(create: (_) => MeteorStringProvider()),
+    //       ChangeNotifierProvider(create: (_) => MeteorBoolProvider()),
+    //       ChangeNotifierProvider(create: (_) => MeteorIntProvider()),
+    //       ChangeNotifierProvider(create: (_) => MeteorDoubleProvider()),
+    //       ChangeNotifierProvider(create: (_) => MeteorListProvider()),
+    //       ChangeNotifierProvider(create: (_) => MeteorMapProvider()),
+    //       ChangeNotifierProvider(create: (_) => MeteorBytesProvider()),
+    //       ChangeNotifierProvider(
+    //           create: (_) => MeteorSharedObjectProvider<UserInfo>(model: UserInfo())),
+    //     ],
+    //     child: MaterialApp(
+    //       onGenerateRoute: AppRouterCenter.generateRoute,
+    //       navigatorKey: rootKey, // 1、指定navigatorKey
+    //       navigatorObservers: [
+    //         MeteorNavigator.navigatorObserver, // 2、设置MeteorNavigator的Observer
+    //         AppRouterCenter.routeObserver,
+    //         PageRouteObserver(),
+    //       ],
+    //       // initialRoute: "home",
+    //       theme: ThemeData.light(),
+    //       initialRoute: initialRoute,
+    //       debugShowCheckedModeBanner: false,
+    //       onGenerateInitialRoutes: (String initialRoute) {
+    //         if (kDebugMode) {
+    //           print('initialRoute: $initialRoute');
+    //         }
+    //         // 3、动态解析初始路由，默认是首页
+    //         var route = AppRouterCenter.generateRoute(
+    //           RouteSettings(name: initialRoute, arguments: widget.routeArguments),
+    //         );
+    //         route ??= AppRouterCenter.generateRoute(
+    //           const RouteSettings(name: "homePage", arguments: null),
+    //         );
+    //         return [route!];
+    //       },
+    //     ),
+    //   ),
+    // );
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => GlobalStateService()),
@@ -189,6 +236,7 @@ class _MyAppState extends State<MyApp> {
         navigatorObservers: [
           MeteorNavigator.navigatorObserver, // 2、设置MeteorNavigator的Observer
           AppRouterCenter.routeObserver,
+          PageRouteObserver(),
         ],
         // initialRoute: "home",
         theme: ThemeData.light(),

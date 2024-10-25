@@ -8,10 +8,12 @@
 import Flutter
 
 public class MeteorFlutterViewController: FlutterViewController, MeteorNavigatorDelegate {
+   
+    public var interactivePopGestureRecognizer: Bool = true
+
     var methodChannel: FlutterMethodChannel?
 
     var canFlutterPop: Bool = false
-
     @available(*, unavailable)
     required init(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -85,7 +87,7 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
                     if canPop {
                         self?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
                     } else {
-                        self?.navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+                        self?.navigationController?.interactivePopGestureRecognizer?.isEnabled = self?.interactivePopGestureRecognizer ?? true
                     }
                 }
             }
@@ -95,6 +97,6 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
     override public func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         /// 当页面消失时默认支持右滑退出页面
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = interactivePopGestureRecognizer
     }
 }

@@ -156,24 +156,26 @@ public extension FlutterViewController {
     }
 
     func flutterPush(routeName: String,
-                     options: MeteorPushOptions? = nil)
+                     options: MeteorPushOptions? = nil,
+                     completion: MeteorNavigatorCallBack? = nil)
     {
         if let channel = navigatorChannel() {
             var arguments: [String: Any?] = [:]
             arguments["routeName"] = routeName
             arguments["arguments"] = options?.arguments
             channel.save_invoke(method: FMPushNamedMethod, arguments: arguments) { ret in
-                options?.callBack?(ret)
+                completion?(ret)
             }
         } else {
-            options?.callBack?(nil)
+            completion?(nil)
             print("MethodChannel 为空")
         }
     }
 
     func flutterPushToAndRemoveUntil(routeName: String,
                                      untilRouteName: String?,
-                                     options: MeteorPushOptions? = nil)
+                                     options: MeteorPushOptions? = nil,
+                                     completion: MeteorNavigatorCallBack? = nil)
     {
         if let channel = navigatorChannel() {
             var arguments: [String: Any?] = [:]
@@ -181,53 +183,56 @@ public extension FlutterViewController {
             arguments["arguments"] = options?.arguments
             arguments["untilRouteName"] = untilRouteName
             channel.save_invoke(method: FMPushNamedAndRemoveUntilMethod, arguments: arguments) { ret in
-                options?.callBack?(ret)
+                completion?(ret)
             }
         } else {
-            options?.callBack?(nil)
+            completion?(nil)
             print("MethodChannel 为空")
         }
     }
 
     func flutterPushNamedAndRemoveUntilRoot(routeName: String,
-                                            options: MeteorPushOptions? = nil)
+                                            options: MeteorPushOptions? = nil,
+                                            completion: MeteorNavigatorCallBack? = nil)
     {
         if let channel = navigatorChannel() {
             var arguments: [String: Any?] = [:]
             arguments["routeName"] = routeName
             arguments["arguments"] = options?.arguments
             channel.save_invoke(method: FMPushNamedAndRemoveUntilRootMethod, arguments: arguments) { ret in
-                options?.callBack?(ret)
+                completion?(ret)
             }
         } else {
-            options?.callBack?(nil)
+            completion?(nil)
             print("MethodChannel 为空")
         }
     }
 
     func flutterPushToReplacement(routeName: String,
-                                  options: MeteorPushOptions? = nil)
+                                  options: MeteorPushOptions? = nil,
+                                  completion: MeteorNavigatorCallBack? = nil)
     {
         if let channel = navigatorChannel() {
             var arguments: [String: Any?] = [:]
             arguments["routeName"] = routeName
             arguments["arguments"] = options?.arguments
             channel.save_invoke(method: FMPushReplacementNamedMethod, arguments: arguments) { ret in
-                options?.callBack?(ret)
+                completion?(ret)
             }
         } else {
-            options?.callBack?(nil)
+            completion?(nil)
             print("MethodChannel 为空")
         }
     }
 
-    func flutterPop(options: MeteorPopOptions? = nil) {
+    func flutterPop(options: MeteorPopOptions? = nil,
+                    completion: MeteorNavigatorCallBack? = nil) {
         if let channel = navigatorChannel() {
-            channel.save_invoke(method: FMPopMethod, arguments: nil) { ret in
-                options?.callBack?(ret)
+            channel.save_invoke(method: FMPopMethod, arguments: options?.result) { ret in
+                completion?(ret)
             }
         } else {
-            options?.callBack?(nil)
+            completion?(nil)
             print("MethodChannel 为空")
         }
     }
@@ -240,6 +245,7 @@ public extension FlutterViewController {
             var arguments: [String: Any?] = [:]
             arguments["routeName"] = untilRouteName
             arguments["isFarthest"] = isFarthest
+            arguments["result"] = options?.result
             channel.save_invoke(method: FMPopUntilMethod, arguments: arguments) { ret in
                 options?.callBack?(ret)
             }
