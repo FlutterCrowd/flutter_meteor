@@ -8,7 +8,7 @@ import io.flutter.plugin.common.StandardMessageCodec
 class FlutterMeteorChannelProvider(messenger: BinaryMessenger) {
     companion object {
         const val navigatorMethodChannelName = "itbox.meteor.navigatorChannel"
-        const val routerMethodChannelName = "itbox.meteor.routerChannel"
+        const val observerMethodChannelName = "itbox.meteor.navigatorObserver"
         const val eventBusMessageChannelName = "itbox.meteor.multiEnginEventChannel"
     }
 
@@ -16,9 +16,9 @@ class FlutterMeteorChannelProvider(messenger: BinaryMessenger) {
     val navigatorChannel: MethodChannel
         get() = _navigatorChannel
 
-//    private val _routerChannel = MethodChannel(messenger, routerMethodChannelName)
-//    val routerChannel: MethodChannel
-//        get() = _routerChannel
+    private val _observerChannel = BasicMessageChannel(messenger, observerMethodChannelName, StandardMessageCodec())
+    val observerChannel: BasicMessageChannel<Any>
+        get() = _observerChannel
 
     private val _eventBusChannel = BasicMessageChannel(messenger, eventBusMessageChannelName, StandardMessageCodec())
     val eventBusChannel: BasicMessageChannel<Any>

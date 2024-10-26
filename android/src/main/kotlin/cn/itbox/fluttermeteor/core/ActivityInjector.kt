@@ -43,6 +43,16 @@ internal object ActivityInjector {
         }
     }
 
+    fun channelProvider(hashCode: Int): FlutterMeteorChannelProvider? {
+        for (info in activityList) {
+            if (hashCode == info.hashCode) {
+                return info.channelProvider
+            }
+        }
+        return null
+    }
+
+
     fun finishToRoot() {
         activityList.forEachIndexed { index, weakReference ->
             if (index > 0) {

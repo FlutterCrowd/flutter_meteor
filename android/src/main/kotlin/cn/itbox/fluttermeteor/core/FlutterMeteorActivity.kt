@@ -53,6 +53,23 @@ open class FlutterMeteorActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val message = mapOf(
+            "event" to "onContainerVisible"
+        )
+        val channelProvider = ActivityInjector.channelProvider(this.hashCode())
+        channelProvider?.observerChannel?.send(message)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        val message = mapOf(
+            "event" to "onContainerInvisible"
+        )
+        val channelProvider = ActivityInjector.channelProvider(this.hashCode())
+        channelProvider?.observerChannel?.send(message)
+    }
 
     override fun provideFlutterEngine(context: Context): FlutterEngine? {
         println("engineBindings.engine: ${engineBindings.engine}")

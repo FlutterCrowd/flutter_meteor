@@ -31,14 +31,14 @@ class PageLifeCycleManager {
   }
 
   void notifyDidPush(String routeName, String? preRouteName) {
-    print('==== notifyDidPush routeName:$routeName, preRouteName:$preRouteName');
+    // print('==== notifyDidPush routeName:$routeName, preRouteName:$preRouteName');
     for (var observer in _observers) {
       observer.didPush(routeName, preRouteName);
     }
   }
 
   void notifyDidPop(String routeName, String? preRouteName) {
-    print('==== notifyDidPop routeName:$routeName, preRouteName:$preRouteName');
+    // print('==== notifyDidPop routeName:$routeName, preRouteName:$preRouteName');
 
     for (var observer in _observers) {
       observer.didPop(routeName, preRouteName);

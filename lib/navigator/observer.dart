@@ -14,18 +14,18 @@ class MeteorNavigatorObserver extends NavigatorObserver {
       (message) async {
         if (message is Map) {
           final String? event = message['event'] ?? '';
-          final String route = message['route'] ?? 'unknown';
-          final String previousRoute = message['previousRoute'] ?? 'unknown';
-          print('==== page event:$event, route:$route, previousRoute:$previousRoute');
+          // final String route = message['route'] ?? 'unknown';
+          // final String previousRoute = message['previousRoute'] ?? 'unknown';
+          // print('==== page event:$event, route:$route, previousRoute:$previousRoute');
           switch (event) {
-            case 'didPush':
-              PageLifeCycleManager.instance.notifyDidPop(route, previousRoute);
-            case 'didPop':
-              PageLifeCycleManager.instance.notifyDidPop(route, previousRoute);
-            case 'didReplace':
-              PageLifeCycleManager.instance.notifyDidReplace(route, previousRoute);
-            case 'didRemove':
-              PageLifeCycleManager.instance.notifyDidRemove(route, previousRoute);
+            // case 'didPush':
+            //   PageLifeCycleManager.instance.notifyDidPop(route, previousRoute);
+            // case 'didPop':
+            //   PageLifeCycleManager.instance.notifyDidPop(route, previousRoute);
+            // case 'didReplace':
+            //   PageLifeCycleManager.instance.notifyDidReplace(route, previousRoute);
+            // case 'didRemove':
+            //   PageLifeCycleManager.instance.notifyDidRemove(route, previousRoute);
             case 'onContainerVisible':
               PageLifeCycleManager.instance.notifyOnContainerVisible();
             case 'onContainerInvisible':
