@@ -5,7 +5,7 @@
 //  Created by itbox_djx on 2024/10/24.
 //
 
-import UIKit
+import Foundation
 
 class MeteorNavigatorObserver: NSObject {
 
@@ -15,18 +15,56 @@ class MeteorNavigatorObserver: NSObject {
     }
     
     // Push 操作监听
-    static func didPush(routeName: String) {
-        logRouteAction(action: "didPush", routeName: routeName)
+    static func didPush(routeName: String, fromRouteName: String?) {
+//        logRouteAction(action: "didPush", routeName: routeName)
+        
+//        let message: [String: Any?] = [
+//            "event": "didPush",
+//            "route": routeName,
+//            "previousRoute": fromRouteName,
+//        ]
+//        for provider in MeteorEngineManager.allEngineChannelProvider() {
+//            provider.observerChannel.sendMessage(message)
+//        }
     }
     
     // Pop 操作监听
-    static func didPop(routeName: String) {
-        logRouteAction(action: "didPop", routeName: routeName)
+    static func didPop(routeName: String, fromRouteName: String?) {
+//        logRouteAction(action: "didPop", routeName: routeName)
+//        let message: [String: Any?] = [
+//            "event": "didPop",
+//            "route": routeName,
+//            "previousRoute": fromRouteName,
+//        ]
+//        for provider in MeteorEngineManager.allEngineChannelProvider() {
+//            provider.observerChannel.sendMessage(message)
+//        }
     }
     
     // Remove 操作监听
-    static func didRemove(routeName: String) {
-        logRouteAction(action: "didRemove", routeName: routeName)
+    static func didRemove(routeName: String, fromRouteName: String) {
+//        logRouteAction(action: "didRemove", routeName: routeName)
+//        let message: [String: Any?] = [
+//            "event": "didRemove",
+//            "route": routeName,
+//            "previousRoute": fromRouteName,
+//        ]
+//        for provider in MeteorEngineManager.allEngineChannelProvider() {
+//            provider.observerChannel.sendMessage(message)
+//        }
     }
+    
+    static func didRplace(routeName: String, fromRouteName: String) {
+//        logRouteAction(action: "didRplace", routeName: routeName)
+//        let message: [String: Any?] = [
+//            "event": "didRplace",
+//            "route": routeName,
+//            "previousRoute": fromRouteName,
+//        ]
+//        for provider in MeteorEngineManager.allEngineChannelProvider() {
+//            provider.observerChannel.sendMessage(message)
+//        }
+    }
+    
 }
 

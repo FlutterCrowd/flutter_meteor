@@ -72,22 +72,20 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
         FlutterMeteor.pluginRegistryDelegate.unRegister(pluginRegistry: self.pluginRegistry())
     }
 
-//    public func pop(options: MeteorPopOptions?) {
-//        MeteorNavigator.pop()
-////        popCallBack?(options?.result)
-//    }
-
+    
     func setupNavigatorObserverChannel() {
-        let methodChannel = FlutterBasicMessageChannel(name: "itbox.meteor.navigatorObserver", binaryMessenger: binaryMessenger, codec: FlutterStandardMessageCodec.sharedInstance())
-        methodChannel.setMessageHandler { [weak self] arguments, _ in
-            if let map = arguments as? [String: Any] {
-                if map["event"] as! String == "canPop" { /// 当FLutter端可以pop时，禁用原生PopGesture手势，当FLutter不可以pop时，开启PopGesture手势以支持原生右滑退出页面
-                    let canPop: Bool = map["data"] as? Bool ?? false
-                    self?.canFlutterPop = canPop
-                    if canPop {
-                        self?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-                    } else {
-                        self?.navigationController?.interactivePopGestureRecognizer?.isEnabled = self?.interactivePopGestureRecognizer ?? true
+        let channelProvider = FlutterMeteorPlugin.channelProvider(with: pluginRegistry())
+        if let observerChannel = channelProvider?.observerChannel {
+            observerChannel.setMessageHandler { [weak self] arguments, _ in
+                if let map = arguments as? [String: Any] {
+                    if map["event"] as! String == "canPop" { /// 当FLutter端可以pop时，禁用原生PopGesture手势，当FLutter不可以pop时，开启PopGesture手势以支持原生右滑退出页面
+                        let canPop: Bool = map["data"] as? Bool ?? false
+                        self?.canFlutterPop = canPop
+                        if canPop {
+                            self?.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+                        } else {
+                            self?.navigationController?.interactivePopGestureRecognizer?.isEnabled = self?.interactivePopGestureRecognizer ?? true
+                        }
                     }
                 }
             }
@@ -99,4 +97,23 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
         /// 当页面消失时默认支持右滑退出页面
         navigationController?.interactivePopGestureRecognizer?.isEnabled = interactivePopGestureRecognizer
     }
+    
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let message: [String: Any?] = [
+            "event": "onContainerVisible",
+        ]
+        let channelProvider = FlutterMeteorPlugin.channelProvider(with: pluginRegistry())
+        channelProvider?.observerChannel.sendMessage(message)
+    }
+    
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        let message: [String: Any?] = [
+            "event": "onContainerInvisible",
+        ]
+        let channelProvider = FlutterMeteorPlugin.channelProvider(with: pluginRegistry())
+        channelProvider?.observerChannel.sendMessage(message)
+    }
+    
 }

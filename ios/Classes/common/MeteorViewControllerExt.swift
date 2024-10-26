@@ -35,3 +35,92 @@ public extension UIViewController {
         }
     }
 }
+
+extension UINavigationController {
+    
+    func popToRootViewController(animated: Bool?, 
+                                 completion: @escaping () -> Void) {
+        if viewControllers.first == topViewController {
+            completion()
+            return
+        }
+        guard let animated = animated, animated else {
+            popToRootViewController(animated: false)
+            completion()
+            return
+        }
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        popToRootViewController(animated: true)
+        CATransaction.commit()
+    }
+
+    func pushViewController(_ viewController: UIViewController, 
+                            animated: Bool?,
+                            completion: @escaping () -> Void) {
+        guard let animated = animated, animated else {
+            pushViewController(viewController, animated: false)
+            completion()
+            return
+        }
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        pushViewController(viewController, animated: animated)
+        CATransaction.commit()
+    }
+    
+    func popToViewController(_ viewController: UIViewController, 
+                             animated: Bool?,
+                             completion: @escaping () -> Void) {
+        if topViewController == viewController {
+            completion()
+            return
+        }
+        guard let animated = animated, animated else {
+            popToViewController(viewController, animated: false)
+            completion()
+            return
+        }
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        popToViewController(viewController, animated: true)
+        CATransaction.commit()
+    }
+    
+    func popViewController(animated: Bool?, 
+                           completion: @escaping () -> Void) {
+        guard topViewController != nil else {
+            completion()
+            return
+        }
+        guard let animated = animated, animated else {
+            popViewController(animated: false)
+            completion()
+            return
+        }
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        popViewController(animated: true)
+        CATransaction.commit()
+    }
+    
+    func setViewControllers(_ viewControllers: [UIViewController], 
+                            animated: Bool?,
+                            completion: @escaping () -> Void) {
+        guard topViewController != nil else {
+            completion()
+            return
+        }
+        guard let animated = animated, animated else {
+            setViewControllers(viewControllers, animated: false)
+            completion()
+            return
+        }
+        CATransaction.begin()
+        CATransaction.setCompletionBlock(completion)
+        setViewControllers(viewControllers, animated: animated)
+        CATransaction.commit()
+    }
+
+}
+

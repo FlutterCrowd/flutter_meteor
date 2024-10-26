@@ -226,7 +226,7 @@ public extension FlutterViewController {
     }
 
     func flutterPop(options: MeteorPopOptions? = nil,
-                    completion: MeteorNavigatorCallBack? = nil) {
+                 completion: MeteorNavigatorCallBack? = nil) {
         if let channel = navigatorChannel() {
             channel.save_invoke(method: FMPopMethod, arguments: options?.result) { ret in
                 completion?(ret)
@@ -238,8 +238,8 @@ public extension FlutterViewController {
     }
 
     func flutterPopUntil(untilRouteName: String?,
-                         isFarthest: Bool = false,
-                         options: MeteorPopOptions? = nil)
+                        isFarthest: Bool = false,
+                        options: MeteorPopOptions? = nil)
     {
         if let channel = navigatorChannel() {
             var arguments: [String: Any?] = [:]
@@ -268,7 +268,8 @@ public extension FlutterViewController {
 }
 
 public extension FlutterViewController {
-    func flutterRouteExists(routeName: String, result: @escaping ((_ exists: Bool) -> Void)) {
+    func flutterRouteExists(routeName: String,
+                            result: @escaping ((_ exists: Bool) -> Void)) {
         let arguments = ["routeName": routeName]
         if let channel = navigatorChannel() {
             channel.save_invoke(method: FMRouteExists, arguments: arguments) { ret in
@@ -283,7 +284,8 @@ public extension FlutterViewController {
         }
     }
 
-    func flutterIsRoot(routeName _: String, result: @escaping ((_ isRoot: Bool) -> Void)) {
+    func flutterIsRoot(routeName _: String, 
+                       result: @escaping ((_ isRoot: Bool) -> Void)) {
         if let channel = navigatorChannel() {
             channel.save_invoke(method: FMIsRoot, arguments: nil) { ret in
                 if let isRoot = ret as? Bool {

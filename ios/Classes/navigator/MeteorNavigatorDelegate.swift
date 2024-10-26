@@ -229,23 +229,15 @@ extension MeteorNavigatorDelegate {
         }
     }
 
-    /// push 到指定页面并替换当前页面
-    ///
-    /// @parma routeName 要跳转的页面，
     func pushToReplacement(routeName: String, options: MeteorPushOptions?) {
 
 //        MeteorNavigator.pushToReplacement(routeName: routeName, options: options)
-//
         MeteorNavigator.pop(options: MeteorPopOptions(animated: false, callBack: { response in
             push(routeName: routeName, options: options)
         }))
     
     }
 
-    /// push 到指定页面，同时会清除从页面untilRouteName页面到指定routeName链路上的所有页面
-    ///
-    /// @parma routeName 要跳转的页面，
-    /// @parma untilRouteName 移除截止页面，默认根页面，
     func pushToAndRemoveUntil(routeName: String, untilRouteName: String?, options: MeteorPushOptions?) {
         MeteorNavigator.popUntil(untilRouteName: untilRouteName, options: MeteorPopOptions(animated: false, callBack: { response in
             push(routeName: routeName, options: options)
@@ -262,7 +254,9 @@ extension MeteorNavigatorDelegate {
 
     // pop
     func pop(options: MeteorPopOptions?) {
-        MeteorNavigator.pop(options: options)
+        MeteorNativeNavigator.pop(animated: options?.animated ?? true) {
+            options?.callBack?(nil)
+        }
     }
 
     func popUntil(untilRouteName: String?, isFarthest: Bool = false, options: MeteorPopOptions?) {

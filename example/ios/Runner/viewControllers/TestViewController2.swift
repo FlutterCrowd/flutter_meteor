@@ -160,6 +160,21 @@ class TestViewController2: UIViewController {
         // 设置按钮的自动布局约束（这通常在 viewDidLoad 中完成）
         return button
     }()
+    
+    // 创建一个按钮属性，以便在视图控制器的其他部分访问它
+    let myButton11: UIButton = {
+        let button = UIButton(type: .system)
+        // 设置按钮的标题
+        button.setTitle("push TabBar", for: .normal)
+        // 设置按钮的背景颜色（可选）
+        button.backgroundColor = .cyan
+        // 设置按钮的标题颜色（可选）
+        button.setTitleColor(.black, for: .normal)
+        // 添加按钮的点击动作
+        button.addTarget(self, action: #selector(buttonTapped11(_:)), for: .touchUpInside)
+        // 设置按钮的自动布局约束（这通常在 viewDidLoad 中完成）
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -259,6 +274,15 @@ class TestViewController2: UIViewController {
             myButton10.widthAnchor.constraint(equalToConstant: buttonWidth),
             myButton10.heightAnchor.constraint(equalToConstant: 50),
         ])
+        
+        view.addSubview(myButton11)
+        myButton11.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            myButton11.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            myButton11.topAnchor.constraint(equalTo: myButton10.bottomAnchor, constant: 10),
+            myButton11.widthAnchor.constraint(equalToConstant: buttonWidth),
+            myButton11.heightAnchor.constraint(equalToConstant: 50),
+        ])
     }
 
     func openDouyin(urlScheme: String) {
@@ -332,5 +356,11 @@ class TestViewController2: UIViewController {
     @objc func buttonTapped10(_: UIButton) {
         print("present tabBar")
         MeteorNavigator.present(routeName: "push_native")
+    }
+    
+    // 按钮点击时调用的方法
+    @objc func buttonTapped11(_: UIButton) {
+        print("push tabBar")
+        MeteorNavigator.push(routeName: "push_native")
     }
 }

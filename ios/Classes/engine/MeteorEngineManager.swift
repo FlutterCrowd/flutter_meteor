@@ -9,6 +9,7 @@ import Flutter
 import Foundation
 
 let FMNavigatorMethodChannelName: String = "itbox.meteor.navigatorChannel"
+let FMObserverMethodChannelName: String = "itbox.meteor.navigatorObserver"
 let FMEventBusMessageChannelName: String = "itbox.meteor.multiEnginEventChannel"
 
 public class FlutterMeteorChannelProvider: NSObject {
@@ -21,10 +22,17 @@ public class FlutterMeteorChannelProvider: NSObject {
     public var eventBusChannel: FlutterBasicMessageChannel {
         return _eventBusChannel!
     }
+    
+    private var _observerChannel: FlutterBasicMessageChannel?
+    public var observerChannel: FlutterBasicMessageChannel {
+        return _observerChannel!
+    }
 
     init(registrar: FlutterPluginRegistrar!) {
         super.init()
         _navigatorChannel = FlutterMethodChannel(name: FMNavigatorMethodChannelName, binaryMessenger: registrar.messenger())
+  
+        _observerChannel = FlutterBasicMessageChannel(name: FMObserverMethodChannelName, binaryMessenger: registrar.messenger(), codec: FlutterStandardMessageCodec.sharedInstance())
         _eventBusChannel = FlutterBasicMessageChannel(name: FMEventBusMessageChannelName, binaryMessenger: registrar.messenger(), codec: FlutterStandardMessageCodec.sharedInstance())
     }
 }

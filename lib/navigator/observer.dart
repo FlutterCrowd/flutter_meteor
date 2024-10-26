@@ -2,8 +2,46 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_meteor/navigator/page_life_cycle.dart';
 
 class MeteorNavigatorObserver extends NavigatorObserver {
+  // 创建一个私有的静态实例
+  static final MeteorNavigatorObserver _instance = MeteorNavigatorObserver._internal();
+
+  // 私有的构造函数
+  MeteorNavigatorObserver._internal() {
+    methodChannel.setMessageHandler(
+      (message) async {
+        if (message is Map) {
+          final String? event = message['event'] ?? '';
+          final String route = message['route'] ?? 'unknown';
+          final String previousRoute = message['previousRoute'] ?? 'unknown';
+          print('==== page event:$event, route:$route, previousRoute:$previousRoute');
+          switch (event) {
+            case 'didPush':
+              PageLifeCycleManager.instance.notifyDidPop(route, previousRoute);
+            case 'didPop':
+              PageLifeCycleManager.instance.notifyDidPop(route, previousRoute);
+            case 'didReplace':
+              PageLifeCycleManager.instance.notifyDidReplace(route, previousRoute);
+            case 'didRemove':
+              PageLifeCycleManager.instance.notifyDidRemove(route, previousRoute);
+            case 'onContainerVisible':
+              PageLifeCycleManager.instance.notifyOnContainerVisible();
+            case 'onContainerInvisible':
+              PageLifeCycleManager.instance.notifyOnContainerInvisible();
+          }
+        }
+      },
+    );
+  }
+
+  // 提供一个工厂构造函数，返回同一实例
+  factory MeteorNavigatorObserver() {
+    return _instance;
+  }
+  // final NavigatorState? navigator = Navigator.of(MyApp.mainKey.currentContext!);
+
   final BasicMessageChannel methodChannel =
       const BasicMessageChannel('itbox.meteor.navigatorObserver', StandardMessageCodec());
 
@@ -44,6 +82,10 @@ class MeteorNavigatorObserver extends NavigatorObserver {
     _routeStack.add(route);
     super.didPush(route, previousRoute);
     sendNavigatorStackChanged();
+    PageLifeCycleManager.instance.notifyDidPush(
+      route.settings.name ?? 'unknownFlutterRoute',
+      previousRoute?.settings.name ?? 'unknownFlutterRoute',
+    );
   }
 
   @override
@@ -51,6 +93,10 @@ class MeteorNavigatorObserver extends NavigatorObserver {
     _routeStack.remove(route);
     super.didPop(route, previousRoute);
     sendNavigatorStackChanged();
+    PageLifeCycleManager.instance.notifyDidPop(
+      route.settings.name ?? 'unknownFlutterRoute',
+      previousRoute?.settings.name ?? 'unknownFlutterRoute',
+    );
   }
 
   @override
@@ -58,26 +104,27 @@ class MeteorNavigatorObserver extends NavigatorObserver {
     _routeStack.remove(route);
     super.didRemove(route, previousRoute);
     sendNavigatorStackChanged();
+    PageLifeCycleManager.instance.notifyDidRemove(
+      route.settings.name ?? 'unknownFlutterRoute',
+      previousRoute?.settings.name ?? 'unknownFlutterRoute',
+    );
   }
 
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    if (oldRoute == null) {
+      return;
+    }
     final index = _routeStack.indexOf(oldRoute!);
     if (index != -1) {
       _routeStack[index] = newRoute!;
     }
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     sendNavigatorStackChanged();
-  }
-
-  @override
-  void didStartUserGesture(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    // print('MeteorRouteObserver didStartUserGesture');
-  }
-
-  @override
-  void didStopUserGesture() {
-    // print('MeteorRouteObserver didStopUserGesture');
+    PageLifeCycleManager.instance.notifyDidReplace(
+      newRoute?.settings.name ?? 'unknownFlutterRoute',
+      oldRoute.settings.name ?? 'unknownFlutterRoute',
+    );
   }
 
   void sendNavigatorStackChanged() {
