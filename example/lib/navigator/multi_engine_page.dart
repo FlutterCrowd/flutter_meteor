@@ -283,7 +283,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 print('返回结果：$result');
               },
               child: const Text(
-                '打开flutter新页面并移除跟视图之前的所有页面',
+                'pushNamedAndRemoveUntilRoot multiEnginePage2',
               ),
             ),
           ),
@@ -301,7 +301,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 print('返回结果：$result');
               },
               child: const Text(
-                '通过新引擎打开flutter页面r并移除跟视图之前的所有页面',
+                'pushNamedAndRemoveUntilRoot newEngine multiEnginePage2',
               ),
             ),
           ),
@@ -319,7 +319,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 print('返回结果：$result');
               },
               child: const Text(
-                '打开Native并移除跟视图之前的所有页面',
+                'pushNamedAndRemoveUntilRoot openNative',
               ),
             ),
           ),

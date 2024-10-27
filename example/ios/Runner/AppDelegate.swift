@@ -21,7 +21,7 @@ import UIKit
         FlutterMeteor.setUp(pluginRegistryDelegate: self)
         UIViewController.fmInitializeSwizzling
         
-        let vc: UIViewController = TabBarViewController.init()//self.window.rootViewController ?? MeteorFlutterViewController(options: MeteorEngineGroupOptions(isMain: true)) // MeteorFlutterViewController.init()//self.window.rootViewController ?? //TabBarViewController.init()//
+        let vc: UIViewController = MeteorFlutterViewController(options: MeteorEngineGroupOptions(isMain: true)) // MeteorFlutterViewController.init()//self.window.rootViewController ?? //TabBarViewController.init()//
 //        vc.routeName = "rootPage"
 //        vc.interactivePopGestureRecognizer = true
         let navi = UINavigationController(rootViewController: vc)
