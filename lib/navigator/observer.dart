@@ -43,7 +43,7 @@ class MeteorNavigatorObserver extends NavigatorObserver {
   // final NavigatorState? navigator = Navigator.of(MyApp.mainKey.currentContext!);
 
   final BasicMessageChannel methodChannel =
-      const BasicMessageChannel('itbox.meteor.navigatorObserver', StandardMessageCodec());
+      const BasicMessageChannel('itbox.meteor.observerChannel', StandardMessageCodec());
 
   final List<Route<dynamic>> _routeStack = [];
 

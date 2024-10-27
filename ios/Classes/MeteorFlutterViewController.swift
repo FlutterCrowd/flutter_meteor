@@ -14,12 +14,19 @@ public class MeteorFlutterViewController: FlutterViewController, MeteorNavigator
     var methodChannel: FlutterMethodChannel?
 
     var canFlutterPop: Bool = false
+    
     @available(*, unavailable)
-    required init(coder _: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required init(coder: NSCoder) {
+//        super.init(coder: coder)
+
+        let flutterEngine = MeteorEngineManager.createFlutterEngine(options: nil)
+         // 调用自定义初始化方法
+         super.init(engine: flutterEngine, nibName: nil, bundle: nil)
     }
 
-    override private init(engine: FlutterEngine, nibName: String?, bundle nibBundle: Bundle?) {
+    override private init(engine: FlutterEngine, 
+                          nibName: String?,
+                          bundle nibBundle: Bundle?) {
         super.init(engine: engine, nibName: nibName, bundle: nibBundle)
         // 创建Method Channel
         FlutterMeteor.pluginRegistryDelegate.register(pluginRegistry: pluginRegistry())

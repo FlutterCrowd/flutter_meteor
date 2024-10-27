@@ -20,10 +20,10 @@ import UIKit
         // 在第一次使用FMFlutterViewController之前调用
         FlutterMeteor.setUp(pluginRegistryDelegate: self)
         UIViewController.fmInitializeSwizzling
-//      vc.routeName = "RootPage"
         
-        let vc: UIViewController = MeteorFlutterViewController(options: MeteorEngineGroupOptions(isMain: true)) // MeteorFlutterViewController.init()//self.window.rootViewController ?? //TabBarViewController.init()//
-
+        let vc: UIViewController = TabBarViewController.init()//self.window.rootViewController ?? MeteorFlutterViewController(options: MeteorEngineGroupOptions(isMain: true)) // MeteorFlutterViewController.init()//self.window.rootViewController ?? //TabBarViewController.init()//
+//        vc.routeName = "rootPage"
+//        vc.interactivePopGestureRecognizer = true
         let navi = UINavigationController(rootViewController: vc)
         navi.navigationBar.isHidden = true
 //      navi.navigationBar.tintColor = UIColor.darkGray
@@ -35,8 +35,8 @@ import UIKit
 
         // 初始化路由表
         HzRouterMapExemple.setUp()
-        // 当路由表没有配置时调用这个代理方法
-        FlutterMeteor.customRouterDelegate = HzCustomRouter()
+//         当路由表没有配置时调用这个代理方法
+//        FlutterMeteor.customRouterDelegate = HzCustomRouter()
 
         return super.application(application, didFinishLaunchingWithOptions: launchOptions)
     }

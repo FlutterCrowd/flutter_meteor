@@ -9,7 +9,7 @@ import Flutter
 import Foundation
 
 let FMNavigatorMethodChannelName: String = "itbox.meteor.navigatorChannel"
-let FMObserverMethodChannelName: String = "itbox.meteor.navigatorObserver"
+let FMObserverMethodChannelName: String = "itbox.meteor.observerChannel"
 let FMEventBusMessageChannelName: String = "itbox.meteor.multiEnginEventChannel"
 
 public class FlutterMeteorChannelProvider: NSObject {

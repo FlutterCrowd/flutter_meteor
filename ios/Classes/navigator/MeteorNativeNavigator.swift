@@ -118,20 +118,24 @@ public class MeteorNativeNavigator: NSObject {
         }
         
         // 如果根视图控制器是 UITabBarController
-        if let tabBarVC = rootVC as? UITabBarController,
-           let selectedNavVC = tabBarVC.selectedViewController as? UINavigationController {
-            
-            // 如果选中的导航控制器未在根视图，pop 到根视图
-            if selectedNavVC.topViewController != selectedNavVC.viewControllers.first {
-                selectedNavVC.popToRootViewController(animated: animated) {
-                    completion?()
-                }
-                return
-            }
-            
+        if let tabBarVC = rootVC as? UITabBarController {
             // 如果选中的视图控制器为顶层视图控制器
             if tabBarVC.selectedViewController == topVC {
                 completion?()
+                return
+            }
+            // 如果选中的导航控制器等于topVC，pop
+            if let selectedNavVC = tabBarVC.selectedViewController as? UINavigationController,
+               selectedNavVC.viewControllers.contains(topVC!) {
+                if topVC == selectedNavVC.viewControllers.first {
+                    completion?()
+                    return
+                } else {
+                    selectedNavVC.popToRootViewController(animated: animated) {
+                        completion?()
+                        return
+                    }
+                }
                 return
             }
         }
@@ -142,9 +146,8 @@ public class MeteorNativeNavigator: NSObject {
                 popToRoot(animated: animated, completion: completion)
             }
         } else {
-            // 否则直接 pop 到根视图控制器
-            rootNavigationController()?.popToRootViewController(animated: animated) {
-                completion?()
+            popOrDismiss(viewController: topVC, animated: false) { _ in
+                popToRoot(animated: animated, completion: completion)
             }
         }
     }
