@@ -79,7 +79,7 @@ class _EventBusTestPageState extends State<EventBusTestPage> {
             onPressed: () {
               MeteorNavigator.pushNamed(
                 'eventBusTestPage',
-                withNewEngine: true,
+                pageType: PageType.newEngine,
               );
             },
             child: const Text('打开新引擎'),

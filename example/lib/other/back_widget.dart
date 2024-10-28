@@ -95,7 +95,7 @@ class _MultiEnginPageState extends State<BackPage> {
                 MeteorNavigator.pushNamedAndRemoveUntil(
                   'cupertinoPageRoute',
                   'multiEnginePage2',
-                  withNewEngine: true,
+                  pageType: PageType.newEngine,
                 );
               },
               child: const Text(
@@ -218,7 +218,10 @@ class _MultiEnginPageState extends State<BackPage> {
           Center(
             child: GestureDetector(
               onTap: () {
-                MeteorNavigator.pushReplacementNamed('test', openNative: true);
+                MeteorNavigator.pushReplacementNamed(
+                  'test',
+                  pageType: PageType.native,
+                );
               },
               child: const Text(
                 'pushAndReplace',
@@ -235,7 +238,7 @@ class _MultiEnginPageState extends State<BackPage> {
             child: GestureDetector(
               onTap: () {
                 MeteorNavigator.pushNamedAndRemoveUntil('test2', 'multiEnginePage2',
-                    openNative: true);
+                    pageType: PageType.native);
               },
               child: const Text(
                 'pushAndRemoveUntil test2 multiEnginePage2',
@@ -281,7 +284,7 @@ class _MultiEnginPageState extends State<BackPage> {
             child: GestureDetector(
               onTap: () async {
                 debugPrint('旧栈: ${await MeteorNavigator.routeNameStack()}');
-                MeteorNavigator.pushReplacementNamed('WebViewPage', withNewEngine: true);
+                MeteorNavigator.pushReplacementNamed('WebViewPage', pageType: PageType.newEngine);
                 debugPrint('新栈: ${await MeteorNavigator.routeNameStack()}');
               },
               child: const Text(

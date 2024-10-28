@@ -35,8 +35,8 @@ import UIKit
         //demo 开始监听路由，需要在self.window.rootViewController 设置完成之后调用
         FMNavigatorObserver.shared.startMonitoring()
 
-//        // 初始化路由表
-//        HzRouterMapExemple.setUp()
+        // 自定义路由表
+        HzRouterMapExemple.setUp()
 //         当路由表没有配置时调用这个代理方法
         FlutterMeteor.customRouterDelegate = HzCustomRouter()
 

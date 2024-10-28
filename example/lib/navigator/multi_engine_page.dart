@@ -60,7 +60,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 int? result = await MeteorNavigator.pushNamed<int>(
                   'multiEnginePage2',
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
-                  withNewEngine: true,
+                  pageType: PageType.newEngine,
                 );
                 print('返回结果：$result');
               },
@@ -77,7 +77,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
               onPressed: () async {
                 int? result = await MeteorNavigator.pushNamed<int>(
                   'native_page1',
-                  openNative: true,
+                  pageType: PageType.native,
                   arguments: {'name1': 'I' 'm bob, I from Flutter, 哈哈'},
                 );
                 print('返回结果：$result');
@@ -96,11 +96,11 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 int? result = await MeteorNavigator.pushNamed<int>(
                   "native_page1",
                   isOpaque: false,
-                  openNative: true,
+                  pageType: PageType.native,
                   present: true,
                 );
                 print('返回结果：$result');
-                // MeteorNavigator.pushNamed("test", openNative: true,, present: true, isOpaque: false);
+                // MeteorNavigator.pushNamed("test", pageType: PageType.native,, present: true, isOpaque: false);
               },
               child: const Text(
                 '模态方式打开一个原生页面',
@@ -116,11 +116,11 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 int? result = await MeteorNavigator.pushNamed<int>(
                   "multiEnginePage2",
                   isOpaque: false,
-                  withNewEngine: true,
+                  pageType: PageType.newEngine,
                   present: true,
                 );
                 print('返回结果：$result');
-                // MeteorNavigator.pushNamed("test", openNative: true,, present: true, isOpaque: false);
+                // MeteorNavigator.pushNamed("test", pageType: PageType.native,, present: true, isOpaque: false);
               },
               child: const Text(
                 '模态方式打开一个新引擎',
@@ -150,7 +150,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
               onPressed: () async {
                 int? result = await MeteorNavigator.pushReplacementNamed<int, int>(
                   'multiEnginePage2',
-                  withNewEngine: true,
+                  pageType: PageType.newEngine,
                 );
               },
               child: const Text(
@@ -167,7 +167,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 int? result = await MeteorNavigator.pushReplacementNamed<int, int>(
                   'native_page1',
                   arguments: {},
-                  openNative: true,
+                  pageType: PageType.native,
                 );
                 print('返回结果：$result');
               },
@@ -204,7 +204,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                   'multiEnginePage2',
                   'multiEnginePage',
                   arguments: {},
-                  withNewEngine: true,
+                  pageType: PageType.newEngine,
                 );
                 print('返回结果：$result');
               },
@@ -223,7 +223,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                   'multiEnginePage2',
                   'native_page1',
                   arguments: {},
-                  openNative: true,
+                  pageType: PageType.native,
                 );
                 print('返回结果：$result');
               },
@@ -242,7 +242,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                   'native_page2',
                   'multiEnginePage',
                   arguments: {},
-                  openNative: true,
+                  pageType: PageType.native,
                 );
                 print('返回结果：$result');
               },
@@ -261,7 +261,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                   'native_page2',
                   'native_page1',
                   arguments: {},
-                  openNative: true,
+                  pageType: PageType.native,
                 );
                 print('返回结果：$result');
               },
@@ -296,7 +296,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 int? result = await MeteorNavigator.pushNamedAndRemoveUntilRoot<int>(
                   'multiEnginePage2',
                   arguments: {},
-                  withNewEngine: true,
+                  pageType: PageType.newEngine,
                 );
                 print('返回结果：$result');
               },
@@ -314,7 +314,7 @@ class _MultiEnginePageState extends State<MultiEnginePage> {
                 int? result = await MeteorNavigator.pushNamedAndRemoveUntilRoot<int>(
                   'native_page1',
                   arguments: {},
-                  openNative: true,
+                  pageType: PageType.native,
                 );
                 print('返回结果：$result');
               },
