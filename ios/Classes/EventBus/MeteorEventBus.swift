@@ -45,7 +45,6 @@ public class MeteorEventBus: NSObject {
     // data 限定为Int、String、bool、double、List、dictionary，二进制文件、而且List和dictionary的元素页只能Int、String、bool、double
     public static func commit(eventName: String, data: Any?) {
         listeners[eventName]?.forEach { $0.listener(data) }
-
         let message: [String: Any?] = [
             "eventName": eventName,
             "data": data,
@@ -58,6 +57,8 @@ public class MeteorEventBus: NSObject {
 
     // 处理从 Flutter 端收到的消息
     static func receiveMessageFromFlutter(message: Any?) {
+        MeteorLog.debug("Did receive message:\(String(describing: message)) from flutter")
+
         guard let map = message as? [String: Any?],
               let eventName = map["eventName"] as? String else { return }
         commit(eventName: eventName, data: map["data"] ?? nil)

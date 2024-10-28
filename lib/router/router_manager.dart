@@ -1,9 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:hz_router_plugin_example/router/route_options.dart';
 
-import 'config.dart';
+import '../log/log.dart';
+import 'route_config.dart';
+import 'route_options.dart';
 
 class RouterManager {
   // 私有化构造方法，防止外部直接实例化
@@ -251,6 +252,7 @@ class RouterManager {
     final String? name = settings.name;
     RouteOptions? options = routes[name];
     if (name == null || options == null) {
+      MeteorLog.error('No registered route was found with name $name for $settings.');
       options = routes['UnknownRouteName'];
       if (options == null) {
         return _notFoundRoute('UnknownRouteName', maintainState: true);
@@ -259,154 +261,8 @@ class RouterManager {
       }
     }
     return options.createRoute(settings);
-    // final pageOptions = options.pageOptions;
-    //
-    // if (pageOptions is MaterialPageRouteOptions) {
-    //   return _buildMaterialPageRoute(settings, options, pageOptions);
-    // } else if (pageOptions is CupertinoPageRouteOptions) {
-    //   return _buildCupertinoPageRoute(settings, options, pageOptions);
-    // } else if (pageOptions is StandardPageRouteOptions) {
-    //   return _buildStandardPageRouteBuilder(settings, options, pageOptions);
-    // } else if (pageOptions is CustomPageRouteOptions) {
-    //   return _buildCustomPageRouteBuilder(settings, options, pageOptions);
-    // } else if (pageOptions is DialogRouteOptions) {
-    //   return _buildDialogRoute(settings, options, pageOptions);
-    // } else if (pageOptions is BottomSheetRouteOptions) {
-    //   return _buildModalBottomSheetRoute(settings, options, pageOptions);
-    // } else {
-    //   return _notFoundRoute(name, maintainState: true);
-    // }
   }
 
-  // static MaterialPageRoute _buildMaterialPageRoute(
-  //   RouteSettings settings,
-  //   RouteOptions options,
-  //   MaterialPageRouteOptions pageRouteOptions,
-  // ) {
-  //   return MaterialPageRoute(
-  //     settings: settings,
-  //     maintainState: pageRouteOptions.maintainState ?? true,
-  //     fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
-  //     allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
-  //     barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
-  //     builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
-  //   );
-  // }
-  //
-  // static CupertinoPageRoute _buildCupertinoPageRoute(
-  //   RouteSettings settings,
-  //   RouteOptions options,
-  //   CupertinoPageRouteOptions pageRouteOptions,
-  // ) {
-  //   return CupertinoPageRoute(
-  //     settings: settings,
-  //     maintainState: pageRouteOptions.maintainState ?? true,
-  //     fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
-  //     allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
-  //     barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
-  //     builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
-  //   );
-  // }
-  //
-  // static PageRouteBuilder _buildStandardPageRouteBuilder(
-  //   RouteSettings settings,
-  //   RouteOptions options,
-  //   StandardPageRouteOptions pageRouteOptions,
-  // ) {
-  //   return PageRouteBuilder(
-  //     opaque: pageRouteOptions.opaque ?? true,
-  //     settings: settings,
-  //     transitionsBuilder: _standardTransitionsBuilder(pageRouteOptions.transitionType),
-  //     transitionDuration: pageRouteOptions.transitionDuration,
-  //     reverseTransitionDuration: pageRouteOptions.reverseTransitionDuration,
-  //     barrierLabel: pageRouteOptions.barrierLabel,
-  //     barrierColor: pageRouteOptions.barrierColor,
-  //     maintainState: pageRouteOptions.maintainState ?? true,
-  //     fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
-  //     allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
-  //     barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
-  //     pageBuilder: (context, _, __) => options.builder(settings.arguments as Map<String, dynamic>?),
-  //   );
-  // }
-  //
-  // static PageRouteBuilder _buildCustomPageRouteBuilder(
-  //   RouteSettings settings,
-  //   RouteOptions options,
-  //   CustomPageRouteOptions pageRouteOptions,
-  // ) {
-  //   return PageRouteBuilder(
-  //     opaque: pageRouteOptions.opaque ?? true,
-  //     settings: settings,
-  //     transitionsBuilder: pageRouteOptions.transitionsBuilder ?? _customTransitionsBuilder,
-  //     transitionDuration: pageRouteOptions.transitionDuration ?? defaultTransitionDuration,
-  //     reverseTransitionDuration:
-  //         pageRouteOptions.reverseTransitionDuration ?? defaultTransitionDuration,
-  //     barrierLabel: pageRouteOptions.barrierLabel,
-  //     barrierColor: pageRouteOptions.barrierColor,
-  //     maintainState: pageRouteOptions.maintainState ?? true,
-  //     fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
-  //     allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
-  //     barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
-  //     pageBuilder: (context, _, __) => options.builder(settings.arguments as Map<String, dynamic>?),
-  //   );
-  // }
-  //
-  // static DialogRoute _buildDialogRoute(
-  //   RouteSettings settings,
-  //   RouteOptions options,
-  //   DialogRouteOptions pageRouteOptions,
-  // ) {
-  //   BuildContext context = MeteorFlutterNavigator.rootKey!.currentContext!;
-  //   final CapturedThemes themes = InheritedTheme.capture(
-  //     from: context,
-  //     to: Navigator.of(context, rootNavigator: pageRouteOptions.useRootNavigator ?? true).context,
-  //   );
-  //   return DialogRoute(
-  //     context: context,
-  //     settings: settings,
-  //     barrierColor: pageRouteOptions.barrierColor,
-  //     barrierLabel: pageRouteOptions.barrierLabel,
-  //     useSafeArea: pageRouteOptions.useSafeArea ?? true,
-  //     anchorPoint: pageRouteOptions.anchorPoint,
-  //     traversalEdgeBehavior: pageRouteOptions.traversalEdgeBehavior,
-  //     themes: themes,
-  //     builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
-  //   );
-  // }
-  //
-  // static ModalBottomSheetRoute _buildModalBottomSheetRoute(
-  //   RouteSettings settings,
-  //   RouteOptions options,
-  //   BottomSheetRouteOptions pageRouteOptions,
-  // ) {
-  //   BuildContext context = MeteorFlutterNavigator.rootKey!.currentContext!;
-  //   final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-  //
-  //   return ModalBottomSheetRoute(
-  //     builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
-  //     capturedThemes: InheritedTheme.capture(from: context, to: context),
-  //     isScrollControlled: pageRouteOptions.isScrollControlled ?? false,
-  //     scrollControlDisabledMaxHeightRatio:
-  //         pageRouteOptions.scrollControlDisabledMaxHeightRatio ?? 9.0 / 16.0,
-  //     barrierLabel: pageRouteOptions.barrierLabel ?? localizations.scrimLabel,
-  //     barrierOnTapHint: localizations.scrimOnTapHint(localizations.bottomSheetLabel),
-  //     backgroundColor: pageRouteOptions.backgroundColor,
-  //     elevation: pageRouteOptions.elevation,
-  //     shape: pageRouteOptions.shape,
-  //     clipBehavior: pageRouteOptions.clipBehavior,
-  //     constraints: pageRouteOptions.constraints,
-  //     isDismissible: pageRouteOptions.isDismissible ?? true,
-  //     modalBarrierColor:
-  //         pageRouteOptions.barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
-  //     enableDrag: pageRouteOptions.enableDrag ?? false,
-  //     showDragHandle: pageRouteOptions.showDragHandle,
-  //     settings: settings,
-  //     transitionAnimationController: pageRouteOptions.transitionAnimationController,
-  //     anchorPoint: pageRouteOptions.anchorPoint,
-  //     useSafeArea: pageRouteOptions.useSafeArea ?? false,
-  //   );
-  // }
-  //
   static MaterialPageRoute<void> _notFoundRoute(
     String routeName, {
     bool? maintainState,
@@ -426,13 +282,4 @@ class RouterManager {
 
     return creator(RouteSettings(name: routeName), {});
   }
-  //
-  // static Widget _customTransitionsBuilder(
-  //   BuildContext context,
-  //   Animation<double> animation,
-  //   Animation<double> secondaryAnimation,
-  //   Widget child,
-  // ) {
-  //   return child;
-  // }
 }

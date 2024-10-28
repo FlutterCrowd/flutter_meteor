@@ -84,28 +84,28 @@ extension MeteorNavigatorDelegate {
                     push(routeName: params.routeName, options: params.options)
                 }
             } else {
-                print("Invalid push params")
+                MeteorLog.error("Invalid push params")
                 result(nil)
             }
         case FMPushReplacementNamedMethod:
             if let params = getPushParams(call, result: result) {
                 pushToReplacement(routeName: params.routeName, options: params.options)
             } else {
-                print("Invalid pushToReplacement params")
+                MeteorLog.error("Invalid pushToReplacement params")
                 result(nil)
             }
         case FMPushNamedAndRemoveUntilMethod:
             if let params = getPushParams(call, result: result) {
                 pushToAndRemoveUntil(routeName: params.routeName, untilRouteName: params.untilRouteName, options: params.options)
             } else {
-                print("Invalid pushToAndRemoveUntil params")
+                MeteorLog.error("Invalid pushToAndRemoveUntil params")
                 result(nil)
             }
         case FMPushNamedAndRemoveUntilRootMethod:
             if let params = getPushParams(call, result: result) {
                 pushNamedAndRemoveUntilRoot(routeName: params.routeName, options: params.options)
             } else {
-                print("Invalid pushNamedAndRemoveUntilRoot params")
+                MeteorLog.error("Invalid pushNamedAndRemoveUntilRoot params")
                 result(nil)
             }
         case FMPopMethod:
@@ -122,11 +122,11 @@ extension MeteorNavigatorDelegate {
                 if let routeName = methodArguments["routeName"] as? String {
                     MeteorNavigator.routeExists(routeName: routeName, result: result)
                 } else {
-                    print("Invalid routeName")
+                    MeteorLog.error("Invalid routeName")
                     result(false)
                 }
             } else {
-                print("Invalid methodArguments")
+                MeteorLog.error("Invalid methodArguments")
                 result(false)
             }
         case FMIsRoot:
@@ -134,11 +134,11 @@ extension MeteorNavigatorDelegate {
                 if let routeName = methodArguments["routeName"] as? String {
                     MeteorNavigator.isRoot(routeName: routeName, result: result)
                 } else {
-                    print("Invalid routeName")
+                    MeteorLog.error("Invalid routeName")
                     result(false)
                 }
             } else {
-                print("Invalid methodArguments")
+                MeteorLog.error("Invalid methodArguments")
                 result(false)
             }
         case FMRootRouteName:
@@ -186,10 +186,10 @@ extension MeteorNavigatorDelegate {
                 options.present = methodArguments["present"] as? Bool ?? false
                 options.arguments = methodArguments["arguments"] as? [String: Any]
             } else {
-                print("No valid routeName to push")
+                MeteorLog.warning("No valid routeName to push")
             }
         } else {
-            print("Invalid push params")
+            MeteorLog.error("Invalid push params")
         }
         options.callBack = { response in
             result(response)

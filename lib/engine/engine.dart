@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter_meteor/engine/entry_args.dart';
 
+export 'entry_args.dart';
+
 class MeteorEngine {
   MeteorEngine._();
 

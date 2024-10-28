@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_meteor/navigator/impl/flutter.dart';
 
-import 'config.dart';
+import 'route_config.dart';
 
 typedef RouteWidgetBuilder = Widget Function(Map<String, dynamic>? arguments);
 
@@ -13,22 +13,6 @@ class RouteOptions {
 
   Route<dynamic>? createRoute(RouteSettings settings) {
     return pageOptions.createRoute(settings, this);
-    // final pageOptions = this.pageOptions;
-    // if (pageOptions is MaterialPageRouteOptions) {
-    //   return pageOptions.createRoute(settings, this);
-    // } else if (pageOptions is CupertinoPageRouteOptions) {
-    //   return _buildCupertinoPageRoute(settings, this);
-    // } else if (pageOptions is StandardPageRouteOptions) {
-    //   return _buildStandardPageRouteBuilder(settings, this);
-    // } else if (pageOptions is CustomPageRouteOptions) {
-    //   return _buildCustomPageRouteBuilder(settings, this);
-    // } else if (pageOptions is DialogRouteOptions) {
-    //   return _buildDialogRoute(settings, this, pageOptions);
-    // } else if (pageOptions is BottomSheetRouteOptions) {
-    //   return _buildModalBottomSheetRoute(settings, this);
-    // } else {
-    //   return null;
-    // }
   }
 }
 
@@ -328,20 +312,5 @@ class BottomSheetRouteOptions with BaseRouteOptions {
       anchorPoint: anchorPoint,
       useSafeArea: useSafeArea ?? false,
     );
-  }
-}
-
-class RouteNotFoundException implements Exception {
-  RouteNotFoundException(
-    this.message,
-    this.path,
-  );
-
-  final String message;
-  final String path;
-
-  @override
-  String toString() {
-    return "No registered route was found to handle '$path'";
   }
 }

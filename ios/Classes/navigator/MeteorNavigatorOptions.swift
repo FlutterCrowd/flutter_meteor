@@ -45,7 +45,7 @@ public struct MeteorPushOptions {
     
     public static func copyFrom(options: MeteorPushOptions) -> MeteorPushOptions
     {
-        var newOptions = MeteorPushOptions(arguments: options.arguments, 
+        let newOptions = MeteorPushOptions(arguments: options.arguments, 
                                            callBack: options.callBack,
                                            isOpaque: options.isOpaque,
                                            present: options.present,

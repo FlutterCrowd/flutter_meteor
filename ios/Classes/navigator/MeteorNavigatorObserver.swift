@@ -11,7 +11,7 @@ class MeteorNavigatorObserver: NSObject {
 
     // 通用的日志输出方法，减少重复代码
     private static func logRouteAction(action: String, routeName: String) {
-        print("RouteAction: \(action), RouteName: \(routeName)")
+        MeteorLog.debug("RouteAction: \(action), RouteName: \(routeName)")
     }
     
     // Push 操作监听

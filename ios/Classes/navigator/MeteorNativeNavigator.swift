@@ -13,7 +13,7 @@ public class MeteorNativeNavigator: NSObject {
     // MARK: - Present & Push Navigation
     public static func present(toPage: UIViewController, animated: Bool = true, completion: (() -> Void)? = nil) {
         guard let topVc = topViewController() else {
-            logError("No top view controller found")
+            MeteorLog.error("No top view controller found")
             return
         }
         topVc.present(toPage, animated: animated) {
@@ -26,16 +26,16 @@ public class MeteorNativeNavigator: NSObject {
 
     public static func push(toPage: UIViewController, animated: Bool = true) {
         if toPage is UINavigationController {
-            logError("Cannot push a UINavigationController, please check your router config")
+            MeteorLog.error("Cannot push a UINavigationController, please check your router config")
             return
         }
         guard let topVc = topViewController() else {
-            logError("No top controller found")
+            MeteorLog.error("No top controller found")
             return
         }
 
         guard let topNavi = topVc.navigationController else {
-            logError("No top navigation controller found")
+            MeteorLog.error("No top navigation controller found")
             return
         }
         topNavi.pushViewController(toPage, animated: animated) {
@@ -49,13 +49,13 @@ public class MeteorNativeNavigator: NSObject {
     // MARK: - Pop & Dismiss Navigation
     public static func pop(animated: Bool = true, result: Any? = nil, completion: (() -> Void)? = nil) {
         guard let topVc = topViewController() else {
-            logError("No top view controller found")
+            MeteorLog.error("No top view controller found")
             completion?()
             return
         }
 
         if MeteorNavigatorHelper.isRootViewController(viewController: topVc) {
-            logError("Current viewController is rootPage")
+            MeteorLog.info("Current viewController is rootPage")
             completion?()
             return
         }
@@ -69,12 +69,12 @@ public class MeteorNativeNavigator: NSObject {
 
     public static func dismiss(animated: Bool = true, completion: (() -> Void)? = nil) {
         guard let topVc = topViewController() else {
-            logError("No top view controller found")
+            MeteorLog.error("No top view controller found")
             completion?()
             return
         }
         if MeteorNavigatorHelper.isRootViewController(viewController: topVc) {
-            logError("Current viewController is rootPage")
+            MeteorLog.info("Current viewController is rootPage")
             completion?()
             return
         }
@@ -87,7 +87,7 @@ public class MeteorNativeNavigator: NSObject {
     // MARK: - Pop Until Specific Page
     public static func popUntil(untilPage: UIViewController, animated: Bool = true, completion: (() -> Void)? = nil) {
         guard let topVc = topViewController(), topVc != untilPage else {
-            logInfo("Current viewController is untilPage, no need to popUntil")
+            MeteorLog.info("Current viewController is untilPage, no need to popUntil")
             completion?()
             return
         }
@@ -155,12 +155,12 @@ public class MeteorNativeNavigator: NSObject {
     // MARK: - Push with Replacement
     public static func pushToReplacement(toPage: UIViewController, animated: Bool = true) {
         guard !(toPage is UINavigationController) else {
-            logError("Cannot push a UINavigationController, please check your router config")
+            MeteorLog.error("Cannot push a UINavigationController, please check your router config")
             return
         }
         
         guard let topVc = topViewController() else {
-            logError("No topVc, please check your router config")
+            MeteorLog.error("No topVc, please check your router config")
             return
         }
 
@@ -183,12 +183,12 @@ public class MeteorNativeNavigator: NSObject {
                                             animated: Bool = true)
     {
         if toPage is UINavigationController {
-            print("=====Error: Cannot push a UINavigationController, please check your router config")
+            MeteorLog.error("Cannot push a UINavigationController, please check your router config")
             return
         }
 
         if untilPage == nil {
-            print("untilPage is nil")
+            MeteorLog.warning("untilPage is nil")
             push(toPage: toPage)
             return
         }
@@ -208,7 +208,7 @@ public class MeteorNativeNavigator: NSObject {
                                                 completion: (() -> Void)? = nil)
     {
         if toPage is UINavigationController {
-            print("=====Error: Cannot push a UINavigationController, please check your router config")
+            MeteorLog.error("Cannot push a UINavigationController, please check your router config")
             return
         }
 
@@ -233,7 +233,7 @@ public class MeteorNativeNavigator: NSObject {
         }
         
         if MeteorNavigatorHelper.isRootViewController(viewController: viewController) {
-            logError("Current viewController is rootPage")
+            MeteorLog.warning("Current viewController is rootPage")
             completion?(viewController)
             return
         }
@@ -282,7 +282,7 @@ public class MeteorNativeNavigator: NSObject {
             removeChildViewController(parent: parent, child: viewController, completion: completion)
         } else {
             // 无法 pop 或 dismiss 时记录错误
-            logError("View controller cannot be dismissed or popped")
+            MeteorLog.warning("View controller cannot be dismissed or popped")
             completion?(viewController)
         }
     }
@@ -351,15 +351,6 @@ public class MeteorNativeNavigator: NSObject {
         } else {
             topVc.dismiss(animated: animated, completion: completion)
         }
-    }
-
-    // MARK: - Logging Helpers
-    private static func logError(_ message: String) {
-        print("Error: \(message)")
-    }
-
-    private static func logInfo(_ message: String) {
-        print("Info: \(message)")
     }
 
     // MARK: - View Controller Access

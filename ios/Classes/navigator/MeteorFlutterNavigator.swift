@@ -9,145 +9,6 @@ import Flutter
 import Foundation
 import UIKit
 
-// public class MeteorFlutterNavigator {
-
-//
-//    public static func navigatorChannel(flutterVc: FlutterViewController) -> FlutterMethodChannel? {
-//
-//        let channelProvider = FlutterMeteorPlugin.channelProvider(with: flutterVc.pluginRegistry())
-//        return channelProvider?.navigatorChannel
-//    }
-//
-//    public static func push(flutterVc:FlutterViewController,
-//                            routeName: String,
-//                            options: MeteorPushOptions? = nil) {
-//
-//        if let channel = navigatorChannel(flutterVc: flutterVc) {
-//            var arguments: Dictionary<String, Any?> = [:]
-//            arguments["routeName"] = routeName
-//            arguments["arguments"] = options?.arguments
-//            channel.save_invoke(method: FMPushNamedMethod, arguments: arguments) { ret in
-//                options?.callBack?(ret)
-//            }
-//        } else {
-//            options?.callBack?(nil)
-//            print("MethodChannel 为空")
-//        }
-//    }
-//
-//
-//    public static func pushToAndRemoveUntil(flutterVc:FlutterViewController,
-//                                            routeName: String,
-//                                            untilRouteName: String?,
-//                                            options: MeteorPushOptions? = nil) {
-//
-//        if let channel = navigatorChannel(flutterVc: flutterVc) {
-//            var arguments: Dictionary<String, Any?> = [:]
-//            arguments["routeName"] = routeName
-//            arguments["arguments"] = options?.arguments
-//            arguments["untilRouteName"] = untilRouteName
-//            channel.save_invoke(method: FMPushNamedAndRemoveUntilMethod, arguments: arguments) { ret in
-//                options?.callBack?(ret)
-//            }
-//        } else {
-//            options?.callBack?(nil)
-//            print("MethodChannel 为空")
-//        }
-//    }
-//
-//
-//    public static func pushNamedAndRemoveUntilRoot(flutterVc:FlutterViewController,
-//                                                   routeName: String,
-//                                                   options: MeteorPushOptions? = nil) {
-//
-//        if let channel = navigatorChannel(flutterVc: flutterVc) {
-//            var arguments: Dictionary<String, Any?> = [:]
-//            arguments["routeName"] = routeName
-//            arguments["arguments"] = options?.arguments
-//            channel.save_invoke(method: FMPushNamedAndRemoveUntilRootMethod, arguments: arguments) { ret in
-//                options?.callBack?(ret)
-//            }
-//        } else {
-//            options?.callBack?(nil)
-//            print("MethodChannel 为空")
-//        }
-//    }
-//
-//
-//    public static func pushToReplacement(flutterVc:FlutterViewController,
-//                                         routeName: String,
-//                                         options: MeteorPushOptions? = nil) {
-//
-//        if let channel = navigatorChannel(flutterVc: flutterVc) {
-//            var arguments: Dictionary<String, Any?> = [:]
-//            arguments["routeName"] = routeName
-//            arguments["arguments"] = options?.arguments
-//            channel.save_invoke(method: FMPushReplacementNamedMethod, arguments: arguments) { ret in
-//                options?.callBack?(ret)
-//            }
-//        } else {
-//            options?.callBack?(nil)
-//            print("MethodChannel 为空")
-//        }
-//   }
-//
-//    public static func pop(flutterVc:FlutterViewController,
-//                           options: MeteorPopOptions? = nil) {
-//        if let channel = navigatorChannel(flutterVc: flutterVc) {
-//            channel.save_invoke(method: FMPopMethod, arguments: nil) { ret in
-//                options?.callBack?(ret)
-//            }
-//        } else {
-//            options?.callBack?(nil)
-//            print("MethodChannel 为空")
-//        }
-//   }
-//
-//    public static func popUntil(flutterVc:FlutterViewController,
-//                                untilRouteName: String?,
-//                                options: MeteorPopOptions? = nil) {
-//
-//        if let channel = navigatorChannel(flutterVc: flutterVc) {
-//            var arguments: Dictionary<String, Any?> = [:]
-//            arguments["routeName"] = untilRouteName
-//            channel.save_invoke(method: FMPopUntilMethod, arguments: arguments) { ret in
-//                options?.callBack?(ret)
-//            }
-//        } else {
-//            options?.callBack?(nil)
-//            print("MethodChannel 为空")
-//        }
-//
-//    }
-//
-//    public static func popToRoot(flutterVc: FlutterViewController,
-//                                 options: MeteorPopOptions? = nil) {
-//        if let channel = navigatorChannel(flutterVc: flutterVc) {
-//            channel.save_invoke(method: FMPopToRootMethod, arguments: options?.result) { response in
-//                options?.callBack?(response)
-//            }
-//        } else {
-//            options?.callBack?(nil)
-//            print("No valid method channel")
-//        }
-//    }
-//
-// }
-//
-//
-// extension MeteorFlutterNavigator {
-//
-//    public static func flutterRouteNameStack(flutterVc: FlutterViewController, result: @escaping FlutterResult) {
-//        if let channel = navigatorChannel(flutterVc: flutterVc) {
-//            channel.save_invoke(method: FMRouteNameStack, arguments: nil, result: result)
-//        } else {
-//            result(nil)
-//            print("No valid method channel")
-//        }
-//    }
-// }
-//
-//
 
 public extension FlutterViewController {
     func navigatorChannel() -> FlutterMethodChannel? {
@@ -168,7 +29,7 @@ public extension FlutterViewController {
             }
         } else {
             completion?(nil)
-            print("MethodChannel 为空")
+            MeteorLog.info("MethodChannel 为空")
         }
     }
 
@@ -187,7 +48,7 @@ public extension FlutterViewController {
             }
         } else {
             completion?(nil)
-            print("MethodChannel 为空")
+            MeteorLog.info("MethodChannel 为空")
         }
     }
 
@@ -204,7 +65,7 @@ public extension FlutterViewController {
             }
         } else {
             completion?(nil)
-            print("MethodChannel 为空")
+            MeteorLog.info("MethodChannel 为空")
         }
     }
 
@@ -221,7 +82,7 @@ public extension FlutterViewController {
             }
         } else {
             completion?(nil)
-            print("MethodChannel 为空")
+            MeteorLog.info("MethodChannel 为空")
         }
     }
 
@@ -233,7 +94,7 @@ public extension FlutterViewController {
             }
         } else {
             completion?(nil)
-            print("MethodChannel 为空")
+            MeteorLog.info("MethodChannel 为空")
         }
     }
 
@@ -251,7 +112,7 @@ public extension FlutterViewController {
             }
         } else {
             options?.callBack?(nil)
-            print("MethodChannel 为空")
+            MeteorLog.info("MethodChannel 为空")
         }
     }
 
@@ -262,7 +123,7 @@ public extension FlutterViewController {
             }
         } else {
             options?.callBack?(nil)
-            print("No valid method channel")
+            MeteorLog.info("No valid method channel")
         }
     }
 }

@@ -1,12 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_meteor/router/router.dart';
 import 'package:hz_router_plugin_example/home/home_router.dart';
 import 'package:hz_router_plugin_example/mine/mine_router.dart';
 import 'package:hz_router_plugin_example/other/other_router.dart';
-import 'package:hz_router_plugin_example/router/route_options.dart';
 import 'package:hz_router_plugin_example/router/route_registry.dart';
-import 'package:hz_router_plugin_example/router/router_manager.dart';
 
 import '../navigator/multi_engine_router.dart';
 import '../other/undefined_route_page.dart';

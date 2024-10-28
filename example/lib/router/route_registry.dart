@@ -1,10 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:hz_router_plugin_example/router/route_options.dart';
-import 'package:hz_router_plugin_example/router/router_manager.dart';
-
-import 'config.dart';
+import 'package:flutter_meteor/router/router.dart';
 
 abstract class RouteRegistry {
   void install() {}

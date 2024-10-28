@@ -16,7 +16,7 @@ public class MeteorNavigator {
     public static func push(routeName: String,
                             options: MeteorPushOptions? = nil) {
         #if DEBUG
-            print("MeteorNavigator push to routeName: \(routeName), options: \(options?.toJson() ?? ["": nil])")
+        MeteorLog.debug("MeteorNavigator push to routeName: \(routeName), options: \(options?.toJson() ?? ["": nil])")
         #endif
 
         if let toPage = getViewController(routeName: routeName, options: options) {
@@ -30,7 +30,7 @@ public class MeteorNavigator {
             if let flutterVc = MeteorNavigatorHelper.topViewController() as? FlutterViewController, options?.pageType == .flutter {
                 flutterVc.flutterPush(routeName: routeName, options: options)
             } else {
-                print("MeteorNavigator push to routeName: \(routeName) not exist")
+                MeteorLog.error("MeteorNavigator push to routeName: \(routeName) not exist")
                 options?.callBack?(nil)
             }
         }
@@ -44,7 +44,7 @@ public class MeteorNavigator {
     public static func present(routeName: String,
                                options: MeteorPushOptions? = nil) {
         #if DEBUG
-            print("MeteorNavigator present to routeName: \(routeName), options: \(options?.toJson() ?? ["": nil])")
+        MeteorLog.debug("MeteorNavigator present to routeName: \(routeName), options: \(options?.toJson() ?? ["": nil])")
         #endif
 
         if let vc = getViewController(routeName: routeName, options: options) {
@@ -64,7 +64,7 @@ public class MeteorNavigator {
                 }
             }
         } else {
-            print("MeteorNavigator present to routeName: \(routeName) not exist")
+            MeteorLog.error("MeteorNavigator present to routeName: \(routeName) not exist")
             options?.callBack?(nil)
         }
     }
@@ -79,7 +79,7 @@ public class MeteorNavigator {
                                             untilRouteName: String?,
                                             options: MeteorPushOptions? = nil) {
         #if DEBUG
-            print("MeteorNavigator pushToAndRemoveUntil to routeName: \(routeName), removeUntilRouteName: \(untilRouteName ?? "nil"), options: \(options?.toJson() ?? ["": nil])")
+        MeteorLog.debug("MeteorNavigator pushToAndRemoveUntil to routeName: \(routeName), removeUntilRouteName: \(untilRouteName ?? "nil"), options: \(options?.toJson() ?? ["": nil])")
         #endif
 
         popUntil(untilRouteName: untilRouteName, options: MeteorPopOptions(animated: false, callBack: { response in
@@ -95,7 +95,7 @@ public class MeteorNavigator {
     public static func pushNamedAndRemoveUntilRoot(routeName: String,
                                                    options: MeteorPushOptions? = nil) {
         #if DEBUG
-            print("MeteorNavigator pushNamedAndRemoveUntilRoot to routeName: \(routeName), options: \(options?.toJson() ?? ["": nil])")
+        MeteorLog.debug("MeteorNavigator pushNamedAndRemoveUntilRoot to routeName: \(routeName), options: \(options?.toJson() ?? ["": nil])")
         #endif
         
         popToRoot(options: MeteorPopOptions(animated: false, callBack: { response in
@@ -108,7 +108,7 @@ public class MeteorNavigator {
     /// - Parameter options: Options for the page pop.
     public static func pop(options: MeteorPopOptions? = nil) {
         #if DEBUG
-            print("MeteorNavigator pop")
+        MeteorLog.debug("MeteorNavigator pop")
         #endif
         if let flutterVc = MeteorNavigatorHelper.topViewController() as? FlutterViewController {
             flutterVc.flutterRouteNameStack { routeStack in
@@ -136,7 +136,7 @@ public class MeteorNavigator {
     ///   - options: Options for the page push.
     public static func pushToReplacement(routeName: String, options: MeteorPushOptions? = nil) {
         #if DEBUG
-            print("MeteorNavigator pushToReplacement to routeName: \(routeName), options: \(options?.toJson() ?? ["": nil])")
+        MeteorLog.debug("MeteorNavigator pushToReplacement to routeName: \(routeName), options: \(options?.toJson() ?? ["": nil])")
         #endif
         
         pop(options: MeteorPopOptions(animated: false, callBack: { response in
@@ -154,12 +154,12 @@ public class MeteorNavigator {
                                 isFarthest: Bool = false,
                                 options: MeteorPopOptions? = nil) {
         #if DEBUG
-            print("MeteorNavigator popUntil: \(untilRouteName ?? "nil"), options: \(options?.toJson() ?? ["": nil])")
+        MeteorLog.debug("MeteorNavigator popUntil: \(untilRouteName ?? "nil"), options: \(options?.toJson() ?? ["": nil])")
         #endif
        
         guard let untilRouteName = untilRouteName else {
             options?.callBack?(nil)
-            print("popUntil untilRouteName is nil")
+            MeteorLog.warning("popUntil untilRouteName is nil")
             return
         }
         searchRoute(routeName: untilRouteName, isReversed: !isFarthest) { untilPage in
@@ -175,7 +175,7 @@ public class MeteorNavigator {
                 }
             } else {
                 options?.callBack?(nil)
-                print("No viewcontroller route name: \(untilRouteName)")
+                MeteorLog.warning("No viewcontroller route name: \(untilRouteName)")
             }
         }
     }
@@ -185,7 +185,7 @@ public class MeteorNavigator {
     /// - Parameter options: Options for the page pop.
     public static func popToRoot(options: MeteorPopOptions? = nil) {
         #if DEBUG
-            print("MeteorNavigator popToRoot, options: \(options?.toJson() ?? ["": nil])")
+        MeteorLog.debug("MeteorNavigator popToRoot, options: \(options?.toJson() ?? ["": nil])")
         #endif
         
         let rootVc = MeteorNavigatorHelper.rootViewController()

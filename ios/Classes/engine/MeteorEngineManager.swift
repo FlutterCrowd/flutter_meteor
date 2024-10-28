@@ -88,7 +88,7 @@ class MeteorEngineManager: NSObject {
                 entrypointArgList.append(jsonString)
             }
         } catch {
-            print("Error converting dictionary to JSON")
+            MeteorLog.error("Error converting dictionary to JSON")
         }
 
         // 创建新引擎

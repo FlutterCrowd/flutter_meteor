@@ -5,6 +5,9 @@ import 'impl/flutter.dart';
 import 'impl/native.dart';
 import 'observer.dart';
 
+export 'page_life_cycle.dart';
+export 'page_type.dart';
+
 /// MeteorNavigator
 ///
 /// MeteorNavigator是Meteor框架的导航器，用于页面跳转，页面栈管理，页面返回等操作

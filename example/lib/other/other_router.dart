@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_meteor/router/route_config.dart';
 import 'package:hz_router_plugin_example/other/pop_window.dart';
 import 'package:hz_router_plugin_example/other/webview_page.dart';
 import 'package:hz_router_plugin_example/router/route_registry.dart';
 
 import '../event_bus/event_bus_test_page.dart';
-import '../router/config.dart';
 import 'back_widget.dart';
 import 'bottom_sheet_page.dart';
 
