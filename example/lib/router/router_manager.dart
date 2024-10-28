@@ -1,32 +1,47 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_meteor/navigator/impl/flutter.dart';
-import 'package:hz_router_plugin_example/router/common.dart';
+import 'package:hz_router_plugin_example/router/route_options.dart';
 
-abstract class RouteRegistry {
-  void install() {}
-  void addRoutes(Map<String, RouteOptions> routes) {
+import 'config.dart';
+
+class RouterManager {
+  // 私有化构造方法，防止外部直接实例化
+  RouterManager._internal();
+
+  // 定义一个静态变量来存储唯一的实例
+  static final RouterManager _instance = RouterManager._internal();
+
+  // 提供一个工厂构造函数，返回唯一的实例
+  factory RouterManager() {
+    return _instance;
+  }
+
+  final Map<String, RouteOptions> _routes = {};
+  static Map<String, RouteOptions> get routes => _instance._routes;
+  static RouteWidgetBuilder? notFoundHandler;
+
+  /// 添加多个路由
+  static void addRoutes(Map<String, RouteOptions> routes) {
     // RouterManager.addRoutes(routes);
     RouterManager.routes.addAll(routes);
   }
 
-  /// MaterialPageRoute
-  void addRoute(
+  /// 添加单个路由
+  static void addRoute(
     String name,
     RouteWidgetBuilder builder, {
-    FMStandardRouteType? routeType = FMStandardRouteType.native,
+    MeteorRouteType? routeType = MeteorRouteType.native,
   }) {
-    if (routeType == FMStandardRouteType.material) {
+    if (routeType == MeteorRouteType.material) {
       addMaterialPageRoute(name, builder);
-    } else if (routeType == FMStandardRouteType.cupertino) {
+    } else if (routeType == MeteorRouteType.cupertino) {
       addCupertinoPageRoute(name, builder);
-    } else if (routeType == FMStandardRouteType.dialog) {
+    } else if (routeType == MeteorRouteType.dialog) {
       addDialogPageRoute(name, builder);
-    } else if (routeType == FMStandardRouteType.bottomSheet) {
+    } else if (routeType == MeteorRouteType.bottomSheet) {
       addBottomSheetPageRoute(name, builder);
-    } else if (routeType == FMStandardRouteType.native) {
+    } else if (routeType == MeteorRouteType.native) {
       if (Platform.isIOS) {
         addCupertinoPageRoute(name, builder);
       } else {
@@ -37,18 +52,17 @@ abstract class RouteRegistry {
     }
   }
 
-  /// PageRouteBuilder
-  void addTransparentRoute(String name, RouteWidgetBuilder builder) {
+  /// 添加透明路由
+  static void addTransparentRoute(String name, RouteWidgetBuilder builder) {
     CustomPageRouteOptions options = CustomPageRouteOptions(
       opaque: false,
     );
-    RouteOptions<CustomPageRouteOptions> routeOptions =
-        RouteOptions<CustomPageRouteOptions>(builder, options);
+    RouteOptions routeOptions = RouteOptions(builder, options);
     RouterManager.routes.putIfAbsent(name, () => routeOptions);
   }
 
-  /// MaterialPageRoute
-  void addMaterialPageRoute(
+  /// 添加 MaterialPageRoute
+  static void addMaterialPageRoute(
     String name,
     RouteWidgetBuilder builder, {
     bool? maintainState = true,
@@ -56,7 +70,7 @@ abstract class RouteRegistry {
     bool? allowSnapshotting = true,
     bool? barrierDismissible = false,
   }) {
-    RouteOptions<MaterialPageRouteOptions> routeOptions = RouteOptions<MaterialPageRouteOptions>(
+    RouteOptions routeOptions = RouteOptions(
         builder,
         MaterialPageRouteOptions(
           maintainState: maintainState,
@@ -67,7 +81,8 @@ abstract class RouteRegistry {
     RouterManager.routes.putIfAbsent(name, () => routeOptions);
   }
 
-  void addCupertinoPageRoute(
+  /// 添加 CupertinoPageRoute
+  static void addCupertinoPageRoute(
     String name,
     RouteWidgetBuilder builder, {
     bool? maintainState = true,
@@ -75,7 +90,7 @@ abstract class RouteRegistry {
     bool? allowSnapshotting = true,
     bool? barrierDismissible = false,
   }) {
-    RouteOptions<CupertinoPageRouteOptions> routeOptions = RouteOptions<CupertinoPageRouteOptions>(
+    RouteOptions routeOptions = RouteOptions(
         builder,
         CupertinoPageRouteOptions(
           maintainState: maintainState,
@@ -86,11 +101,11 @@ abstract class RouteRegistry {
     RouterManager.routes.putIfAbsent(name, () => routeOptions);
   }
 
-  /// PageRouteBuilder
-  void addStandardPageRoute(
+  /// 添加标准路由
+  static void addStandardPageRoute(
     String name,
     RouteWidgetBuilder builder, {
-    FMTransitionType? transitionType = FMTransitionType.inFromRight,
+    MeteorTransitionType? transitionType = MeteorTransitionType.inFromRight,
     bool? opaque = true,
     Color? barrierColor,
     String? barrierLabel,
@@ -99,7 +114,7 @@ abstract class RouteRegistry {
     bool? allowSnapshotting = true,
     bool? barrierDismissible = false,
   }) {
-    RouteOptions<StandardPageRouteOptions> routeOptions = RouteOptions<StandardPageRouteOptions>(
+    RouteOptions routeOptions = RouteOptions(
         builder,
         StandardPageRouteOptions(
           transitionType: transitionType,
@@ -114,8 +129,8 @@ abstract class RouteRegistry {
     RouterManager.routes.putIfAbsent(name, () => routeOptions);
   }
 
-  /// PageRouteBuilder
-  void addCustomPageRoute(
+  /// 添加自定义路由
+  static void addCustomPageRoute(
     String name,
     RouteWidgetBuilder builder, {
     RouteTransitionsBuilder? transitionsBuilder,
@@ -129,7 +144,7 @@ abstract class RouteRegistry {
     bool? allowSnapshotting = true,
     bool? barrierDismissible = false,
   }) {
-    RouteOptions<CustomPageRouteOptions> routeOptions = RouteOptions<CustomPageRouteOptions>(
+    RouteOptions routeOptions = RouteOptions(
         builder,
         CustomPageRouteOptions(
           transitionsBuilder: transitionsBuilder,
@@ -146,8 +161,8 @@ abstract class RouteRegistry {
     RouterManager.routes.putIfAbsent(name, () => routeOptions);
   }
 
-  /// 自定义Dialog路由
-  void addDialogPageRoute(
+  /// 添加 Dialog 路由
+  static void addDialogPageRoute(
     String name,
     RouteWidgetBuilder builder, {
     CapturedThemes? themes,
@@ -158,7 +173,7 @@ abstract class RouteRegistry {
     Offset? anchorPoint,
     TraversalEdgeBehavior? traversalEdgeBehavior,
   }) {
-    RouteOptions<DialogRouteOptions> routeOptions = RouteOptions<DialogRouteOptions>(
+    RouteOptions routeOptions = RouteOptions(
       builder,
       DialogRouteOptions(
         themes: themes,
@@ -173,8 +188,8 @@ abstract class RouteRegistry {
     RouterManager.routes.putIfAbsent(name, () => routeOptions);
   }
 
-  /// 自定义bottomSheet路由
-  void addBottomSheetPageRoute(
+  /// 添加 BottomSheet 路由
+  static void addBottomSheetPageRoute(
     String name,
     RouteWidgetBuilder builder, {
     InheritedTheme? capturedThemes,
@@ -196,7 +211,7 @@ abstract class RouteRegistry {
     final TraversalEdgeBehavior? traversalEdgeBehavior,
     final AnimationController? transitionAnimationController,
   }) {
-    RouteOptions<BottomSheetRouteOptions> routeOptions = RouteOptions<BottomSheetRouteOptions>(
+    RouteOptions routeOptions = RouteOptions(
       builder,
       BottomSheetRouteOptions(
         capturedThemes: capturedThemes,
@@ -222,37 +237,16 @@ abstract class RouteRegistry {
     RouterManager.routes.putIfAbsent(name, () => routeOptions);
   }
 
-  /// PageRouteBuilder
-  void setUnknownRoute(RouteWidgetBuilder builder) {
+  /// 设置未知路由
+  static void setUnknownRoute(RouteWidgetBuilder builder) {
     CustomPageRouteOptions options = CustomPageRouteOptions(
       opaque: false,
     );
-    RouteOptions<CustomPageRouteOptions> routeOptions =
-        RouteOptions<CustomPageRouteOptions>(builder, options);
+    RouteOptions routeOptions = RouteOptions(builder, options);
     RouterManager.routes.putIfAbsent("UnknownRouteName", () => routeOptions);
   }
-}
 
-class RouterManager {
-  // 私有化构造方法，防止外部直接实例化
-  RouterManager._internal();
-
-  // 定义一个静态变量来存储唯一的实例
-  static final RouterManager _instance = RouterManager._internal();
-
-  // 提供一个工厂构造函数，返回唯一的实例
-  factory RouterManager() {
-    return _instance;
-  }
-
-  final Map<String, RouteOptions> _routes = {};
-  static Map<String, RouteOptions> get routes => _instance._routes;
-
-  /// 默认自定义动画
-  static const defaultTransitionDuration = Duration(milliseconds: 250);
-  // static final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
-  static RouteWidgetBuilder? notFoundHandler;
-
+  /// 生成路由
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     final String? name = settings.name;
     RouteOptions? options = routes[name];
@@ -261,158 +255,158 @@ class RouterManager {
       if (options == null) {
         return _notFoundRoute('UnknownRouteName', maintainState: true);
       } else {
-        return _buildCustomPageRouteBuilder(settings, options, options.pageOptions);
+        return options.createRoute(settings);
       }
     }
-
-    final pageOptions = options.pageOptions;
-
-    if (pageOptions is MaterialPageRouteOptions) {
-      return _buildMaterialPageRoute(settings, options, pageOptions);
-    } else if (pageOptions is CupertinoPageRouteOptions) {
-      return _buildCupertinoPageRoute(settings, options, pageOptions);
-    } else if (pageOptions is StandardPageRouteOptions) {
-      return _buildStandardPageRouteBuilder(settings, options, pageOptions);
-    } else if (pageOptions is CustomPageRouteOptions) {
-      return _buildCustomPageRouteBuilder(settings, options, pageOptions);
-    } else if (pageOptions is DialogRouteOptions) {
-      return _buildDialogRoute(settings, options, pageOptions);
-    } else if (pageOptions is BottomSheetRouteOptions) {
-      return _buildModalBottomSheetRoute(settings, options, pageOptions);
-    } else {
-      return _notFoundRoute(name, maintainState: true);
-    }
+    return options.createRoute(settings);
+    // final pageOptions = options.pageOptions;
+    //
+    // if (pageOptions is MaterialPageRouteOptions) {
+    //   return _buildMaterialPageRoute(settings, options, pageOptions);
+    // } else if (pageOptions is CupertinoPageRouteOptions) {
+    //   return _buildCupertinoPageRoute(settings, options, pageOptions);
+    // } else if (pageOptions is StandardPageRouteOptions) {
+    //   return _buildStandardPageRouteBuilder(settings, options, pageOptions);
+    // } else if (pageOptions is CustomPageRouteOptions) {
+    //   return _buildCustomPageRouteBuilder(settings, options, pageOptions);
+    // } else if (pageOptions is DialogRouteOptions) {
+    //   return _buildDialogRoute(settings, options, pageOptions);
+    // } else if (pageOptions is BottomSheetRouteOptions) {
+    //   return _buildModalBottomSheetRoute(settings, options, pageOptions);
+    // } else {
+    //   return _notFoundRoute(name, maintainState: true);
+    // }
   }
 
-  static MaterialPageRoute _buildMaterialPageRoute(
-    RouteSettings settings,
-    RouteOptions options,
-    MaterialPageRouteOptions pageRouteOptions,
-  ) {
-    return MaterialPageRoute(
-      settings: settings,
-      maintainState: pageRouteOptions.maintainState ?? true,
-      fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
-      allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
-      barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
-      builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
-    );
-  }
-
-  static CupertinoPageRoute _buildCupertinoPageRoute(
-    RouteSettings settings,
-    RouteOptions options,
-    CupertinoPageRouteOptions pageRouteOptions,
-  ) {
-    return CupertinoPageRoute(
-      settings: settings,
-      maintainState: pageRouteOptions.maintainState ?? true,
-      fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
-      allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
-      barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
-      builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
-    );
-  }
-
-  static PageRouteBuilder _buildStandardPageRouteBuilder(
-    RouteSettings settings,
-    RouteOptions options,
-    StandardPageRouteOptions pageRouteOptions,
-  ) {
-    return PageRouteBuilder(
-      opaque: pageRouteOptions.opaque ?? true,
-      settings: settings,
-      transitionsBuilder: _standardTransitionsBuilder(pageRouteOptions.transitionType),
-      transitionDuration: pageRouteOptions.transitionDuration,
-      reverseTransitionDuration: pageRouteOptions.reverseTransitionDuration,
-      barrierLabel: pageRouteOptions.barrierLabel,
-      barrierColor: pageRouteOptions.barrierColor,
-      maintainState: pageRouteOptions.maintainState ?? true,
-      fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
-      allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
-      barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
-      pageBuilder: (context, _, __) => options.builder(settings.arguments as Map<String, dynamic>?),
-    );
-  }
-
-  static PageRouteBuilder _buildCustomPageRouteBuilder(
-    RouteSettings settings,
-    RouteOptions options,
-    CustomPageRouteOptions pageRouteOptions,
-  ) {
-    return PageRouteBuilder(
-      opaque: pageRouteOptions.opaque ?? true,
-      settings: settings,
-      transitionsBuilder: pageRouteOptions.transitionsBuilder ?? _customTransitionsBuilder,
-      transitionDuration: pageRouteOptions.transitionDuration ?? defaultTransitionDuration,
-      reverseTransitionDuration:
-          pageRouteOptions.reverseTransitionDuration ?? defaultTransitionDuration,
-      barrierLabel: pageRouteOptions.barrierLabel,
-      barrierColor: pageRouteOptions.barrierColor,
-      maintainState: pageRouteOptions.maintainState ?? true,
-      fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
-      allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
-      barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
-      pageBuilder: (context, _, __) => options.builder(settings.arguments as Map<String, dynamic>?),
-    );
-  }
-
-  static DialogRoute _buildDialogRoute(
-    RouteSettings settings,
-    RouteOptions options,
-    DialogRouteOptions pageRouteOptions,
-  ) {
-    BuildContext context = MeteorFlutterNavigator.rootKey!.currentContext!;
-    final CapturedThemes themes = InheritedTheme.capture(
-      from: context,
-      to: Navigator.of(context, rootNavigator: pageRouteOptions.useRootNavigator ?? true).context,
-    );
-    return DialogRoute(
-      context: context,
-      settings: settings,
-      barrierColor: pageRouteOptions.barrierColor,
-      barrierLabel: pageRouteOptions.barrierLabel,
-      useSafeArea: pageRouteOptions.useSafeArea ?? true,
-      anchorPoint: pageRouteOptions.anchorPoint,
-      traversalEdgeBehavior: pageRouteOptions.traversalEdgeBehavior,
-      themes: themes,
-      builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
-    );
-  }
-
-  static ModalBottomSheetRoute _buildModalBottomSheetRoute(
-    RouteSettings settings,
-    RouteOptions options,
-    BottomSheetRouteOptions pageRouteOptions,
-  ) {
-    BuildContext context = MeteorFlutterNavigator.rootKey!.currentContext!;
-    final MaterialLocalizations localizations = MaterialLocalizations.of(context);
-
-    return ModalBottomSheetRoute(
-      builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
-      capturedThemes: InheritedTheme.capture(from: context, to: context),
-      isScrollControlled: pageRouteOptions.isScrollControlled ?? false,
-      scrollControlDisabledMaxHeightRatio:
-          pageRouteOptions.scrollControlDisabledMaxHeightRatio ?? 9.0 / 16.0,
-      barrierLabel: pageRouteOptions.barrierLabel ?? localizations.scrimLabel,
-      barrierOnTapHint: localizations.scrimOnTapHint(localizations.bottomSheetLabel),
-      backgroundColor: pageRouteOptions.backgroundColor,
-      elevation: pageRouteOptions.elevation,
-      shape: pageRouteOptions.shape,
-      clipBehavior: pageRouteOptions.clipBehavior,
-      constraints: pageRouteOptions.constraints,
-      isDismissible: pageRouteOptions.isDismissible ?? true,
-      modalBarrierColor:
-          pageRouteOptions.barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
-      enableDrag: pageRouteOptions.enableDrag ?? false,
-      showDragHandle: pageRouteOptions.showDragHandle,
-      settings: settings,
-      transitionAnimationController: pageRouteOptions.transitionAnimationController,
-      anchorPoint: pageRouteOptions.anchorPoint,
-      useSafeArea: pageRouteOptions.useSafeArea ?? false,
-    );
-  }
-
+  // static MaterialPageRoute _buildMaterialPageRoute(
+  //   RouteSettings settings,
+  //   RouteOptions options,
+  //   MaterialPageRouteOptions pageRouteOptions,
+  // ) {
+  //   return MaterialPageRoute(
+  //     settings: settings,
+  //     maintainState: pageRouteOptions.maintainState ?? true,
+  //     fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
+  //     allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
+  //     barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
+  //     builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
+  //   );
+  // }
+  //
+  // static CupertinoPageRoute _buildCupertinoPageRoute(
+  //   RouteSettings settings,
+  //   RouteOptions options,
+  //   CupertinoPageRouteOptions pageRouteOptions,
+  // ) {
+  //   return CupertinoPageRoute(
+  //     settings: settings,
+  //     maintainState: pageRouteOptions.maintainState ?? true,
+  //     fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
+  //     allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
+  //     barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
+  //     builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
+  //   );
+  // }
+  //
+  // static PageRouteBuilder _buildStandardPageRouteBuilder(
+  //   RouteSettings settings,
+  //   RouteOptions options,
+  //   StandardPageRouteOptions pageRouteOptions,
+  // ) {
+  //   return PageRouteBuilder(
+  //     opaque: pageRouteOptions.opaque ?? true,
+  //     settings: settings,
+  //     transitionsBuilder: _standardTransitionsBuilder(pageRouteOptions.transitionType),
+  //     transitionDuration: pageRouteOptions.transitionDuration,
+  //     reverseTransitionDuration: pageRouteOptions.reverseTransitionDuration,
+  //     barrierLabel: pageRouteOptions.barrierLabel,
+  //     barrierColor: pageRouteOptions.barrierColor,
+  //     maintainState: pageRouteOptions.maintainState ?? true,
+  //     fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
+  //     allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
+  //     barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
+  //     pageBuilder: (context, _, __) => options.builder(settings.arguments as Map<String, dynamic>?),
+  //   );
+  // }
+  //
+  // static PageRouteBuilder _buildCustomPageRouteBuilder(
+  //   RouteSettings settings,
+  //   RouteOptions options,
+  //   CustomPageRouteOptions pageRouteOptions,
+  // ) {
+  //   return PageRouteBuilder(
+  //     opaque: pageRouteOptions.opaque ?? true,
+  //     settings: settings,
+  //     transitionsBuilder: pageRouteOptions.transitionsBuilder ?? _customTransitionsBuilder,
+  //     transitionDuration: pageRouteOptions.transitionDuration ?? defaultTransitionDuration,
+  //     reverseTransitionDuration:
+  //         pageRouteOptions.reverseTransitionDuration ?? defaultTransitionDuration,
+  //     barrierLabel: pageRouteOptions.barrierLabel,
+  //     barrierColor: pageRouteOptions.barrierColor,
+  //     maintainState: pageRouteOptions.maintainState ?? true,
+  //     fullscreenDialog: pageRouteOptions.fullscreenDialog ?? false,
+  //     allowSnapshotting: pageRouteOptions.allowSnapshotting ?? true,
+  //     barrierDismissible: pageRouteOptions.barrierDismissible ?? false,
+  //     pageBuilder: (context, _, __) => options.builder(settings.arguments as Map<String, dynamic>?),
+  //   );
+  // }
+  //
+  // static DialogRoute _buildDialogRoute(
+  //   RouteSettings settings,
+  //   RouteOptions options,
+  //   DialogRouteOptions pageRouteOptions,
+  // ) {
+  //   BuildContext context = MeteorFlutterNavigator.rootKey!.currentContext!;
+  //   final CapturedThemes themes = InheritedTheme.capture(
+  //     from: context,
+  //     to: Navigator.of(context, rootNavigator: pageRouteOptions.useRootNavigator ?? true).context,
+  //   );
+  //   return DialogRoute(
+  //     context: context,
+  //     settings: settings,
+  //     barrierColor: pageRouteOptions.barrierColor,
+  //     barrierLabel: pageRouteOptions.barrierLabel,
+  //     useSafeArea: pageRouteOptions.useSafeArea ?? true,
+  //     anchorPoint: pageRouteOptions.anchorPoint,
+  //     traversalEdgeBehavior: pageRouteOptions.traversalEdgeBehavior,
+  //     themes: themes,
+  //     builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
+  //   );
+  // }
+  //
+  // static ModalBottomSheetRoute _buildModalBottomSheetRoute(
+  //   RouteSettings settings,
+  //   RouteOptions options,
+  //   BottomSheetRouteOptions pageRouteOptions,
+  // ) {
+  //   BuildContext context = MeteorFlutterNavigator.rootKey!.currentContext!;
+  //   final MaterialLocalizations localizations = MaterialLocalizations.of(context);
+  //
+  //   return ModalBottomSheetRoute(
+  //     builder: (context) => options.builder(settings.arguments as Map<String, dynamic>?),
+  //     capturedThemes: InheritedTheme.capture(from: context, to: context),
+  //     isScrollControlled: pageRouteOptions.isScrollControlled ?? false,
+  //     scrollControlDisabledMaxHeightRatio:
+  //         pageRouteOptions.scrollControlDisabledMaxHeightRatio ?? 9.0 / 16.0,
+  //     barrierLabel: pageRouteOptions.barrierLabel ?? localizations.scrimLabel,
+  //     barrierOnTapHint: localizations.scrimOnTapHint(localizations.bottomSheetLabel),
+  //     backgroundColor: pageRouteOptions.backgroundColor,
+  //     elevation: pageRouteOptions.elevation,
+  //     shape: pageRouteOptions.shape,
+  //     clipBehavior: pageRouteOptions.clipBehavior,
+  //     constraints: pageRouteOptions.constraints,
+  //     isDismissible: pageRouteOptions.isDismissible ?? true,
+  //     modalBarrierColor:
+  //         pageRouteOptions.barrierColor ?? Theme.of(context).bottomSheetTheme.modalBarrierColor,
+  //     enableDrag: pageRouteOptions.enableDrag ?? false,
+  //     showDragHandle: pageRouteOptions.showDragHandle,
+  //     settings: settings,
+  //     transitionAnimationController: pageRouteOptions.transitionAnimationController,
+  //     anchorPoint: pageRouteOptions.anchorPoint,
+  //     useSafeArea: pageRouteOptions.useSafeArea ?? false,
+  //   );
+  // }
+  //
   static MaterialPageRoute<void> _notFoundRoute(
     String routeName, {
     bool? maintainState,
@@ -432,54 +426,13 @@ class RouterManager {
 
     return creator(RouteSettings(name: routeName), {});
   }
-
-  static RouteTransitionsBuilder _standardTransitionsBuilder(FMTransitionType? transitionType) {
-    return (
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child,
-    ) {
-      if (transitionType == FMTransitionType.fadeIn) {
-        return FadeTransition(opacity: animation, child: child);
-      } else {
-        const topLeft = Offset(0.0, 0.0);
-        const topRight = Offset(1.0, 0.0);
-        const bottomLeft = Offset(0.0, 1.0);
-
-        var startOffset = bottomLeft;
-        var endOffset = topLeft;
-
-        if (transitionType == FMTransitionType.inFromLeft) {
-          startOffset = const Offset(-1.0, 0.0);
-          endOffset = topLeft;
-        } else if (transitionType == FMTransitionType.inFromRight) {
-          startOffset = topRight;
-          endOffset = topLeft;
-        } else if (transitionType == FMTransitionType.inFromBottom) {
-          startOffset = bottomLeft;
-          endOffset = topLeft;
-        } else if (transitionType == FMTransitionType.inFromTop) {
-          startOffset = const Offset(0.0, -1.0);
-          endOffset = topLeft;
-        }
-        return SlideTransition(
-          position: Tween<Offset>(
-            begin: startOffset,
-            end: endOffset,
-          ).animate(animation),
-          child: child,
-        );
-      }
-    };
-  }
-
-  static Widget _customTransitionsBuilder(
-    BuildContext context,
-    Animation<double> animation,
-    Animation<double> secondaryAnimation,
-    Widget child,
-  ) {
-    return child;
-  }
+  //
+  // static Widget _customTransitionsBuilder(
+  //   BuildContext context,
+  //   Animation<double> animation,
+  //   Animation<double> secondaryAnimation,
+  //   Widget child,
+  // ) {
+  //   return child;
+  // }
 }
