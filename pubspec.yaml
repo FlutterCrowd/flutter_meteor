@@ -1,6 +1,6 @@
 name: flutter_meteor
 description: "flutter_meteor is a multi-engine hybrid stack management framework that enables smooth page navigation and state synchronization between native and Flutter."
-version: 1.0.3
+version: 1.0.4
 homepage: "https://github.com/FlutterCrowd/flutter_meteor"
 repository: "https://github.com/FlutterCrowd/flutter_meteor.git"
 issue_tracker: "https://github.com/FlutterCrowd/flutter_meteor/issues"

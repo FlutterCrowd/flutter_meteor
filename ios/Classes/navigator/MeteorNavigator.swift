@@ -175,7 +175,7 @@ public class MeteorNavigator {
                 }
             } else {
                 options?.callBack?(nil)
-                MeteorLog.warning("No viewcontroller route name: \(untilRouteName)")
+                MeteorLog.warning("No page route name: \(untilRouteName)")
             }
         }
     }

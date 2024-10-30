@@ -18,7 +18,7 @@ Add the following configuration to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_meteor: ^1.0.2
+  flutter_meteor: ^1.0.4
 ```
 ### 2. Initialize the Plugin
 Initialize in the default main function of your Flutter application:
@@ -109,8 +109,7 @@ MaterialApp(
 ```
 Future<T?> pushNamed<T extends Object?>(
   String routeName, {
-  bool withNewEngine = false,
-  bool openNative = false,
+  PageType pageType = PageType.flutter,
   bool isOpaque = true,
   bool animated = true,
   bool present = false,
