@@ -49,7 +49,7 @@ class RouterManager {
         addMaterialPageRoute(name, builder);
       }
     } else {
-      print('Unknown routeType: $routeType');
+      MeteorLog.error('Unknown routeType: $routeType');
     }
   }
 

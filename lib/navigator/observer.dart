@@ -112,17 +112,17 @@ class MeteorNavigatorObserver extends NavigatorObserver {
 
   @override
   void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
-    if (oldRoute == null) {
+    if (newRoute == null || oldRoute == null) {
       return;
     }
-    final index = _routeStack.indexOf(oldRoute!);
+    final index = _routeStack.indexOf(oldRoute);
     if (index != -1) {
-      _routeStack[index] = newRoute!;
+      _routeStack[index] = newRoute;
     }
     super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
     sendNavigatorStackChanged();
     PageLifeCycleManager.instance.notifyDidReplace(
-      newRoute?.settings.name ?? 'unknownFlutterRoute',
+      newRoute.settings.name ?? 'unknownFlutterRoute',
       oldRoute.settings.name ?? 'unknownFlutterRoute',
     );
   }

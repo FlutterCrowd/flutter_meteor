@@ -2,15 +2,21 @@ import 'package:flutter/foundation.dart';
 
 class MeteorLog {
   static void error(String message) {
-    print('[Meteor][Error]: $message');
+    if (kDebugMode) {
+      print('[Meteor][Error]: $message');
+    }
   }
 
   static void warning(String message) {
-    print('[Meteor][Warning]: $message');
+    if (kDebugMode) {
+      print('[Meteor][Warning]: $message');
+    }
   }
 
   static void info(String message) {
-    print('[Meteor][Info]: $message');
+    if (kDebugMode) {
+      print('[Meteor][Info]: $message');
+    }
   }
 
   static void debug(String message) {
