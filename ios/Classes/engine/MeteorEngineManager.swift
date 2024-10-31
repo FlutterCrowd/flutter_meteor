@@ -46,37 +46,39 @@ public class MeteorEngineGroupOptions {
 
     let libraryURI: String?
 
-    var isMain: Bool = false
-
     public init(entrypoint: String? = "main",
                 initialRoute: String? = nil,
                 entrypointArgs: [String: Any]? = nil,
-                libraryURI: String? = nil,
-                isMain: Bool = false)
+                libraryURI: String? = nil)
     {
         self.entrypoint = entrypoint
         self.initialRoute = initialRoute
         self.entrypointArgs = entrypointArgs
         self.libraryURI = libraryURI
-        self.isMain = isMain
     }
 }
 
-class MeteorEngineManager: NSObject {
+class MeteorEngineManager {
+    
+    public static let shared = MeteorEngineManager()
+    private init() {}
+    
+    
     private static let channelProviderList = MeteorWeakArray<FlutterMeteorChannelProvider>()
 
     // FlutterEngineGroup 用于管理所有引擎
     private static let flutterEngineGroup = FlutterEngineGroup(name: "itbox.meteor.flutterEnginGroup", project: nil)
+    var engineWeakCache = MeteorWeakDictionary<FlutterBinaryMessenger, FlutterEngine>()
+    var engineCache = MeteorWeakDictionary<FlutterBinaryMessenger, FlutterEngine>()
 
     public static func createFlutterEngine(options: MeteorEngineGroupOptions? = nil) -> FlutterEngine {
         var arguments = [String: Any]()
-
+        
         let initialRoute = options?.initialRoute
         let entrypointArgs = options?.entrypointArgs
         if initialRoute != nil {
             arguments["initialRoute"] = initialRoute
         }
-        arguments["isMain"] = options?.isMain ?? false
         if initialRoute != nil {
             arguments["routeArguments"] = entrypointArgs
         }
@@ -98,7 +100,8 @@ class MeteorEngineManager: NSObject {
         engineGroupOptions.entrypointArgs = entrypointArgList
         engineGroupOptions.libraryURI = options?.libraryURI
         let flutterEngine: FlutterEngine = flutterEngineGroup.makeEngine(with: engineGroupOptions)
-//        engineCache[flutterEngine.binaryMessenger] = flutterEngine
+        flutterEngine.run()
+        shared.engineCache[flutterEngine.binaryMessenger] = flutterEngine
         return flutterEngine
     }
 

@@ -19,21 +19,10 @@ open class FlutterMeteorActivity : FlutterActivity() {
         if (routeArgsString != null) {
             // 解析 JSON 字符串为 JSONObject
             val jsonObject = JSONObject(routeArgsString)
-            jsonObject.put("isMain", isMainEntry)
-            routeArgs = jsonObject.toString()
-        } else {
-            val map = mapOf(
-                "isMain" to isMainEntry
-            )
-            val jsonObject = JSONObject(map)
             routeArgs = jsonObject.toString()
         }
         val args = if (routeArgs.isNullOrEmpty()) emptyList() else listOf(routeArgs)
         EngineBindings(this,  initialRoute, entryPoint, args, 0)
-    }
-    private val isMainEntry: Boolean get() {
-        val routeArgs = intent.getStringExtra("routeArgs")
-        return routeArgs.isNullOrEmpty()
     }
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         super.onCreate(savedInstanceState)

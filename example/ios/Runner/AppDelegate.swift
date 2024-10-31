@@ -18,12 +18,12 @@ import UIKit
         // 在第一次使用FMFlutterViewController之前调用
         FlutterMeteor.setUp(pluginRegistryDelegate: self)
         
-        
+
         GeneratedPluginRegistrant.register(with: self)
         
         UIViewController.fmInitializeSwizzling
         
-        let vc: UIViewController = MeteorFlutterViewController(options: MeteorEngineGroupOptions(isMain: true)) // MeteorFlutterViewController.init()//self.window.rootViewController ?? //TabBarViewController.init()//
+        let vc: UIViewController = self.window.rootViewController ?? MeteorFlutterViewController() // MeteorFlutterViewController.init()// //TabBarViewController.init()//
 //        vc.routeName = "rootPage"
 //        vc.interactivePopGestureRecognizer = true
         let navi = UINavigationController(rootViewController: vc)
