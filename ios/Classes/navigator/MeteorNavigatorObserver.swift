@@ -54,10 +54,10 @@ class MeteorNavigatorObserver: NSObject {
 //        }
     }
     
-    static func didRplace(routeName: String, fromRouteName: String) {
-//        logRouteAction(action: "didRplace", routeName: routeName)
+    static func didReplace(routeName: String, fromRouteName: String) {
+//        logRouteAction(action: "didReplace", routeName: routeName)
 //        let message: [String: Any?] = [
-//            "event": "didRplace",
+//            "event": "didReplace",
 //            "route": routeName,
 //            "previousRoute": fromRouteName,
 //        ]
