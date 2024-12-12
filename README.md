@@ -18,7 +18,7 @@ Add the following configuration to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_meteor: ^1.0.4
+  flutter_meteor: ^1.1.0
 ```
 ### 2. Initialize the Plugin
 Initialize in the default main function of your Flutter application:
