@@ -96,7 +96,7 @@ public class MeteorNativeNavigator: NSObject {
 
    // MARK: - Pop to Root
     public static func popToRoot(animated: Bool = true, completion: (() -> Void)? = nil) {
-        guard let rootVC = rootNavigationController()?.viewControllers.first else {
+        guard let rootVC = rootViewController() else {
             completion?()
             return
         }
@@ -167,12 +167,12 @@ public class MeteorNativeNavigator: NSObject {
         if let topNavi = topVc.navigationController,
             topNavi.viewControllers.count <= 1 {
             handleSinglePageReplacement(topVc: topVc, toPage: toPage, animated: animated) {
-                MeteorNavigatorObserver.didRplace(routeName:topVc.routeName!, fromRouteName: toPage.routeName!)
+                MeteorNavigatorObserver.didReplace(routeName:topVc.routeName!, fromRouteName: toPage.routeName!)
             }
         } else {
             pop(animated: false) {
                 push(toPage: toPage, animated: animated)
-                MeteorNavigatorObserver.didRplace(routeName:topVc.routeName!, fromRouteName: toPage.routeName!)
+                MeteorNavigatorObserver.didReplace(routeName:topVc.routeName!, fromRouteName: toPage.routeName!)
             }
         }
     }

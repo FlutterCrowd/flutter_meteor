@@ -52,6 +52,8 @@ void main(List<String> args) async {
   if (kDebugMode) {
     print('这是初始化引擎传递过来的参数：$args');
   }
+  // dart pub publish --server=https://pub.dartlang.org
+
   // 确保 Flutter 的核心引擎和 Widgets 系统已经初始化。
   // 在应用启动时执行与平台相关的操作或在访问平台通道时，
   // 你需要确保 Flutter 的引擎已经启动且 Widgets 系统已经完全初始化。
